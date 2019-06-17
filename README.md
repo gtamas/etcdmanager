@@ -1,2 +1,2 @@
-# etcdmanager
-A cross platform GUI for ETCD
+# ETCD Manager
+A cross platform GUI for ETCD. Coming soon..
