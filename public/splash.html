@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<html>
+    <head>
+        <style>
+            body {
+                background-image: url('png/background.png');
+                font-family: 'Avenir', Helvetica, Arial, sans-serif;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-align: center;
+                background-position: center center;
+                background-size: cover;
+                color: white;
+            }
+
+            h1,
+            h3 {
+                text-shadow: 2px 2px black;
+            }
+
+            h1 {
+                font-size: 48px;
+                margin: 0;
+            }
+
+            h3 {
+                margin: 0;
+                font-size: 24px;
+            }
+
+            .middle {
+                margin: 0;
+                position: absolute;
+                top: 35%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            .box {
+                width: 90%;
+                opacity: 0.8;
+                padding: 20px;
+                background-color: rgb(48, 48, 48);
+                -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+                -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+                box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+            }
+
+            .text-focus-in {
+                -webkit-animation: text-focus-in 1s
+                    cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+                animation: text-focus-in 1s
+                    cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+            }
+
+            @-webkit-keyframes text-focus-in {
+                0% {
+                    -webkit-filter: blur(12px);
+                    filter: blur(12px);
+                    opacity: 0;
+                }
+                100% {
+                    -webkit-filter: blur(0px);
+                    filter: blur(0px);
+                    opacity: 1;
+                }
+            }
+            @keyframes text-focus-in {
+                0% {
+                    -webkit-filter: blur(12px);
+                    filter: blur(12px);
+                    opacity: 0;
+                }
+                100% {
+                    -webkit-filter: blur(0px);
+                    filter: blur(0px);
+                    opacity: 1;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="middle">
+            <div class="box">
+                <h1 class="text-focus-in">ETCD Manager</h1>
+                <h3 class="text-focus-in">Loading..</h3>
+            </div>
+        </div>
+    </body>
+    <script>
+        // Listen for data from browser process and update splashscreen
+        var ipcRenderer = require('electron').ipcRenderer;
+        ipcRenderer.on('update', function(event, status) {
+            document.getElementById('status').innerText = status;
+        });
+    </script>
+</html>

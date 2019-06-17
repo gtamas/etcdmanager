@@ -1,7 +1,7 @@
 {
   "defaultSeverity": "warning",
   "extends": [
-    "tslint:recommended"
+    "tslint-config-airbnb"
   ],
   "linterOptions": {
     "exclude": [
@@ -10,10 +10,12 @@
   },
   "rules": {
     "quotemark": [true, "single"],
-    "indent": [true, "spaces", 2],
+    "ter-indent": false,
+    "import-name": false,
     "interface-name": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "no-consecutive-blank-lines": false
+    "no-consecutive-blank-lines": false,
+    "max-line-length": false
   }
 }
