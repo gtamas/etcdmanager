@@ -33,7 +33,7 @@
           <v-list-tile-title>Manage watchers</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
-      <v-list-tile disabled ripple to="/users">
+      <v-list-tile ripple to="/users">
         <v-list-tile-action>
           <v-icon>person</v-icon>
         </v-list-tile-action>

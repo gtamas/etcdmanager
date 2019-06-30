@@ -1,4 +1,4 @@
-import { WatcherAction } from './../../types/index';
+import { WatcherAction, DataService } from './../../types/index';
 import {
     Etcd3, Watcher, EtcdError,
 } from 'etcd3';
@@ -8,7 +8,7 @@ import { WatcherEntry } from '../../types';
 import store from '@/store';
 import Messages from '@/messages';
 
-export default class WatcherService extends EtcdService {
+export default class WatcherService extends EtcdService implements DataService {
 
     constructor(private ls: any, client?: Etcd3) {
         super(client);
@@ -59,14 +59,14 @@ export default class WatcherService extends EtcdService {
                     previous ? previous.value.toString() : '');
                 this.generateOutput(msg, outputType);
             };
-        }  if (event === 'connected') {
+        } if (event === 'connected') {
             return (res: RPC.IWatchResponse) => {
                 const msg = this.getMessage(
                     event,
                     res.watch_id);
                 this.generateOutput(msg, outputType);
             };
-        }  if (event === 'error' || event === 'disconnected') {
+        } if (event === 'error' || event === 'disconnected') {
             return (error: EtcdError) => {
                 const msg = this.getMessage(
                     event,
@@ -109,7 +109,7 @@ export default class WatcherService extends EtcdService {
     public registerWatcherEvents(watcher: Watcher, actions: WatcherAction[]): Watcher {
 
         actions.forEach((action) => {
-           watcher.on(action.event.name as 'put',  this.handleEvent(action.event.name, action.action.value));
+            watcher.on(action.event.name as 'put', this.handleEvent(action.event.name, action.action.value));
         });
 
         watcher.on('disconnected', this.handleEvent('disconnected', 0));
@@ -118,20 +118,22 @@ export default class WatcherService extends EtcdService {
         return watcher;
     }
 
-    public purgeWatchers(): void {
-        return this.ls.remove('watchers');
+    public purge(): Promise<any> {
+        this.ls.remove('watchers');
+        return Promise.resolve(true);
     }
 
-    public removeWatchers(toRemove: string[]): void {
-        const watchers = this.listWatchers().filter(watcher => {
+    public remove(toRemove: string[]): Promise<any> {
+        const watchers = this.listWatchers().filter((watcher) => {
             return !toRemove.includes(watcher.name);
         });
         this.ls.set('watchers', JSON.stringify(watchers));
+        return Promise.resolve(true);
 
     }
 
     public loadWatcher(name: string): WatcherEntry {
-         return this.listWatchers().find(watcher => {
+        return this.listWatchers().find((watcher) => {
             return watcher.name === name;
         }) as WatcherEntry;
 

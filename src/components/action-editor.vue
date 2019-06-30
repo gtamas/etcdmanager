@@ -119,19 +119,13 @@ export default class ActionEditor extends BaseEditor {
         }
     }
 
-    get title() {
-        if (this.editMode) {
-            return `Edit Action`;
-        }
-        return `New Action`;
-    }
-
     constructor() {
         super();
     }
 
-    public submit(reset = false) {
+    public submit(reset = false): ActionEditor {
         this.$emit('action', this.action);
+        return this;
     }
 }
 </script>

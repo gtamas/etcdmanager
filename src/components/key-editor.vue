@@ -62,17 +62,12 @@ import { GenericObject } from '../../types';
 import { required, alphaNum } from 'vuelidate/lib/validators';
 import Messages from '../messages';
 import KeyService from '../services/key.service';
+import { BaseEditor } from '../lib/editor.class';
+import { Prop } from 'vue-property-decorator';
 
 @Component({
     // @ts-ignore
     name: 'key-editor',
-    props: {
-        data: {
-            key: String,
-            value: String,
-        },
-        mode: String,
-    },
     validations: {
         key: {
             required,
@@ -84,9 +79,20 @@ import KeyService from '../services/key.service';
         },
     },
 })
-export default class KeyEditor extends Vue {
+export default class KeyEditor extends BaseEditor {
     public loading: boolean = true;
     public valid = false;
+
+    public itemType: string = 'key';
+    public itemId: string = 'key';
+
+    // @ts-ignore
+    @Prop() data: {
+        key: string;
+        value: string;
+    };
+    // @ts-ignore
+    @Prop() mode: string;
 
     public key: string = this.data.key || '';
     public value: string = this.data.value || '';
@@ -95,74 +101,65 @@ export default class KeyEditor extends Vue {
         super();
     }
 
-    get createMode() {
-        return this.mode === 'create';
-    }
-
-    get editMode() {
-        return this.mode === 'edit';
-    }
-
-    get title() {
-        if (this.editMode) {
-            return `Edit: ${this.key}`;
-        }
-        return 'New Key';
-    }
-
     get keyErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.key.$dirty) {
             return errors;
         }
-        !this.$v.key.required && errors.push('Item is required');
-        !this.$v.key.alphaNum && errors.push('Alphanumeric value expected');
+        // @ts-ignore
+        if (!this.$v.key.required) {
+            errors.push('Item is required');
+        }
+        // @ts-ignore
+        if (!this.$v.key.alphaNum) {
+            errors.push('Alphanumeric value expected');
+        }
         return errors;
     }
 
     get valueErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.value.$dirty) {
             return errors;
         }
-        !this.$v.value.required && errors.push('Item is required');
-        !this.$v.value.alphaNum && errors.push('Alphanumeric value expected');
+        // @ts-ignore
+        if (!this.$v.value.required) {
+            errors.push('Item is required');
+        }
+        // @ts-ignore
+        if (!this.$v.value.alphaNum) {
+            errors.push('Alphanumeric value expected');
+        }
         return errors;
     }
 
-    get opTitle() {
-        return this.createMode ? 'Add' : 'Edit';
-    }
-
-    public cancel() {
-        this.$emit('cancel');
-    }
-
-    public updated() {}
-
-    public submit(reset = false) {
+    public async submit(reset = false): Promise<KeyEditor> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return false;
+            return Promise.reject(this);
         }
 
         const etcd = new KeyService(this.$store.state.connection.getClient());
 
-        this.loading = true;
-        etcd.upsert(this.key, this.value)
-            .then((data: any) => {
-                this.loading = false;
-                this.$store.commit('message', Messages.success());
-                this.$emit('reload');
-                this.$v.$reset();
-                if (this.createMode) {
-                    this.key = '';
-                    this.value = '';
-                }
-            })
-            .catch((error: any) => {
-                this.$store.commit('message', Messages.error(error));
-            });
+        try {
+            this.toggleLoading();
+            await etcd.upsert(this.key, this.value);
+            this.toggleLoading();
+            this.$store.commit('message', Messages.success());
+            this.$emit('reload');
+            this.$v.$reset();
+            if (this.createMode) {
+                this.key = '';
+                this.value = '';
+            }
+            return Promise.resolve(this);
+        } catch (e) {
+            this.$store.commit('message', Messages.error(e));
+            this.toggleLoading();
+            return Promise.reject(this);
+        }
     }
 }
 </script>

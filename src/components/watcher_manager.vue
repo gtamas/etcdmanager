@@ -115,7 +115,7 @@
           :data="currentItem"
           :mode="operation"
           v-on:cancel="cancelEdit"
-          v-on:reload="loadWatchers"
+          v-on:reload="load"
           v-if="editor"
         ></watcher-editor>
       </v-expand-x-transition>
@@ -142,7 +142,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { WatcherEntry, GenericObject, NamedWatcher } from '../../types';
 import WatcherService from '../services/watcher.service';
-import { CrudBase } from '../lib/crud.class';
+import { CrudBase, List } from '../lib/crud.class';
 import WatcherEditor from './watcher-editor.vue';
 import NoSelectionDialog from './no-selection.dialog.vue';
 import { Watcher } from 'etcd3';
@@ -154,7 +154,7 @@ import Messages from '../messages';
         'watcher-editor': WatcherEditor,
     },
 })
-export default class WatcherManager extends CrudBase {
+export default class WatcherManager extends CrudBase implements List {
     public watchers: WatcherEntry[] = [];
     public headers = [
         {
@@ -178,30 +178,43 @@ export default class WatcherManager extends CrudBase {
 
     constructor() {
         super();
-        this.etcd = new WatcherService(
-            this.$ls,
-            this.$store.state.connection.getClient(),
-        );
+        // @ts-ignore
+        this.etcd = new WatcherService(this.$ls, this.$store.state.connection.getClient());
     }
 
     created() {
-        this.loadWatchers();
-        this.translateHeaders('watcherManager.columns.name', 'watcherManager.columns.key', 'watcherManager.columns.prefix');
+        this.load();
+        this.translateHeaders(
+            'watcherManager.columns.name',
+            'watcherManager.columns.key',
+            'watcherManager.columns.prefix',
+        );
     }
 
-    private deactivateWatcher(watcher: WatcherEntry) {
-        this.watcherStreams.get(watcher.name).cancel();
-        watcher.activated = false;
-        return true;
+    private async deactivateWatcher(
+        watcher: WatcherEntry,
+    ): Promise<WatcherManager> {
+        const listener = this.watcherStreams.get(watcher.name);
+        if (listener) {
+            try {
+                await listener.cancel();
+                watcher.activated = false;
+            } catch (e) {
+                return Promise.reject(this);
+            }
+        }
+         return Promise.resolve(this);
     }
 
-    private async activateWatcher(watcher: WatcherEntry) {
+    private async activateWatcher(
+        watcher: WatcherEntry,
+    ): Promise<WatcherManager> {
         let watcherStream: Watcher | null = null;
         try {
             watcherStream = await this.etcd.createWatcher(watcher);
         } catch (e) {
             Messages.error(e);
-            return false;
+            return Promise.reject(this);
         }
 
         watcherStream = this.etcd.registerWatcherEvents(
@@ -210,50 +223,72 @@ export default class WatcherManager extends CrudBase {
         );
         this.watcherStreams.set(watcher.name, watcherStream);
         watcher.activated = true;
+        return Promise.resolve(this);
+    }
+
+    private unregisterWatchers(): WatcherManager {
+        const item = this.itemToDelete as GenericObject;
+        const toBeRemoved = this.hasSelection()
+            ? this.getSelectedKeys('name')
+            : [item.name];
+
+        toBeRemoved.forEach((watcherName) => {
+            const listener = this.watcherStreams.get(watcherName);
+            if (listener) {
+                listener.cancel();
+                this.watcherStreams.delete(watcherName);
+            }
+        });
+
+        return this;
     }
 
     public addItem() {
+        // @ts-ignore
         CrudBase.options.methods.addItem.call(this);
         this.currentItem = new WatcherEntry();
     }
 
-    public async toggleWatcher(watcher: WatcherEntry) {
+    public async toggleWatcher(watcher: WatcherEntry): Promise<WatcherManager> {
         if (watcher.activated) {
             this.deactivateWatcher(watcher);
-            return false;
+            return Promise.reject(this);
         }
 
         await this.activateWatcher(watcher);
-        return true;
+        return Promise.resolve(this);
     }
 
-    public loadWatchers() {
+    public async load(): Promise<WatcherManager> {
         this.loading = true;
         this.watchers = this.etcd.listWatchers();
         this.loading = false;
+        return Promise.resolve(this);
     }
 
-    public async confirmPurge() {
+    public async confirmPurge(): Promise<WatcherManager> {
         try {
-            await this.etcd.purgeWatchers();
+            // @ts-ignore
+            await CrudBase.options.methods.confirmPurge.call(this);
             this.watcherStreams.forEach((watcher) => {
                 watcher.cancel();
             });
             this.watcherStreams.clear();
+            await this.load();
             this.$store.commit('message', Messages.success());
-            CrudBase.options.methods.confirmPurge.call(this);
-            this.loadWatchers();
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
     }
 
-    public toggleMany(activate: boolean = true) {
+    public toggleMany(activate: boolean = true): WatcherManager {
         if (this.hasSelection()) {
             this.noSelection = false;
             const watcherNames = this.getSelectedKeys('name');
             watcherNames.forEach((name) => {
-                const watcher = this.watchers.find((w) => w.name === name);
+                const watcher = this.watchers.find(w => w.name === name);
                 if (activate) {
                     this.activateWatcher(watcher as WatcherEntry);
                 } else {
@@ -264,34 +299,29 @@ export default class WatcherManager extends CrudBase {
         } else {
             this.noSelection = true;
         }
+
+        return this;
     }
 
-    public async confirmDelete() {
-        const item = this.itemToDelete as GenericObject;
-        const toBeRemoved = this.hasSelection()
-            ? this.getSelectedKeys('name')
-            : [item.name];
-
+    public async confirmDelete(): Promise<WatcherManager> {
         try {
-            this.etcd.removeWatchers(toBeRemoved);
+            // @ts-ignore
+            await CrudBase.options.methods.confirmDelete.call(
+                this,
+                false,
+                true,
+            );
+            await this.load();
             this.$store.commit('message', Messages.success());
-            toBeRemoved.forEach((watcherName) => {
-                const listener = this.watcherStreams.get(watcherName);
-                if (listener) {
-                    listener.cancel();
-                    this.watcherStreams.delete(watcherName);
-                }
-            });
-            CrudBase.options.methods.confirmDelete.call(this, false, true);
-            this.loadWatchers();
+            this.unregisterWatchers();
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
-
-        this.cancelDelete();
     }
 
-    public async editItem(item: WatcherEntry) {
+    public async editItem(item: WatcherEntry): Promise<WatcherManager> {
         try {
             // @ts-ignore
             CrudBase.options.methods.editItem.call(this, item);
@@ -299,10 +329,12 @@ export default class WatcherManager extends CrudBase {
                 ...this.currentItem,
                 ...item,
             };
+            return Promise.resolve(this);
         } catch (error) {
             // @ts-ignore
-            CrudBase.options.methods.editItem.call(this, item, false);
+            await CrudBase.options.methods.editItem.call(this, item, false);
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
     }
 }

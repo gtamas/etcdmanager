@@ -53,9 +53,7 @@
                   <v-switch dark v-model="retry" :label="$t('settings.etcd.fields.retries.label')">
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>
-                       {{ $t('settings.etcd.fields.retries.tooltip') }}
-                      </span>
+                      <span>{{ $t('settings.etcd.fields.retries.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
 
@@ -149,25 +147,41 @@
             <v-container fluid>
               <v-layout>
                 <v-flex xs12 align-end flexbox>
-                  <v-switch dark v-model="loadWatchers" :label="$t('settings.watchers.fields.loadWatchers.label')">
+                  <v-switch
+                    dark
+                    v-model="loadWatchers"
+                    :label="$t('settings.watchers.fields.loadWatchers.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.loadWatchers.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
-                  <v-switch dark v-model="errorListener" :label="$t('settings.watchers.fields.errorListener.label')">
+                  <v-switch
+                    dark
+                    v-model="errorListener"
+                    :label="$t('settings.watchers.fields.errorListener.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.errorListener.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
-                  <v-switch dark v-model="disconnectListener" :label="$t('settings.watchers.fields.disconnectListener.label')">
+                  <v-switch
+                    dark
+                    v-model="disconnectListener"
+                    :label="$t('settings.watchers.fields.disconnectListener.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.disconnectListener.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
-                  <v-switch dark v-model="reconnectListener" :label="$t('settings.watchers.fields.reconnectListener.label')">
+                  <v-switch
+                    dark
+                    v-model="reconnectListener"
+                    :label="$t('settings.watchers.fields.reconnectListener.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.reconnectListener.tooltip') }}</span>
@@ -198,7 +212,11 @@
                       <span>{{ $t('settings.misc.fields.language.tooltip') }}</span>
                     </v-tooltip>
                   </v-select>
-                  <v-switch dark v-model="animateBg" :label="$t('settings.misc.fields.animateBg.label')">
+                  <v-switch
+                    dark
+                    v-model="animateBg"
+                    :label="$t('settings.misc.fields.animateBg.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.misc.fields.animateBg.tooltip') }}</span>
@@ -218,7 +236,12 @@
       </v-tabs>
       <v-card raised>
         <v-layout align-start justify-center row>
-          <v-btn :disabled="!valid" round color="primary" @click="persist">{{ $t('settings.actions.submit') }}</v-btn>
+          <v-btn
+            :disabled="!valid"
+            round
+            color="primary"
+            @click="persist"
+          >{{ $t('settings.actions.submit') }}</v-btn>
           <v-btn round color="warning" @click="next">{{ $t('settings.actions.next') }}</v-btn>
         </v-layout>
       </v-card>
@@ -409,10 +432,11 @@ export default class Configuration extends Vue {
 
     get endpointErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.endpoint.$dirty) {
             return errors;
         }
-        // !this.$v.endpoint.required && errors.push('Item is required');
+        // @ts-ignore
         !this.$v.endpoint.ipAddress &&
             errors.push('IP address appears to be invalid');
         // !this.$v.endpoint.url && errors.push('URL appears to be invalid');
@@ -421,30 +445,39 @@ export default class Configuration extends Vue {
 
     get portErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.port.$dirty) {
             return errors;
         }
+        // @ts-ignore
         !this.$v.port.required && errors.push('Item is required');
+        // @ts-ignore
         !this.$v.port.integer && errors.push('Value must be an integer');
         return errors;
     }
 
     get timeoutErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.timeout.$dirty) {
             return errors;
         }
+        // @ts-ignore
         !this.$v.timeout.required && errors.push('Item is required');
+        // @ts-ignore
         !this.$v.timeout.integer && errors.push('Value must be an integer');
         return errors;
     }
 
     get usernameErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.username.$dirty) {
             return errors;
         }
+        // @ts-ignore
         !this.$v.username.required && errors.push('Item is required');
+        // @ts-ignore
         !this.$v.username.alphaNum &&
             errors.push('Alphanumeric value is expected');
         return errors;
@@ -452,9 +485,11 @@ export default class Configuration extends Vue {
 
     get passwordErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.password.$dirty) {
             return errors;
         }
+        // @ts-ignore
         !this.$v.password.required && errors.push('Item is required');
         return errors;
     }
@@ -497,6 +532,7 @@ export default class Configuration extends Vue {
             };
         }
 
+          // @ts-ignore
         this.$ls.set('config', JSON.stringify(newConfig));
         const auth = newConfig.etcdAuth ? { auth: newConfig.etcdAuth } : {};
         this.$store.commit('etcdConnect', {

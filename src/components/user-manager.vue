@@ -2,7 +2,7 @@
   <v-layout align-start justify-center row>
     <v-flex pa-1 grow fill-height>
       <v-toolbar raised dark>
-        <v-toolbar-title>{{ $t("keyManager.title") }}</v-toolbar-title>
+        <v-toolbar-title>{{ $t("userManager.title") }}</v-toolbar-title>
         <v-divider class="mx-2" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-text-field
@@ -40,23 +40,13 @@
           </template>
           <span>{{ $t("common.actions.removeAll.tooltip") }}</span>
         </v-tooltip>
-
-        <v-tooltip bottom max-width="200">
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" @click.stop="touch(null, true)" round dark v-on="on">
-              <v-icon>touch_app</v-icon>
-              <span>{{ $t("keyManager.actions.touchAll.label") }}</span>
-            </v-btn>
-          </template>
-          <span>{{$t("keyManager.actions.touchAll.tooltip") }}</span>
-        </v-tooltip>
       </v-toolbar>
       <v-card raised dark>
         <v-data-table
           :search="filter"
           :headers="headers"
           v-bind:items="data"
-          item-key="key"
+          item-key="name"
           select-all
           v-model="selected"
           :loading="loading"
@@ -66,26 +56,19 @@
             <td>
               <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
             </td>
-            <td>{{ props.item.key }}</td>
-            <td class="text-xs-right">{{ props.item.value }}</td>
+            <td>{{ props.item.name }}</td>
             <td class="justify-center layout px-0">
               <v-tooltip bottom max-width="200">
                 <template v-slot:activator="{ on }">
                   <v-icon small @click="editItem(props.item)" v-on="on">edit</v-icon>
                 </template>
-                <span>{{ $t("keyManager.actions.edit") }}</span>
+                <span>{{ $t("userManager.actions.edit") }}</span>
               </v-tooltip>
               <v-tooltip bottom max-width="200">
                 <template v-slot:activator="{ on }">
                   <v-icon small slot="activator" @click="deleteSingle(props.item)" v-on="on">delete</v-icon>
                 </template>
-                <span>{{ $t("keyManager.actions.remove") }}</span>
-              </v-tooltip>
-              <v-tooltip bottom max-width="200">
-                <template v-slot:activator="{ on }">
-                  <v-icon small slot="activator" @click="touch(props.item)" v-on="on">touch_app</v-icon>
-                </template>
-                <span>{{ $t("keyManager.actions.touch") }}</span>
+                <span>{{ $t("userManager.actions.remove") }}</span>
               </v-tooltip>
             </td>
           </template>
@@ -98,26 +81,26 @@
 
     <v-flex pa-1 shrink>
       <v-expand-x-transition>
-        <key-editor
+        <user-editor
           :data="currentItem"
           :mode="operation"
           v-on:cancel="cancelEdit"
           v-on:reload="load"
           v-if="editor"
-        ></key-editor>
+        ></user-editor>
       </v-expand-x-transition>
     </v-flex>
 
     <delete-dialog
       :open="deleteDialog"
-      :itemName="'key'"
+      :itemName="'user'"
       v-on:confirm="confirmDelete"
       v-on:cancel="cancelDelete"
     ></delete-dialog>
 
     <purge-dialog
       :open="purgeDialog"
-      :itemName="'keys'"
+      :itemName="'users'"
       v-on:confirm="confirmPurge"
       v-on:cancel="cancelPurge"
     ></purge-dialog>
@@ -125,90 +108,63 @@
   </v-layout>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, MultiRangeBuilder } from 'etcd3';
-import Messages from '@/messages';
-import { GenericObject, EtcdItem } from '../../types';
-import KeyEditor from './key-editor.vue';
-import KeyService from '../services/key.service';
 import { CrudBase, List } from '../lib/crud.class';
-import { Provide } from 'vue-property-decorator';
+import UserService from '../services/user.service';
+import Messages from '../messages';
+import { GenericObject } from '../../types';
+import UserEditor from './user-editor.vue';
 
 @Component({
-    name: 'key-manager',
     components: {
-        'key-editor': KeyEditor,
+        'user-editor': UserEditor,
     },
 })
-export default class KeyManager extends CrudBase implements List {
-    public none = 0;
+export default class UserManager extends CrudBase implements List {
     public headers = [
         {
             text: '',
             align: 'left',
             sortable: true,
-            value: 'key',
+            value: 'name',
         },
-        { text: '', value: 'value', sortable: true },
     ];
+    protected defaultItem: { name: string };
 
-    protected etcd: KeyService;
+    protected etcd: UserService;
 
     constructor() {
         super();
-        this.etcd = new KeyService(this.$store.state.connection.getClient());
+        this.etcd = new UserService(this.$store.state.connection.getClient());
+        this.defaultItem = { name: '' };
     }
 
     public created() {
-        this.translateHeaders(
-            'keyManager.columns.key',
-            'keyManager.columns.value',
-        );
+        this.translateHeaders('userManager.columns.name');
         this.load();
     }
 
-    public async editItem(item: GenericObject): Promise<KeyManager> {
+    public async editItem(item: GenericObject) {
         try {
             this.closeEditor();
-            const value = await this.etcd.loadKey(item.key);
+            // @ts-ignore
+            const roleData = await this.etcd.getUserRoles(item.name);
             // @ts-ignore
             CrudBase.options.methods.editItem.call(this, item);
             this.currentItem = {
                 ...this.currentItem,
-                ...{ value, key: item.key },
+                ...{ name: item.name, roles: roleData },
             };
-            return Promise.resolve(this);
         } catch (error) {
             // @ts-ignore
             CrudBase.options.methods.editItem.call(this, item, false);
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
         }
     }
 
-    public async touch(item: EtcdItem, selection: boolean = false): Promise<KeyManager> {
-        if (selection && !this.hasSelection()) {
-            this.noSelection = true;
-            return Promise.resolve(this);
-        }
-        const toBeTouched = selection ? this.getSelectedKeys() : [item.key];
-        this.noSelection = false;
-        try {
-            this.toggleLoading();
-            await this.etcd.touch(toBeTouched);
-            this.toggleLoading();
-            this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
-        } catch (error) {
-            this.$store.commit('message', Messages.error(error));
-            this.toggleLoading();
-            return Promise.reject(this);
-        }
-    }
-
-    public async confirmPurge(): Promise<KeyManager> {
+    public async confirmPurge(): Promise<UserManager> {
         try {
             // @ts-ignore
             await CrudBase.options.methods.confirmPurge.call(this);
@@ -220,33 +176,30 @@ export default class KeyManager extends CrudBase implements List {
         }
     }
 
-    public async confirmDelete(): Promise<KeyManager> {
+    public async confirmDelete(keyName: string): Promise<UserManager> {
         try {
             // @ts-ignore
             const result = await CrudBase.options.methods.confirmDelete.call(
                 this,
-                'key',
+                'name',
             );
             this.$store.commit('message', Messages.success());
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+             return Promise.reject(this);
         }
-
-        return this;
     }
 
-    public async load(prefix?: string): Promise<KeyManager> {
+    public async load(): Promise<UserManager> {
         this.loading = true;
         try {
-            const data = await this.etcd.loadAllKeys(prefix);
-            this.data = Object.entries(data).map((entry) => {
-                return { key: entry[0], value: entry[1] };
-            });
+            this.data = await this.etcd.getUsers();
             this.loading = false;
             return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
+            return Promise.reject(error);
         }
     }
 }

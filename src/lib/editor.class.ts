@@ -4,6 +4,7 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { capitalize } from 'lodash-es';
+import store from '@/store';
 
 @Component({
 })
@@ -23,7 +24,7 @@ export class BaseEditor extends Vue {
     public translateHeaders(...keys: string[]) {
         keys.forEach((k, i) => {
             this.headers[i].text = this.$t(k).toString();
-        })
+        });
     }
 
     get createMode() {
@@ -48,5 +49,16 @@ export class BaseEditor extends Vue {
 
     public cancel() {
         this.$emit('cancel');
+    }
+
+    public toggleLoading() {
+        if (store.state.loading) {
+            setTimeout(() => {
+                store.commit('loading');
+            },         500);
+        } else {
+            store.commit('loading');
+        }
+
     }
 }

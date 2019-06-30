@@ -1,3 +1,4 @@
+import { DataService } from './../../types/index';
 import {
     MultiRangeBuilder,
     Range,
@@ -5,7 +6,7 @@ import {
 } from 'etcd3';
 import EtcdService  from './etcd.service';
 
-export default class KeyService extends EtcdService {
+export default class KeyService extends EtcdService implements DataService {
 
     constructor(client?: Etcd3) {
       super(client);

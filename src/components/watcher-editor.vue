@@ -42,19 +42,19 @@
               </v-tooltip>
             </v-text-field>
 
-            <v-checkbox dark v-model="prefix" :label="$t('watcherEditor.fields.prefix.label')" required>
+            <v-checkbox
+              dark
+              v-model="prefix"
+              :label="$t('watcherEditor.fields.prefix.label')"
+              required
+            >
               <v-tooltip slot="prepend" bottom max-width="200">
                 <v-icon slot="activator" color="primary" dark>info</v-icon>
                 <span>{{ $t('watcherEditor.fields.prefix.tooltip') }}</span>
               </v-tooltip>
             </v-checkbox>
 
-            <v-data-table
-              :headers="headers"
-              v-bind:items="actions"
-              item-key="id"
-              hide-actions
-            >
+            <v-data-table :headers="headers" v-bind:items="actions" item-key="id" hide-actions>
               <template v-slot:items="props">
                 <td>{{ props.item.action.name }}</td>
                 <td class="text-xs-right">{{ props.item.event.name }}</td>
@@ -93,7 +93,7 @@
             </v-btn>
             <v-btn color="warning" round @click="cancel">
               <v-icon>close</v-icon>
-              <span>{{ $t('common.actions.close.label')  }}</span>
+              <span>{{ $t('common.actions.close.label') }}</span>
             </v-btn>
             <v-spacer></v-spacer>
           </v-form>
@@ -118,7 +118,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Etcd3, MultiRangeBuilder } from 'etcd3';
-import { GenericObject, WatcherAction } from '../../types';
+import { GenericObject, WatcherAction, WatcherEntry } from '../../types';
 import { required, alphaNum } from 'vuelidate/lib/validators';
 import Messages from '../messages';
 import { BaseEditor } from '../lib/editor.class';
@@ -186,22 +186,29 @@ export default class WatcherEditor extends BaseEditor {
 
     constructor() {
         super();
+        this.currentAction = { ...this.defaultAction };
     }
 
     created() {
-        this.translateHeaders('watcherEditor.actionList.columns.action', 'watcherEditor.actionList.columns.event')
+        this.translateHeaders(
+            'watcherEditor.actionList.columns.action',
+            'watcherEditor.actionList.columns.event',
+        );
     }
 
     get nameErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.name.$dirty) {
             return errors;
         }
 
+        // @ts-ignore
         if (!this.$v.name.required) {
             errors.push('Item is required');
         }
 
+        // @ts-ignore
         if (!this.$v.name.alphaNum) {
             errors.push('Alphanumeric value expected');
         }
@@ -210,10 +217,13 @@ export default class WatcherEditor extends BaseEditor {
 
     get keyErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.key.$dirty) {
             return errors;
         }
+        // @ts-ignore
         !this.$v.key.required && errors.push('Item is required');
+        // @ts-ignore
         !this.$v.key.alphaNum && errors.push('Alphanumeric value expected');
         return errors;
     }
@@ -237,7 +247,9 @@ export default class WatcherEditor extends BaseEditor {
             action.id = uuidv1();
             this.actions.push(action);
         } else {
-            const current = this.actions.find((ac) => action.id === ac.id);
+            const current = this.actions.find((ac) => {
+                return action.id === ac.id;
+            });
             Vue.set(current as WatcherAction, 'action', action.action);
             Vue.set(current as WatcherAction, 'event', action.event);
         }
@@ -252,7 +264,9 @@ export default class WatcherEditor extends BaseEditor {
 
     deleteAction(actionToDelete: WatcherAction) {
         this.actions = this.actions.filter(
-            (action) => action.id !== actionToDelete.id,
+            (action) => {
+                return action.id !== actionToDelete.id;
+            }
         );
     }
 
@@ -262,20 +276,21 @@ export default class WatcherEditor extends BaseEditor {
             return false;
         }
 
-        const backend = new WatcherService(
-            this.$ls,
-            this.$store.state.connection.getClient(),
+        // @ts-ignore
+        const backend = new WatcherService(this.$ls, this.$store.state.connection.getClient());
+
+        this.toggleLoading();
+        backend.saveWatcher(
+            new WatcherEntry(
+                this.name,
+                this.key,
+                this.prefix,
+                false,
+                this.actions,
+            ),
         );
 
-        this.loading = true;
-        backend.saveWatcher({
-            name: this.name,
-            key: this.key,
-            prefix: this.prefix,
-            actions: this.actions,
-        });
-
-        this.loading = false;
+        this.toggleLoading();
         this.$store.commit('message', Messages.success());
         this.$emit('reload');
         this.$v.$reset();

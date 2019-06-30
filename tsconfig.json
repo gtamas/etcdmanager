@@ -3,6 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "strict": true,
+    "skipLibCheck": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -13,7 +14,8 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "node_modules/@types"
+      "node_modules/@types",
+      "types"
     ],
     "paths": {
       "*": ["types/*"],
@@ -36,6 +38,8 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "node_modules/**/*.d.ts",
+    "src/*.d.ts"
   ]
 }

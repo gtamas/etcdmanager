@@ -26,7 +26,12 @@
               </v-tooltip>
             </v-text-field>
 
-            <v-checkbox dark v-model="prefix" :label="$t('permissionEditor.fields.prefix.label')" required>
+            <v-checkbox
+              dark
+              v-model="prefix"
+              :label="$t('permissionEditor.fields.prefix.label')"
+              required
+            >
               <v-tooltip slot="prepend" bottom max-width="200">
                 <v-icon slot="activator" color="primary" dark>info</v-icon>
                 <span>{{ $t('permissionEditor.fields.prefix.tooltip') }}</span>
@@ -135,14 +140,17 @@ export default class PermissionEditor extends BaseEditor {
 
     get keyErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.key.$dirty) {
             return errors;
         }
 
+        // @ts-ignore
         if (!this.$v.key.required) {
             errors.push('Item is required');
         }
 
+        // @ts-ignore
         if (!this.$v.key.alphaNum) {
             errors.push('Alphanumeric value expected');
         }
@@ -156,6 +164,8 @@ export default class PermissionEditor extends BaseEditor {
         }
 
         try {
+            this.toggleLoading();
+            console.log(111);
             await this.etcd.setPermissions({
                 name: this.name,
                 key: this.key,
@@ -164,6 +174,7 @@ export default class PermissionEditor extends BaseEditor {
                 grant: true,
             });
             this.$emit('permission');
+            this.toggleLoading();
             this.$store.commit('message', Messages.success());
         } catch (e) {
             this.$store.commit('message', Messages.error(e));

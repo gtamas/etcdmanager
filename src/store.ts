@@ -39,8 +39,9 @@ export default new Vuex.Store({
             timeout: 2000,
             show: false,
         },
+        loading: false,
         console: '',
-        version: ''
+        version: '',
     },
     getters: {
         isConfigured(state) {
@@ -53,6 +54,9 @@ export default new Vuex.Store({
         },
     },
     mutations: {
+        loading(state) {
+            state.loading = !state.loading;
+        },
         config(state, payload) {
             state.config = { ...state.config, ...payload };
         },

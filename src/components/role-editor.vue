@@ -26,7 +26,13 @@
               </v-tooltip>
             </v-text-field>
 
-            <v-data-table v-if="roleExists" :headers="headers" v-bind:items="permissions" item-key="key" hide-actions>
+            <v-data-table
+              v-if="roleExists"
+              :headers="headers"
+              v-bind:items="permissions"
+              item-key="key"
+              hide-actions
+            >
               <template v-slot:items="props">
                 <td>{{ props.item.key }}</td>
                 <td class="text-xs-right">{{ props.item.permission }}</td>
@@ -60,7 +66,7 @@
               <v-icon>add</v-icon>
               <span>{{ opTitle }}</span>
             </v-btn>
-            <v-btn  :disabled="!roleExists"  round color="primary" @click="addPermission">
+            <v-btn :disabled="!roleExists" round color="primary" @click="addPermission">
               <v-icon>verified_user</v-icon>
               <span>{{ $t('roleEditor.actions.permissions') }}</span>
             </v-btn>
@@ -166,6 +172,7 @@ export default class RoleEditor extends BaseEditor {
     constructor() {
         super();
         this.etcd = new RoleService(this.$store.state.connection.getClient());
+        this.currentPermission = { ...this.defaultPermission };
     }
 
     async created() {
@@ -173,31 +180,39 @@ export default class RoleEditor extends BaseEditor {
             this.loadPermissions();
         }
         this.roleExists = this.mode === 'edit';
-        this.translateHeaders('roleEditor.columns.key', 'roleEditor.columns.permission', 'roleEditor.columns.prefix');
+        this.translateHeaders(
+            'roleEditor.columns.key',
+            'roleEditor.columns.permission',
+            'roleEditor.columns.prefix',
+        );
     }
 
     get nameErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.name.$dirty) {
             return errors;
         }
 
+        // @ts-ignore
         if (!this.$v.name.required) {
             errors.push('Item is required');
         }
 
+        // @ts-ignore
         if (!this.$v.name.alphaNum) {
             errors.push('Alphanumeric value expected');
         }
         return errors;
     }
 
-    isValid() {
+    public isValid(): boolean {
         return this.$v.$invalid || this.roleExists;
     }
 
-    async loadPermissions() {
-         const permissions = await this.etcd.rolePermissions(this.name);
+    public async loadPermissions(): Promise<RoleEditor> {
+        try {
+            const permissions = await this.etcd.rolePermissions(this.name);
             this.permissions = permissions.map((perm) => {
                 return {
                     key: perm.range.start.toString(),
@@ -205,31 +220,46 @@ export default class RoleEditor extends BaseEditor {
                     permission: perm.permission,
                 };
             });
+            return Promise.resolve(this);
+        } catch (e) {
+            return Promise.reject(this);
+        }
     }
 
-    addPermission() {
+    addPermission(): RoleEditor {
         this.permissionDialog = true;
         this.permissionEditorMode = 'create';
         this.currentPermission = { ...this.defaultPermission };
+        return this;
     }
 
-    cancelPermission() {
+    cancelPermission(): RoleEditor {
         this.permissionDialog = false;
+        return this;
     }
 
-    savePermission() {
-        this.loadPermissions();
-        this.cancelPermission();
+    public async savePermission(): Promise<RoleEditor> {
+        try {
+            await this.loadPermissions();
+            this.cancelPermission();
+            return Promise.resolve(this);
+        } catch (e) {
+            return Promise.reject(this);
+        }
     }
 
-    editPermission(permission: PermissionObject) {
+    editPermission(permission: PermissionObject): RoleEditor {
         this.currentPermission = permission;
         this.permissionDialog = true;
         this.permissionEditorMode = 'edit';
+        return this;
     }
 
-    async revokePermission(permission: PermissionObject) {
-         try {
+    public async revokePermission(
+        permission: PermissionObject,
+    ): Promise<RoleEditor> {
+        try {
+            this.toggleLoading();
             await this.etcd.setPermissions({
                 name: this.name,
                 key: permission.key,
@@ -237,33 +267,39 @@ export default class RoleEditor extends BaseEditor {
                 isRange: permission.prefix,
                 grant: false,
             });
+            await this.loadPermissions();
+            this.toggleLoading();
             this.$store.commit('message', Messages.success());
-            this.loadPermissions();
+            return Promise.resolve(this);
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
+            return Promise.reject(this);
         }
     }
 
-    public async submit(reset = false) {
+    public async submit(reset = false): Promise<RoleEditor> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return false;
+            return Promise.reject(this);
         }
 
         const backend = new RoleService(
             this.$store.state.connection.getClient(),
         );
 
-        this.loading = true;
         try {
+            this.toggleLoading();
             await backend.createRole(this.name);
-            this.loading = false;
+            this.toggleLoading();
             this.roleExists = true;
             this.$store.commit('message', Messages.success());
             this.$emit('reload');
             this.$v.$reset();
+            return Promise.resolve(this);
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
+            this.toggleLoading();
+            return Promise.reject(this);
         }
     }
 }

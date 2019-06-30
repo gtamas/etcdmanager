@@ -48,9 +48,7 @@
           item-key="name"
           select-all
           v-model="selected"
-          :loading="loading"
         >
-          <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
           <template v-slot:items="props">
             <td>
               <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
@@ -84,7 +82,7 @@
           :data="currentItem"
           :mode="operation"
           v-on:cancel="cancelEdit"
-          v-on:reload="loadRoles"
+          v-on:reload="load"
           v-if="editor"
         ></role-editor>
       </v-expand-x-transition>
@@ -114,7 +112,7 @@ import { Etcd3, Role } from 'etcd3';
 import Messages from '@/messages';
 import { GenericObject } from '../../types';
 import RoleService from '../services/role.service';
-import { CrudBase } from '../lib/crud.class';
+import { CrudBase, List } from '../lib/crud.class';
 import RoleEditor from './role-editor.vue';
 
 @Component({
@@ -123,7 +121,7 @@ import RoleEditor from './role-editor.vue';
         'role-editor': RoleEditor,
     },
 })
-export default class RoleManager extends CrudBase {
+export default class RoleManager extends CrudBase implements List {
     public none = 0;
     public headers = [
         {
@@ -144,14 +142,15 @@ export default class RoleManager extends CrudBase {
     }
 
     public created() {
-        this.loadRoles();
+        this.load();
         this.translateHeaders('roleManager.columns.name');
     }
 
     public async editItem(item: GenericObject) {
         try {
-            // @ts-ignore
+            this.closeEditor();
             const roleData = await this.etcd.loadRole(item.name);
+            // @ts-ignore
             CrudBase.options.methods.editItem.call(this, item);
             this.currentItem = {
                 ...this.currentItem,
@@ -164,42 +163,41 @@ export default class RoleManager extends CrudBase {
         }
     }
 
-    public async confirmPurge() {
+    public async confirmPurge(): Promise<RoleManager> {
         try {
-            await this.etcd.purge();
+            // @ts-ignore
+            await CrudBase.options.methods.confirmPurge.call(this);
             this.$store.commit('message', Messages.success());
-            CrudBase.options.methods.confirmPurge.call(this);
-            this.loadRoles();
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
     }
 
-    public async confirmDelete() {
-        const item = this.itemToDelete as GenericObject;
-        const toBeRemoved = this.hasSelection()
-            ? this.getSelectedKeys('name')
-            : [item.name];
-
+    public async confirmDelete(keyName: string): Promise<RoleManager> {
         try {
-            const result = await this.etcd.deleteRole(toBeRemoved);
+            // @ts-ignore
+            await CrudBase.options.methods.confirmDelete.call(this, 'name');
+            await this.load();
             this.$store.commit('message', Messages.success());
-            CrudBase.options.methods.confirmDelete(this, false, true);
-            this.loadRoles();
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
 
         this.cancelDelete();
     }
 
-    public async loadRoles() {
+    public async load(): Promise<RoleManager> {
         this.loading = true;
         try {
             this.data = await this.etcd.getRoles();
-            this.loading = false;
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
     }
 }

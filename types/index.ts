@@ -1,4 +1,7 @@
 import { Watcher } from 'etcd3';
+import { CrudBase } from '@/lib/crud.class';
+
+declare const __static: any;
 
 export interface GenericObject {
     [key: string]: any;
@@ -13,13 +16,19 @@ export type PermissionObject = {
     permission: EtcdPermissionType,
 };
 
+
+export interface DataService {
+    purge(): Promise<CrudBase>;
+    remove(items: string[]): Promise<CrudBase>;
+}
+
 export interface EtcdItem extends GenericObject {
     key: string;
     value: any;
 }
 
 export interface WatcherAction {
-    id: string,
+    id?: string;
     action: {
         name: string,
         type: number,

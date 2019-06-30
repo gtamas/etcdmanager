@@ -33,7 +33,7 @@ export default {
             },
             lists: {
                 nodata: 'There is no data to display..',
-            }
+            },
         },
         settings: {
             title: 'Settings',
@@ -64,8 +64,8 @@ export default {
                     apiVersion: {
                         label: 'API version',
                         tooltip: 'The protocol version supported by the endpoint',
-                    }
-                }
+                    },
+                },
             },
             auth: {
                 title: 'Auth',
@@ -80,7 +80,7 @@ export default {
                         placeholder: 'Type in an alpanumeric value..',
                         tooltip: 'ETCD password. Leave blank if authentication is not enabled.',
                     },
-                }
+                },
             },
             watchers: {
                 title: 'Watchers',
@@ -101,7 +101,7 @@ export default {
                         label: 'Watch watcher reconnects',
                         tooltip: 'If turned on, a watcher will print a message to the console whenever a watcher reconnects to ETCD.',
                     },
-                }
+                },
             },
             misc: {
                 title: 'Misc',
@@ -118,12 +118,12 @@ export default {
                         label: 'Enable background',
                         tooltip: 'Enable of disable background image.',
                     },
-                }
+                },
             },
             actions: {
                 submit: 'Submit',
                 next: 'Next',
-            }
+            },
 
         },
         cluster: {
@@ -150,8 +150,8 @@ export default {
                     actions: {
                         close: 'Close',
                     },
-                }
-            }
+                },
+            },
         },
         keyManager: {
             title: 'Keys',
@@ -167,7 +167,7 @@ export default {
                 edit: 'Edit key',
                 remove: 'Remove key',
                 touch: 'Touch key',
-            }
+            },
         },
         keyEditor: {
             title: 'Keys',
@@ -190,7 +190,7 @@ export default {
             actions: {
                 remove: 'Remove',
                 cancel: 'Cancel',
-            }
+            },
         },
         deleteDialog: {
             title: 'Attention!',
@@ -198,14 +198,14 @@ export default {
             actions: {
                 remove: 'Remove',
                 cancel: 'Cancel',
-            }
+            },
         },
         noSelectionDialog: {
             title: 'Attention!',
             content: 'Please select some items first!',
             actions: {
                 ok: 'OK',
-            }
+            },
         },
         watcherManager: {
             title: 'Watchers',
@@ -226,7 +226,7 @@ export default {
                 edit: 'Edit watcher',
                 remove: 'Remove watcher',
                 status: 'Toggle watcher status',
-            }
+            },
         },
         watcherEditor: {
             fields: {
@@ -243,7 +243,7 @@ export default {
                 prefix: {
                     label: 'This is a prefix',
                     tooltip: 'If checked all keys with this prefix will be watched.',
-                }
+                },
             },
             actionList: {
                 columns: {
@@ -271,7 +271,7 @@ export default {
                 event: {
                     label: 'Event',
                     tooltip: 'Event type',
-                }
+                },
             },
         },
         roleManager: {
@@ -282,7 +282,7 @@ export default {
             actions: {
                 edit: 'Edit role',
                 remove: 'Remove role',
-            }
+            },
         },
         roleEditor: {
             fields: {
@@ -290,7 +290,7 @@ export default {
                     label: 'Name',
                     placeholder: 'Type in a value..',
                     tooltip: 'The name of the role.',
-                }
+                },
             },
             actions: {
                 edit: 'Edit permission',
@@ -317,7 +317,7 @@ export default {
                 prefix: {
                     label: 'This is a prefix',
                     tooltip: 'If checked, the role will apply to all keys with this prefix.',
-                }
+                },
             },
             actions: {
                 grant: {
@@ -334,7 +334,7 @@ export default {
                 updates: 'Check for updates',
                 github: 'Visit Github page',
                 credits: 'Show contributors',
-            }
-        }
+            },
+        },
     },
 };
