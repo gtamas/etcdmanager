@@ -103,7 +103,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { readFileSync } from 'fs';
 
 @Component({
     name: 'about',

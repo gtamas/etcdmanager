@@ -1,5 +1,19 @@
 export default {
     en: {
+        $vuetify: {
+            dataIterator: {
+                rowsPerPageText: 'Items per page:',
+                rowsPerPageAll: 'All',
+                pageText: '{0}-{1} of {2}',
+                noResultsText: 'No matching records found',
+                nextPage: 'Next page',
+                prevPage: 'Previous page',
+              },
+              dataTable: {
+                rowsPerPageText: 'Rows per page:',
+              },
+              noDataText: 'No data available',
+        },
         common: {
             items: {
                 watcher: 'watcher | watchers',
@@ -33,7 +47,18 @@ export default {
             },
             lists: {
                 nodata: 'There is no data to display..',
-            }
+                filter: 'Filter data..',
+            },
+            validation: {
+                required: 'Item is required',
+                alphanumeric: 'Alphanumeric value expected',
+                int: 'Value must be an integer',
+                pattern: 'Invalid regular expression',
+            },
+            messages: {
+                success: 'Operation successful',
+                error: 'Could not perform operation',
+            },
         },
         settings: {
             title: 'Settings',
@@ -64,8 +89,8 @@ export default {
                     apiVersion: {
                         label: 'API version',
                         tooltip: 'The protocol version supported by the endpoint',
-                    }
-                }
+                    },
+                },
             },
             auth: {
                 title: 'Auth',
@@ -80,28 +105,42 @@ export default {
                         placeholder: 'Type in an alpanumeric value..',
                         tooltip: 'ETCD password. Leave blank if authentication is not enabled.',
                     },
-                }
+                },
             },
             watchers: {
                 title: 'Watchers',
                 fields: {
                     loadWatchers: {
-                        label: 'Activate all watchers on startup',
+                        label: 'Activate all user defined watchers on startup',
                         tooltip: 'If turned on, all user defined watchers will be automatically activated when the app starts.',
                     },
+                    unloadWatchers: {
+                        label: 'Deactivate all user defined watchers on shutdown',
+                        tooltip: 'If turned on, all user defined watchers will be automatically deactivated when the app quits.',
+                    },
                     errorListener: {
-                        label: 'Watch ETCD errors',
-                        tooltip: 'If turned on, a watcher will print all ETCD errors the console.',
+                        label: 'Monitor ETCD errors',
+                        tooltip: 'If turned on, a watcher will print all ETCD errors to the console.',
                     },
                     disconnectListener: {
-                        label: 'Watch watcher disconnects',
-                        tooltip: 'If turned on, a watcher will print a message to the console whenever a watcher diconnects from ETCD.',
+                        label: 'Monitor watcher disconnects',
+                        tooltip: 'If turned on, a message will be printed to the console whenever a watcher diconnects from ETCD.',
                     },
                     reconnectListener: {
-                        label: 'Watch watcher reconnects',
-                        tooltip: 'If turned on, a watcher will print a message to the console whenever a watcher reconnects to ETCD.',
+                        label: 'Monitor watcher reconnects',
+                        tooltip: 'If turned on, a message will be printed to the console whenever a watcher reconnects to ETCD.',
                     },
-                }
+                },
+            },
+            users: {
+                title: 'Users',
+                fields: {
+                    pwpattern: {
+                        label: 'Password pattern',
+                        placeholder: 'Type in a regular expression..',
+                        tooltip: 'The pattern to be used for validating user passwords. Leave blank to use the default pattern (8 - 16 characters, has to include capital letters and numbers)',
+                    },
+                },
             },
             misc: {
                 title: 'Misc',
@@ -118,12 +157,16 @@ export default {
                         label: 'Enable background',
                         tooltip: 'Enable of disable background image.',
                     },
-                }
+                },
             },
             actions: {
                 submit: 'Submit',
                 next: 'Next',
-            }
+            },
+            messages: {
+                success: 'Configuration has been saved successfully',
+                ip: 'IP address appears to be invalid',
+            },
 
         },
         cluster: {
@@ -150,8 +193,8 @@ export default {
                     actions: {
                         close: 'Close',
                     },
-                }
-            }
+                },
+            },
         },
         keyManager: {
             title: 'Keys',
@@ -167,7 +210,7 @@ export default {
                 edit: 'Edit key',
                 remove: 'Remove key',
                 touch: 'Touch key',
-            }
+            },
         },
         keyEditor: {
             title: 'Keys',
@@ -183,6 +226,9 @@ export default {
                     tooltip: 'The value associated with this key',
                 },
             },
+            messages: {
+                duplicateKey: 'This key already exists!',
+            },
         },
         purgeDialog: {
             title: 'Attention!',
@@ -190,7 +236,7 @@ export default {
             actions: {
                 remove: 'Remove',
                 cancel: 'Cancel',
-            }
+            },
         },
         deleteDialog: {
             title: 'Attention!',
@@ -198,14 +244,14 @@ export default {
             actions: {
                 remove: 'Remove',
                 cancel: 'Cancel',
-            }
+            },
         },
         noSelectionDialog: {
             title: 'Attention!',
             content: 'Please select some items first!',
             actions: {
                 ok: 'OK',
-            }
+            },
         },
         watcherManager: {
             title: 'Watchers',
@@ -226,7 +272,7 @@ export default {
                 edit: 'Edit watcher',
                 remove: 'Remove watcher',
                 status: 'Toggle watcher status',
-            }
+            },
         },
         watcherEditor: {
             fields: {
@@ -243,7 +289,7 @@ export default {
                 prefix: {
                     label: 'This is a prefix',
                     tooltip: 'If checked all keys with this prefix will be watched.',
-                }
+                },
             },
             actionList: {
                 columns: {
@@ -260,6 +306,9 @@ export default {
                     label: 'Actions',
                 },
             },
+            messages: {
+                duplicate: 'A watcher with this name already exists',
+            },
         },
         actionEditor: {
             title: 'Actions',
@@ -271,7 +320,7 @@ export default {
                 event: {
                     label: 'Event',
                     tooltip: 'Event type',
-                }
+                },
             },
         },
         roleManager: {
@@ -282,7 +331,7 @@ export default {
             actions: {
                 edit: 'Edit role',
                 remove: 'Remove role',
-            }
+            },
         },
         roleEditor: {
             fields: {
@@ -290,7 +339,7 @@ export default {
                     label: 'Name',
                     placeholder: 'Type in a value..',
                     tooltip: 'The name of the role.',
-                }
+                },
             },
             actions: {
                 edit: 'Edit permission',
@@ -312,17 +361,20 @@ export default {
                 },
                 permission: {
                     label: 'Permissions',
-                    tooltip: 'The permission this role grants. If your want eveything, choose "both".',
+                    tooltip: 'The permission this role grants. If your want eveything, choose read and write.',
                 },
                 prefix: {
                     label: 'This is a prefix',
                     tooltip: 'If checked, the role will apply to all keys with this prefix.',
-                }
+                },
             },
             actions: {
                 grant: {
                     label: 'Grant',
                 },
+            },
+            messages: {
+                duplicateKey: 'A permission is already associated with this key!',
             },
         },
         about: {
@@ -334,7 +386,42 @@ export default {
                 updates: 'Check for updates',
                 github: 'Visit Github page',
                 credits: 'Show contributors',
-            }
-        }
+            },
+        },
+        userManager: {
+            title: 'Users',
+            columns: {
+                name: 'Name',
+            },
+            actions: {
+                edit: 'Edit user',
+                remove: 'Remove user',
+            },
+        },
+        userEditor: {
+            title: 'Users',
+            subtitle: 'Roles',
+            fields: {
+                name: {
+                    label: 'name',
+                    placeholder: 'Type in a name..',
+                    tooltip: 'The name of the user',
+                },
+                password: {
+                    label: 'Password',
+                    placeholder: 'Type in a value..',
+                    tooltip: 'The password of the user. Must be 8-16 characters, no whitespace. Must include captital letters and numbers.',
+                },
+                pwcheck: {
+                    label: 'Confirm password',
+                    placeholder: 'Type in a value..',
+                    tooltip: 'Confirm the password',
+                },
+            },
+            messages: {
+                pwmatch: 'The passwords do not match',
+                invalid: 'The password is invalid',
+            },
+        },
     },
 };

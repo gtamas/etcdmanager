@@ -26,7 +26,12 @@
               </v-tooltip>
             </v-text-field>
 
-            <v-checkbox dark v-model="prefix" :label="$t('permissionEditor.fields.prefix.label')" required>
+            <v-checkbox
+              dark
+              v-model="prefix"
+              :label="$t('permissionEditor.fields.prefix.label')"
+              required
+            >
               <v-tooltip slot="prepend" bottom max-width="200">
                 <v-icon slot="activator" color="primary" dark>info</v-icon>
                 <span>{{ $t('permissionEditor.fields.prefix.tooltip') }}</span>
@@ -66,19 +71,21 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, IPermissionRequest } from 'etcd3';
-import {
-    GenericObject,
-    EtcdPermissionType,
-    PermissionObject,
-} from '../../types';
+import { GenericObject, PermissionObject } from '../../types';
 import { required, alphaNum } from 'vuelidate/lib/validators';
-import Messages from '../messages';
+import Messages from '@/lib/messages';
 import { BaseEditor } from '../lib/editor.class';
 import RoleService from '../services/role.service';
 import { Prop } from 'vue-property-decorator';
+import { ValidationError } from '../lib/validation-error.class';
+
+class PermissionEditorError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'RoleEditorError';
+    }
+}
 
 @Component({
     name: 'permission-editor',
@@ -135,38 +142,58 @@ export default class PermissionEditor extends BaseEditor {
 
     get keyErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.key.$dirty) {
             return errors;
         }
 
+        // @ts-ignore
         if (!this.$v.key.required) {
-            errors.push('Item is required');
+            errors.push(this.$t('common.validation.required'));
         }
 
+        // @ts-ignore
         if (!this.$v.key.alphaNum) {
-            errors.push('Alphanumeric value expected');
+            errors.push(this.$t('common.validation.alphanumeric'));
         }
         return errors;
     }
 
-    public async submit(reset = false) {
+    public async submit(): Promise<PermissionEditor | PermissionEditorError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return false;
+            return Promise.reject(new ValidationError(''));
         }
 
         try {
-            await this.etcd.setPermissions({
-                name: this.name,
-                key: this.key,
-                permission: this.permission.value,
-                isRange: this.prefix,
-                grant: true,
-            });
+            this.toggleLoading();
+            await this.etcd.setPermissions(
+                {
+                    name: this.name,
+                    key: this.key,
+                    permission: this.permission.value,
+                    isRange: this.prefix,
+                    grant: true,
+                },
+                this.createMode
+            );
+            this.toggleLoading();
             this.$emit('permission');
             this.$store.commit('message', Messages.success());
+            return Promise.resolve(this);
         } catch (e) {
+            this.toggleLoading();
+            if (e === false) {
+                this.$store.commit(
+                    'message',
+                    Messages.error(
+                        this.$t('permissionEditor.messages.duplicateKey').toString()
+                    )
+                );
+                return Promise.reject(new PermissionEditorError(''));
+            }
             this.$store.commit('message', Messages.error(e));
+            return Promise.reject(new PermissionEditorError(e));
         }
     }
 }

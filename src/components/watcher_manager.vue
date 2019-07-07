@@ -10,7 +10,7 @@
           color="white"
           v-model="filter"
           prepend-icon="search"
-          placeholder="Filter data.."
+          :placeholder="$t('common.lists.filter')"
         ></v-text-field>
         <v-tooltip bottom max-width="200">
           <template v-slot:activator="{ on }">
@@ -102,9 +102,6 @@
               </v-tooltip>
             </td>
           </template>
-          <template v-slot:no-data>
-            <v-alert :value="true" color="error" icon="warning">{{ $t('common.lists.nodata') }}</v-alert>
-          </template>
         </v-data-table>
       </v-card>
     </v-flex>
@@ -115,7 +112,7 @@
           :data="currentItem"
           :mode="operation"
           v-on:cancel="cancelEdit"
-          v-on:reload="loadWatchers"
+          v-on:reload="load"
           v-if="editor"
         ></watcher-editor>
       </v-expand-x-transition>
@@ -138,15 +135,20 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { WatcherEntry, GenericObject, NamedWatcher } from '../../types';
+import { WatcherEntry, GenericObject } from '../../types';
 import WatcherService from '../services/watcher.service';
-import { CrudBase } from '../lib/crud.class';
+import { CrudBase, List } from '../lib/crud.class';
 import WatcherEditor from './watcher-editor.vue';
-import NoSelectionDialog from './no-selection.dialog.vue';
 import { Watcher } from 'etcd3';
-import Messages from '../messages';
+import Messages from '@/lib/messages';
+
+class WatcherManagerError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'WatcherManagerError';
+    }
+}
 
 @Component({
     name: 'watcher-manager',
@@ -154,7 +156,7 @@ import Messages from '../messages';
         'watcher-editor': WatcherEditor,
     },
 })
-export default class WatcherManager extends CrudBase {
+export default class WatcherManager extends CrudBase implements List {
     public watchers: WatcherEntry[] = [];
     public headers = [
         {
@@ -174,136 +176,180 @@ export default class WatcherManager extends CrudBase {
 
     protected etcd: WatcherService;
 
-    private watcherStreams: Map<string, Watcher> = new Map();
-
     constructor() {
         super();
+        // @ts-ignore
         this.etcd = new WatcherService(
+            // @ts-ignore
             this.$ls,
-            this.$store.state.connection.getClient(),
+            this.$store.state.connection.getClient()
         );
     }
 
     created() {
-        this.loadWatchers();
-        this.translateHeaders('watcherManager.columns.name', 'watcherManager.columns.key', 'watcherManager.columns.prefix');
+        this.load();
+        this.translateHeaders(
+            'watcherManager.columns.name',
+            'watcherManager.columns.key',
+            'watcherManager.columns.prefix'
+        );
     }
 
-    private deactivateWatcher(watcher: WatcherEntry) {
-        this.watcherStreams.get(watcher.name).cancel();
-        watcher.activated = false;
-        return true;
+    private async deactivateWatcher(
+        watcher: WatcherEntry
+    ): Promise<WatcherManager | WatcherManagerError> {
+        const listeners = this.$store.state.listeners;
+        const listener = listeners.get(watcher.name);
+        if (listener) {
+            try {
+                await listener.cancel();
+                watcher.activated = false;
+                this.$store.commit('watcher', { key: watcher.name, op: 'del' });
+            } catch (e) {
+                return Promise.reject(new WatcherManagerError(e));
+            }
+        }
+        return Promise.resolve(this);
     }
 
-    private async activateWatcher(watcher: WatcherEntry) {
+    private async activateWatcher(
+        watcher: WatcherEntry
+    ): Promise<WatcherManager | WatcherManagerError> {
         let watcherStream: Watcher | null = null;
         try {
             watcherStream = await this.etcd.createWatcher(watcher);
         } catch (e) {
             Messages.error(e);
-            return false;
+            return Promise.reject(new WatcherManagerError(e));
         }
 
         watcherStream = this.etcd.registerWatcherEvents(
             watcherStream as Watcher,
-            watcher.actions,
+            watcher.actions
         );
-        this.watcherStreams.set(watcher.name, watcherStream);
+        this.$store.commit('watcher', {
+            key: watcher.name,
+            listener: watcherStream,
+            op: 'set',
+        });
         watcher.activated = true;
+        return Promise.resolve(this);
     }
 
-    public addItem() {
-        CrudBase.options.methods.addItem.call(this);
-        this.currentItem = new WatcherEntry();
-    }
-
-    public async toggleWatcher(watcher: WatcherEntry) {
-        if (watcher.activated) {
-            this.deactivateWatcher(watcher);
-            return false;
+    private async unregisterWatchers(
+        toBeRemoved: string[]
+    ): Promise<WatcherManager | WatcherManagerError> {
+        try {
+            for (const watcherName of toBeRemoved) {
+                const listener = this.$store.state.listeners.get(watcherName);
+                if (listener) {
+                    await listener.cancel();
+                    this.$store.commit('watcher', {
+                        key: watcherName,
+                        op: 'del',
+                    });
+                }
+            }
+        } catch (e) {
+            return Promise.reject(new WatcherManagerError(e));
         }
 
-        await this.activateWatcher(watcher);
-        return true;
+        return Promise.resolve(this);
     }
 
-    public loadWatchers() {
+    public async toggleWatcher(watcher: WatcherEntry): Promise<WatcherManager> {
+        if (watcher.activated) {
+            await this.deactivateWatcher(watcher);
+        } else {
+            await this.activateWatcher(watcher);
+        }
+
+        return Promise.resolve(this);
+    }
+
+    public load(): Promise<WatcherManager> {
         this.loading = true;
         this.watchers = this.etcd.listWatchers();
         this.loading = false;
+        return Promise.resolve(this);
     }
 
-    public async confirmPurge() {
+    public async confirmPurge(): Promise<WatcherManager | WatcherManagerError> {
         try {
-            await this.etcd.purgeWatchers();
-            this.watcherStreams.forEach((watcher) => {
-                watcher.cancel();
-            });
-            this.watcherStreams.clear();
+            // @ts-ignore
+            await CrudBase.options.methods.confirmPurge.call(this);
+            const listeners = this.$store.state.listeners.values();
+            for (const watcher of listeners) {
+                await watcher.cancel();
+            }
+
+            this.$store.commit('watcher', { op: 'clear' });
+            await this.load();
             this.$store.commit('message', Messages.success());
-            CrudBase.options.methods.confirmPurge.call(this);
-            this.loadWatchers();
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(new WatcherManagerError(error));
         }
     }
 
-    public toggleMany(activate: boolean = true) {
+    public async toggleMany(
+        activate: boolean = true
+    ): Promise<WatcherManager | WatcherManagerError> {
         if (this.hasSelection()) {
             this.noSelection = false;
             const watcherNames = this.getSelectedKeys('name');
-            watcherNames.forEach((name) => {
-                const watcher = this.watchers.find((w) => w.name === name);
+            for (const name of watcherNames) {
+                const watcher = this.watchers.find(w => w.name === name);
                 if (activate) {
-                    this.activateWatcher(watcher as WatcherEntry);
+                    await this.activateWatcher(watcher as WatcherEntry);
                 } else {
-                    this.deactivateWatcher(watcher as WatcherEntry);
+                    await this.deactivateWatcher(watcher as WatcherEntry);
                 }
-            });
+            }
             Messages.success();
         } else {
             this.noSelection = true;
         }
+
+        return Promise.resolve(this);
     }
 
-    public async confirmDelete() {
-        const item = this.itemToDelete as GenericObject;
-        const toBeRemoved = this.hasSelection()
-            ? this.getSelectedKeys('name')
-            : [item.name];
-
+    public async confirmDelete(): Promise<
+        WatcherManager | WatcherManagerError
+    > {
         try {
-            this.etcd.removeWatchers(toBeRemoved);
+            const item = this.itemToDelete as GenericObject;
+            const toBeRemoved = this.hasSelection()
+                ? this.getSelectedKeys('name')
+                : [item.name];
+            // @ts-ignore
+            await CrudBase.options.methods.confirmDelete.call(this, 'name');
             this.$store.commit('message', Messages.success());
-            toBeRemoved.forEach((watcherName) => {
-                const listener = this.watcherStreams.get(watcherName);
-                if (listener) {
-                    listener.cancel();
-                    this.watcherStreams.delete(watcherName);
-                }
-            });
-            CrudBase.options.methods.confirmDelete.call(this, false, true);
-            this.loadWatchers();
+            await this.unregisterWatchers(toBeRemoved);
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(new WatcherManagerError(error));
         }
-
-        this.cancelDelete();
     }
 
-    public async editItem(item: WatcherEntry) {
-        try {
-            // @ts-ignore
-            CrudBase.options.methods.editItem.call(this, item);
-            this.currentItem = {
-                ...this.currentItem,
-                ...item,
-            };
-        } catch (error) {
-            // @ts-ignore
-            CrudBase.options.methods.editItem.call(this, item, false);
-            this.$store.commit('message', Messages.error(error));
-        }
+    public async editItem(item: WatcherEntry): Promise<WatcherManager> {
+        await this.closeEditor();
+        // @ts-ignore
+        CrudBase.options.methods.editItem.call(this, item);
+        this.currentItem = {
+            ...this.currentItem,
+            ...item,
+        };
+        return Promise.resolve(this);
+    }
+
+    public async addItem() {
+        await this.closeEditor();
+        // @ts-ignore
+        CrudBase.options.methods.addItem.call(this);
+        this.currentItem = new WatcherEntry();
     }
 }
 </script>

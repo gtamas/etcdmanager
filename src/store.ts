@@ -10,11 +10,12 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         config: {
-            apiVersion: 'v3',
-            format: 'JSON',
             language: 'en',
             animateBg: false,
             background: false,
+        },
+        users: {
+            pattern: null,
         },
         etcd: {
             hosts: '',
@@ -28,6 +29,7 @@ export default new Vuex.Store({
         },
         watchers: {
             autoload: false,
+            autoshutdown: false,
             error: true,
             disconnets: true,
             reconnects: true,
@@ -39,8 +41,10 @@ export default new Vuex.Store({
             timeout: 2000,
             show: false,
         },
+        listeners: new Map(),
+        loading: false,
         console: '',
-        version: ''
+        version: '',
     },
     getters: {
         isConfigured(state) {
@@ -53,8 +57,14 @@ export default new Vuex.Store({
         },
     },
     mutations: {
+        loading(state) {
+            state.loading = !state.loading;
+        },
         config(state, payload) {
             state.config = { ...state.config, ...payload };
+        },
+        users(state, payload) {
+            state.users = { ...state.users, ...payload };
         },
         etcdConfig(state, payload) {
             state.etcd = { ...state.etcd, ...payload };
@@ -76,6 +86,17 @@ export default new Vuex.Store({
         },
         version(state) {
             state.version = JSON.parse(readFileSync('./package.json').toString()).version;
+        },
+        watcher(state, payload) {
+            if (payload.op === 'set') {
+                state.listeners = state.listeners.set(payload.key, payload.listener);
+            } else if (payload.op === 'del') {
+                state.listeners.delete(payload.key);
+                state.listeners = new Map(state.listeners);
+            } else {
+                state.listeners.clear();
+                state.listeners = new Map(state.listeners);
+            }
         },
     },
     actions: {

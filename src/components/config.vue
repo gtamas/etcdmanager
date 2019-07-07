@@ -53,9 +53,7 @@
                   <v-switch dark v-model="retry" :label="$t('settings.etcd.fields.retries.label')">
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>
-                       {{ $t('settings.etcd.fields.retries.tooltip') }}
-                      </span>
+                      <span>{{ $t('settings.etcd.fields.retries.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
 
@@ -64,8 +62,8 @@
                     type="number"
                     v-model="timeout"
                     :error-messages="timeoutErrors"
-                    placeholder="$t('settings.etcd.fields.timeout.placeholder')"
-                    label="$t('settings.etcd.fields.timeout.label')"
+                    :placeholder="$t('settings.etcd.fields.timeout.placeholder')"
+                    :label="$t('settings.etcd.fields.timeout.label')"
                     required
                     @input="$v.timeout.$touch()"
                     @blur="$v.timeout.$touch()"
@@ -76,25 +74,6 @@
                     </v-tooltip>
                   </v-text-field>
 
-                  <v-select
-                    dark
-                    v-model="apiVersion"
-                    :items="versions"
-                    :label="$t('settings.etcd.fields.apiVersion.label')"
-                    required
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.etcd.fields.apiVersion.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-select>
-
-                  <v-select dark v-model="format" :items="formats" label="Response format" required>
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>The desired response format</span>
-                    </v-tooltip>
-                  </v-select>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -149,30 +128,82 @@
             <v-container fluid>
               <v-layout>
                 <v-flex xs12 align-end flexbox>
-                  <v-switch dark v-model="loadWatchers" :label="$t('settings.watchers.fields.loadWatchers.label')">
+                  <v-switch
+                    dark
+                    v-model="loadWatchers"
+                    :label="$t('settings.watchers.fields.loadWatchers.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.loadWatchers.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
-                  <v-switch dark v-model="errorListener" :label="$t('settings.watchers.fields.errorListener.label')">
+                   <v-switch
+                    dark
+                    v-model="unloadWatchers"
+                    :label="$t('settings.watchers.fields.unloadWatchers.label')"
+                  >
+                    <v-tooltip slot="prepend" bottom max-width="200">
+                      <v-icon slot="activator" color="primary" dark>info</v-icon>
+                      <span>{{ $t('settings.watchers.fields.unloadWatchers.tooltip') }}</span>
+                    </v-tooltip>
+                  </v-switch>
+                  <v-switch
+                    dark
+                    v-model="errorListener"
+                    :label="$t('settings.watchers.fields.errorListener.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.errorListener.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
-                  <v-switch dark v-model="disconnectListener" :label="$t('settings.watchers.fields.disconnectListener.label')">
+                  <v-switch
+                    dark
+                    v-model="disconnectListener"
+                    :label="$t('settings.watchers.fields.disconnectListener.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.disconnectListener.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
-                  <v-switch dark v-model="reconnectListener" :label="$t('settings.watchers.fields.reconnectListener.label')">
+                  <v-switch
+                    dark
+                    v-model="reconnectListener"
+                    :label="$t('settings.watchers.fields.reconnectListener.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.reconnectListener.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card>
+        </v-tab-item>
+        <v-tab ripple>{{ $t('settings.users.title') }}</v-tab>
+        <v-tab-item>
+          <v-card raised>
+            <v-container fluid>
+              <v-layout>
+                <v-flex xs12 align-end flexbox>
+                  <v-text-field
+                    dark
+                    type="text"
+                    v-model="pwpattern"
+                    :error-messages="pwpatternErrors"
+                    :placeholder="$t('settings.users.fields.pwpattern.placeholder')"
+                    :label="$t('settings.users.fields.pwpattern.label')"
+                    @input="$v.pwpattern.$touch()"
+                    @blur="$v.pwpattern.$touch()"
+                  >
+                    <v-tooltip slot="prepend" bottom max-width="200">
+                      <v-icon slot="activator" color="primary" dark>info</v-icon>
+                      <span>{{ $t('settings.users.fields.pwpattern.tooltip') }}.</span>
+                    </v-tooltip>
+                  </v-text-field>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -198,7 +229,11 @@
                       <span>{{ $t('settings.misc.fields.language.tooltip') }}</span>
                     </v-tooltip>
                   </v-select>
-                  <v-switch dark v-model="animateBg" :label="$t('settings.misc.fields.animateBg.label')">
+                  <v-switch
+                    dark
+                    v-model="animateBg"
+                    :label="$t('settings.misc.fields.animateBg.label')"
+                  >
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.misc.fields.animateBg.tooltip') }}</span>
@@ -218,7 +253,12 @@
       </v-tabs>
       <v-card raised>
         <v-layout align-start justify-center row>
-          <v-btn :disabled="!valid" round color="primary" @click="persist">{{ $t('settings.actions.submit') }}</v-btn>
+          <v-btn
+            :disabled="!valid"
+            round
+            color="primary"
+            @click="persist"
+          >{{ $t('settings.actions.submit') }}</v-btn>
           <v-btn round color="warning" @click="next">{{ $t('settings.actions.next') }}</v-btn>
         </v-layout>
       </v-card>
@@ -233,31 +273,23 @@ import {
     required,
     requiredIf,
     alphaNum,
-    url,
     integer,
     ipAddress,
-    or,
-    and,
 } from 'vuelidate/lib/validators';
 import { omit } from 'lodash-es';
-import { setTimeout, clearTimeout } from 'timers';
 
 @Component({
+    // @ts-ignore
     name: 'config',
     validations: {
         endpoint: {
             ipAddress,
+            required,
             // url,
         },
         port: {
             required,
             integer,
-        },
-        apiVersion: {
-            required,
-        },
-        format: {
-            required,
         },
         retry: {},
         timeout: {
@@ -272,7 +304,17 @@ import { setTimeout, clearTimeout } from 'timers';
             alphaNum,
             required: requiredIf('username'),
         },
+        pwpattern: {
+            invalid: (value: string) => {
+                try {
+                    return new RegExp(value);
+                } catch (e) {
+                    return false;
+                }
+            },
+        },
         loadWatchers: {},
+        unloadWatchers: {},
     },
 })
 export default class Configuration extends Vue {
@@ -281,27 +323,13 @@ export default class Configuration extends Vue {
     public valid = false;
     public success = false;
     public auth = false;
-    public active = 0;
     public languages = [
         { name: 'English', value: 'en' },
         { name: 'Hungarian', value: 'hu' },
     ];
 
-    get apiVersion() {
-        return this.$store.state.config.apiVersion;
-    }
-
-    set apiVersion(value: string) {
-        this.$store.commit('config', { apiVersion: value });
-    }
-
-    get format() {
-        return this.$store.state.config.format;
-    }
-
-    set format(value: string) {
-        this.$store.commit('config', { format: value });
-    }
+    private tabsLength: number = 4;
+    private active = 0;
 
     get endpoint() {
         return this.$store.state.etcd.hosts;
@@ -359,6 +387,14 @@ export default class Configuration extends Vue {
         this.$store.commit('watcherConfig', { autoload: value });
     }
 
+     get unloadWatchers() {
+        return this.$store.state.watchers.autoshutdown;
+    }
+
+    set unloadWatchers(value: boolean) {
+        this.$store.commit('watcherConfig', { autoshutdown: value });
+    }
+
     get errorListener() {
         return this.$store.state.watchers.error;
     }
@@ -407,60 +443,100 @@ export default class Configuration extends Vue {
         this.$store.commit('config', { language: value });
     }
 
+    get pwpattern() {
+        return this.$store.state.users.pattern;
+    }
+
+    set pwpattern(value: string) {
+        this.$store.commit('users', { pattern: value });
+    }
+
     get endpointErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.endpoint.$dirty) {
             return errors;
         }
-        // !this.$v.endpoint.required && errors.push('Item is required');
+        // @ts-ignore
         !this.$v.endpoint.ipAddress &&
-            errors.push('IP address appears to be invalid');
+            errors.push(this.$t('settings.messages.ip'));
+         // @ts-ignore
+        !this.$v.endpoint.required &&
+            errors.push(this.$t('common.validation.required'));
         // !this.$v.endpoint.url && errors.push('URL appears to be invalid');
         return errors;
     }
 
     get portErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.port.$dirty) {
             return errors;
         }
-        !this.$v.port.required && errors.push('Item is required');
-        !this.$v.port.integer && errors.push('Value must be an integer');
+        // @ts-ignore
+        !this.$v.port.required &&
+            errors.push(this.$t('common.validation.required'));
+        // @ts-ignore
+        !this.$v.port.integer && errors.push(this.$t('common.validation.int'));
         return errors;
     }
 
     get timeoutErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.timeout.$dirty) {
             return errors;
         }
-        !this.$v.timeout.required && errors.push('Item is required');
-        !this.$v.timeout.integer && errors.push('Value must be an integer');
+        // @ts-ignore
+        !this.$v.timeout.required &&
+            errors.push(this.$t('common.validation.required'));
+        // @ts-ignore
+        !this.$v.timeout.integer &&
+            errors.push(this.$t('common.validation.int'));
         return errors;
     }
 
     get usernameErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.username.$dirty) {
             return errors;
         }
-        !this.$v.username.required && errors.push('Item is required');
+        // @ts-ignore
+        !this.$v.username.required &&
+            errors.push(this.$t('common.validation.required'));
+        // @ts-ignore
         !this.$v.username.alphaNum &&
-            errors.push('Alphanumeric value is expected');
+            errors.push(this.$t('common.validation.alphanumeric'));
         return errors;
     }
 
     get passwordErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.password.$dirty) {
             return errors;
         }
-        !this.$v.password.required && errors.push('Item is required');
+        // @ts-ignore
+        !this.$v.password.required &&
+            errors.push(this.$t('common.validation.required'));
+        return errors;
+    }
+
+    get pwpatternErrors() {
+        const errors: any = [];
+        // @ts-ignore
+        if (!this.$v.pwpattern.$dirty) {
+            return errors;
+        }
+        // @ts-ignore
+        !this.$v.pwpattern.invalid &&
+            errors.push(this.$t('common.validation.pattern'));
         return errors;
     }
 
     public next() {
-        this.active = this.active < 2 ? this.active + 1 : 0;
+        this.active = this.active < this.tabsLength ? this.active + 1 : 0;
     }
 
     public persist() {
@@ -476,14 +552,13 @@ export default class Configuration extends Vue {
                 port: this.port,
             },
             config: {
-                apiVersion: this.apiVersion,
-                format: this.format,
                 language: this.language,
                 animateBg: this.animateBg,
                 background: this.bg,
             },
             watchers: {
                 autoload: this.loadWatchers,
+                autoshutdown: this.unloadWatchers,
                 reconnects: this.reconnectListener,
                 disconnects: this.disconnectListener,
                 error: this.errorListener,
@@ -497,6 +572,13 @@ export default class Configuration extends Vue {
             };
         }
 
+        if (this.pwpattern) {
+            newConfig.users = {
+                pattern: this.pwpattern,
+            };
+        }
+
+        // @ts-ignore
         this.$ls.set('config', JSON.stringify(newConfig));
         const auth = newConfig.etcdAuth ? { auth: newConfig.etcdAuth } : {};
         this.$store.commit('etcdConnect', {
@@ -506,11 +588,13 @@ export default class Configuration extends Vue {
         });
         this.$store.dispatch('locale', this.language).then(() => {
             this.$store.commit('message', {
-                text: 'Configuration has been saved successfully',
+                text: this.$t('settings.messages.success'),
                 color: 'success',
                 show: true,
             });
         });
+
+        return true;
     }
 }
 </script>

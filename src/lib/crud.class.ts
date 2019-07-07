@@ -2,10 +2,17 @@ import Vue from 'vue';
 import { GenericObject } from './../../types/index';
 import EtcdService from '@/services/etcd.service';
 import Component from 'vue-class-component';
+import store from '@/store';
+
+
+export interface List {
+    load(): Promise<CrudBase>;
+    load(prefix?: string): Promise<CrudBase>;
+}
 
 @Component({
 })
-export class CrudBase extends Vue {
+export class CrudBase extends Vue implements List {
     public loading: boolean = true;
     public deleteDialog: boolean = false;
     public purgeDialog: boolean = false;
@@ -30,7 +37,7 @@ export class CrudBase extends Vue {
     public translateHeaders(...keys: string[]) {
         keys.forEach((k, i) => {
             this.headers[i].text = this.$t(k).toString();
-        })
+        });
     }
 
     public closeNoSelection() {
@@ -43,13 +50,14 @@ export class CrudBase extends Vue {
         this.currentItem = { ...this.currentItem, ...this.defaultItem };
     }
 
-    public async editItem(item: GenericObject, success: boolean = true) {
-        if (success) {
-            this.editor = true;
-            this.operation = 'edit';
-        } else {
-            this.editor = false;
-        }
+    // @ts-ignore
+    public editItem(item: GenericObject) {
+        this.editor = true;
+        this.operation = 'edit';
+    }
+
+    public closeEditor() {
+        this.editor = false;
     }
 
     public cancelEdit() {
@@ -79,20 +87,43 @@ export class CrudBase extends Vue {
         this.purgeDialog = true;
     }
 
-    public async confirmPurge() {
-        this.purgeDialog = false;
+    public async confirmPurge(): Promise<CrudBase | Error>  {
+        try {
+            this.toggleLoading();
+            // @ts-ignore
+            await this.etcd.purge();
+            await this.load();
+            this.toggleLoading();
+            this.purgeDialog = false;
+            return Promise.resolve(this);
+        } catch (error) {
+            this.toggleLoading();
+            this.purgeDialog = false;
+            return Promise.reject(error);
+        }
     }
 
-    public async confirmDelete(selection: boolean = false, success: boolean = true) {
+    public async confirmDelete(keyName: string): Promise<CrudBase | Error> {
+        const item = this.itemToDelete as GenericObject;
+        const toBeRemoved = this.hasSelection() ? this.getSelectedKeys(keyName) : [item[keyName]];
 
-        if (success) {
+        try {
+            this.toggleLoading();
+            // @ts-ignore
+            await this.etcd.remove(toBeRemoved);
+            await this.load();
+            this.toggleLoading();
             this.itemToDelete = null;
-            if (selection) {
+            if (this.hasSelection()) {
                 this.selected = [];
             }
+            this.cancelDelete();
+            return Promise.resolve(this);
+        } catch (error) {
+            this.toggleLoading();
+            this.cancelDelete();
+            return Promise.reject(error);
         }
-
-        this.cancelDelete();
     }
 
     public cancelPurge() {
@@ -104,6 +135,22 @@ export class CrudBase extends Vue {
     }
 
     protected getSelectedKeys(uniqueKey: string = 'key'): string[] {
-        return this.selected.map((item) => item[uniqueKey]);
+        return this.selected.map(item => item[uniqueKey]);
+    }
+
+    // @ts-ignore
+    public async load(...args:any): Promise<CrudBase> {
+        return Promise.resolve(this);
+    }
+
+    public toggleLoading() {
+        if (store.state.loading) {
+            setTimeout(() => {
+                store.commit('loading');
+            },         500);
+        } else {
+            store.commit('loading');
+        }
+
     }
 }

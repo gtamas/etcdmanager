@@ -1,4 +1,4 @@
-import { WatcherAction } from './../../types/index';
+import { WatcherAction, DataService } from './../../types/index';
 import {
     Etcd3, Watcher, EtcdError,
 } from 'etcd3';
@@ -6,9 +6,9 @@ import * as RPC from 'etcd3/lib/src/rpc';
 import EtcdService from './etcd.service';
 import { WatcherEntry } from '../../types';
 import store from '@/store';
-import Messages from '@/messages';
+import Messages from '@/lib/messages';
 
-export default class WatcherService extends EtcdService {
+export default class WatcherService extends EtcdService implements DataService {
 
     constructor(private ls: any, client?: Etcd3) {
         super(client);
@@ -18,7 +18,7 @@ export default class WatcherService extends EtcdService {
         const date = new Date().toISOString();
         switch (event) {
             case 'put':
-                return `${date}: The key "${args[0]}" has been changed. Previous value: "${args[1]}", New value: "${args[2]}"`;
+                return `${date}: The key "${args[0]}" has been changed. Previous value: "${args[2]}", New value: "${args[1]}"`;
             case 'delete':
                 return `${date} The key "${args[0]}" has been deleted. Last value: "${args[1]}""`;
             case 'connected':
@@ -28,7 +28,7 @@ export default class WatcherService extends EtcdService {
             case 'disconnected':
                 return `${date} A watcher has been disconnected. Error: ${args[0]}""`;
             case 'error':
-                return `${date} A fatal error has occured! Error:  Error: ${args[0]}""`;
+                return `${date} Error: ${args[0]}""`;
         }
         return '';
     }
@@ -59,14 +59,14 @@ export default class WatcherService extends EtcdService {
                     previous ? previous.value.toString() : '');
                 this.generateOutput(msg, outputType);
             };
-        }  if (event === 'connected') {
+        } if (event === 'connected') {
             return (res: RPC.IWatchResponse) => {
                 const msg = this.getMessage(
                     event,
                     res.watch_id);
                 this.generateOutput(msg, outputType);
             };
-        }  if (event === 'error' || event === 'disconnected') {
+        } if (event === 'error' || event === 'disconnected') {
             return (error: EtcdError) => {
                 const msg = this.getMessage(
                     event,
@@ -81,9 +81,13 @@ export default class WatcherService extends EtcdService {
         return watchers;
     }
 
-    public saveWatcher(watcher: WatcherEntry): void {
+    public saveWatcher(watcher: WatcherEntry, isCreate: boolean = false): boolean {
         const watchers = this.listWatchers();
         const watcherIndex = watchers.findIndex(w => w.name === watcher.name);
+
+        if (isCreate && watcherIndex !== -1) {
+            return false;
+        }
 
         if (watcherIndex === -1) {
             watchers.push(watcher);
@@ -92,24 +96,25 @@ export default class WatcherService extends EtcdService {
         }
 
         this.ls.set('watchers', JSON.stringify(watchers));
+        return true;
 
     }
 
-    public createWatcher(watcher: WatcherEntry): Watcher {
-        let watcherInst = this.client.watch();
+    public createWatcher(watcher: WatcherEntry): Promise<Watcher> {
+        let watcherBuilder = this.client.watch();
 
         if (watcher.prefix) {
-            watcherInst = watcherInst.prefix(watcher.prefix).withPreviousKV();
+            watcherBuilder = watcherBuilder.prefix(watcher.key).withPreviousKV();
         }
-        watcherInst = watcherInst.key(watcher.key).withPreviousKV();
+        watcherBuilder = watcherBuilder.key(watcher.key).withPreviousKV();
 
-        return watcherInst.create();
+        return watcherBuilder.create();
     }
 
     public registerWatcherEvents(watcher: Watcher, actions: WatcherAction[]): Watcher {
 
         actions.forEach((action) => {
-           watcher.on(action.event.name as 'put',  this.handleEvent(action.event.name, action.action.value));
+            watcher.on(action.event.name as 'put', this.handleEvent(action.event.name, action.action.value));
         });
 
         watcher.on('disconnected', this.handleEvent('disconnected', 0));
@@ -118,20 +123,22 @@ export default class WatcherService extends EtcdService {
         return watcher;
     }
 
-    public purgeWatchers(): void {
-        return this.ls.remove('watchers');
+    public purge(): Promise<any> {
+        this.ls.remove('watchers');
+        return Promise.resolve(true);
     }
 
-    public removeWatchers(toRemove: string[]): void {
-        const watchers = this.listWatchers().filter(watcher => {
+    public remove(toRemove: string[]): Promise<any> {
+        const watchers = this.listWatchers().filter((watcher) => {
             return !toRemove.includes(watcher.name);
         });
         this.ls.set('watchers', JSON.stringify(watchers));
+        return Promise.resolve(true);
 
     }
 
     public loadWatcher(name: string): WatcherEntry {
-         return this.listWatchers().find(watcher => {
+        return this.listWatchers().find((watcher) => {
             return watcher.name === name;
         }) as WatcherEntry;
 

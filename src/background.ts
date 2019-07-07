@@ -19,9 +19,11 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
 let menu: Menu | null = null;
 
+declare const __static: any;
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-const win: BrowserWindow | null = null;
+let win: BrowserWindow | null = null;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -30,6 +32,7 @@ protocol.registerSchemesAsPrivileged([
 
 function createAppMenu() {
     const menuRouter = (where: string) => {
+        // @ts-ignore
         return (menuItem: any, win: BrowserWindow) => {
             win.webContents.send('navigate', where);
         };
@@ -68,6 +71,7 @@ function createAppMenu() {
         },
         {
             label: 'Edit',
+            // @ts-ignore
             submenu: [
                 { role: 'undo' },
                 { role: 'redo' },
@@ -89,9 +93,12 @@ function createAppMenu() {
         },
         {
             label: 'View',
+            // @ts-ignore
             submenu: [
-                { role: 'reload' },
-                { role: 'forcereload' },
+                ...(isDevelopment ? [
+                    { role: 'reload' },
+                    { role: 'forcereload' },
+                ] : []),
                 { type: 'separator' },
                 { role: 'resetzoom' },
                 { role: 'zoomin' },
@@ -171,9 +178,9 @@ function createWindow() {
         },
     };
 
-    let win: BrowserWindow = Splashscreen.initSplashScreen(config);
+    win = Splashscreen.initSplashScreen(config);
     win.setTitle('ETCD Manager');
-    win.on('page-title-updated',  (e) => {
+    win.on('page-title-updated', (e) => {
         e.preventDefault();
     });
 
@@ -234,7 +241,7 @@ app.on('ready', async () => {
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
     if (process.platform === 'win32') {
-        process.on('message', data => {
+        process.on('message', (data) => {
             if (data === 'graceful-exit') {
                 app.quit();
             }

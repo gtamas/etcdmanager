@@ -1,10 +1,10 @@
-import { GenericObject } from './../../types/index';
+import { GenericObject, DataService } from './../../types/index';
 import {
     Etcd3, Role, IPermissionResult, IPermissionRequest, Range,
 } from 'etcd3';
 import EtcdService from './etcd.service';
 
-export default class RoleService extends EtcdService {
+export default class RoleService extends EtcdService implements DataService {
 
     constructor(client?: Etcd3) {
         super(client);
@@ -27,7 +27,7 @@ export default class RoleService extends EtcdService {
         return role.create();
     }
 
-    public deleteRole(roles: string[]): Promise<any> {
+    public remove(roles: string[]): Promise<any> {
         const promises: Promise<Role>[] = [];
         roles.forEach((roleName) => {
             const role = this.getRole(roleName);
@@ -41,7 +41,7 @@ export default class RoleService extends EtcdService {
             const roles = await this.getRoles();
             const promises: Promise<Role>[] = [];
             roles.forEach((role) => {
-                promises.push(this.deleteRole([role.name]));
+                promises.push(this.remove([role.name]));
             });
             return Promise.all(promises);
         }
@@ -52,7 +52,7 @@ export default class RoleService extends EtcdService {
         return this.getRole(name).permissions();
     }
 
-    public setPermissions(options: GenericObject): Promise<Role> {
+    public async setPermissions(options: GenericObject, isCreate: boolean = true): Promise<Role | Boolean> {
         let permissionReq: IPermissionRequest = {
             permission: options.permission,
             key: options.key,
@@ -64,11 +64,18 @@ export default class RoleService extends EtcdService {
             };
         }
 
-        console.log(options);
-
         const role = this.getRole(options.name);
 
         if (options.grant) {
+            if (isCreate) {
+                const perms = await role.permissions();
+                for (const perm of perms) {
+                    const key = perm.range.start.toString();
+                    if (key === options.key) {
+                        return Promise.reject(false);
+                    }
+                }
+            }
             return role.grant(permissionReq);
         }
         return role.revoke(permissionReq);

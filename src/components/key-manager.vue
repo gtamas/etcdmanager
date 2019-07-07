@@ -10,7 +10,7 @@
           color="white"
           v-model="filter"
           prepend-icon="search"
-          placeholder="Filter data.."
+         :placeholder="$t('common.lists.filter')"
         ></v-text-field>
         <v-tooltip bottom max-width="200">
           <template v-slot:activator="{ on }">
@@ -89,9 +89,6 @@
               </v-tooltip>
             </td>
           </template>
-          <template v-slot:no-data>
-            <v-alert :value="true" color="error" icon="warning">{{ $t("common.lists.nodata") }}</v-alert>
-          </template>
         </v-data-table>
       </v-card>
     </v-flex>
@@ -102,7 +99,7 @@
           :data="currentItem"
           :mode="operation"
           v-on:cancel="cancelEdit"
-          v-on:reload="loadKeys"
+          v-on:reload="load"
           v-if="editor"
         ></key-editor>
       </v-expand-x-transition>
@@ -115,7 +112,7 @@
       v-on:cancel="cancelDelete"
     ></delete-dialog>
 
-     <purge-dialog
+    <purge-dialog
       :open="purgeDialog"
       :itemName="'keys'"
       v-on:confirm="confirmPurge"
@@ -126,14 +123,12 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, MultiRangeBuilder } from 'etcd3';
-import Messages from '@/messages';
+import Messages from '@/lib/messages';
 import { GenericObject, EtcdItem } from '../../types';
 import KeyEditor from './key-editor.vue';
 import KeyService from '../services/key.service';
-import { CrudBase } from '../lib/crud.class';
+import { CrudBase, List } from '../lib/crud.class';
 
 @Component({
     name: 'key-manager',
@@ -141,7 +136,7 @@ import { CrudBase } from '../lib/crud.class';
         'key-editor': KeyEditor,
     },
 })
-export default class KeyManager extends CrudBase {
+export default class KeyManager extends CrudBase implements List {
     public none = 0;
     public headers = [
         {
@@ -157,17 +152,20 @@ export default class KeyManager extends CrudBase {
 
     constructor() {
         super();
+        this.etcd = new KeyService(this.$store.state.connection.getClient());
     }
 
     public created() {
-        this.etcd = new KeyService(this.$store.state.connection.getClient());
-        this.translateHeaders('keyManager.columns.key', 'keyManager.columns.value');
-        this.loadKeys();
-
+        this.translateHeaders(
+            'keyManager.columns.key',
+            'keyManager.columns.value',
+        );
+        this.load();
     }
 
-    public async editItem(item: GenericObject) {
+    public async editItem(item: GenericObject): Promise<KeyManager> {
         try {
+            this.closeEditor();
             const value = await this.etcd.loadKey(item.key);
             // @ts-ignore
             CrudBase.options.methods.editItem.call(this, item);
@@ -175,56 +173,63 @@ export default class KeyManager extends CrudBase {
                 ...this.currentItem,
                 ...{ value, key: item.key },
             };
+            return Promise.resolve(this);
         } catch (error) {
             // @ts-ignore
             CrudBase.options.methods.editItem.call(this, item, false);
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
     }
 
-    public async touch(item: EtcdItem, selection: boolean = false) {
+    public async touch(item: EtcdItem, selection: boolean = false): Promise<KeyManager> {
         if (selection && !this.hasSelection()) {
             this.noSelection = true;
-            return;
+            return Promise.resolve(this);
         }
         const toBeTouched = selection ? this.getSelectedKeys() : [item.key];
         this.noSelection = false;
         try {
+            this.toggleLoading();
             await this.etcd.touch(toBeTouched);
+            this.toggleLoading();
             this.$store.commit('message', Messages.success());
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            this.toggleLoading();
+            return Promise.reject(this);
         }
     }
 
-    public async confirmPurge() {
+    public async confirmPurge(): Promise<KeyManager> {
         try {
-            await this.etcd.purge();
+            // @ts-ignore
+            await CrudBase.options.methods.confirmPurge.call(this);
             this.$store.commit('message', Messages.success());
-            CrudBase.options.methods.confirmPurge.call(this);
-            this.loadKeys();
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
     }
 
-    public async confirmDelete() {
-        const item = this.itemToDelete as GenericObject;
-        const toBeRemoved = this.hasSelection() ? this.getSelectedKeys() : [item.key];
-
+    public async confirmDelete(): Promise<KeyManager> {
         try {
-            const result = await this.etcd.remove(toBeRemoved);
+            // @ts-ignore
+            const result = await CrudBase.options.methods.confirmDelete.call(
+                this,
+                'key',
+            );
             this.$store.commit('message', Messages.success());
-            CrudBase.options.methods.confirmDelete(this, false, true);
-            this.loadKeys();
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
         }
 
-        this.cancelDelete();
+        return this;
     }
 
-    public async loadKeys(prefix?: string) {
+    public async load(prefix?: string): Promise<KeyManager> {
         this.loading = true;
         try {
             const data = await this.etcd.loadAllKeys(prefix);
@@ -232,8 +237,10 @@ export default class KeyManager extends CrudBase {
                 return { key: entry[0], value: entry[1] };
             });
             this.loading = false;
+            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
+            return Promise.reject(this);
         }
     }
 }

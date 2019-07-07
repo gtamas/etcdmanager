@@ -54,25 +54,25 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, MultiRangeBuilder } from 'etcd3';
-import { GenericObject } from '../../types';
 
 import { required, alphaNum } from 'vuelidate/lib/validators';
-import Messages from '../messages';
+import Messages from '@/lib/messages';
 import KeyService from '../services/key.service';
+import { BaseEditor } from '../lib/editor.class';
+import { ValidationError } from '../lib/validation-error.class';
+import { Prop } from 'vue-property-decorator';
+
+class KeyError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'KeyError';
+    }
+}
 
 @Component({
     // @ts-ignore
     name: 'key-editor',
-    props: {
-        data: {
-            key: String,
-            value: String,
-        },
-        mode: String,
-    },
     validations: {
         key: {
             required,
@@ -84,9 +84,20 @@ import KeyService from '../services/key.service';
         },
     },
 })
-export default class KeyEditor extends Vue {
+export default class KeyEditor extends BaseEditor {
     public loading: boolean = true;
     public valid = false;
+
+    public itemType: string = 'key';
+    public itemId: string = 'key';
+
+    // @ts-ignore
+    @Prop() data: {
+        key: string;
+        value: string;
+    };
+    // @ts-ignore
+    @Prop() mode: string;
 
     public key: string = this.data.key || '';
     public value: string = this.data.value || '';
@@ -95,63 +106,57 @@ export default class KeyEditor extends Vue {
         super();
     }
 
-    get createMode() {
-        return this.mode === 'create';
-    }
-
-    get editMode() {
-        return this.mode === 'edit';
-    }
-
-    get title() {
-        if (this.editMode) {
-            return `Edit: ${this.key}`;
-        }
-        return 'New Key';
-    }
-
     get keyErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.key.$dirty) {
             return errors;
         }
-        !this.$v.key.required && errors.push('Item is required');
-        !this.$v.key.alphaNum && errors.push('Alphanumeric value expected');
+        // @ts-ignore
+        if (!this.$v.key.required) {
+            errors.push(this.$t('common.validation.required'));
+        }
+        // @ts-ignore
+        if (!this.$v.key.alphaNum) {
+            errors.push(this.$t('common.validation.alphanumeric'));
+        }
         return errors;
     }
 
     get valueErrors() {
         const errors: any = [];
+        // @ts-ignore
         if (!this.$v.value.$dirty) {
             return errors;
         }
-        !this.$v.value.required && errors.push('Item is required');
-        !this.$v.value.alphaNum && errors.push('Alphanumeric value expected');
+        // @ts-ignore
+        if (!this.$v.value.required) {
+            errors.push(this.$t('common.validation.required').toString());
+        }
+        // @ts-ignore
+        if (!this.$v.value.alphaNum) {
+            errors.push(this.$t('common.validation.alphanumeric').toString());
+        }
         return errors;
     }
 
-    get opTitle() {
-        return this.createMode ? 'Add' : 'Edit';
-    }
-
-    public cancel() {
-        this.$emit('cancel');
-    }
-
-    public updated() {}
-
-    public submit(reset = false) {
+    public async submit(): Promise<KeyEditor | Error> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return false;
+            return Promise.reject(new ValidationError('Form is invalid..'));
         }
 
         const etcd = new KeyService(this.$store.state.connection.getClient());
 
-        this.loading = true;
-        etcd.upsert(this.key, this.value)
-            .then((data: any) => {
-                this.loading = false;
+        try {
+            this.toggleLoading();
+            const res = await etcd.insert(
+                this.key,
+                this.value,
+                this.createMode
+            );
+            this.toggleLoading();
+            if (res.succeeded === true || res.succeeded === undefined) {
                 this.$store.commit('message', Messages.success());
                 this.$emit('reload');
                 this.$v.$reset();
@@ -159,10 +164,20 @@ export default class KeyEditor extends Vue {
                     this.key = '';
                     this.value = '';
                 }
-            })
-            .catch((error: any) => {
-                this.$store.commit('message', Messages.error(error));
-            });
+                return Promise.resolve(this);
+            }
+            this.$store.commit(
+                'message',
+                Messages.error(
+                    this.$t('keyEditor.messages.duplicateKey').toString()
+                )
+            );
+            return Promise.reject(new KeyError(''));
+        } catch (e) {
+            this.$store.commit('message', Messages.error(e));
+            this.toggleLoading();
+            return Promise.reject(new KeyError(e));
+        }
     }
 }
 </script>

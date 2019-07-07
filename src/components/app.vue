@@ -1,8 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Menu from './menu.vue';
-import config from './config.vue';
-import { pick, omit } from 'lodash-es';
+import { omit } from 'lodash-es';
 import { ipcRenderer } from 'electron';
 import { join } from 'path';
 
@@ -16,7 +15,10 @@ export default class App extends Vue {
     public drawer: boolean = true;
     public year = new Date().getFullYear();
     public version: string;
-    public logoPath: string | undefined = join(process.env.BASE_URL as string, 'etcd-glyph-color.png');
+    public logoPath: string | undefined = join(
+        process.env.BASE_URL as string,
+        'etcd-glyph-color.png',
+    );
 
     constructor() {
         super();
@@ -24,13 +26,18 @@ export default class App extends Vue {
     }
 
     created() {
-       ipcRenderer.on('navigate', (event: any, message: any) => {
+        // @ts-ignore
+        ipcRenderer.on('navigate', (event: any, message: any) => {
             this.$router.push(message);
         });
     }
 
     get message() {
         return this.$store.state.message;
+    }
+
+    get loading() {
+        return this.$store.state.loading;
     }
 
     get console() {
@@ -59,6 +66,7 @@ export default class App extends Vue {
         if (config) {
             const cfg = JSON.parse(config);
             this.$store.commit('config', cfg.config);
+            this.$store.commit('users', cfg.users);
             this.$store.commit('etcdConfig', cfg.etcd);
             this.$store.commit('watcherConfig', cfg.watchers);
             this.$store.dispatch('locale', cfg.config.language);
@@ -92,6 +100,18 @@ export default class App extends Vue {
       {{ message.text }}
       <v-btn dark flat @click="hide()">Close</v-btn>
     </v-snackbar>
+
+    <v-dialog v-model="loading" persistent max-width="290">
+      <v-card dark>
+        <v-toolbar dark flat>
+          <v-toolbar-title>Loading..</v-toolbar-title>
+        </v-toolbar>
+        <v-card-text>
+          <v-progress-linear :indeterminate="true"></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
     <main-menu v-bind:drawer="drawer"></main-menu>
     <v-toolbar app fixed clipped-left>
       <v-toolbar-side-icon @click.stop="drawer = !drawer">
@@ -99,14 +119,14 @@ export default class App extends Vue {
       </v-toolbar-side-icon>
       <v-toolbar-title>ETCD Manager v{{ version }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <img :src="logoPath" alt="ETCD" class="logo">
+      <img :src="logoPath" alt="ETCD" class="logo" />
     </v-toolbar>
     <v-content>
       <v-container v-bind:class="{ 'bg-pan-left': animate, bg: background }" fluid fill-height>
         <v-layout align-start justify-center row fill-height>
           <v-flex xs12 v-bind:class="{ fg: background }">
             <transition name="fade" appear>
-              <router-view/>
+              <router-view />
             </transition>
           </v-flex>
         </v-layout>
