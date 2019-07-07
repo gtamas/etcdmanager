@@ -12,6 +12,7 @@
             <v-text-field
               dark
               v-model="name"
+              :disabled="editMode"
               :error-messages="nameErrors"
               :label="$t('watcherEditor.fields.name.label')"
               :placeholder="$t('watcherEditor.fields.name.placeholder')"
@@ -29,6 +30,7 @@
               dark
               type="text"
               v-model="key"
+              :disabled="editMode"
               :error-messages="keyErrors"
               :label="$t('watcherEditor.fields.key.label')"
               :placeholder="$t('watcherEditor.fields.key.placeholder')"
@@ -78,9 +80,6 @@
                   </v-tooltip>
                 </td>
               </template>
-              <template v-slot:no-data>
-                <v-alert :value="true" color="error" icon="warning">{{ $t('common.lists.nodata') }}</v-alert>
-              </template>
             </v-data-table>
 
             <v-btn :disabled="!isValid()" round color="primary" @click="submit">
@@ -117,10 +116,9 @@
 <script lang='ts'>
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, MultiRangeBuilder } from 'etcd3';
 import { GenericObject, WatcherAction, WatcherEntry } from '../../types';
 import { required, alphaNum } from 'vuelidate/lib/validators';
-import Messages from '../messages';
+import Messages from '@/lib/messages';
 import { BaseEditor } from '../lib/editor.class';
 import WatcherService from '../services/watcher.service';
 import { Prop } from 'vue-property-decorator';
@@ -192,7 +190,7 @@ export default class WatcherEditor extends BaseEditor {
     created() {
         this.translateHeaders(
             'watcherEditor.actionList.columns.action',
-            'watcherEditor.actionList.columns.event',
+            'watcherEditor.actionList.columns.event'
         );
     }
 
@@ -263,34 +261,47 @@ export default class WatcherEditor extends BaseEditor {
     }
 
     deleteAction(actionToDelete: WatcherAction) {
-        this.actions = this.actions.filter(
-            (action) => {
-                return action.id !== actionToDelete.id;
-            }
-        );
+        this.actions = this.actions.filter((action) => {
+            return action.id !== actionToDelete.id;
+        });
     }
 
-    public submit(reset = false) {
+    public submit(): WatcherEditor | boolean {
         this.$v.$touch();
         if (this.$v.$invalid) {
             return false;
         }
 
         // @ts-ignore
-        const backend = new WatcherService(this.$ls, this.$store.state.connection.getClient());
+        const backend = new WatcherService(
+            // @ts-ignore
+            this.$ls,
+            this.$store.state.connection.getClient()
+        );
 
         this.toggleLoading();
-        backend.saveWatcher(
+        const res = backend.saveWatcher(
             new WatcherEntry(
                 this.name,
                 this.key,
                 this.prefix,
                 false,
-                this.actions,
+                this.actions
             ),
+            this.createMode
         );
-
         this.toggleLoading();
+
+        if (!res) {
+            this.$store.commit(
+                'message',
+                Messages.error(
+                    this.$t('watcherEditor.messages.duplicate').toString()
+                )
+            );
+            return false;
+        }
+
         this.$store.commit('message', Messages.success());
         this.$emit('reload');
         this.$v.$reset();
@@ -300,6 +311,8 @@ export default class WatcherEditor extends BaseEditor {
             this.prefix = false;
             this.actions = [];
         }
+
+        return this;
     }
 }
 </script>

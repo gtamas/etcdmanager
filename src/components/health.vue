@@ -131,7 +131,6 @@ import {
     IAlarmResponse,
     IStatusResponse,
 } from 'etcd3';
-import { GenericObject } from '../../types';
 
 @Component({
     name: 'health-check',

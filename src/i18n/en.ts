@@ -1,5 +1,19 @@
 export default {
     en: {
+        $vuetify: {
+            dataIterator: {
+                rowsPerPageText: 'Items per page:',
+                rowsPerPageAll: 'All',
+                pageText: '{0}-{1} of {2}',
+                noResultsText: 'No matching records found',
+                nextPage: 'Next page',
+                prevPage: 'Previous page',
+              },
+              dataTable: {
+                rowsPerPageText: 'Rows per page:',
+              },
+              noDataText: 'No data available',
+        },
         common: {
             items: {
                 watcher: 'watcher | watchers',
@@ -33,6 +47,17 @@ export default {
             },
             lists: {
                 nodata: 'There is no data to display..',
+                filter: 'Filter data..',
+            },
+            validation: {
+                required: 'Item is required',
+                alphanumeric: 'Alphanumeric value expected',
+                int: 'Value must be an integer',
+                pattern: 'Invalid regular expression',
+            },
+            messages: {
+                success: 'Operation successful',
+                error: 'Could not perform operation',
             },
         },
         settings: {
@@ -86,20 +111,34 @@ export default {
                 title: 'Watchers',
                 fields: {
                     loadWatchers: {
-                        label: 'Activate all watchers on startup',
+                        label: 'Activate all user defined watchers on startup',
                         tooltip: 'If turned on, all user defined watchers will be automatically activated when the app starts.',
                     },
+                    unloadWatchers: {
+                        label: 'Deactivate all user defined watchers on shutdown',
+                        tooltip: 'If turned on, all user defined watchers will be automatically deactivated when the app quits.',
+                    },
                     errorListener: {
-                        label: 'Watch ETCD errors',
-                        tooltip: 'If turned on, a watcher will print all ETCD errors the console.',
+                        label: 'Monitor ETCD errors',
+                        tooltip: 'If turned on, a watcher will print all ETCD errors to the console.',
                     },
                     disconnectListener: {
-                        label: 'Watch watcher disconnects',
-                        tooltip: 'If turned on, a watcher will print a message to the console whenever a watcher diconnects from ETCD.',
+                        label: 'Monitor watcher disconnects',
+                        tooltip: 'If turned on, a message will be printed to the console whenever a watcher diconnects from ETCD.',
                     },
                     reconnectListener: {
-                        label: 'Watch watcher reconnects',
-                        tooltip: 'If turned on, a watcher will print a message to the console whenever a watcher reconnects to ETCD.',
+                        label: 'Monitor watcher reconnects',
+                        tooltip: 'If turned on, a message will be printed to the console whenever a watcher reconnects to ETCD.',
+                    },
+                },
+            },
+            users: {
+                title: 'Users',
+                fields: {
+                    pwpattern: {
+                        label: 'Password pattern',
+                        placeholder: 'Type in a regular expression..',
+                        tooltip: 'The pattern to be used for validating user passwords. Leave blank to use the default pattern (8 - 16 characters, has to include capital letters and numbers)',
                     },
                 },
             },
@@ -123,6 +162,10 @@ export default {
             actions: {
                 submit: 'Submit',
                 next: 'Next',
+            },
+            messages: {
+                success: 'Configuration has been saved successfully',
+                ip: 'IP address appears to be invalid',
             },
 
         },
@@ -182,6 +225,9 @@ export default {
                     placeholder: 'Type in a value..',
                     tooltip: 'The value associated with this key',
                 },
+            },
+            messages: {
+                duplicateKey: 'This key already exists!',
             },
         },
         purgeDialog: {
@@ -260,6 +306,9 @@ export default {
                     label: 'Actions',
                 },
             },
+            messages: {
+                duplicate: 'A watcher with this name already exists',
+            },
         },
         actionEditor: {
             title: 'Actions',
@@ -312,7 +361,7 @@ export default {
                 },
                 permission: {
                     label: 'Permissions',
-                    tooltip: 'The permission this role grants. If your want eveything, choose "both".',
+                    tooltip: 'The permission this role grants. If your want eveything, choose read and write.',
                 },
                 prefix: {
                     label: 'This is a prefix',
@@ -323,6 +372,9 @@ export default {
                 grant: {
                     label: 'Grant',
                 },
+            },
+            messages: {
+                duplicateKey: 'A permission is already associated with this key!',
             },
         },
         about: {
@@ -348,6 +400,7 @@ export default {
         },
         userEditor: {
             title: 'Users',
+            subtitle: 'Roles',
             fields: {
                 name: {
                     label: 'name',
@@ -364,6 +417,10 @@ export default {
                     placeholder: 'Type in a value..',
                     tooltip: 'Confirm the password',
                 },
+            },
+            messages: {
+                pwmatch: 'The passwords do not match',
+                invalid: 'The password is invalid',
             },
         },
     },

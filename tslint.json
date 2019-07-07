@@ -2,7 +2,10 @@
     "defaultSeverity": "warning",
     "extends": ["tslint-config-airbnb"],
     "linterOptions": {
-        "exclude": ["node_modules/**", "*.d.ts"]
+        "exclude": [
+            "node_modules/**",
+            "src/**/*.d.ts"
+        ]
     },
     "rules": {
         "quotemark": [true, "single"],

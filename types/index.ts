@@ -1,6 +1,7 @@
 import { Watcher } from 'etcd3';
 import { CrudBase } from '@/lib/crud.class';
 
+// @ts-ignore
 declare const __static: any;
 
 export interface GenericObject {

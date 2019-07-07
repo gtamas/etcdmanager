@@ -10,7 +10,7 @@
           color="white"
           v-model="filter"
           prepend-icon="search"
-          placeholder="Filter data.."
+         :placeholder="$t('common.lists.filter')"
         ></v-text-field>
         <v-tooltip bottom max-width="200">
           <template v-slot:activator="{ on }">
@@ -89,9 +89,6 @@
               </v-tooltip>
             </td>
           </template>
-          <template v-slot:no-data>
-            <v-alert :value="true" color="error" icon="warning">{{ $t("common.lists.nodata") }}</v-alert>
-          </template>
         </v-data-table>
       </v-card>
     </v-flex>
@@ -126,15 +123,12 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, MultiRangeBuilder } from 'etcd3';
-import Messages from '@/messages';
+import Messages from '@/lib/messages';
 import { GenericObject, EtcdItem } from '../../types';
 import KeyEditor from './key-editor.vue';
 import KeyService from '../services/key.service';
 import { CrudBase, List } from '../lib/crud.class';
-import { Provide } from 'vue-property-decorator';
 
 @Component({
     name: 'key-manager',

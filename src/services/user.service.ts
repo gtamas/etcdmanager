@@ -52,8 +52,12 @@ export default class UserService extends EtcdService implements DataService {
         }
     }
 
-    public createUser(name: string, password: string): Promise<User> {
-        const user = this.getUser(name);
+    public createUser(userName: string, password: string): Promise<User> {
+        const user = this.getUser(userName);
         return user.create(password);
+    }
+
+    public setPassword(userName: string, password: string): Promise<User> {
+        return this.getUser(userName).setPassword(password);
     }
 }

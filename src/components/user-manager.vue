@@ -10,7 +10,7 @@
           color="white"
           v-model="filter"
           prepend-icon="search"
-          placeholder="Filter data.."
+          :placeholder="$t('common.lists.filter')"
         ></v-text-field>
         <v-tooltip bottom max-width="200">
           <template v-slot:activator="{ on }">
@@ -72,9 +72,6 @@
               </v-tooltip>
             </td>
           </template>
-          <template v-slot:no-data>
-            <v-alert :value="true" color="error" icon="warning">{{ $t("common.lists.nodata") }}</v-alert>
-          </template>
         </v-data-table>
       </v-card>
     </v-flex>
@@ -109,11 +106,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import { CrudBase, List } from '../lib/crud.class';
 import UserService from '../services/user.service';
-import Messages from '../messages';
+import Messages from '@/lib/messages';
 import { GenericObject } from '../../types';
 import UserEditor from './user-editor.vue';
 
@@ -176,7 +172,7 @@ export default class UserManager extends CrudBase implements List {
         }
     }
 
-    public async confirmDelete(keyName: string): Promise<UserManager> {
+    public async confirmDelete(): Promise<UserManager> {
         try {
             // @ts-ignore
             const result = await CrudBase.options.methods.confirmDelete.call(

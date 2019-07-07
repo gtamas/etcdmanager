@@ -1,14 +1,16 @@
+import { i18n } from '@/main';
+
 export default class Messages {
     public static error(error: string) {
         return {
-            text: `Could not perform operation.
+            text:  `${i18n.t('common.messages.error')}.
             Error: ${error}`,
             color: 'error',
             show: true,
         };
     }
     public static success(message?: string) {
-        const msg = message || 'Operation successful';
+        const msg = message || i18n.t('common.messages.success');
         return {
             text: msg,
             color: 'success',

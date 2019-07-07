@@ -50,6 +50,7 @@ export class CrudBase extends Vue implements List {
         this.currentItem = { ...this.currentItem, ...this.defaultItem };
     }
 
+    // @ts-ignore
     public editItem(item: GenericObject) {
         this.editor = true;
         this.operation = 'edit';
@@ -86,7 +87,7 @@ export class CrudBase extends Vue implements List {
         this.purgeDialog = true;
     }
 
-    public async confirmPurge(): Promise<CrudBase>  {
+    public async confirmPurge(): Promise<CrudBase | Error>  {
         try {
             this.toggleLoading();
             // @ts-ignore
@@ -102,7 +103,7 @@ export class CrudBase extends Vue implements List {
         }
     }
 
-    public async confirmDelete(keyName: string): Promise<CrudBase> {
+    public async confirmDelete(keyName: string): Promise<CrudBase | Error> {
         const item = this.itemToDelete as GenericObject;
         const toBeRemoved = this.hasSelection() ? this.getSelectedKeys(keyName) : [item[keyName]];
 
@@ -137,6 +138,7 @@ export class CrudBase extends Vue implements List {
         return this.selected.map(item => item[uniqueKey]);
     }
 
+    // @ts-ignore
     public async load(...args:any): Promise<CrudBase> {
         return Promise.resolve(this);
     }

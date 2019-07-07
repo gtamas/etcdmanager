@@ -52,7 +52,7 @@ export default class RoleService extends EtcdService implements DataService {
         return this.getRole(name).permissions();
     }
 
-    public setPermissions(options: GenericObject): Promise<Role> {
+    public async setPermissions(options: GenericObject, isCreate: boolean = true): Promise<Role | Boolean> {
         let permissionReq: IPermissionRequest = {
             permission: options.permission,
             key: options.key,
@@ -67,6 +67,15 @@ export default class RoleService extends EtcdService implements DataService {
         const role = this.getRole(options.name);
 
         if (options.grant) {
+            if (isCreate) {
+                const perms = await role.permissions();
+                for (const perm of perms) {
+                    const key = perm.range.start.toString();
+                    if (key === options.key) {
+                        return Promise.reject(false);
+                    }
+                }
+            }
             return role.grant(permissionReq);
         }
         return role.revoke(permissionReq);

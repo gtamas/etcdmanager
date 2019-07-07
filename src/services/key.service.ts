@@ -4,12 +4,12 @@ import {
     Range,
     Etcd3,
 } from 'etcd3';
-import EtcdService  from './etcd.service';
+import EtcdService from './etcd.service';
 
 export default class KeyService extends EtcdService implements DataService {
 
     constructor(client?: Etcd3) {
-      super(client);
+        super(client);
     }
 
     public loadKey(key: string): Promise<any> {
@@ -26,7 +26,13 @@ export default class KeyService extends EtcdService implements DataService {
         return query.strings();
     }
 
-    public upsert(key: string, value: string): Promise<any> {
+    public insert(key: string, value: string, isCreate: boolean = true): Promise<any> {
+        if (isCreate) {
+            return this.client.if(key, 'Create', '==', 0)
+                .then(this.client.put(key).value(value))
+                .else(this.client.get(key))
+                .commit();
+        }
         return this.client.put(key).value(value);
     }
 

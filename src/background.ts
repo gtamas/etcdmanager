@@ -32,6 +32,7 @@ protocol.registerSchemesAsPrivileged([
 
 function createAppMenu() {
     const menuRouter = (where: string) => {
+        // @ts-ignore
         return (menuItem: any, win: BrowserWindow) => {
             win.webContents.send('navigate', where);
         };
@@ -94,8 +95,10 @@ function createAppMenu() {
             label: 'View',
             // @ts-ignore
             submenu: [
-                { role: 'reload' },
-                { role: 'forcereload' },
+                ...(isDevelopment ? [
+                    { role: 'reload' },
+                    { role: 'forcereload' },
+                ] : []),
                 { type: 'separator' },
                 { role: 'resetzoom' },
                 { role: 'zoomin' },

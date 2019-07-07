@@ -1,6 +1,7 @@
 import store from '@/store';
 import { Route } from 'vue-router';
 
+// @ts-ignore
 export function isConfiguredGuard(to: Route, from: Route, next: any) {
     if (!store.getters.isConfigured) {
         store.commit('message', {

@@ -1,3 +1,4 @@
+import { ValidationError } from './lib/validation-error.class';
 import Vue from 'vue';
 import App from './components/app.vue';
 import router from './router';
@@ -21,21 +22,32 @@ export const i18n = new VueI18n({
     locale: 'en',
     fallbackLocale: 'en',
     messages: lang,
-  });
+});
 
-  export const loadedLang = ['en'];
+export const loadedLang = ['en'];
 
 Vue.use(vueLocalStorage, {
     name: 'ls',
     bind: true,
 });
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+    lang: {
+        t: (key, ...params) => i18n.t(key, params),
+    },
+});
 Vue.use(Vuelidate);
 
 Vue.component('no-selection-dialog', NoSelectionDialog);
 Vue.component('purge-dialog', PurgeDialog);
 Vue.component('delete-dialog', DeleteDialog);
+
+// @ts-ignore
+Vue.config.errorHandler = function (err: any, vm: Vue, info: any) {
+    if (!(err instanceof ValidationError)) {
+        console.log(`Error: ${err}\nInfo: ${info}`);
+    }
+};
 
 new Vue({
     i18n,

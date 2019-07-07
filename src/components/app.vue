@@ -1,8 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Menu from './menu.vue';
-import config from './config.vue';
-import { pick, omit } from 'lodash-es';
+import { omit } from 'lodash-es';
 import { ipcRenderer } from 'electron';
 import { join } from 'path';
 
@@ -27,6 +26,7 @@ export default class App extends Vue {
     }
 
     created() {
+        // @ts-ignore
         ipcRenderer.on('navigate', (event: any, message: any) => {
             this.$router.push(message);
         });
@@ -66,6 +66,7 @@ export default class App extends Vue {
         if (config) {
             const cfg = JSON.parse(config);
             this.$store.commit('config', cfg.config);
+            this.$store.commit('users', cfg.users);
             this.$store.commit('etcdConfig', cfg.etcd);
             this.$store.commit('watcherConfig', cfg.watchers);
             this.$store.dispatch('locale', cfg.config.language);

@@ -54,16 +54,21 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, MultiRangeBuilder } from 'etcd3';
-import { GenericObject } from '../../types';
 
 import { required, alphaNum } from 'vuelidate/lib/validators';
-import Messages from '../messages';
+import Messages from '@/lib/messages';
 import KeyService from '../services/key.service';
 import { BaseEditor } from '../lib/editor.class';
+import { ValidationError } from '../lib/validation-error.class';
 import { Prop } from 'vue-property-decorator';
+
+class KeyError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'KeyError';
+    }
+}
 
 @Component({
     // @ts-ignore
@@ -109,11 +114,11 @@ export default class KeyEditor extends BaseEditor {
         }
         // @ts-ignore
         if (!this.$v.key.required) {
-            errors.push('Item is required');
+            errors.push(this.$t('common.validation.required'));
         }
         // @ts-ignore
         if (!this.$v.key.alphaNum) {
-            errors.push('Alphanumeric value expected');
+            errors.push(this.$t('common.validation.alphanumeric'));
         }
         return errors;
     }
@@ -126,39 +131,52 @@ export default class KeyEditor extends BaseEditor {
         }
         // @ts-ignore
         if (!this.$v.value.required) {
-            errors.push('Item is required');
+            errors.push(this.$t('common.validation.required').toString());
         }
         // @ts-ignore
         if (!this.$v.value.alphaNum) {
-            errors.push('Alphanumeric value expected');
+            errors.push(this.$t('common.validation.alphanumeric').toString());
         }
         return errors;
     }
 
-    public async submit(reset = false): Promise<KeyEditor> {
+    public async submit(): Promise<KeyEditor | Error> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(this);
+            return Promise.reject(new ValidationError('Form is invalid..'));
         }
 
         const etcd = new KeyService(this.$store.state.connection.getClient());
 
         try {
             this.toggleLoading();
-            await etcd.upsert(this.key, this.value);
+            const res = await etcd.insert(
+                this.key,
+                this.value,
+                this.createMode
+            );
             this.toggleLoading();
-            this.$store.commit('message', Messages.success());
-            this.$emit('reload');
-            this.$v.$reset();
-            if (this.createMode) {
-                this.key = '';
-                this.value = '';
+            if (res.succeeded === true || res.succeeded === undefined) {
+                this.$store.commit('message', Messages.success());
+                this.$emit('reload');
+                this.$v.$reset();
+                if (this.createMode) {
+                    this.key = '';
+                    this.value = '';
+                }
+                return Promise.resolve(this);
             }
-            return Promise.resolve(this);
+            this.$store.commit(
+                'message',
+                Messages.error(
+                    this.$t('keyEditor.messages.duplicateKey').toString()
+                )
+            );
+            return Promise.reject(new KeyError(''));
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
             this.toggleLoading();
-            return Promise.reject(this);
+            return Promise.reject(new KeyError(e));
         }
     }
 }

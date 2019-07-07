@@ -59,14 +59,10 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, MultiRangeBuilder } from 'etcd3';
-import { GenericObject, EtcdEventType } from '../../types';
+import { GenericObject } from '../../types';
 import { required } from 'vuelidate/lib/validators';
-import Messages from '../messages';
 import { BaseEditor } from '../lib/editor.class';
-import WatcherService from '../services/watcher.service';
 import { Prop } from 'vue-property-decorator';
 
 @Component({
@@ -123,7 +119,7 @@ export default class ActionEditor extends BaseEditor {
         super();
     }
 
-    public submit(reset = false): ActionEditor {
+    public submit(): ActionEditor {
         this.$emit('action', this.action);
         return this;
     }

@@ -62,8 +62,10 @@
             </v-text-field>
 
             <template v-if="showRights">
+            <h2 class="subheading">Roles</h2>
+            <hr />
               <v-checkbox
-                @change="setRole($event, role)"
+                @change="setRole(role)"
                 v-for="role in roles"
                 v-model="ownRoles"
                 v-bind:label="role.name"
@@ -83,10 +85,8 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, MultiRangeBuilder, Role } from 'etcd3';
-import { GenericObject } from '../../types';
+import { Role } from 'etcd3';
 
 import {
     required,
@@ -94,12 +94,20 @@ import {
     sameAs,
     requiredIf,
 } from 'vuelidate/lib/validators';
-import Messages from '../messages';
-import KeyService from '../services/key.service';
+import Messages from '@/lib/messages';
 import { BaseEditor } from '../lib/editor.class';
 import { Prop } from 'vue-property-decorator';
 import UserService from '../services/user.service';
 import RoleService from '../services/role.service';
+import store from '../store';
+import { ValidationError } from '../lib/validation-error.class';
+
+class UserEditorError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'UserEditorError';
+    }
+}
 
 @Component({
     // @ts-ignore
@@ -115,7 +123,8 @@ import RoleService from '../services/role.service';
             }),
             sameAs: sameAs('pwcheck'),
             pwPattern: (value: string) => {
-                return (
+                const ptrn = store.state.users.pattern;
+                return ptrn ? new RegExp(ptrn).test(value) : (
                     /^[^\s]{8,16}$/gi.test(value) &&
                     /[0-9]+/.test(value) &&
                     /[A-Z]+/.test(value)
@@ -164,11 +173,11 @@ export default class UserEditor extends BaseEditor {
         }
         // @ts-ignore
         if (!this.$v.name.required) {
-            errors.push('Item is required');
+            errors.push(this.$t('common.validation.required'));
         }
         // @ts-ignore
         if (!this.$v.name.alphaNum) {
-            errors.push('Alphanumeric value expected');
+            errors.push(this.$t('common.validation.alphanumeric'));
         }
         return errors;
     }
@@ -181,30 +190,29 @@ export default class UserEditor extends BaseEditor {
         }
         // @ts-ignore
         if (!this.$v.password.sameAs) {
-            errors.push('The passwords do not match');
+            errors.push(this.$t('userEditor.messages.pwmatch'));
         }
         // @ts-ignore
         if (!this.$v.password.pwPattern) {
-            errors.push('The password is invalid..');
+            errors.push(this.$t('userEditor.messages.invalid'));
         }
         return errors;
     }
 
     public async setRole(
-        currentValue: string[],
         role: Role
-    ): Promise<UserEditor> {
+    ): Promise<UserEditor | UserEditorError> {
         try {
             if (!this.ownRoles.includes(role.name)) {
                 this.toggleLoading();
-                const res = await this.userService.revokeRole(
+                await this.userService.revokeRole(
                     this.data.name,
                     role
                 );
                 this.toggleLoading();
             } else {
                 this.toggleLoading();
-                const res = await this.userService.addRole(
+                await this.userService.addRole(
                     this.data.name,
                     role
                 );
@@ -215,7 +223,7 @@ export default class UserEditor extends BaseEditor {
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
             this.toggleLoading();
-            return Promise.reject(this);
+            return Promise.reject(new UserEditorError(error));
         }
     }
 
@@ -237,15 +245,19 @@ export default class UserEditor extends BaseEditor {
         return this.showPassword ? 'text' : 'password';
     }
 
-    public async submit(): Promise<UserEditor> {
+    public async submit(): Promise<UserEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(this);
+            return Promise.reject(new ValidationError(''));
         }
 
         try {
             this.toggleLoading();
-            await this.userService.createUser(this.name, this.password);
+            if (this.createMode) {
+                await this.userService.createUser(this.name, this.password);
+            } else {
+                await this.userService.setPassword(this.name, this.password);
+            }
             this.toggleLoading();
             this.$store.commit('message', Messages.success());
             this.$emit('reload');
@@ -261,7 +273,7 @@ export default class UserEditor extends BaseEditor {
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
             this.toggleLoading();
-            return Promise.reject(this);
+            return Promise.reject(new UserEditorError(e));
         }
     }
 }

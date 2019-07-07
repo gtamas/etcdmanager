@@ -95,21 +95,25 @@
 </template>
 
 <script lang='ts'>
-import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Etcd3, IPermissionRequest, IPermissionResult } from 'etcd3';
 import {
     GenericObject,
-    EtcdPermissionType,
     PermissionObject,
 } from '../../types';
 import { required, alphaNum } from 'vuelidate/lib/validators';
-import Messages from '../messages';
+import Messages from '@/lib/messages';
 import { BaseEditor } from '../lib/editor.class';
 import RoleService from '../services/role.service';
 import { Prop } from 'vue-property-decorator';
-import uuidv1 from 'uuid/v1';
 import PermissionEditor from './permission-editor.vue';
+import { ValidationError } from '../lib/validation-error.class';
+
+class RoleEditorError extends Error {
+    constructor(message: any) {
+        super(message);
+        this.name = 'RoleEditorError';
+    }
+}
 
 @Component({
     name: 'role-editor',
@@ -196,12 +200,12 @@ export default class RoleEditor extends BaseEditor {
 
         // @ts-ignore
         if (!this.$v.name.required) {
-            errors.push('Item is required');
+            errors.push(this.$t('common.validation.required'));
         }
 
         // @ts-ignore
         if (!this.$v.name.alphaNum) {
-            errors.push('Alphanumeric value expected');
+            errors.push(this.$t('common.validation.alphanumeric'));
         }
         return errors;
     }
@@ -210,7 +214,7 @@ export default class RoleEditor extends BaseEditor {
         return this.$v.$invalid || this.roleExists;
     }
 
-    public async loadPermissions(): Promise<RoleEditor> {
+    public async loadPermissions(): Promise<RoleEditor | RoleEditorError> {
         try {
             const permissions = await this.etcd.rolePermissions(this.name);
             this.permissions = permissions.map((perm) => {
@@ -222,7 +226,7 @@ export default class RoleEditor extends BaseEditor {
             });
             return Promise.resolve(this);
         } catch (e) {
-            return Promise.reject(this);
+            return Promise.reject(new RoleEditorError(e));
         }
     }
 
@@ -238,13 +242,13 @@ export default class RoleEditor extends BaseEditor {
         return this;
     }
 
-    public async savePermission(): Promise<RoleEditor> {
+    public async savePermission(): Promise<RoleEditor | RoleEditorError> {
         try {
             await this.loadPermissions();
             this.cancelPermission();
             return Promise.resolve(this);
         } catch (e) {
-            return Promise.reject(this);
+            return Promise.reject(new RoleEditorError(e));
         }
     }
 
@@ -257,7 +261,7 @@ export default class RoleEditor extends BaseEditor {
 
     public async revokePermission(
         permission: PermissionObject,
-    ): Promise<RoleEditor> {
+    ): Promise<RoleEditor | RoleEditorError> {
         try {
             this.toggleLoading();
             await this.etcd.setPermissions({
@@ -273,14 +277,14 @@ export default class RoleEditor extends BaseEditor {
             return Promise.resolve(this);
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
-            return Promise.reject(this);
+            return Promise.reject(new RoleEditorError(e));
         }
     }
 
-    public async submit(reset = false): Promise<RoleEditor> {
+    public async submit(): Promise<RoleEditor | ValidationError | RoleEditorError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(this);
+            return Promise.reject(new ValidationError(''));
         }
 
         const backend = new RoleService(
@@ -297,9 +301,9 @@ export default class RoleEditor extends BaseEditor {
             this.$v.$reset();
             return Promise.resolve(this);
         } catch (e) {
-            this.$store.commit('message', Messages.error(e));
             this.toggleLoading();
-            return Promise.reject(this);
+            this.$store.commit('message', Messages.error(e));
+            return Promise.reject(new RoleEditorError(e));
         }
     }
 }
