@@ -80,6 +80,7 @@ export default class ActionEditor extends BaseEditor {
     public loading: boolean = true;
     public valid = false;
     public itemId: string = 'action';
+    public itemType: string = 'action';
 
     // @ts-ignore
     @Prop() data: {
@@ -122,6 +123,15 @@ export default class ActionEditor extends BaseEditor {
     public submit(): ActionEditor {
         this.$emit('action', this.action);
         return this;
+    }
+
+
+    get title() {
+        if (this.editMode) {
+            // @ts-ignore
+            return `${this.$t('common.titles.edit').toString()}`;
+        }
+        return `${this.$t('common.titles.new').toString()}`;
     }
 }
 </script>

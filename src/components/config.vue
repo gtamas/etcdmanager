@@ -73,7 +73,6 @@
                       <span>{{ $t('settings.etcd.fields.timeout.tooltip') }}</span>
                     </v-tooltip>
                   </v-text-field>
-
                 </v-flex>
               </v-layout>
             </v-container>
@@ -136,16 +135,6 @@
                     <v-tooltip slot="prepend" bottom max-width="200">
                       <v-icon slot="activator" color="primary" dark>info</v-icon>
                       <span>{{ $t('settings.watchers.fields.loadWatchers.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-switch>
-                   <v-switch
-                    dark
-                    v-model="unloadWatchers"
-                    :label="$t('settings.watchers.fields.unloadWatchers.label')"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.watchers.fields.unloadWatchers.tooltip') }}</span>
                     </v-tooltip>
                   </v-switch>
                   <v-switch
@@ -314,7 +303,6 @@ import { omit } from 'lodash-es';
             },
         },
         loadWatchers: {},
-        unloadWatchers: {},
     },
 })
 export default class Configuration extends Vue {
@@ -387,14 +375,6 @@ export default class Configuration extends Vue {
         this.$store.commit('watcherConfig', { autoload: value });
     }
 
-     get unloadWatchers() {
-        return this.$store.state.watchers.autoshutdown;
-    }
-
-    set unloadWatchers(value: boolean) {
-        this.$store.commit('watcherConfig', { autoshutdown: value });
-    }
-
     get errorListener() {
         return this.$store.state.watchers.error;
     }
@@ -460,7 +440,7 @@ export default class Configuration extends Vue {
         // @ts-ignore
         !this.$v.endpoint.ipAddress &&
             errors.push(this.$t('settings.messages.ip'));
-         // @ts-ignore
+        // @ts-ignore
         !this.$v.endpoint.required &&
             errors.push(this.$t('common.validation.required'));
         // !this.$v.endpoint.url && errors.push('URL appears to be invalid');
@@ -558,7 +538,6 @@ export default class Configuration extends Vue {
             },
             watchers: {
                 autoload: this.loadWatchers,
-                autoshutdown: this.unloadWatchers,
                 reconnects: this.reconnectListener,
                 disconnects: this.disconnectListener,
                 error: this.errorListener,

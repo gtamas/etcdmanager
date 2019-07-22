@@ -66,8 +66,8 @@
             <td>
               <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
             </td>
-            <td>{{ props.item.key }}</td>
-            <td class="text-xs-right">{{ props.item.value }}</td>
+            <td class="text-xs-left">{{ props.item.key }}</td>
+            <td class="text-xs-left">{{ props.item.value }}</td>
             <td class="justify-center layout px-0">
               <v-tooltip bottom max-width="200">
                 <template v-slot:activator="{ on }">

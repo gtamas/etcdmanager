@@ -74,8 +74,8 @@
               <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
             </td>
             <td>{{ props.item.name }}</td>
-            <td class="text-xs-right">{{ props.item.key }}</td>
-            <td class="text-xs-right">{{ props.item.prefix }}</td>
+            <td class="text-xs-left">{{ props.item.key }}</td>
+            <td class="text-xs-left">{{ props.item.prefix }}</td>
             <td class="justify-center layout px-0">
               <v-tooltip bottom max-width="200">
                 <template v-slot:activator="{ on }">
@@ -140,7 +140,6 @@ import { WatcherEntry, GenericObject } from '../../types';
 import WatcherService from '../services/watcher.service';
 import { CrudBase, List } from '../lib/crud.class';
 import WatcherEditor from './watcher-editor.vue';
-import { Watcher } from 'etcd3';
 import Messages from '@/lib/messages';
 
 class WatcherManagerError extends Error {
@@ -174,7 +173,7 @@ export default class WatcherManager extends CrudBase implements List {
         { text: '', value: 'prefix', sortable: true },
     ];
 
-    protected etcd: WatcherService;
+    public etcd: WatcherService;
 
     constructor() {
         super();
@@ -212,27 +211,17 @@ export default class WatcherManager extends CrudBase implements List {
         return Promise.resolve(this);
     }
 
-    private async activateWatcher(
+    public async activateWatcher(
         watcher: WatcherEntry
     ): Promise<WatcherManager | WatcherManagerError> {
-        let watcherStream: Watcher | null = null;
+
         try {
-            watcherStream = await this.etcd.createWatcher(watcher);
+            await this.etcd.activateWatcher(watcher);
         } catch (e) {
             Messages.error(e);
             return Promise.reject(new WatcherManagerError(e));
         }
 
-        watcherStream = this.etcd.registerWatcherEvents(
-            watcherStream as Watcher,
-            watcher.actions
-        );
-        this.$store.commit('watcher', {
-            key: watcher.name,
-            listener: watcherStream,
-            op: 'set',
-        });
-        watcher.activated = true;
         return Promise.resolve(this);
     }
 

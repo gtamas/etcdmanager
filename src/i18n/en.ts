@@ -421,6 +421,7 @@ export default {
             messages: {
                 pwmatch: 'The passwords do not match',
                 invalid: 'The password is invalid',
+                norights: 'There are no roles. Add one now!',
             },
         },
     },

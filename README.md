@@ -7,7 +7,7 @@ This is gonna be a free, cross-platform ETCD v3 client and GUI. The goal of the 
  Currently only the pre-alpha dektop version is available.
 
 **Attention!**
-This is still a work in progress, it's NOT production ready yet! Use at your own risk!
+This is still a work in progress, it's NOT production ready yet! Use it at your own risk!
 
 ## Install
 

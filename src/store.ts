@@ -29,7 +29,6 @@ export default new Vuex.Store({
         },
         watchers: {
             autoload: false,
-            autoshutdown: false,
             error: true,
             disconnets: true,
             reconnects: true,

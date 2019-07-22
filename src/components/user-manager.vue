@@ -51,7 +51,6 @@
           v-model="selected"
           :loading="loading"
         >
-          <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
           <template v-slot:items="props">
             <td>
               <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>

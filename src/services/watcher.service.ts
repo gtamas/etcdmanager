@@ -8,6 +8,7 @@ import { WatcherEntry } from '../../types';
 import store from '@/store';
 import Messages from '@/lib/messages';
 
+
 export default class WatcherService extends EtcdService implements DataService {
 
     constructor(private ls: any, client?: Etcd3) {
@@ -22,7 +23,7 @@ export default class WatcherService extends EtcdService implements DataService {
             case 'delete':
                 return `${date} The key "${args[0]}" has been deleted. Last value: "${args[1]}""`;
             case 'connected':
-                return `${date} The watcher ${args[0]} has been connected!""`;
+                return `${date} The watcher ${args[0]} has been successfully reconnected!""`;
             case 'end':
                 return `${date} A watcher has been closed!""`;
             case 'disconnected':
@@ -76,6 +77,30 @@ export default class WatcherService extends EtcdService implements DataService {
         }
     }
 
+    public async activateWatcher(
+        watcher: WatcherEntry
+    ): Promise<any> {
+        let watcherStream: Watcher | null = null;
+        try {
+            watcherStream = await this.createWatcher(watcher);
+        } catch (e) {
+            Messages.error(e);
+            return Promise.reject(new Error(e));
+        }
+
+        watcherStream = this.registerWatcherEvents(
+            watcherStream as Watcher,
+            watcher.actions
+        );
+        store.commit('watcher', {
+            key: watcher.name,
+            listener: watcherStream,
+            op: 'set',
+        });
+        watcher.activated = true;
+        return Promise.resolve(this);
+    }
+
     public listWatchers(): WatcherEntry[] {
         const watchers = JSON.parse(this.ls.get('watchers')) || [];
         return watchers;
@@ -117,8 +142,19 @@ export default class WatcherService extends EtcdService implements DataService {
             watcher.on(action.event.name as 'put', this.handleEvent(action.event.name, action.action.value));
         });
 
-        watcher.on('disconnected', this.handleEvent('disconnected', 0));
-        watcher.on('error', this.handleEvent('error', 0));
+
+        if (store.state.watchers.disconnets) {
+            watcher.on('disconnected', this.handleEvent('disconnected', 0));
+        }
+
+        if (store.state.watchers.reconnects) {
+            watcher.on('connected', this.handleEvent('connected', 0));
+        }
+
+        if (store.state.watchers.error) {
+            watcher.on('error', this.handleEvent('error', 0));
+        }
+
 
         return watcher;
     }

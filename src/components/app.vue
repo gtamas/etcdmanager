@@ -3,7 +3,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import Menu from './menu.vue';
 import { omit } from 'lodash-es';
 import { ipcRenderer } from 'electron';
-import { join } from 'path';
+import WatcherService from '../services/watcher.service';
+import { GenericObject } from '../../types';
 
 @Component({
     name: 'App',
@@ -15,10 +16,6 @@ export default class App extends Vue {
     public drawer: boolean = true;
     public year = new Date().getFullYear();
     public version: string;
-    public logoPath: string | undefined = join(
-        process.env.BASE_URL as string,
-        'etcd-glyph-color.png',
-    );
 
     constructor() {
         super();
@@ -60,9 +57,28 @@ export default class App extends Vue {
         this.$store.commit('version');
     }
 
+    private async loadOrDisabledWatchers(config: GenericObject) {
+        const watcherService = new WatcherService(
+            // @ts-ignore
+            this.$ls,
+            this.$store.state.connection.getClient()
+        );
+        const watchers = watcherService.listWatchers();
+        for (const watcherEntry of watchers) {
+            if (config.watchers.autoload) {
+                await watcherService.activateWatcher(watcherEntry);
+            } else {
+                watcherEntry.activated = false;
+            }
+        }
+        // @ts-ignore
+        this.$ls.set('watchers', JSON.stringify(watchers));
+    }
+
     public mounted() {
         // @ts-ignore
         const config = this.$ls.get('config');
+
         if (config) {
             const cfg = JSON.parse(config);
             this.$store.commit('config', cfg.config);
@@ -81,6 +97,7 @@ export default class App extends Vue {
                     ...{ hosts: `${cfg.etcd.hosts}:${cfg.etcd.port}` },
                 });
             }
+            this.loadOrDisabledWatchers(cfg);
         }
     }
 }
@@ -119,7 +136,7 @@ export default class App extends Vue {
       </v-toolbar-side-icon>
       <v-toolbar-title>ETCD Manager v{{ version }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <img :src="logoPath" alt="ETCD" class="logo" />
+      <img src="../assets/etcd-glyph-color.png" alt="ETCD" class="logo" />
     </v-toolbar>
     <v-content>
       <v-container v-bind:class="{ 'bg-pan-left': animate, bg: background }" fluid fill-height>
@@ -149,7 +166,7 @@ export default class App extends Vue {
               label="Console"
               clearable
               solo
-              color="success"
+              color="rgba(0,255,0,0.5)"
               readonly
               no-resize
               single-line
@@ -225,5 +242,9 @@ export default class App extends Vue {
 
 .fg {
     opacity: 0.8;
+}
+
+.theme--dark.v-input:not(.v-input--is-disabled) textarea {
+    color: rgba(0, 255, 0, 0.5) !important;
 }
 </style>
