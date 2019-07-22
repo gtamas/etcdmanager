@@ -58,4 +58,7 @@ new Vue({
         //  @ts-ignore
         return h(App);
     },
+    mounted() {
+        this.$router.push('/');
+      },
 }).$mount('#app');

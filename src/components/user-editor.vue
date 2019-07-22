@@ -64,6 +64,7 @@
             <template v-if="showRights">
             <h2 class="subheading">Roles</h2>
             <hr />
+              <v-alert  v-if="roles.length === 0" :value="true" color="error" icon="warning">{{ $t('userEditor.messages.norights') }}</v-alert>
               <v-checkbox
                 @change="setRole(role)"
                 v-for="role in roles"
@@ -228,7 +229,6 @@ export default class UserEditor extends BaseEditor {
     }
 
     public async created() {
-        this.showRights = !this.createMode;
         try {
             this.roles = await this.roleService.getRoles();
             this.ownRoles = this.data.roles
@@ -239,6 +239,8 @@ export default class UserEditor extends BaseEditor {
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
         }
+
+        this.showRights = !this.createMode;
     }
 
     public getType(): string {

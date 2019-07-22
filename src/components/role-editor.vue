@@ -57,9 +57,6 @@
                   </v-tooltip>
                 </td>
               </template>
-              <template v-slot:no-data>
-                <v-alert :value="true" color="error" icon="warning">{{ $t('common.lists.nodata') }}</v-alert>
-              </template>
             </v-data-table>
 
             <v-btn :disabled="isValid()" round color="primary" @click="submit">
