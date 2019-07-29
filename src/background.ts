@@ -79,16 +79,18 @@ function createAppMenu() {
                 { role: 'cut' },
                 { role: 'copy' },
                 { role: 'paste' },
-                ...(isMac ? [
-                    { role: 'pasteAndMatchStyle' },
-                    { role: 'delete' },
-                    { role: 'selectAll' },
-                    { type: 'separator' },
-                ] : [
-                        { role: 'delete' },
-                        { type: 'separator' },
-                        { role: 'selectAll' },
-                    ]),
+                ...(isMac
+                    ? [
+                          { role: 'pasteAndMatchStyle' },
+                          { role: 'delete' },
+                          { role: 'selectAll' },
+                          { type: 'separator' },
+                      ]
+                    : [
+                          { role: 'delete' },
+                          { type: 'separator' },
+                          { role: 'selectAll' },
+                      ]),
             ],
         },
         {
@@ -107,9 +109,9 @@ function createAppMenu() {
                 { role: 'zoomout' },
                 { type: 'separator' },
                 { role: 'togglefullscreen' },
-                ...(isDevelopment ? [
-                    { type: 'separator' },
-                    { role: 'toggledevtools' }] : []),
+                ...(isDevelopment
+                    ? [{ type: 'separator' }, { role: 'toggledevtools' }]
+                    : []),
             ],
         },
         {
@@ -118,45 +120,45 @@ function createAppMenu() {
         },
     ];
 
-
-    template.unshift(isMac ? {
-        label: app.getName(),
-        submenu: [
-            { role: 'about' },
-            { type: 'separator' },
-            { role: 'services' },
-            { type: 'separator' },
-            { role: 'hide' },
-            { role: 'hideothers' },
-            { role: 'unhide' },
-            { type: 'separator' },
-            { role: 'quit' },
-        ],
-    } : {
-            label: 'File',
-            submenu: [
-                { role: 'quit' },
-            ],
-        });
-
+    template.unshift(
+        isMac
+            ? {
+                  label: app.getName(),
+                  submenu: [
+                      { role: 'about' },
+                      { type: 'separator' },
+                      { role: 'services' },
+                      { type: 'separator' },
+                      { role: 'hide' },
+                      { role: 'hideothers' },
+                      { role: 'unhide' },
+                      { type: 'separator' },
+                      { role: 'quit' },
+                  ],
+              }
+            : {
+                  label: 'File',
+                  submenu: [{ role: 'quit' }],
+              }
+    );
 
     menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
 }
 
-
 function setAboutPanel() {
     const year = new Date().getFullYear();
-    app.setAboutPanelOptions({
-        applicationName: 'ETCD Manager',
-        applicationVersion: app.getVersion(),
-        copyright: `Copyright ${year} by Contributors. All rights reserved.`,
-        credits: 'Contributors',
-        website: 'http://www.etcdmanager.com',
-        iconPath: join(__static, '/icons/64x64.png'),
-    });
+    if (process.platform !== 'win32') {
+        app.setAboutPanelOptions({
+            applicationName: 'ETCD Manager',
+            applicationVersion: app.getVersion(),
+            copyright: `Copyright ${year} by Contributors. All rights reserved.`,
+            credits: 'Contributors',
+            website: 'http://www.etcdmanager.com',
+            iconPath: join(__static, '/icons/64x64.png'),
+        });
+    }
 }
-
 
 function createWindow() {
     // Create the browser window.
