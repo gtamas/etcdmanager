@@ -1,20 +1,11 @@
 {
   "name": "etcd-manager",
-  "title": "ETCD Manager",
-  "description": "Multi-platform ETCD v3 client and GUI",
   "version": "0.1.2",
-  "homepage": "https://github.com/gtamas/etcdmanager",
   "private": true,
+  "description": "Multi-platform ETCD v3 client and GUI",
   "author": "Tamas Geschitz <tamas.geschitz@icellmobilsoft.hu>",
-  "contributors": [],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gtamas/etcdmanager.git"
-  },
-  "bugs": {
-    "url": "https://github.com/gtamas/etcdmanager/issues"
-  },
   "scripts": {
+    "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=public --flatten",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "npx tslint -p tsconfig.json",
@@ -26,10 +17,12 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@icell/proto-loader": "^0.5.1",
     "@trodi/electron-splashscreen": "^0.3.4",
     "etcd3": "^0.2.11",
-    "grpc": "^1.20.3",
+    "grpc": "^1.22.2",
     "lodash-es": "^4.17.11",
+    "protobufjs": "^6.8.8",
     "uuid": "^3.3.2",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
@@ -50,6 +43,7 @@
     "@vue/cli-plugin-typescript": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
     "electron": "^5.0.0",
+    "electron-icon-builder": "^1.0.1",
     "husky": "^3.0.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.1.0",
@@ -59,9 +53,14 @@
     "vue-devtools": "^5.0.0-beta.1",
     "vue-template-compiler": "^2.5.21"
   },
+  "bugs": {
+    "url": "https://github.com/gtamas/etcdmanager/issues"
+  },
+  "contributors": [],
   "engines": {
     "node": ">= 10.0.0"
   },
+  "homepage": "https://github.com/gtamas/etcdmanager",
   "keywords": [
     "etcd",
     "gui",
@@ -69,5 +68,10 @@
     "admin",
     "app"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gtamas/etcdmanager.git"
+  },
+  "title": "ETCD Manager"
 }

@@ -129,6 +129,7 @@ export default class App extends Vue {
       </v-card>
     </v-dialog>
 
+
     <main-menu v-bind:drawer="drawer"></main-menu>
     <v-toolbar app fixed clipped-left>
       <v-toolbar-side-icon @click.stop="drawer = !drawer">
@@ -136,7 +137,7 @@ export default class App extends Vue {
       </v-toolbar-side-icon>
       <v-toolbar-title>ETCD Manager v{{ version }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <img src="../assets/etcd-glyph-color.png" alt="ETCD" class="logo" />
+      <img src="/assets/etcd-glyph-color.png" alt="ETCD" class="logo" />
     </v-toolbar>
     <v-content>
       <v-container v-bind:class="{ 'bg-pan-left': animate, bg: background }" fluid fill-height>
@@ -208,7 +209,7 @@ export default class App extends Vue {
     background-blend-mode: var(--blend-top, normal),
         var(--blend-bottom, saturation), normal;
 
-    --image2: url('../assets/logo2.svg');
+    --image2: url('/assets/logo2.svg');
 
     --color-v: black;
     --color: grey;
