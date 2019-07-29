@@ -7,7 +7,7 @@
             <h3 class="headline text-md-center">ETCD Manager</h3>
             <div>{{ $t('about.version') }}: {{ version }}</div>
             <div class="text-md-center">
-              <img src="../assets/etcd-stacked-color.png" alt="ETCD">
+              <img src="/assets/etcd-stacked-color.png" alt="ETCD">
             </div>
             <h3 class="subheading text-md-center">{{ $t('about.tagline') }}</h3>
             <div>{{ $t('about.copyright', {year}) }}</div>

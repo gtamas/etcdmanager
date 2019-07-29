@@ -98,7 +98,9 @@ function createAppMenu() {
                 ...(isDevelopment ? [
                     { role: 'reload' },
                     { role: 'forcereload' },
-                ] : []),
+                ] : [
+                    { role: 'toggledevtools' },
+                ]),
                 { type: 'separator' },
                 { role: 'resetzoom' },
                 { role: 'zoomin' },
@@ -151,7 +153,7 @@ function setAboutPanel() {
         copyright: `Copyright ${year} by Contributors. All rights reserved.`,
         credits: 'Contributors',
         website: 'http://www.etcdmanager.com',
-        iconPath: join(__static, '/png/64x64.png'),
+        iconPath: join(__static, '/icons/64x64.png'),
     });
 }
 
@@ -162,7 +164,7 @@ function createWindow() {
         width: 800,
         height: 600,
         title: 'ETCD Manager',
-        icon: join(__dirname, '/png/64x64.png'),
+        icon: join(__static, '/icons/64x64.png'),
         webPreferences: {
             nodeIntegration: true,
         },
@@ -232,7 +234,7 @@ app.on('ready', async () => {
             console.error('Vue Devtools failed to install:', e.toString());
         }
     }
-    new Tray(join(__static, '/png/24x24_bw.png'));
+    new Tray(join(__static, '/icons/24x24.png'));
     createAppMenu();
     setAboutPanel();
     createWindow();
