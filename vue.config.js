@@ -9,7 +9,7 @@ module.exports = {
         },
         resolve: {
             alias: {
-                '@grpc/proto-loader': '@icell/proto-loader'
+                '@grpc/proto-loader': 'webpack-proto-loader'
             }
         },
         module: {
