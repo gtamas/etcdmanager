@@ -173,13 +173,13 @@ export default class KeyManager extends CrudBase implements List {
                 ...this.currentItem,
                 ...{ value, key: item.key },
             };
-            return Promise.resolve(this);
         } catch (error) {
             // @ts-ignore
             CrudBase.options.methods.editItem.call(this, item, false);
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
         }
+
+         return Promise.resolve(this);
     }
 
     public async touch(item: EtcdItem, selection: boolean = false): Promise<KeyManager> {
@@ -194,12 +194,12 @@ export default class KeyManager extends CrudBase implements List {
             await this.etcd.touch(toBeTouched);
             this.toggleLoading();
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
             this.toggleLoading();
-            return Promise.reject(this);
         }
+
+         return Promise.resolve(this);
     }
 
     public async confirmPurge(): Promise<KeyManager> {
@@ -207,11 +207,11 @@ export default class KeyManager extends CrudBase implements List {
             // @ts-ignore
             await CrudBase.options.methods.confirmPurge.call(this);
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
         }
+
+        return Promise.resolve(this);
     }
 
     public async confirmDelete(): Promise<KeyManager> {
@@ -237,11 +237,11 @@ export default class KeyManager extends CrudBase implements List {
                 return { key: entry[0], value: entry[1] };
             });
             this.loading = false;
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
         }
+
+        return Promise.resolve(this);
     }
 }
 </script>

@@ -80,6 +80,7 @@ import RoleService from '../services/role.service';
 import { Prop } from 'vue-property-decorator';
 import { ValidationError } from '../lib/validation-error.class';
 
+//@ts-ignore
 class PermissionEditorError extends Error {
     constructor(message: any) {
         super(message);
@@ -159,10 +160,10 @@ export default class PermissionEditor extends BaseEditor {
         return errors;
     }
 
-    public async submit(): Promise<PermissionEditor | PermissionEditorError> {
+    public async submit(): Promise<PermissionEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(new ValidationError(''));
+            return Promise.reject(new ValidationError('Form is invalid..'));
         }
 
         try {
@@ -180,21 +181,22 @@ export default class PermissionEditor extends BaseEditor {
             this.toggleLoading();
             this.$emit('permission');
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (e) {
             this.toggleLoading();
             if (e === false) {
                 this.$store.commit(
                     'message',
                     Messages.error(
-                        this.$t('permissionEditor.messages.duplicateKey').toString()
+                        this.$t(
+                            'permissionEditor.messages.duplicateKey'
+                        ).toString()
                     )
                 );
-                return Promise.reject(new PermissionEditorError(''));
             }
             this.$store.commit('message', Messages.error(e));
-            return Promise.reject(new PermissionEditorError(e));
         }
+
+        return Promise.resolve(this);
     }
 }
 </script>

@@ -93,10 +93,7 @@
 
 <script lang='ts'>
 import Component from 'vue-class-component';
-import {
-    GenericObject,
-    PermissionObject,
-} from '../../types';
+import { GenericObject, PermissionObject } from '../../types';
 import { required, alphaNum } from 'vuelidate/lib/validators';
 import Messages from '@/lib/messages';
 import { BaseEditor } from '../lib/editor.class';
@@ -105,6 +102,7 @@ import { Prop } from 'vue-property-decorator';
 import PermissionEditor from './permission-editor.vue';
 import { ValidationError } from '../lib/validation-error.class';
 
+//@ts-ignore
 class RoleEditorError extends Error {
     constructor(message: any) {
         super(message);
@@ -184,7 +182,7 @@ export default class RoleEditor extends BaseEditor {
         this.translateHeaders(
             'roleEditor.columns.key',
             'roleEditor.columns.permission',
-            'roleEditor.columns.prefix',
+            'roleEditor.columns.prefix'
         );
     }
 
@@ -211,7 +209,7 @@ export default class RoleEditor extends BaseEditor {
         return this.$v.$invalid || this.roleExists;
     }
 
-    public async loadPermissions(): Promise<RoleEditor | RoleEditorError> {
+    public async loadPermissions(): Promise<RoleEditor> {
         try {
             const permissions = await this.etcd.rolePermissions(this.name);
             this.permissions = permissions.map((perm) => {
@@ -221,10 +219,11 @@ export default class RoleEditor extends BaseEditor {
                     permission: perm.permission,
                 };
             });
-            return Promise.resolve(this);
         } catch (e) {
-            return Promise.reject(new RoleEditorError(e));
+             this.$store.commit('message', Messages.error(e));
         }
+
+         return Promise.resolve(this);
     }
 
     addPermission(): RoleEditor {
@@ -239,14 +238,15 @@ export default class RoleEditor extends BaseEditor {
         return this;
     }
 
-    public async savePermission(): Promise<RoleEditor | RoleEditorError> {
+    public async savePermission(): Promise<RoleEditor> {
         try {
             await this.loadPermissions();
             this.cancelPermission();
-            return Promise.resolve(this);
         } catch (e) {
-            return Promise.reject(new RoleEditorError(e));
+             this.$store.commit('message', Messages.error(e));
         }
+
+        return Promise.resolve(this);
     }
 
     editPermission(permission: PermissionObject): RoleEditor {
@@ -257,8 +257,8 @@ export default class RoleEditor extends BaseEditor {
     }
 
     public async revokePermission(
-        permission: PermissionObject,
-    ): Promise<RoleEditor | RoleEditorError> {
+        permission: PermissionObject
+    ): Promise<RoleEditor> {
         try {
             this.toggleLoading();
             await this.etcd.setPermissions({
@@ -271,21 +271,20 @@ export default class RoleEditor extends BaseEditor {
             await this.loadPermissions();
             this.toggleLoading();
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
-            return Promise.reject(new RoleEditorError(e));
         }
+        return Promise.resolve(this);
     }
 
-    public async submit(): Promise<RoleEditor | ValidationError | RoleEditorError> {
+    public async submit(): Promise<RoleEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(new ValidationError(''));
+            return Promise.reject(new ValidationError('Form is invalid..'));
         }
 
         const backend = new RoleService(
-            this.$store.state.connection.getClient(),
+            this.$store.state.connection.getClient()
         );
 
         try {
@@ -296,12 +295,12 @@ export default class RoleEditor extends BaseEditor {
             this.$store.commit('message', Messages.success());
             this.$emit('reload');
             this.$v.$reset();
-            return Promise.resolve(this);
         } catch (e) {
             this.toggleLoading();
             this.$store.commit('message', Messages.error(e));
-            return Promise.reject(new RoleEditorError(e));
         }
+
+        return Promise.resolve(this);
     }
 }
 </script>

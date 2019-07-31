@@ -63,6 +63,7 @@ import { BaseEditor } from '../lib/editor.class';
 import { ValidationError } from '../lib/validation-error.class';
 import { Prop } from 'vue-property-decorator';
 
+//@ts-ignore
 class KeyError extends Error {
     constructor(message: any) {
         super(message);
@@ -140,7 +141,7 @@ export default class KeyEditor extends BaseEditor {
         return errors;
     }
 
-    public async submit(): Promise<KeyEditor | Error> {
+    public async submit(): Promise<KeyEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
             return Promise.reject(new ValidationError('Form is invalid..'));
@@ -164,20 +165,20 @@ export default class KeyEditor extends BaseEditor {
                     this.key = '';
                     this.value = '';
                 }
-                return Promise.resolve(this);
+            } else {
+                this.$store.commit(
+                    'message',
+                    Messages.error(
+                        this.$t('keyEditor.messages.duplicateKey').toString()
+                    )
+                );
             }
-            this.$store.commit(
-                'message',
-                Messages.error(
-                    this.$t('keyEditor.messages.duplicateKey').toString()
-                )
-            );
-            return Promise.reject(new KeyError(''));
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
             this.toggleLoading();
-            return Promise.reject(new KeyError(e));
         }
+
+        return Promise.resolve(this);
     }
 }
 </script>
