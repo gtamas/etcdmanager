@@ -285,7 +285,7 @@ export default class WatcherManager extends CrudBase implements List {
             this.noSelection = false;
             const watcherNames = this.getSelectedKeys('name');
             for (const name of watcherNames) {
-                const watcher = this.watchers.find((w) => w.name === name);
+                const watcher = this.watchers.find(w => w.name === name);
                 if (activate) {
                     await this.activateWatcher(watcher as WatcherEntry);
                 } else {

@@ -63,7 +63,7 @@ import { BaseEditor } from '../lib/editor.class';
 import { ValidationError } from '../lib/validation-error.class';
 import { Prop } from 'vue-property-decorator';
 
-//@ts-ignore
+// @ts-ignore
 class KeyError extends Error {
     constructor(message: any) {
         super(message);

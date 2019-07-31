@@ -4,7 +4,7 @@ import Vue from 'vue';
 
 // @ts-ignore
 export function isConfiguredGuard(to: Route, from: Route, next: any) {
-    //@ts-ignore
+    // @ts-ignore
     const cfg = JSON.parse(Vue.ls.get('config'));
     if (!cfg || !cfg.etcd || !cfg.etcd.hosts || !cfg.etcd.port) {
         store.commit('message', {

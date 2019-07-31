@@ -265,7 +265,7 @@ import {
     integer,
     ipAddress,
     or,
-    url
+    url,
 } from 'vuelidate/lib/validators';
 import { omit } from 'lodash-es';
 
@@ -276,7 +276,7 @@ import { omit } from 'lodash-es';
         endpoint: {
             required,
             // @ts-ignore
-             or: or(ipAddress, url)
+            or: or(ipAddress, url),
         },
         port: {
             required,
@@ -440,9 +440,9 @@ export default class Configuration extends Vue {
             return errors;
         }
 
-         // @ts-ignore
-        if(!this.$v.endpoint.or) {
-             errors.push(this.$t('settings.messages.ipOrUrl'));
+        // @ts-ignore
+        if (!this.$v.endpoint.or) {
+            errors.push(this.$t('settings.messages.ipOrUrl'));
         }
 
         // @ts-ignore
