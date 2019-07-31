@@ -165,7 +165,7 @@ export default {
             },
             messages: {
                 success: 'Configuration has been saved successfully',
-                ip: 'IP address appears to be invalid',
+                ipOrUrl: 'The IP address or URL appears to be invalid',
             },
 
         },
