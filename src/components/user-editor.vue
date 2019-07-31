@@ -103,7 +103,7 @@ import RoleService from '../services/role.service';
 import store from '../store';
 import { ValidationError } from '../lib/validation-error.class';
 
-//@ts-ignore
+// @ts-ignore
 class UserEditorError extends Error {
     constructor(message: any) {
         super(message);

@@ -80,7 +80,7 @@ import RoleService from '../services/role.service';
 import { Prop } from 'vue-property-decorator';
 import { ValidationError } from '../lib/validation-error.class';
 
-//@ts-ignore
+// @ts-ignore
 class PermissionEditorError extends Error {
     constructor(message: any) {
         super(message);

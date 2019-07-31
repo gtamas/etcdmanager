@@ -102,7 +102,7 @@ import { Prop } from 'vue-property-decorator';
 import PermissionEditor from './permission-editor.vue';
 import { ValidationError } from '../lib/validation-error.class';
 
-//@ts-ignore
+// @ts-ignore
 class RoleEditorError extends Error {
     constructor(message: any) {
         super(message);

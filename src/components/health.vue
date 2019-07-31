@@ -53,7 +53,7 @@
                         </v-btn>
                       </v-hover>
                     </template>
-                    <span>{{  $t("cluster.actions.check") }}</span>
+                    <span>{{ $t("cluster.actions.check") }}</span>
                   </v-tooltip>
                   <v-tooltip bottom max-width="200">
                     <template v-slot:activator="{ on }">
@@ -69,7 +69,7 @@
                         </v-btn>
                       </v-hover>
                     </template>
-                    <span>{{  $t("cluster.actions.status") }}</span>
+                    <span>{{ $t("cluster.actions.status") }}</span>
                   </v-tooltip>
                   <v-spacer></v-spacer>
                   <v-icon dark v-bind:color="getColor(props.item.ID)">{{ getIcon(props.item.ID) }}</v-icon>
@@ -83,37 +83,41 @@
       <v-dialog v-model="statusDialog" v-if="currentStats" persistent max-width="290">
         <v-card dark>
           <v-toolbar dark flat>
-            <v-toolbar-title>{{  $t("cluster.dialogs.info.title") }}</v-toolbar-title>
+            <v-toolbar-title>{{ $t("cluster.dialogs.info.title") }}</v-toolbar-title>
           </v-toolbar>
           <v-list dense>
             <v-list-tile>
-              <v-list-tile-content>{{  $t("cluster.dialogs.info.labels.db") }}:</v-list-tile-content>
+              <v-list-tile-content>{{ $t("cluster.dialogs.info.labels.db") }}:</v-list-tile-content>
               <v-list-tile-content class="align-end">{{ currentStats.dbSize }}</v-list-tile-content>
             </v-list-tile>
 
             <v-list-tile>
-              <v-list-tile-content>{{  $t("cluster.dialogs.info.labels.leader") }}:</v-list-tile-content>
+              <v-list-tile-content>{{ $t("cluster.dialogs.info.labels.leader") }}:</v-list-tile-content>
               <v-list-tile-content class="align-end">{{ currentStats.leader }}</v-list-tile-content>
             </v-list-tile>
 
             <v-list-tile>
-              <v-list-tile-content>{{  $t("cluster.dialogs.info.labels.raftIndex") }}:</v-list-tile-content>
+              <v-list-tile-content>{{ $t("cluster.dialogs.info.labels.raftIndex") }}:</v-list-tile-content>
               <v-list-tile-content class="align-end">{{ currentStats.raftIndex }}</v-list-tile-content>
             </v-list-tile>
 
             <v-list-tile>
-              <v-list-tile-content>{{  $t("cluster.dialogs.info.labels.raftTerm") }}:</v-list-tile-content>
+              <v-list-tile-content>{{ $t("cluster.dialogs.info.labels.raftTerm") }}:</v-list-tile-content>
               <v-list-tile-content class="align-end">{{ currentStats.raftTerm }}</v-list-tile-content>
             </v-list-tile>
 
             <v-list-tile>
-              <v-list-tile-content>{{  $t("cluster.dialogs.info.labels.version") }}:</v-list-tile-content>
+              <v-list-tile-content>{{ $t("cluster.dialogs.info.labels.version") }}:</v-list-tile-content>
               <v-list-tile-content class="align-end">{{ currentStats.version }}</v-list-tile-content>
             </v-list-tile>
           </v-list>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="warning" round @click="cancelStatusDialog">{{  $t("cluster.dialogs.info.actions.close") }}</v-btn>
+            <v-btn
+              color="warning"
+              round
+              @click="cancelStatusDialog"
+            >{{ $t("cluster.dialogs.info.actions.close") }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -125,11 +129,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import StatsService from '../services/stats.service';
-import {
-    IMember,
-    IAlarmResponse,
-    IStatusResponse,
-} from 'etcd3';
+import { IMember, IAlarmResponse, IStatusResponse } from 'etcd3';
 import Messages from '../lib/messages';
 
 @Component({
@@ -153,7 +153,6 @@ export default class HealthCheck extends Vue {
         super();
         this.etcd = new StatsService(this.$store.state.connection.getClient());
     }
-
 
     created() {
         this.fetchMembers();
@@ -191,9 +190,8 @@ export default class HealthCheck extends Vue {
         try {
             const res = await this.etcd.listMembers();
             this.nodes = res.members;
-        }
-        catch(e) {
-             this.$store.commit('message', Messages.error(e));
+        } catch (e) {
+            this.$store.commit('message', Messages.error(e));
         }
     }
 }
