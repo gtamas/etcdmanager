@@ -10,7 +10,7 @@
           color="white"
           v-model="filter"
           prepend-icon="search"
-         :placeholder="$t('common.lists.filter')"
+          :placeholder="$t('common.lists.filter')"
         ></v-text-field>
         <v-tooltip bottom max-width="200">
           <template v-slot:activator="{ on }">
@@ -48,7 +48,9 @@
           item-key="name"
           select-all
           v-model="selected"
+          :loading="loading"
         >
+          <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
           <template v-slot:items="props">
             <td>
               <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
@@ -163,11 +165,11 @@ export default class RoleManager extends CrudBase implements List {
             // @ts-ignore
             await CrudBase.options.methods.confirmPurge.call(this);
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
         }
+
+        return Promise.resolve(this);
     }
 
     public async confirmDelete(): Promise<RoleManager> {
@@ -176,24 +178,24 @@ export default class RoleManager extends CrudBase implements List {
             await CrudBase.options.methods.confirmDelete.call(this, 'name');
             await this.load();
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
         }
 
         this.cancelDelete();
+        return Promise.resolve(this);
     }
 
     public async load(): Promise<RoleManager> {
         this.loading = true;
         try {
             this.data = await this.etcd.getRoles();
-            return Promise.resolve(this);
+            this.loading = false;
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
         }
+
+        return Promise.resolve(this);
     }
 }
 </script>

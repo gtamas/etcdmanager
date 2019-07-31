@@ -23,7 +23,7 @@ export default class EtcdService {
         try {
             this.client = new Etcd3(options);
         } catch (e) {
-            throw (e);
+            throw e;
         }
 
         return this;

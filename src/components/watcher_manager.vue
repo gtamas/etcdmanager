@@ -205,7 +205,7 @@ export default class WatcherManager extends CrudBase implements List {
                 watcher.activated = false;
                 this.$store.commit('watcher', { key: watcher.name, op: 'del' });
             } catch (e) {
-                return Promise.reject(new WatcherManagerError(e));
+                this.$store.commit('message', Messages.error(e));
             }
         }
         return Promise.resolve(this);
@@ -214,12 +214,10 @@ export default class WatcherManager extends CrudBase implements List {
     public async activateWatcher(
         watcher: WatcherEntry
     ): Promise<WatcherManager | WatcherManagerError> {
-
         try {
             await this.etcd.activateWatcher(watcher);
         } catch (e) {
-            Messages.error(e);
-            return Promise.reject(new WatcherManagerError(e));
+            this.$store.commit('message', Messages.error(e));
         }
 
         return Promise.resolve(this);
@@ -240,7 +238,7 @@ export default class WatcherManager extends CrudBase implements List {
                 }
             }
         } catch (e) {
-            return Promise.reject(new WatcherManagerError(e));
+            this.$store.commit('message', Messages.error(e));
         }
 
         return Promise.resolve(this);
@@ -263,7 +261,7 @@ export default class WatcherManager extends CrudBase implements List {
         return Promise.resolve(this);
     }
 
-    public async confirmPurge(): Promise<WatcherManager | WatcherManagerError> {
+    public async confirmPurge(): Promise<WatcherManager> {
         try {
             // @ts-ignore
             await CrudBase.options.methods.confirmPurge.call(this);
@@ -275,21 +273,19 @@ export default class WatcherManager extends CrudBase implements List {
             this.$store.commit('watcher', { op: 'clear' });
             await this.load();
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(new WatcherManagerError(error));
         }
+
+        return Promise.resolve(this);
     }
 
-    public async toggleMany(
-        activate: boolean = true
-    ): Promise<WatcherManager | WatcherManagerError> {
+    public async toggleMany(activate: boolean = true): Promise<WatcherManager> {
         if (this.hasSelection()) {
             this.noSelection = false;
             const watcherNames = this.getSelectedKeys('name');
             for (const name of watcherNames) {
-                const watcher = this.watchers.find(w => w.name === name);
+                const watcher = this.watchers.find((w) => w.name === name);
                 if (activate) {
                     await this.activateWatcher(watcher as WatcherEntry);
                 } else {
@@ -304,9 +300,7 @@ export default class WatcherManager extends CrudBase implements List {
         return Promise.resolve(this);
     }
 
-    public async confirmDelete(): Promise<
-        WatcherManager | WatcherManagerError
-    > {
+    public async confirmDelete(): Promise<WatcherManager> {
         try {
             const item = this.itemToDelete as GenericObject;
             const toBeRemoved = this.hasSelection()
@@ -316,11 +310,11 @@ export default class WatcherManager extends CrudBase implements List {
             await CrudBase.options.methods.confirmDelete.call(this, 'name');
             this.$store.commit('message', Messages.success());
             await this.unregisterWatchers(toBeRemoved);
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(new WatcherManagerError(error));
         }
+
+        return Promise.resolve(this);
     }
 
     public async editItem(item: WatcherEntry): Promise<WatcherManager> {

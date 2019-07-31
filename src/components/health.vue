@@ -126,11 +126,11 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import StatsService from '../services/stats.service';
 import {
-    IMemberListResponse,
     IMember,
     IAlarmResponse,
     IStatusResponse,
 } from 'etcd3';
+import Messages from '../lib/messages';
 
 @Component({
     name: 'health-check',
@@ -187,10 +187,14 @@ export default class HealthCheck extends Vue {
         this.statusDialog = false;
     }
 
-    private fetchMembers() {
-        this.etcd.listMembers().then((res: IMemberListResponse) => {
+    private async fetchMembers() {
+        try {
+            const res = await this.etcd.listMembers();
             this.nodes = res.members;
-        });
+        }
+        catch(e) {
+             this.$store.commit('message', Messages.error(e));
+        }
     }
 }
 </script>

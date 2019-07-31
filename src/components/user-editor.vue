@@ -103,6 +103,7 @@ import RoleService from '../services/role.service';
 import store from '../store';
 import { ValidationError } from '../lib/validation-error.class';
 
+//@ts-ignore
 class UserEditorError extends Error {
     constructor(message: any) {
         super(message);
@@ -202,7 +203,7 @@ export default class UserEditor extends BaseEditor {
 
     public async setRole(
         role: Role
-    ): Promise<UserEditor | UserEditorError> {
+    ): Promise<UserEditor> {
         try {
             if (!this.ownRoles.includes(role.name)) {
                 this.toggleLoading();
@@ -224,8 +225,9 @@ export default class UserEditor extends BaseEditor {
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
             this.toggleLoading();
-            return Promise.reject(new UserEditorError(error));
         }
+
+        return Promise.resolve(this);
     }
 
     public async created() {
@@ -250,7 +252,7 @@ export default class UserEditor extends BaseEditor {
     public async submit(): Promise<UserEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(new ValidationError(''));
+            return Promise.reject(new ValidationError('Form is invalid..'));
         }
 
         try {
@@ -275,8 +277,9 @@ export default class UserEditor extends BaseEditor {
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
             this.toggleLoading();
-            return Promise.reject(new UserEditorError(e));
         }
+
+        return Promise.resolve(this);
     }
 }
 </script>

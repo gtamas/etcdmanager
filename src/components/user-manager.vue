@@ -51,6 +51,7 @@
           v-model="selected"
           :loading="loading"
         >
+          <v-progress-linear v-slot:progress color="blue" indeterminate></v-progress-linear>
           <template v-slot:items="props">
             <td>
               <v-checkbox v-model="props.selected" primary hide-details></v-checkbox>
@@ -164,11 +165,11 @@ export default class UserManager extends CrudBase implements List {
             // @ts-ignore
             await CrudBase.options.methods.confirmPurge.call(this);
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(this);
         }
+
+        return Promise.resolve(this);
     }
 
     public async confirmDelete(): Promise<UserManager> {
@@ -176,14 +177,14 @@ export default class UserManager extends CrudBase implements List {
             // @ts-ignore
             const result = await CrudBase.options.methods.confirmDelete.call(
                 this,
-                'name',
+                'name'
             );
             this.$store.commit('message', Messages.success());
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-             return Promise.reject(this);
         }
+
+         return Promise.resolve(this);
     }
 
     public async load(): Promise<UserManager> {
@@ -191,11 +192,11 @@ export default class UserManager extends CrudBase implements List {
         try {
             this.data = await this.etcd.getUsers();
             this.loading = false;
-            return Promise.resolve(this);
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
-            return Promise.reject(error);
         }
+
+         return Promise.resolve(this);
     }
 }
 </script>
