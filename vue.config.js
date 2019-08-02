@@ -52,6 +52,10 @@ module.exports = {
                 win: {
                     icon: './public/icons/icon.ico',
                 },
+                linux:{
+                    icon: './public/icons/512x512.png',
+                    category: 'Utility'
+                },
                 mac: {
                     icon: './public/icons/icon.icns',
                 },
