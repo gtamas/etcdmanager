@@ -72,10 +72,10 @@
     "homepage": "https://github.com/gtamas/etcdmanager",
     "keywords": [
         "etcd",
+        "etcd3",
         "gui",
         "client",
-        "admin",
-        "app"
+        "admin"
     ],
     "license": "MIT",
     "repository": {
