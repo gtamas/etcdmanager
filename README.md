@@ -23,7 +23,7 @@ You may install the dev version by cloning this repository.
 git clone git@github.com:gtamas/etcdmanager.git
 ```
 
-Or you may also install the package via Yarn or NPM, although this is not recommended, since the package might not contain latest code.
+Or you may also install the Yarn / NPM package, although this is not recommended, since the package might not contain the latest code.
 
 ```
 yarn add etcd-manager
@@ -61,7 +61,7 @@ npm run electron:serve
 
 ## Upgrading
 
-We don't have automatic updates yet. If you've already installed this product and would like to upgrade, you have to download the the new release. Please see our [releases](https://github.com/gtamas/etcdmanager/releases) page. 
+We don't have automatic updates yet. If you've already installed this product and would like to upgrade, you have to download and install the the new release manually. Please see our [releases](https://github.com/gtamas/etcdmanager/releases) page. 
 
 As for the dev version, you may update that by the usual means (Yarn or Git). In any case, please read our [changelog](./CHANGELOG.md) for an overview of the most recent changes.
 
