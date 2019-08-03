@@ -51,13 +51,16 @@ module.exports = {
             builderOptions: {
                 win: {
                     icon: './public/icons/icon.ico',
+                    artifactName: '${productName}-${version}-win64.${ext}'
                 },
                 linux:{
                     icon: './public/icons/512x512.png',
+                    artifactName: '${productName}-${version}-linux.${ext}',
                     category: 'Utility'
                 },
                 mac: {
                     icon: './public/icons/icon.icns',
+                    artifactName: '${productName}-${version}-osx.${ext}'
                 },
                 files: [
                     '**/*',

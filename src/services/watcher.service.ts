@@ -143,7 +143,7 @@ export default class WatcherService extends EtcdService implements DataService {
         });
 
 
-        if (store.state.watchers.disconnets) {
+        if (store.state.watchers.disconnects) {
             watcher.on('disconnected', this.handleEvent('disconnected', 0));
         }
 
