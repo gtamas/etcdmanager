@@ -308,14 +308,12 @@ import { omit } from 'lodash-es';
     },
 })
 export default class Configuration extends Vue {
-    public formats = ['text', 'JSON'];
-    public versions = ['v2', 'v3'];
     public valid = false;
     public success = false;
     public auth = false;
     public languages = [
         { name: 'English', value: 'en' },
-        { name: 'Hungarian', value: 'hu' },
+        // { name: 'Hungarian', value: 'hu' },
     ];
 
     private tabsLength: number = 4;

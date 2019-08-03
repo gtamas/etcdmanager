@@ -87,7 +87,7 @@ export class CrudBase extends Vue implements List {
         this.purgeDialog = true;
     }
 
-    public async confirmPurge(): Promise<CrudBase | Error>  {
+    public async confirmPurge(): Promise<CrudBase | Error> {
         try {
             this.toggleLoading();
             // @ts-ignore
@@ -139,15 +139,13 @@ export class CrudBase extends Vue implements List {
     }
 
     // @ts-ignore
-    public async load(...args:any): Promise<CrudBase> {
+    public async load(...args: any): Promise<CrudBase> {
         return Promise.resolve(this);
     }
 
     public toggleLoading() {
         if (store.state.loading) {
-            setTimeout(() => {
-                store.commit('loading');
-            },         500);
+            setTimeout(() => { store.commit('loading'); }, 500);
         } else {
             store.commit('loading');
         }

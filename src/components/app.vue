@@ -5,6 +5,7 @@ import { omit } from 'lodash-es';
 import { ipcRenderer } from 'electron';
 import WatcherService from '../services/watcher.service';
 import { GenericObject } from '../../types';
+const app = require('electron').remote.app;
 
 @Component({
     name: 'App',
@@ -15,11 +16,9 @@ import { GenericObject } from '../../types';
 export default class App extends Vue {
     public drawer: boolean = true;
     public year = new Date().getFullYear();
-    public version: string;
 
     constructor() {
         super();
-        this.version = this.$store.state.version;
     }
 
     created() {
@@ -27,6 +26,13 @@ export default class App extends Vue {
         ipcRenderer.on('navigate', (event: any, message: any) => {
             this.$router.push(message);
         });
+
+        this.$store.commit('version', app.getVersion());
+        this.$store.commit('package');
+    }
+
+    get version() {
+        return this.$store.state.version;
     }
 
     get message() {
@@ -51,10 +57,6 @@ export default class App extends Vue {
 
     public hide() {
         this.$store.commit('message', { show: false });
-    }
-
-    public beforeCreate() {
-        this.$store.commit('version');
     }
 
     private async loadOrDisabledWatchers(config: GenericObject) {
@@ -128,7 +130,6 @@ export default class App extends Vue {
         </v-card-text>
       </v-card>
     </v-dialog>
-
 
     <main-menu v-bind:drawer="drawer"></main-menu>
     <v-toolbar app fixed clipped-left>

@@ -8,15 +8,15 @@ export default {
                 noResultsText: 'Nincs egyező találat',
                 nextPage: 'Következő oldal',
                 prevPage: 'Előző oldal',
-              },
-              dataTable: {
+            },
+            dataTable: {
                 rowsPerPageText: 'Elem oldalanként:',
-              },
-              noDataText: 'Nincs elérhető adat',
-              carousel: {
+            },
+            noDataText: 'Nincs elérhető adat',
+            carousel: {
                 prev: 'Korábbi vizuális',
                 next: 'Következő vizuális',
-              },
+            },
         },
         common: {
             items: {
@@ -60,8 +60,8 @@ export default {
                 pattern: 'Invalid regular expression',
             },
             messages: {
-                success: '',
-                error: '',
+                success: 'Operation successful',
+                error: 'Could not perform operation',
             },
         },
         settings: {
@@ -71,7 +71,7 @@ export default {
                 fields: {
                     endpoint: {
                         label: 'Endpoint',
-                        placeholder: 'Type in an URL..',
+                        placeholder: 'Type in an URL or IP address..',
                         tooltip: 'The URL or IP address of the ETCD server',
                     },
                     port: {
@@ -82,8 +82,8 @@ export default {
                     retries: {
                         label: 'Retries',
                         tooltip: `Whether, if a query fails as a result of a primitive GRPC error, to retry it on a different server (provided one is available).
-                            This can make service disruptions less-severe but can cause a domino effect if a particular operation causes a failure that grpc
-                            reports as some sort of internal or network error.`,
+                                This can make service disruptions less-severe but can cause a domino effect if a particular operation causes a failure that grpc
+                                reports as some sort of internal or network error.`,
                     },
                     timeout: {
                         label: 'Timeout',
@@ -386,6 +386,7 @@ export default {
             copyright: 'Copyright {year} contributors. All rights reserved.',
             tagline: 'The only ETCD GUI for web, desktop and mobile',
             actions: {
+                bugs: 'Report a bug',
                 donate: 'Donate',
                 updates: 'Check for updates',
                 github: 'Visit Github page',
@@ -425,6 +426,7 @@ export default {
             messages: {
                 pwmatch: 'The passwords do not match',
                 invalid: 'The password is invalid',
+                norights: 'There are no roles. Add one now!',
             },
         },
     },

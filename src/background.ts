@@ -7,6 +7,7 @@ import {
     Menu,
     MenuItemConstructorOptions,
     Tray,
+    shell,
 } from 'electron';
 import {
     createProtocol,
@@ -14,7 +15,9 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib';
 import * as Splashscreen from '@trodi/electron-splashscreen';
 import { join } from 'path';
+import { readFileSync } from 'fs';
 
+const pkg = JSON.parse(readFileSync(`/${app.getAppPath()}/package.json`).toString());
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
 let menu: Menu | null = null;
@@ -70,6 +73,18 @@ function createAppMenu() {
             ],
         },
         {
+            label: 'Beta',
+             // @ts-ignore
+            submenu: [
+                {
+                    label: 'Report a bug',
+                    click: () => {
+                        shell.openExternal(pkg.bugs.url);
+                    },
+                },
+            ],
+        },
+        {
             label: 'Edit',
             // @ts-ignore
             submenu: [
@@ -101,7 +116,6 @@ function createAppMenu() {
                     { role: 'reload' },
                     { role: 'forcereload' },
                 ] : [
-                    { role: 'toggledevtools' },
                 ]),
                 { type: 'separator' },
                 { role: 'resetzoom' },
@@ -161,6 +175,7 @@ function setAboutPanel() {
 }
 
 function createWindow() {
+
     // Create the browser window.
     const mainOpts = {
         width: 800,
@@ -187,6 +202,7 @@ function createWindow() {
     win.on('page-title-updated', (e) => {
         e.preventDefault();
     });
+
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode

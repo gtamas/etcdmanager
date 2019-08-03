@@ -1,78 +1,86 @@
 {
-  "name": "etcd-manager",
-  "version": "0.1.2",
-  "private": true,
-  "description": "Multi-platform ETCD v3 client and GUI",
-  "author": "Tamas Geschitz <tamas.geschitz@icellmobilsoft.hu>",
-  "scripts": {
-    "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=public --flatten",
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "npx tslint -p tsconfig.json",
-    "electron:build": "vue-cli-service electron:build",
-    "electron:serve": "vue-cli-service electron:serve",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps",
-    "test:e2e": "vue-cli-service test:e2e"
-  },
-  "main": "background.js",
-  "dependencies": {
-    "@grpc/proto-loader": "^0.5.1",
-    "@trodi/electron-splashscreen": "^0.3.4",
-    "etcd3": "^0.2.11",
-    "grpc": "^1.22.2",
-    "lodash-es": "^4.17.11",
-    "protobufjs": "^6.8.8",
-    "uuid": "^3.3.2",
-    "vue": "^2.6.10",
-    "vue-class-component": "^7.0.2",
-    "vue-i18n": "^8.11.2",
-    "vue-localstorage": "^0.6.2",
-    "vue-property-decorator": "^8.1.0",
-    "vue-router": "^3.0.3",
-    "vuelidate": "^0.7.4",
-    "vuetify": "^1.5.14",
-    "vuex": "^3.0.1",
-    "webpack-proto-loader": "^0.5.1"
-  },
-  "devDependencies": {
-    "@types/lodash-es": "^4.17.3",
-    "@types/uuid": "^3.4.4",
-    "@types/vuelidate": "^0.7.5",
-    "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-plugin-e2e-cypress": "^3.7.0",
-    "@vue/cli-plugin-typescript": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
-    "electron": "^5.0.0",
-    "electron-icon-builder": "^1.0.1",
-    "husky": "^3.0.0",
-    "node-sass": "^4.9.0",
-    "sass-loader": "^7.1.0",
-    "tslint-config-airbnb": "^5.11.1",
-    "typescript": "^3.4.3",
-    "vue-cli-plugin-electron-builder": "^1.3.2",
-    "vue-devtools": "^5.0.0-beta.1",
-    "vue-template-compiler": "^2.5.21"
-  },
-  "bugs": {
-    "url": "https://github.com/gtamas/etcdmanager/issues"
-  },
-  "contributors": [],
-  "engines": {
-    "node": ">= 10.0.0"
-  },
-  "homepage": "https://github.com/gtamas/etcdmanager",
-  "keywords": [
-    "etcd",
-    "gui",
-    "client",
-    "admin",
-    "app"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gtamas/etcdmanager.git"
-  },
-  "title": "ETCD Manager"
+    "name": "etcd-manager",
+    "version": "0.1.2-beta",
+    "description": "Multi-platform ETCD v3 client and GUI",
+    "author": "Tamas Geschitz <tamas.geschitz@icellmobilsoft.hu>",
+    "scripts": {
+        "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=public --flatten",
+        "serve": "vue-cli-service serve",
+        "build": "vue-cli-service build",
+        "lint": "npx tslint -p tsconfig.json",
+        "electron:build": "vue-cli-service electron:build",
+        "electron:serve": "vue-cli-service electron:serve",
+        "postinstall": "electron-builder install-app-deps",
+        "postuninstall": "electron-builder install-app-deps",
+        "test:e2e": "vue-cli-service test:e2e"
+    },
+    "main": "background.js",
+    "dependencies": {
+        "@grpc/proto-loader": "^0.5.1",
+        "@trodi/electron-splashscreen": "^0.3.4",
+        "etcd3": "^0.2.11",
+        "grpc": "^1.22.2",
+        "lodash-es": "^4.17.11",
+        "protobufjs": "^6.8.8",
+        "uuid": "^3.3.2",
+        "vue": "^2.6.10",
+        "vue-class-component": "^7.0.2",
+        "vue-i18n": "^8.11.2",
+        "vue-localstorage": "^0.6.2",
+        "vue-property-decorator": "^8.1.0",
+        "vue-router": "^3.0.3",
+        "vuelidate": "^0.7.4",
+        "vuetify": "^1.5.14",
+        "vuex": "^3.0.1",
+        "webpack-proto-loader": "^0.5.1"
+    },
+    "devDependencies": {
+        "@types/lodash-es": "^4.17.3",
+        "@types/uuid": "^3.4.4",
+        "@types/vuelidate": "^0.7.5",
+        "@vue/cli-plugin-babel": "^3.7.0",
+        "@vue/cli-plugin-e2e-cypress": "^3.7.0",
+        "@vue/cli-plugin-typescript": "^3.7.0",
+        "@vue/cli-service": "^3.7.0",
+        "electron": "^5.0.0",
+        "electron-icon-builder": "^1.0.1",
+        "husky": "^3.0.0",
+        "node-sass": "^4.9.0",
+        "sass-loader": "^7.1.0",
+        "tslint-config-airbnb": "^5.11.1",
+        "typescript": "^3.4.3",
+        "vue-cli-plugin-electron-builder": "^1.3.2",
+        "vue-devtools": "^5.0.0-beta.1",
+        "vue-template-compiler": "^2.5.21"
+    },
+    "bugs": {
+        "url": "https://github.com/gtamas/etcdmanager/issues"
+    },
+    "collaborators": [
+        "Tamas Geschitz <getamas@gmail.com>",
+        "Jozsef Szalai",
+        "David Onofer"
+    ],
+    "contributors": [
+        "Tamas Geschitz <getamas@gmail.com>",
+        "Jozsef Szalai",
+        "David Onofer"
+    ],
+    "engines": {
+        "node": ">= 10.0.0"
+    },
+    "homepage": "https://github.com/gtamas/etcdmanager",
+    "keywords": [
+        "etcd",
+        "etcd3",
+        "gui",
+        "client",
+        "admin"
+    ],
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gtamas/etcdmanager.git"
+    },
+    "title": "ETCD Manager"
 }

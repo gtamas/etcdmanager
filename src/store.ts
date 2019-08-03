@@ -1,9 +1,10 @@
+import { readFileSync } from 'fs';
 import { IOptions } from 'etcd3';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import EtcdService from './services/etcd.service';
-import { readFileSync } from 'fs';
 import { i18n, loadedLang } from './main';
+const app = require('electron').remote.app;
 
 Vue.use(Vuex);
 
@@ -12,7 +13,7 @@ export default new Vuex.Store({
         config: {
             language: 'en',
             animateBg: false,
-            background: false,
+            background: true,
         },
         users: {
             pattern: null,
@@ -30,7 +31,7 @@ export default new Vuex.Store({
         watchers: {
             autoload: false,
             error: true,
-            disconnets: true,
+            disconnects: true,
             reconnects: true,
         },
         connection: new EtcdService(),
@@ -44,6 +45,7 @@ export default new Vuex.Store({
         loading: false,
         console: '',
         version: '',
+        package: {},
     },
     getters: {
         isConfigured(state) {
@@ -83,8 +85,11 @@ export default new Vuex.Store({
         console(state, payload) {
             state.console += `${payload}\n`;
         },
-        version(state) {
-            state.version = JSON.parse(readFileSync('./package.json').toString()).version;
+        version(state, payload) {
+            state.version = payload;
+        },
+        package(state) {
+            state.package = JSON.parse(readFileSync(`/${app.getAppPath()}/package.json`).toString());
         },
         watcher(state, payload) {
             if (payload.op === 'set') {

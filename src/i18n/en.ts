@@ -67,7 +67,7 @@ export default {
                 fields: {
                     endpoint: {
                         label: 'Endpoint',
-                        placeholder: 'Type in an URL..',
+                        placeholder: 'Type in an URL or IP address..',
                         tooltip: 'The URL or IP address of the ETCD server',
                     },
                     port: {
@@ -382,6 +382,7 @@ export default {
             copyright: 'Copyright {year} contributors. All rights reserved.',
             tagline: 'The only ETCD GUI for web, desktop and mobile',
             actions: {
+                bugs: 'Report a bug',
                 donate: 'Donate',
                 updates: 'Check for updates',
                 github: 'Visit Github page',
