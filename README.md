@@ -17,24 +17,35 @@ We have pre-built binaries for OSX (Yosemite+), Windows (7+) as well as the majo
 
 ### Contributors..
 
-You may install the dev version  either by cloning this repository...
+You may install the dev version by cloning this repository.
 
 ```
 git clone git@github.com:gtamas/etcdmanager.git
 ```
 
-... or via Yarn:
-
+Or you may also install the package via Yarn or NPM, although this is not recommended, since the package might not contain latest code.
 
 ```
 yarn add etcd-manager
+
+or
+
+npm install etcd-manager
 ```
 
 Please also check out the [contribution guide](./CONTRIBUTION.md) before writing any code.
 
 ### Running the dev build
 
-Once you have the code, simply execute the following commands. Please note that NPM 6.x or Yarn 1.16.x is required, and Yarn is recommended.
+Once you have the code, simply execute the following commands. 
+
+Run this only if you've installed the package via Yarn / NPM:
+
+```
+cd node_modules/etcd-manager
+```
+
+And then..
 
 ```
 yarn install

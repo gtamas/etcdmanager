@@ -1,6 +1,6 @@
 {
     "name": "etcd-manager",
-    "version": "0.1.2-beta",
+    "version": "0.1.2-beta.3",
     "description": "Multi-platform ETCD v3 client and GUI",
     "author": "Tamas Geschitz <tamas.geschitz@icellmobilsoft.hu>",
     "scripts": {
@@ -10,12 +10,13 @@
         "lint": "npx tslint -p tsconfig.json",
         "electron:build": "vue-cli-service electron:build",
         "electron:serve": "vue-cli-service electron:serve",
-        "postinstall": "electron-builder install-app-deps",
-        "postuninstall": "electron-builder install-app-deps",
+        "postinstall": "npx electron-builder install-app-deps",
+        "postuninstall": "npx electron-builder install-app-deps",
         "test:e2e": "vue-cli-service test:e2e"
     },
     "main": "background.js",
     "dependencies": {
+        "electron-builder": "20.44.0",
         "@grpc/proto-loader": "^0.5.1",
         "@trodi/electron-splashscreen": "^0.3.4",
         "etcd3": "^0.2.11",
