@@ -91,7 +91,7 @@ export default new Vuex.Store({
             state.version = payload;
         },
         package(state) {
-            state.package = JSON.parse(readFileSync(join('/', app.getAppPath(), 'package.json')).toString());
+            state.package = JSON.parse(readFileSync(join(process.platform !== 'win32' ? '/' : '', app.getAppPath(), 'package.json')).toString());
         },
         watcher(state, payload) {
             if (payload.op === 'set') {
