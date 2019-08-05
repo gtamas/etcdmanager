@@ -1,4 +1,18 @@
 # ETCD Manager
+
+- [ETCD Manager](#etcd-manager)
+  * [Features](#features)
+    + [Available now](#available-now)
+    + [Planned](#planned)
+  * [Installation](#installation)
+    + [End users..](#end-users)
+    + [Contributors..](#contributors)
+    + [Running the dev build](#running-the-dev-build)
+  * [Upgrading](#upgrading)
+  * [Bugs and feature requests](#bugs-and-feature-requests)
+  * [Coming soon..](#coming-soon)
+
+
 This is a free, cross-platform [ETCD](http://www.etcd.io) v3 client and GUI. The goal of the project is twofold:
 
 - Provide an efficient, modern GUI for desktop (Windows, Linux, Mac), mobile (iOS and Android) and web.
@@ -8,6 +22,39 @@ Currently only the **beta** desktop version is available.
 
 **Attention!**
 This is still a work in progress, it's **NOT** production ready yet! Use it at your own risk!
+
+## Features
+
+### Available now
+
+Currently, the following features are implemented:
+
+- Manage (create, edit, delete) keys
+- Manage users
+- Manage roles
+- Manage watchers. Supported event responders: app or desktop notification, app console logger.
+- Assign or revoke roles
+- ETCD Authentication
+- Display basic info about ETCD cluster and its nodes.
+
+### Planned
+
+We plan to add tons of cool features in the future. The most important ones are listed below.:
+
+**Features**
+
+- Watchers: more responders, such as Email, Log to file, Log to REST API, Slack, Whatsapp, Google Chat, Viber intergarion.
+- Cluster: maintenance features and more detailed cluster info
+- Rapid config: export / import
+- ETCD Dashboard: live dashboard with graphs.
+- Report generation in different formats (HTML, PDF, XML etc)
+
+**Platforms**
+
+- Android and iOS 
+- Web (browser version)
+
+A better organized overview of these plans will be available soon. Stay tuned :) 
 
 ## Installation
 
