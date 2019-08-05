@@ -1,3 +1,15 @@
+- [ETCD Manager](#etcd-manager)
+  * [Features](#features)
+    + [Available now](#available-now)
+    + [Planned](#planned)
+  * [Installation](#installation)
+    + [End users..](#end-users)
+    + [Contributors..](#contributors)
+    + [Running the dev build](#running-the-dev-build)
+  * [Upgrading](#upgrading)
+  * [Bugs and feature requests](#bugs-and-feature-requests)
+  * [Coming soon..](#coming-soon)
+
 # ETCD Manager
 This is a free, cross-platform [ETCD](http://www.etcd.io) v3 client and GUI. The goal of the project is twofold:
 
