@@ -17,7 +17,7 @@ import * as Splashscreen from '@trodi/electron-splashscreen';
 import { join } from 'path';
 import { readFileSync } from 'fs';
 
-const pkg = JSON.parse(readFileSync(`/${app.getAppPath()}/package.json`).toString());
+const pkg = JSON.parse(readFileSync(join('/', app.getAppPath(), 'package.json')).toString());
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
 let menu: Menu | null = null;

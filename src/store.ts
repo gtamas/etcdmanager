@@ -4,7 +4,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import EtcdService from './services/etcd.service';
 import { i18n, loadedLang } from './main';
+import { join } from 'path';
 const app = require('electron').remote.app;
+
 
 Vue.use(Vuex);
 
@@ -89,7 +91,7 @@ export default new Vuex.Store({
             state.version = payload;
         },
         package(state) {
-            state.package = JSON.parse(readFileSync(`/${app.getAppPath()}/package.json`).toString());
+            state.package = JSON.parse(readFileSync(join('/', app.getAppPath(), 'package.json')).toString());
         },
         watcher(state, payload) {
             if (payload.op === 'set') {
