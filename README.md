@@ -1,3 +1,5 @@
+# ETCD Manager
+
 - [ETCD Manager](#etcd-manager)
   * [Features](#features)
     + [Available now](#available-now)
@@ -10,7 +12,7 @@
   * [Bugs and feature requests](#bugs-and-feature-requests)
   * [Coming soon..](#coming-soon)
 
-# ETCD Manager
+
 This is a free, cross-platform [ETCD](http://www.etcd.io) v3 client and GUI. The goal of the project is twofold:
 
 - Provide an efficient, modern GUI for desktop (Windows, Linux, Mac), mobile (iOS and Android) and web.
