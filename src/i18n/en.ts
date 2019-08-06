@@ -171,6 +171,13 @@ export default {
         },
         cluster: {
             title: 'Cluster',
+            subtitle: 'Nodes',
+            header: {
+                clusterId: 'Cluster ID',
+                memberId: 'Member ID',
+                revision: 'Revision',
+                raftTerm: 'Raft Term',
+            },
             columns: {
                 id: 'ID',
                 clientUrls: 'Client URLs',
