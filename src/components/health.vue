@@ -1,8 +1,33 @@
 <template>
   <v-layout fluid grid-list-md>
     <v-flex xs12>
+      <v-toolbar dark flat>
+        <v-toolbar-title>{{ $t("cluster.title") }}</v-toolbar-title>
+        <v-divider class="mx-2" inset vertical></v-divider>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+      <v-card>
+        <v-list dense>
+          <v-list-tile>
+            <v-list-tile-content>{{ $t("cluster.header.clusterId") }}:</v-list-tile-content>
+            <v-list-tile-content class="align-end">{{ data.header.cluster_id }}</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-content>{{ $t("cluster.header.memberId") }}:</v-list-tile-content>
+            <v-list-tile-content class="align-end">{{ data.header.member_id }}</v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-content>{{ $t("cluster.header.revision") }}:</v-list-tile-content>
+            <v-list-tile-content class="align-end">{{ data.header.revision }}</v-list-tile-content>
+          </v-list-tile>
+             <v-list-tile>
+                  <v-list-tile-content>{{ $t("cluster.header.raftTerm") }}:</v-list-tile-content>
+                  <v-list-tile-content class="align-end">{{ data.header.raft_term }}</v-list-tile-content>
+                </v-list-tile>
+        </v-list>
+      </v-card>
       <v-data-iterator
-        :items="nodes"
+        :items="data.members"
         :rows-per-page-items="rowsPerPageItems"
         :pagination.sync="pagination"
         content-tag="v-layout"
@@ -11,7 +36,7 @@
       >
         <template v-slot:header>
           <v-toolbar dark flat>
-            <v-toolbar-title>{{ $t("cluster.title") }}</v-toolbar-title>
+            <v-toolbar-title>{{ $t("cluster.subtitle") }}</v-toolbar-title>
             <v-divider class="mx-2" inset vertical></v-divider>
             <v-spacer></v-spacer>
           </v-toolbar>
@@ -131,13 +156,20 @@ import Component from 'vue-class-component';
 import StatsService from '../services/stats.service';
 import { IMember, IAlarmResponse, IStatusResponse } from 'etcd3';
 import Messages from '../lib/messages';
+import { GenericObject } from '../../types';
 
 @Component({
     name: 'health-check',
 })
 export default class HealthCheck extends Vue {
     private etcd: StatsService;
-    public nodes: IMember[] = [];
+    public data: {
+        members: IMember[];
+        header: GenericObject;
+    } = {
+        members: [],
+        header: {},
+    };
     public health: {
         [key: string]: IAlarmResponse;
     } = {};
@@ -189,7 +221,7 @@ export default class HealthCheck extends Vue {
     private async fetchMembers() {
         try {
             const res = await this.etcd.listMembers();
-            this.nodes = res.members;
+            this.data = res;
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
         }
