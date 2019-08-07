@@ -8,11 +8,20 @@ export default {
                 noResultsText: 'No matching records found',
                 nextPage: 'Next page',
                 prevPage: 'Previous page',
-              },
-              dataTable: {
+            },
+            dataTable: {
                 rowsPerPageText: 'Rows per page:',
-              },
-              noDataText: 'No data available',
+            },
+            noDataText: 'No data available',
+        },
+        menu: {
+            settings: 'Settings',
+            manageCluster: 'Manage cluster',
+            manageKeys: 'Manage keys',
+            manageWatchers: 'Manage watchers',
+            manageUsers: 'Manage users',
+            manageRoles: 'Manage roles',
+            about: 'About',
         },
         common: {
             items: {
@@ -73,7 +82,8 @@ export default {
                     port: {
                         label: 'Port',
                         placeholder: 'Type in an number..',
-                        tooltip: 'The port number of the ETCD service. Defaults to 2317',
+                        tooltip:
+                            'The port number of the ETCD service. Defaults to 2317',
                     },
                     retries: {
                         label: 'Retries',
@@ -84,11 +94,13 @@ export default {
                     timeout: {
                         label: 'Timeout',
                         placeholder: 'Type in a number..',
-                        tooltip: 'Duration in milliseconds to wait while connecting before timing out. Defaults to 30 seconds.',
+                        tooltip:
+                            'Duration in milliseconds to wait while connecting before timing out. Defaults to 30 seconds.',
                     },
                     apiVersion: {
                         label: 'API version',
-                        tooltip: 'The protocol version supported by the endpoint',
+                        tooltip:
+                            'The protocol version supported by the endpoint',
                     },
                 },
             },
@@ -97,13 +109,15 @@ export default {
                 fields: {
                     username: {
                         label: 'Username',
-                        placeholder: 'Type in an alpanumeric value..',
-                        tooltip: 'ETCD username. Leave blank if authentication is not enabled.',
+                        placeholder: 'Type in an alphanumeric value..',
+                        tooltip:
+                            'ETCD username. Leave blank if authentication is not enabled.',
                     },
                     password: {
                         label: 'Password',
                         placeholder: 'Type in an alpanumeric value..',
-                        tooltip: 'ETCD password. Leave blank if authentication is not enabled.',
+                        tooltip:
+                            'ETCD password. Leave blank if authentication is not enabled.',
                     },
                 },
             },
@@ -112,23 +126,29 @@ export default {
                 fields: {
                     loadWatchers: {
                         label: 'Activate all user defined watchers on startup',
-                        tooltip: 'If turned on, all user defined watchers will be automatically activated when the app starts.',
+                        tooltip:
+                            'If turned on, all user defined watchers will be automatically activated when the app starts.',
                     },
                     unloadWatchers: {
-                        label: 'Deactivate all user defined watchers on shutdown',
-                        tooltip: 'If turned on, all user defined watchers will be automatically deactivated when the app quits.',
+                        label:
+                            'Deactivate all user defined watchers on shutdown',
+                        tooltip:
+                            'If turned on, all user defined watchers will be automatically deactivated when the app quits.',
                     },
                     errorListener: {
                         label: 'Monitor ETCD errors',
-                        tooltip: 'If turned on, a watcher will print all ETCD errors to the console.',
+                        tooltip:
+                            'If turned on, a watcher will print all ETCD errors to the console.',
                     },
                     disconnectListener: {
                         label: 'Monitor watcher disconnects',
-                        tooltip: 'If turned on, a message will be printed to the console whenever a watcher diconnects from ETCD.',
+                        tooltip:
+                            'If turned on, a message will be printed to the console whenever a watcher diconnects from ETCD.',
                     },
                     reconnectListener: {
                         label: 'Monitor watcher reconnects',
-                        tooltip: 'If turned on, a message will be printed to the console whenever a watcher reconnects to ETCD.',
+                        tooltip:
+                            'If turned on, a message will be printed to the console whenever a watcher reconnects to ETCD.',
                     },
                 },
             },
@@ -138,7 +158,8 @@ export default {
                     pwpattern: {
                         label: 'Password pattern',
                         placeholder: 'Type in a regular expression..',
-                        tooltip: 'The pattern to be used for validating user passwords. Leave blank to use the default pattern (8 - 16 characters, has to include capital letters and numbers)',
+                        tooltip:
+                            'The pattern to be used for validating user passwords. Leave blank to use the default pattern (8 - 16 characters, has to include capital letters and numbers)',
                     },
                 },
             },
@@ -167,7 +188,6 @@ export default {
                 success: 'Configuration has been saved successfully',
                 ipOrUrl: 'The IP address or URL appears to be invalid',
             },
-
         },
         cluster: {
             title: 'Cluster',
@@ -239,7 +259,8 @@ export default {
         },
         purgeDialog: {
             title: 'Attention!',
-            content: 'This will permanently remove ALL {type}. This action cannot be undone.',
+            content:
+                'This will permanently remove ALL {type}. This action cannot be undone.',
             actions: {
                 remove: 'Remove',
                 cancel: 'Cancel',
@@ -247,7 +268,8 @@ export default {
         },
         deleteDialog: {
             title: 'Attention!',
-            content: 'Deleting a {type} will permanently remove it. This action cannot be undone.',
+            content:
+                'Deleting a {type} will permanently remove it. This action cannot be undone.',
             actions: {
                 remove: 'Remove',
                 cancel: 'Cancel',
@@ -295,7 +317,8 @@ export default {
                 },
                 prefix: {
                     label: 'This is a prefix',
-                    tooltip: 'If checked all keys with this prefix will be watched.',
+                    tooltip:
+                        'If checked all keys with this prefix will be watched.',
                 },
             },
             actionList: {
@@ -368,11 +391,13 @@ export default {
                 },
                 permission: {
                     label: 'Permissions',
-                    tooltip: 'The permission this role grants. If your want eveything, choose read and write.',
+                    tooltip:
+                        'The permission this role grants. If your want eveything, choose read and write.',
                 },
                 prefix: {
                     label: 'This is a prefix',
-                    tooltip: 'If checked, the role will apply to all keys with this prefix.',
+                    tooltip:
+                        'If checked, the role will apply to all keys with this prefix.',
                 },
             },
             actions: {
@@ -381,7 +406,8 @@ export default {
                 },
             },
             messages: {
-                duplicateKey: 'A permission is already associated with this key!',
+                duplicateKey:
+                    'A permission is already associated with this key!',
             },
         },
         about: {
@@ -418,7 +444,8 @@ export default {
                 password: {
                     label: 'Password',
                     placeholder: 'Type in a value..',
-                    tooltip: 'The password of the user. Must be 8-16 characters, no whitespace. Must include captital letters and numbers.',
+                    tooltip:
+                        'The password of the user. Must be 8-16 characters, no whitespace. Must include captital letters and numbers.',
                 },
                 pwcheck: {
                     label: 'Confirm password',

@@ -6,7 +6,7 @@
           <v-icon>settings</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Settings</v-list-tile-title>
+          <v-list-tile-title>{{ $t('menu.settings') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile ripple to="/cluster">
@@ -14,7 +14,7 @@
           <v-icon>cloud_circle</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Manage Cluster</v-list-tile-title>
+          <v-list-tile-title>{{ $t('menu.manageCluster') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile ripple to="/keys">
@@ -22,7 +22,7 @@
           <v-icon>list</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Manage keys</v-list-tile-title>
+          <v-list-tile-title>{{ $t('menu.manageKeys') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
        <v-list-tile ripple to="/watchers">
@@ -30,7 +30,7 @@
           <v-icon>remove_red_eye</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Manage watchers</v-list-tile-title>
+          <v-list-tile-title>{{ $t('menu.manageWatchers') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile ripple to="/users">
@@ -38,7 +38,7 @@
           <v-icon>person</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Manage users</v-list-tile-title>
+          <v-list-tile-title>{{ $t('menu.manageUsers') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile ripple to="/roles">
@@ -46,7 +46,7 @@
           <v-icon>supervised_user_circle</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>Manage roles</v-list-tile-title>
+          <v-list-tile-title>{{ $t('menu.manageRoles') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile ripple to="/about">
@@ -54,7 +54,7 @@
           <v-icon>info</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>About</v-list-tile-title>
+          <v-list-tile-title>{{ $t('menu.about') }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>

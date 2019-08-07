@@ -18,415 +18,453 @@ export default {
                 next: 'Következő vizuális',
             },
         },
+        menu: {
+            settings: 'Beállítások',
+            manageCluster: 'Klaszter menedzselése',
+            manageKeys: 'Kulcsok menedzselése',
+            manageWatchers: 'Figyelők menedzselése',
+            manageUsers: 'Felhasználók menedzselése',
+            manageRoles: 'Szerepek menedzselése',
+            about: 'Az alkalmazásról',
+        },
         common: {
             items: {
-                watcher: 'watcher | watchers',
-                key: 'key | keys',
-                role: 'role | roles',
-                action: 'action | actions',
-                permission: 'permission | permissions',
+                watcher: 'figyelő | figyelők',
+                key: 'kulcs | kulcsok',
+                role: 'szerep | szerepek',
+                action: 'művelet | műveletek',
+                permission: 'engedély | engedélyek',
             },
             titles: {
-                new: 'New',
-                edit: 'Edit',
+                new: 'Új',
+                edit: 'Szerkeszt',
             },
             actions: {
-                add: 'Add',
-                save: 'Save',
+                add: 'Hozzáad',
+                save: 'Mentés',
                 purgeAll: {
-                    label: 'Purge',
-                    tooltip: 'Purge all',
+                    label: 'Tisztít',
+                    tooltip: 'Mindet tisztít',
                 },
                 create: {
-                    label: 'Add',
-                    tooltip: 'Add new',
+                    label: 'Hozzáad',
+                    tooltip: 'Újat hozzáad',
                 },
                 removeAll: {
-                    label: 'Remove',
-                    tooltip: 'Remove selected',
+                    label: 'Eltávolít',
+                    tooltip: 'Kiválasztott(ak) eltávolítása',
                 },
                 close: {
-                    label: 'Close',
+                    label: 'Bezár',
                 },
             },
             lists: {
-                nodata: 'There is no data to display..',
-                filter: 'Filter data..',
+                nodata: 'Nincs megjeleníthető adat',
+                filter: 'Adat szűrése',
             },
             validation: {
-                required: 'Item is required',
-                alphanumeric: 'Alphanumeric value expected',
-                int: 'Value must be an integer',
-                pattern: 'Invalid regular expression',
+                required: 'Kötelező elem',
+                alphanumeric: 'Számmal és betűvel adható meg',
+                int: 'Azt értéknek számnak kell lennie',
+                pattern: 'Érvénytelen reguláris kifejezés',
             },
             messages: {
-                success: 'Operation successful',
-                error: 'Could not perform operation',
+                success: 'Sikeres művelet',
+                error: 'A művelet nem végrehajtható',
             },
         },
         settings: {
-            title: 'Settings',
+            title: 'Beállítások',
             etcd: {
                 title: 'ETCD',
                 fields: {
                     endpoint: {
-                        label: 'Endpoint',
-                        placeholder: 'Type in an URL or IP address..',
-                        tooltip: 'The URL or IP address of the ETCD server',
+                        label: 'Végpont',
+                        placeholder: 'Írjon be URL-t, vagy IP-címet',
+                        tooltip: 'Az ETCD-szerver URL-je, vagy IP-címe.',
                     },
                     port: {
                         label: 'Port',
-                        placeholder: 'Type in an number..',
-                        tooltip: 'The port number of the ETCD service. Defaults to 2317',
+                        placeholder: 'Számmal adható meg',
+                        tooltip:
+                            'Az ETCD-service portjának száma. Alapesetben 2317',
                     },
                     retries: {
-                        label: 'Retries',
-                        tooltip: `Whether, if a query fails as a result of a primitive GRPC error, to retry it on a different server (provided one is available).
-                                This can make service disruptions less-severe but can cause a domino effect if a particular operation causes a failure that grpc
-                                reports as some sort of internal or network error.`,
+                        label: 'Újrapróbálkozás',
+                        tooltip: `Újrapróbálkozás egy másik szerveren (amennyiban van), ha GRPC hibából fakadóan sikertelen a lekérdezés. Ez a beállítás a szerverrel való kapcsolat
+                        megszakadását kevesbé eredményezi, de dominó hatást okozhat, ha valamilyen művelet által okozott hibát a GRPC külső, vagy belső hálózati hibának jelez.`,
                     },
                     timeout: {
-                        label: 'Timeout',
-                        placeholder: 'Type in a number..',
-                        tooltip: 'Duration in milliseconds to wait while connecting before timing out. Defaults to 30 seconds.',
+                        label: 'Időtúllépés',
+                        placeholder: 'Számmal adható meg',
+                        tooltip:
+                            'Az időtúllépés előtti várakozás időtartama ezredmásodpercben. Alapesetben 30 másodperc.',
                     },
                     apiVersion: {
-                        label: 'API version',
-                        tooltip: 'The protocol version supported by the endpoint',
+                        label: 'API verzió',
+                        tooltip:
+                            'A végpont által bíztosított protokoll verziója',
                     },
                 },
             },
             auth: {
-                title: 'Auth',
+                title: 'Autentikáció',
                 fields: {
                     username: {
-                        label: 'Username',
-                        placeholder: 'Type in an alpanumeric value..',
-                        tooltip: 'ETCD username. Leave blank if authentication is not enabled.',
+                        label: 'Felhasználónév',
+                        placeholder: 'Betűkkel és számokkal adható meg',
+                        tooltip:
+                            'ETCD felhasználónév. Hagyja üresen, ha az autentikáció nincs engedélyezve',
                     },
                     password: {
-                        label: 'Password',
-                        placeholder: 'Type in an alpanumeric value..',
-                        tooltip: 'ETCD password. Leave blank if authentication is not enabled.',
+                        label: 'Jelszó',
+                        placeholder: 'Betűkkel és számokkal adható meg',
+                        tooltip:
+                            'ETCD jelszó. Hagyja üresen, ha az autentikáció nincs engedélyezve.',
                     },
                 },
             },
             watchers: {
-                title: 'Watchers',
+                title: 'Figyelők',
                 fields: {
                     loadWatchers: {
-                        label: 'Activate all user defined watchers on startup',
-                        tooltip: 'If turned on, all user defined watchers will be automatically activated when the app starts.',
+                        label:
+                            'Felhasználó által megadott összes figyelő aktiválása elinduláskor',
+                        tooltip:
+                            'Ha be van kapcsolva, akkor az összes, felhasználó által megadott figyelő automatikusan aktiválódik az alkalmazás elindulásakor.',
                     },
                     unloadWatchers: {
-                        label: 'Deactivate all user defined watchers on shutdown',
-                        tooltip: 'If turned on, all user defined watchers will be automatically deactivated when the app quits.',
+                        label:
+                            'Felhasználó által megadott összes figyelő deaktiválása bezáráskor',
+                        tooltip:
+                            'Ha be van kapcsolva, akkor az összes, felhasználó által megadott figyelő automatikusan deaktiválódik az alkalmazás bezárásakor.',
                     },
                     errorListener: {
-                        label: 'Monitor ETCD errors',
-                        tooltip: 'If turned on, a watcher will print all ETCD errors to the console.',
+                        label: 'ETCD hibamonitor',
+                        tooltip:
+                            'Ha be van kapcsolva, akkor a figyelők minden ETCD hibát kiírnak a konzolra.',
                     },
                     disconnectListener: {
-                        label: 'Monitor watcher disconnects',
-                        tooltip: 'If turned on, a message will be printed to the console whenever a watcher diconnects from ETCD.',
+                        label: 'Figyelők szétkapcsolódásának monitorozása',
+                        tooltip:
+                            'Ha be van kapcsolva, akkor a figyelők szétkapcsolódását az ETCD szervertől kiírja a konzolra.',
                     },
                     reconnectListener: {
-                        label: 'Monitor watcher reconnects',
-                        tooltip: 'If turned on, a message will be printed to the console whenever a watcher reconnects to ETCD.',
+                        label: 'Figyelők újrakapcsolódásának monitorozása',
+                        tooltip:
+                            'Ha be van kapcsolva, akkor a figyelők újrakapcsolódását az ETCD szerverhez kiírja a konzolra.',
                     },
                 },
             },
             users: {
-                title: 'Users',
+                title: 'Felhasználók',
                 fields: {
                     pwpattern: {
-                        label: 'Password pattern',
-                        placeholder: 'Type in a regular expression..',
-                        tooltip: 'The pattern to be used for validating user passwords. Leave blank to use the default pattern (8 - 16 characters, has to include capital letters and numbers)',
+                        label: 'Jelszó minta',
+                        placeholder: 'Reguláris kifejezéssel adható meg',
+                        tooltip:
+                            'A felhasználói jelszavak validálására szolgáló minta. Hagyja üresen az alapbeállításként megadott minta használatához (8 - 16 karakter, nagybetűket és számokat tartalmazhat)',
                     },
                 },
             },
             misc: {
-                title: 'Misc',
+                title: 'Egyéb',
                 fields: {
                     language: {
-                        label: 'Language',
-                        tooltip: 'The languge of the UI.',
+                        label: 'Nyelv',
+                        tooltip: 'A program nyelve.',
                     },
                     animateBg: {
-                        label: 'Toggle background animation',
-                        tooltip: 'Enable of disable animated background.',
+                        label: 'Háttéranimáció ki/be kapcsolása.',
+                        tooltip: 'Animált háttér ki-, bekapcsolása.',
                     },
                     bg: {
-                        label: 'Enable background',
-                        tooltip: 'Enable of disable background image.',
+                        label: 'Háttér engedélyezése.',
+                        tooltip: 'Háttérkép ki-, bekapcsolása.',
                     },
                 },
             },
             actions: {
-                submit: 'Submit',
-                next: 'Next',
+                submit: 'Elküld',
+                next: 'Következő',
             },
             messages: {
-                success: 'Configuration has been saved successfully',
-                ipOrUrl: 'The IP address or URL appears to be invalid',
+                success: 'A beállítások sikeresen elmentve.',
+                ipOrUrl: 'Az IP-cím, vagy URL érvénytelen.',
             },
-
         },
         cluster: {
-            title: 'Cluster',
+            title: 'Klaszter',
+            subtitle: 'Csomópont',
+            header: {
+                clusterId: 'Klaszter ID',
+                memberId: 'Tag ID',
+                revision: 'Felülvizsgálat',
+                raftTerm: 'Raft terminus',
+            },
             columns: {
                 id: 'ID',
-                clientUrls: 'Client URLs',
-                peerUrls: 'Peer URLs',
+                clientUrls: 'Kliens URL',
+                peerUrls: 'Társ URL',
             },
             actions: {
-                check: 'Check member health',
-                status: 'Fetch status info',
+                check: 'Tag állapot ellenőrzés',
+                status: 'Státusz infó lekérés',
             },
             dialogs: {
                 info: {
                     title: 'Info',
                     labels: {
                         db: 'DB',
-                        leader: 'Leader',
-                        raftIndex: 'Raft Index',
-                        raftTerm: 'Raft Term',
-                        version: 'Version',
+                        leader: 'Vezető',
+                        raftIndex: 'Raft index',
+                        raftTerm: 'Raft terminus',
+                        version: 'Verzió',
                     },
                     actions: {
-                        close: 'Close',
+                        close: 'Bezárás',
                     },
                 },
             },
         },
         keyManager: {
-            title: 'Keys',
+            title: 'Kulcsok',
             columns: {
-                key: 'Key',
-                value: 'Value',
+                key: 'Kulcs',
+                value: 'Érték',
             },
             actions: {
                 touchAll: {
-                    label: 'Touch',
-                    tooltip: 'Touch selected keys',
+                    label: 'Hozzáad',
+                    tooltip: 'Kiválasztott kulcsok hozzáadása',
                 },
-                edit: 'Edit key',
-                remove: 'Remove key',
-                touch: 'Touch key',
+                edit: 'Kulcs szerkesztése',
+                remove: 'Kulcs eltávolítása',
+                touch: 'Kulcs hozzáadása',
             },
         },
         keyEditor: {
-            title: 'Keys',
+            title: 'Kulcsok',
             fields: {
                 key: {
-                    label: 'Key',
-                    placeholder: 'Type in a name..',
-                    tooltip: 'The name of the ETCD key',
+                    label: 'Kulcs',
+                    placeholder: 'Írja be a nevet.',
+                    tooltip: 'Az ETCD kulcs neve',
                 },
                 value: {
-                    label: 'Value',
-                    placeholder: 'Type in a value..',
-                    tooltip: 'The value associated with this key',
+                    label: 'Érték',
+                    placeholder: 'Írja be az értéket.',
+                    tooltip: 'A kulcshoz társított érték',
                 },
             },
             messages: {
-                duplicateKey: 'This key already exists!',
+                duplicateKey: 'Ez a kulcs már létezik!',
             },
         },
         purgeDialog: {
-            title: 'Attention!',
-            content: 'This will permanently remove ALL {type}. This action cannot be undone.',
+            title: 'Figyelem!',
+            content:
+                'Ez eltávolítja az ÖSSZESET a következőből: {type}. A művelet nem visszavonható.',
             actions: {
-                remove: 'Remove',
-                cancel: 'Cancel',
+                remove: 'Eltávolítás',
+                cancel: 'Vissza',
             },
         },
         deleteDialog: {
-            title: 'Attention!',
-            content: 'Deleting a {type} will permanently remove it. This action cannot be undone.',
+            title: 'Figyelem!',
+            content:
+                'A {type} törlése véglegesen eltávolítja azt. A művelet nem visszavonható.',
             actions: {
-                remove: 'Remove',
-                cancel: 'Cancel',
+                remove: 'Eltávolítása',
+                cancel: 'Vissza',
             },
         },
         noSelectionDialog: {
-            title: 'Attention!',
-            content: 'Please select some items first!',
+            title: 'Figyelem!',
+            content: 'Először válasszon ki elemeket!',
             actions: {
-                ok: 'OK',
+                ok: 'Rendben',
             },
         },
         watcherManager: {
-            title: 'Watchers',
+            title: 'Figyelők',
             columns: {
-                key: 'Key',
-                name: 'Name',
-                prefix: 'Prefix',
+                key: 'Kulcs',
+                name: 'Név',
+                prefix: 'Előtag',
             },
             actions: {
                 notificationOn: {
-                    label: 'On',
-                    tooltip: 'Activate selected watchers',
+                    label: 'Be',
+                    tooltip: 'Kiválasztott figyelők aktiválása',
                 },
                 notificationOff: {
-                    label: 'Off',
-                    tooltip: 'Deactivate selected watchers',
+                    label: 'Ki',
+                    tooltip: 'Kiválasztott figyelők deaktiválása',
                 },
-                edit: 'Edit watcher',
-                remove: 'Remove watcher',
-                status: 'Toggle watcher status',
+                edit: 'Figyelő szerkesztése',
+                remove: 'Figyelő eltávolítása',
+                status: 'Figyelő státuszának ki/be kapcsolása',
             },
         },
         watcherEditor: {
             fields: {
                 name: {
-                    label: 'Name',
-                    placeholder: 'Type in a value..',
-                    tooltip: 'The name of the watcher.',
+                    label: 'Név',
+                    placeholder: 'Értékkel adható meg',
+                    tooltip: 'A figyelő neve.',
                 },
                 key: {
-                    label: 'Key',
-                    placeholder: 'Type in a value..',
-                    tooltip: 'The key this watcher is associated with.',
+                    label: 'Kulcs',
+                    placeholder: 'Értékkel adható meg',
+                    tooltip: 'A kulcs, amivel a figyelő társítva van.',
                 },
                 prefix: {
-                    label: 'This is a prefix',
-                    tooltip: 'If checked all keys with this prefix will be watched.',
+                    label: 'Előtag',
+                    tooltip:
+                        'Minden, ezzel az előtaggal ellátott kulcs figyelve van, ha be van kapcsolva.',
                 },
             },
             actionList: {
                 columns: {
-                    action: 'Action',
-                    event: 'Event',
+                    action: 'Akció',
+                    event: 'Esemény',
                 },
                 actions: {
-                    edit: 'Edit action',
-                    remove: 'Remove action',
+                    edit: 'Akció szerkesztése',
+                    remove: 'Akció eltávolítása',
                 },
             },
             actions: {
                 actions: {
-                    label: 'Actions',
+                    label: 'Akciók',
                 },
             },
             messages: {
-                duplicate: 'A watcher with this name already exists',
+                duplicate: 'Már létezik ilyen nevű figyelő',
             },
         },
         actionEditor: {
-            title: 'Actions',
+            title: 'Akciók',
             fields: {
                 action: {
-                    label: 'Action',
-                    tooltip: 'Action to be performed when the event occurs.',
+                    label: 'Akció',
+                    tooltip:
+                        'Az esemény bekövetkeztekor lesz az akció végrehajtva.',
                 },
                 event: {
-                    label: 'Event',
-                    tooltip: 'Event type',
+                    label: 'Esemény',
+                    tooltip: 'Esemény típusa',
                 },
             },
         },
         roleManager: {
-            title: 'Roles',
+            title: 'Szerepek',
             columns: {
-                name: 'Name',
+                name: 'Név',
             },
             actions: {
-                edit: 'Edit role',
-                remove: 'Remove role',
+                edit: 'Szerep szerkesztése',
+                remove: 'Szerep eltávolítása',
             },
         },
         roleEditor: {
             fields: {
                 name: {
-                    label: 'Name',
-                    placeholder: 'Type in a value..',
-                    tooltip: 'The name of the role.',
+                    label: 'Név',
+                    placeholder: 'Érték adható meg',
+                    tooltip: 'A szerep neve.',
                 },
             },
             actions: {
-                edit: 'Edit permission',
-                revoke: 'Revoke permission',
-                permissions: 'Permissions',
+                edit: 'Engedély szerkesztése',
+                revoke: 'Engedély visszavonása',
+                permissions: 'Engedélyek',
             },
             columns: {
-                key: 'Key',
-                permission: 'Permission',
-                prefix: 'Prefix',
+                key: 'Kulcs',
+                permission: 'Engedély',
+                prefix: 'Előtag',
             },
         },
         permissionEditor: {
             fields: {
                 key: {
-                    label: 'Key',
-                    placeholder: 'Type in a value..',
-                    tooltip: 'The name of the key this role grants access to.',
+                    label: 'Kulcs',
+                    placeholder: 'Értéket írjon be',
+                    tooltip:
+                        'A kulcs neve, amihez a szerep hozzáférést biztosít.',
                 },
                 permission: {
-                    label: 'Permissions',
-                    tooltip: 'The permission this role grants. If your want eveything, choose read and write.',
+                    label: 'Engedélyek',
+                    tooltip:
+                        'Az engedély, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné, akkor állítsa be az írást és az olvasást is.',
                 },
                 prefix: {
-                    label: 'This is a prefix',
-                    tooltip: 'If checked, the role will apply to all keys with this prefix.',
+                    label: 'Ez egy előtag',
+                    tooltip:
+                        'Ha be van pipálva, akkor a szerep az összes ezzel az előtaggal ellátott kulcsot alkalmazza.',
                 },
             },
             actions: {
                 grant: {
-                    label: 'Grant',
+                    label: 'Biztosít',
                 },
             },
             messages: {
-                duplicateKey: 'A permission is already associated with this key!',
+                duplicateKey:
+                    'Az engedély már hozzá van kapcsolva ehhez a kulcshoz!',
             },
         },
         about: {
-            version: 'Version',
-            copyright: 'Copyright {year} contributors. All rights reserved.',
-            tagline: 'The only ETCD GUI for web, desktop and mobile',
+            version: 'Verzió',
+            copyright:
+                'Közreműködők szerzői joga {year}. Minden jog fenntartva.',
+            tagline:
+                'Az egyetlen grafikus ETCD menedzser weben, desktopon és mobilon.',
             actions: {
-                bugs: 'Report a bug',
-                donate: 'Donate',
-                updates: 'Check for updates',
-                github: 'Visit Github page',
-                credits: 'Show contributors',
+                bugs: 'Hiba jelentése',
+                donate: 'Támogatás',
+                updates: 'Frissítések ellenőrzése',
+                github: 'Github oldal meglátogatása',
+                credits: 'Közreműködők mutatása',
             },
         },
         userManager: {
-            title: 'Users',
+            title: 'Felhasználók',
             columns: {
-                name: 'Name',
+                name: 'Név',
             },
             actions: {
-                edit: 'Edit user',
-                remove: 'Remove user',
+                edit: 'Felhasználó szerkesztése',
+                remove: 'Felhasználó eltávolítása',
             },
         },
         userEditor: {
-            title: 'Users',
-            subtitle: 'Roles',
+            title: 'Felhasználók',
+            subtitle: 'Szerepek',
             fields: {
                 name: {
-                    label: 'name',
-                    placeholder: 'Type in a name..',
-                    tooltip: 'The name of the user',
+                    label: 'Név',
+                    placeholder: 'Név adható meg',
+                    tooltip: 'A felhasználó neve',
                 },
                 password: {
-                    label: 'Password',
-                    placeholder: 'Type in a value..',
-                    tooltip: 'The password of the user. Must be 8-16 characters, no whitespace. Must include captital letters and numbers.',
+                    label: 'Jelszó',
+                    placeholder: 'Jelszó adható meg',
+                    tooltip:
+                        'A felhasználó jelszava. 8-16 karakternek kell lennie, szóközök nélkül. Nagybetűkből és számokból kell állnia.',
                 },
                 pwcheck: {
-                    label: 'Confirm password',
-                    placeholder: 'Type in a value..',
-                    tooltip: 'Confirm the password',
+                    label: 'Jelszó megerősítése',
+                    placeholder: 'Jelszó adható meg',
+                    tooltip: 'Jelszó megerősítése',
                 },
             },
             messages: {
-                pwmatch: 'The passwords do not match',
-                invalid: 'The password is invalid',
-                norights: 'There are no roles. Add one now!',
+                pwmatch: 'A jelszók nem egyeznek meg',
+                invalid: 'A jelszó érvénytelen',
+                norights: 'Nincsenek szerepek. Adjon hozzá egyet!',
             },
         },
     },
