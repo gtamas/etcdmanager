@@ -16,26 +16,19 @@
 
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
+import Dialog from '../lib/dialog.class';
 
 @Component({
     name: 'delete-dialog',
 })
-export default class DeleteDialog extends Vue {
+export default class DeleteDialog extends Dialog {
     // @ts-ignore
     @Prop() open: boolean;
     // @ts-ignore
     @Prop() itemName: string;
 
-    confirm() {
-        this.$emit('confirm');
-    }
-
-    cancel() {
-        this.$emit('cancel');
-    }
 }
 </script>
 

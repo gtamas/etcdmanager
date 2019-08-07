@@ -7,6 +7,7 @@
         <v-spacer></v-spacer>
         <v-text-field
           dark
+          ref="search"
           color="white"
           v-model="filter"
           prepend-icon="search"

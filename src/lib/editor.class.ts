@@ -5,6 +5,7 @@ import Component from 'vue-class-component';
 import { Prop } from 'vue-property-decorator';
 import { capitalize } from 'lodash-es';
 import store from '@/store';
+import Mousetrap from 'mousetrap';
 
 @Component({
 })
@@ -14,11 +15,38 @@ export class BaseEditor extends Vue {
     public itemId!: string;
     public itemType!: string;
     public headers: GenericObject[] = [];
+    protected keyboardEvents: any;
 
     @Prop() mode!: string;
 
     constructor() {
         super();
+    }
+
+    protected focus(refName: string) {
+        // @ts-ignore
+        this.$nextTick(this.$refs[refName].focus);
+    }
+
+    protected bindDefaultEvents(refName: string) {
+        // @ts-ignore
+        const form = this.$refs[refName].$el;
+        this.keyboardEvents = new Mousetrap(form as HTMLFormElement);
+        this.keyboardEvents.stopCallback = () => false;
+        this.keyboardEvents.bind('meta+s', () => {
+            this.submit();
+        });
+        this.keyboardEvents.bind('enter', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
+            this.submit();
+        });
+        this.keyboardEvents.bind('esc', () => {
+            this.cancel();
+        });
+    }
+
+    protected unbindDefaultEvents() {
+        this.keyboardEvents = this.keyboardEvents.reset();
     }
 
     public translateHeaders(...keys: string[]) {
@@ -55,10 +83,12 @@ export class BaseEditor extends Vue {
         if (store.state.loading) {
             setTimeout(() => {
                 store.commit('loading');
-            },         500);
+            }, 500);
         } else {
             store.commit('loading');
         }
 
     }
+
+    protected submit() { }
 }

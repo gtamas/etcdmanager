@@ -8,11 +8,12 @@
     <v-container fill-height fluid>
       <v-layout fill-height>
         <v-flex xs12 align-end flexbox>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="watcherForm" v-model="valid" lazy-validation>
             <v-text-field
+              ref="name"
               dark
               v-model="name"
-              :disabled="editMode"
+              :readonly="editMode"
               :error-messages="nameErrors"
               :label="$t('watcherEditor.fields.name.label')"
               :placeholder="$t('watcherEditor.fields.name.placeholder')"
@@ -30,7 +31,7 @@
               dark
               type="text"
               v-model="key"
-              :disabled="editMode"
+              :readonly="editMode"
               :error-messages="keyErrors"
               :label="$t('watcherEditor.fields.key.label')"
               :placeholder="$t('watcherEditor.fields.key.placeholder')"
@@ -187,6 +188,14 @@ export default class WatcherEditor extends BaseEditor {
         this.currentAction = { ...this.defaultAction };
     }
 
+    mounted() {
+        this.bindDefaultEvents('watcherForm');
+        this.keyboardEvents.bind('meta+x', () => {
+            this.addAction();
+        });
+        this.focus('name');
+    }
+
     created() {
         this.translateHeaders(
             'watcherEditor.actionList.columns.action',
@@ -234,10 +243,12 @@ export default class WatcherEditor extends BaseEditor {
         this.actionDialog = true;
         this.actionEditorMode = 'create';
         this.currentAction = { ...this.defaultAction };
+        this.focus('name');
     }
 
     cancelAction() {
         this.actionDialog = false;
+        this.focus('name');
     }
 
     saveAction(action: WatcherAction) {
@@ -264,6 +275,7 @@ export default class WatcherEditor extends BaseEditor {
         this.actions = this.actions.filter((action) => {
             return action.id !== actionToDelete.id;
         });
+        this.focus('name');
     }
 
     public submit(): WatcherEditor | boolean {
@@ -312,6 +324,7 @@ export default class WatcherEditor extends BaseEditor {
             this.actions = [];
         }
 
+        this.focus('name');
         return this;
     }
 }

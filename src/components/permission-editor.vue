@@ -8,11 +8,12 @@
     <v-container fill-height fluid>
       <v-layout fill-height>
         <v-flex xs12 align-end flexbox>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="permissionForm" v-model="valid" lazy-validation>
             <v-text-field
               dark
               v-model="key"
-              :disabled="editMode"
+              ref="key"
+              :readonly="editMode"
               :error-messages="keyErrors"
               :label="$t('permissionEditor.fields.key.label')"
               :placeholder="$t('permissionEditor.fields.key.placeholder')"
@@ -139,6 +140,12 @@ export default class PermissionEditor extends BaseEditor {
     constructor() {
         super();
         this.etcd = new RoleService(this.$store.state.connection.getClient());
+    }
+
+    mounted() {
+        this.bindDefaultEvents('permissionForm');
+        // @ts-ignore
+        this.$nextTick(this.$refs.key.focus);
     }
 
     get keyErrors() {
