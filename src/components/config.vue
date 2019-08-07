@@ -313,7 +313,7 @@ export default class Configuration extends Vue {
     public auth = false;
     public languages = [
         { name: 'English', value: 'en' },
-        // { name: 'Hungarian', value: 'hu' },
+        { name: 'Hungarian', value: 'hu' },
     ];
 
     private tabsLength: number = 4;
