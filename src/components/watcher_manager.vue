@@ -7,6 +7,7 @@
         <v-spacer></v-spacer>
         <v-text-field
           dark
+          ref="search"
           color="white"
           v-model="filter"
           prepend-icon="search"
@@ -183,6 +184,15 @@ export default class WatcherManager extends CrudBase implements List {
             this.$ls,
             this.$store.state.connection.getClient()
         );
+    }
+
+    mounted() {
+         this.keyboardEvents.bind('meta+o', () => {
+            this.toggleMany();
+        });
+          this.keyboardEvents.bind('meta+d', () => {
+            this.toggleMany(false);
+        });
     }
 
     created() {

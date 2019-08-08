@@ -3,6 +3,7 @@ import { GenericObject } from './../../types/index';
 import EtcdService from '@/services/etcd.service';
 import Component from 'vue-class-component';
 import store from '@/store';
+import Mousetrap from 'mousetrap';
 
 
 export interface List {
@@ -29,9 +30,36 @@ export class CrudBase extends Vue implements List {
     protected operation: 'create' | 'edit' = 'create';
     protected defaultItem: GenericObject = { key: '', value: '' };
     protected etcd!: EtcdService;
+    protected keyboardEvents: any;
 
     constructor() {
         super();
+        this.bindDefaultEvents();
+    }
+
+    protected bindDefaultEvents() {
+        this.keyboardEvents = new Mousetrap();
+        this.keyboardEvents.stopCallback = () => false;
+        this.keyboardEvents.bind('meta+a', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
+            this.addItem();
+        });
+        this.keyboardEvents.bind('meta+f', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
+            // @ts-ignore
+            this.$nextTick(this.$refs.search.focus);
+        });
+        this.keyboardEvents.bind('meta+p', () => {
+            this.purge();
+        });
+        this.keyboardEvents.bind('meta+r', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
+            this.deleteMany();
+        });
+    }
+
+    protected unbindDefaultEvents() {
+        this.keyboardEvents = this.keyboardEvents.reset();
     }
 
     public translateHeaders(...keys: string[]) {

@@ -8,13 +8,14 @@
     <v-container fill-height fluid>
       <v-layout fill-height>
         <v-flex xs12 align-end flexbox>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="userForm" v-model="valid" lazy-validation>
             <v-text-field
               dark
               v-model="name"
+              ref="name"
               :error-messages="nameErrors"
               :label="$t('userEditor.fields.name.label')"
-              :disabled="editMode"
+              :readonly="editMode"
               :placeholder="$t('userEditor.fields.name.placeholder')"
               required
               @input="$v.name.$touch()"
@@ -62,9 +63,15 @@
             </v-text-field>
 
             <template v-if="showRights">
-            <h2 class="subheading">Roles</h2>
-            <hr />
-              <v-alert  v-if="roles.length === 0" :value="true" color="error" icon="warning">{{ $t('userEditor.messages.norights') }}</v-alert>
+              <h2 class="subheading">Roles</h2>
+              <hr />
+              <v-alert
+                v-if="roles.length === 0"
+                :value="true"
+                color="error"
+                icon="warning"
+              >{{ $t('userEditor.messages.norights') }}</v-alert>
+               <v-card height="200" class="scrollable">
               <v-checkbox
                 @change="setRole(role)"
                 v-for="role in roles"
@@ -73,6 +80,7 @@
                 v-bind:key="role.name"
                 v-bind:value="role.name"
               ></v-checkbox>
+               </v-card>
             </template>
 
             <v-btn :disabled="!valid" round color="primary" @click="submit">{{ opTitle }}</v-btn>
@@ -126,11 +134,11 @@ class UserEditorError extends Error {
             sameAs: sameAs('pwcheck'),
             pwPattern: (value: string) => {
                 const ptrn = store.state.users.pattern;
-                return ptrn ? new RegExp(ptrn).test(value) : (
-                    /^[^\s]{8,16}$/gi.test(value) &&
-                    /[0-9]+/.test(value) &&
-                    /[A-Z]+/.test(value)
-                );
+                return ptrn
+                    ? new RegExp(ptrn).test(value)
+                    : /^[^\s]{8,16}$/gi.test(value) &&
+                          /[0-9]+/.test(value) &&
+                          /[A-Z]+/.test(value);
             },
         },
     },
@@ -167,6 +175,11 @@ export default class UserEditor extends BaseEditor {
         );
     }
 
+    mounted() {
+        this.bindDefaultEvents('userForm');
+        this.focus('name');
+    }
+
     get nameErrors() {
         const errors: any = [];
         // @ts-ignore
@@ -201,23 +214,15 @@ export default class UserEditor extends BaseEditor {
         return errors;
     }
 
-    public async setRole(
-        role: Role
-    ): Promise<UserEditor> {
+    public async setRole(role: Role): Promise<UserEditor> {
         try {
             if (!this.ownRoles.includes(role.name)) {
                 this.toggleLoading();
-                await this.userService.revokeRole(
-                    this.data.name,
-                    role
-                );
+                await this.userService.revokeRole(this.data.name, role);
                 this.toggleLoading();
             } else {
                 this.toggleLoading();
-                await this.userService.addRole(
-                    this.data.name,
-                    role
-                );
+                await this.userService.addRole(this.data.name, role);
                 this.toggleLoading();
             }
             this.$store.commit('message', Messages.success());
@@ -234,9 +239,9 @@ export default class UserEditor extends BaseEditor {
         try {
             this.roles = await this.roleService.getRoles();
             this.ownRoles = this.data.roles
-                ? this.data.roles.map((role) =>  {
-                    return role.name;
-                })
+                ? this.data.roles.map((role) => {
+                      return role.name;
+                  })
                 : [];
         } catch (error) {
             this.$store.commit('message', Messages.error(error));
@@ -252,7 +257,7 @@ export default class UserEditor extends BaseEditor {
     public async submit(): Promise<UserEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(new ValidationError('Form is invalid..'));
+            return Promise.resolve(new ValidationError('Form is invalid..'));
         }
 
         try {
@@ -273,16 +278,21 @@ export default class UserEditor extends BaseEditor {
                 this.ownRoles = [];
                 this.showRights = false;
             }
+            this.focus('name');
             return Promise.resolve(this);
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
             this.toggleLoading();
         }
 
+        this.focus('name');
         return Promise.resolve(this);
     }
 }
 </script>
 
 <style scoped>
+.scrollable {
+    overflow-y: auto;
+}
 </style>

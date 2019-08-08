@@ -8,8 +8,9 @@
     <v-container fill-height fluid>
       <v-layout fill-height>
         <v-flex xs12 align-end flexbox>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="actionForm" v-model="valid" lazy-validation>
             <v-select
+              ref="actionType"
               dark
               v-model="action.action"
               :items="actions"
@@ -91,7 +92,13 @@ export default class ActionEditor extends BaseEditor {
     // @ts-ignore
     @Prop() mode: string;
 
-    public action: GenericObject =  {
+    mounted() {
+        this.bindDefaultEvents('actionForm');
+        // @ts-ignore
+        this.$nextTick(this.$refs.actionType.focus);
+    }
+
+    public action: GenericObject = {
         id: this.data.id,
         action: this.data.action,
         event: this.data.event,
@@ -124,7 +131,6 @@ export default class ActionEditor extends BaseEditor {
         this.$emit('action', this.action);
         return this;
     }
-
 
     get title() {
         if (this.editMode) {

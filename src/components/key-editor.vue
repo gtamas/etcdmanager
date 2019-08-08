@@ -8,13 +8,14 @@
     <v-container fill-height fluid>
       <v-layout fill-height>
         <v-flex xs12 align-end flexbox>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="keyForm" v-model="valid" lazy-validation>
             <v-text-field
               dark
+              ref="key"
               v-model="key"
               :error-messages="keyErrors"
               :label="$t('keyEditor.fields.key.label')"
-              :disabled="editMode"
+              :readonly="editMode"
               :placeholder="$t('keyEditor.fields.key.placeholder')"
               required
               @input="$v.key.$touch()"
@@ -62,6 +63,7 @@ import KeyService from '../services/key.service';
 import { BaseEditor } from '../lib/editor.class';
 import { ValidationError } from '../lib/validation-error.class';
 import { Prop } from 'vue-property-decorator';
+import 'mousetrap/plugins/global-bind/mousetrap-global-bind';
 
 // @ts-ignore
 class KeyError extends Error {
@@ -107,6 +109,11 @@ export default class KeyEditor extends BaseEditor {
         super();
     }
 
+    mounted() {
+        this.bindDefaultEvents('keyForm');
+        this.focus('key');
+    }
+
     get keyErrors() {
         const errors: any = [];
         // @ts-ignore
@@ -144,7 +151,7 @@ export default class KeyEditor extends BaseEditor {
     public async submit(): Promise<KeyEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(new ValidationError('Form is invalid..'));
+            return Promise.resolve(new ValidationError('Form is invalid..'));
         }
 
         const etcd = new KeyService(this.$store.state.connection.getClient());
@@ -178,6 +185,7 @@ export default class KeyEditor extends BaseEditor {
             this.toggleLoading();
         }
 
+        this.focus('key');
         return Promise.resolve(this);
     }
 }

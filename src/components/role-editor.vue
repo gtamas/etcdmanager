@@ -8,11 +8,12 @@
     <v-container fill-height fluid>
       <v-layout fill-height>
         <v-flex xs12 align-end flexbox>
-          <v-form ref="form" v-model="valid" lazy-validation>
+          <v-form ref="roleForm" v-model="valid" lazy-validation>
             <v-text-field
               dark
-              :disabled="roleExists"
+              :readonly="roleExists"
               v-model="name"
+              ref="name"
               :error-messages="nameErrors"
               :label="$t('roleEditor.fields.name.label')"
               :placeholder="$t('roleEditor.fields.name.placeholder')"
@@ -59,7 +60,7 @@
               </template>
             </v-data-table>
 
-            <v-btn :disabled="isValid()" round color="primary" @click="submit">
+            <v-btn :disabled="isValid()" v-if="!roleExists" round color="primary" @click="submit">
               <v-icon>add</v-icon>
               <span>{{ opTitle }}</span>
             </v-btn>
@@ -186,6 +187,14 @@ export default class RoleEditor extends BaseEditor {
         );
     }
 
+    mounted() {
+        this.bindDefaultEvents('roleForm');
+        this.keyboardEvents.bind('meta+n', () => {
+            this.addPermission();
+        });
+        this.focus('name');
+    }
+
     get nameErrors() {
         const errors: any = [];
         // @ts-ignore
@@ -220,10 +229,10 @@ export default class RoleEditor extends BaseEditor {
                 };
             });
         } catch (e) {
-             this.$store.commit('message', Messages.error(e));
+            this.$store.commit('message', Messages.error(e));
         }
 
-         return Promise.resolve(this);
+        return Promise.resolve(this);
     }
 
     addPermission(): RoleEditor {
@@ -235,6 +244,8 @@ export default class RoleEditor extends BaseEditor {
 
     cancelPermission(): RoleEditor {
         this.permissionDialog = false;
+        // @ts-ignore
+        this.$nextTick(this.$refs.name.focus);
         return this;
     }
 
@@ -243,7 +254,7 @@ export default class RoleEditor extends BaseEditor {
             await this.loadPermissions();
             this.cancelPermission();
         } catch (e) {
-             this.$store.commit('message', Messages.error(e));
+            this.$store.commit('message', Messages.error(e));
         }
 
         return Promise.resolve(this);
@@ -274,13 +285,14 @@ export default class RoleEditor extends BaseEditor {
         } catch (e) {
             this.$store.commit('message', Messages.error(e));
         }
+        this.focus('name');
         return Promise.resolve(this);
     }
 
     public async submit(): Promise<RoleEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
-            return Promise.reject(new ValidationError('Form is invalid..'));
+            return Promise.resolve(new ValidationError('Form is invalid..'));
         }
 
         const backend = new RoleService(
@@ -300,6 +312,7 @@ export default class RoleEditor extends BaseEditor {
             this.$store.commit('message', Messages.error(e));
         }
 
+        this.focus('name');
         return Promise.resolve(this);
     }
 }

@@ -70,6 +70,11 @@ function createAppMenu() {
                     accelerator: 'CommandOrControl+Alt+R',
                     click: menuRouter('roles'),
                 },
+                {
+                    label: 'Users',
+                    accelerator: 'CommandOrControl+Alt+U',
+                    click: menuRouter('users'),
+                },
             ],
         },
         {
@@ -78,6 +83,7 @@ function createAppMenu() {
             submenu: [
                 {
                     label: 'Report a bug',
+                    accelerator: 'CommandOrControl+Alt+B',
                     click: () => {
                         shell.openExternal(pkg.bugs.url);
                     },

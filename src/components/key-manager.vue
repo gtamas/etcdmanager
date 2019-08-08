@@ -7,10 +7,11 @@
         <v-spacer></v-spacer>
         <v-text-field
           dark
+          ref="search"
           color="white"
           v-model="filter"
           prepend-icon="search"
-         :placeholder="$t('common.lists.filter')"
+          :placeholder="$t('common.lists.filter')"
         ></v-text-field>
         <v-tooltip bottom max-width="200">
           <template v-slot:activator="{ on }">
@@ -53,6 +54,7 @@
       </v-toolbar>
       <v-card raised dark>
         <v-data-table
+            ref="table"
           :search="filter"
           :headers="headers"
           v-bind:items="data"
@@ -155,10 +157,16 @@ export default class KeyManager extends CrudBase implements List {
         this.etcd = new KeyService(this.$store.state.connection.getClient());
     }
 
+    public mounted() {
+         this.keyboardEvents.bind('meta+t', () => {
+            this.touch(null, true);
+        });
+    }
+
     public created() {
         this.translateHeaders(
             'keyManager.columns.key',
-            'keyManager.columns.value',
+            'keyManager.columns.value'
         );
         this.load();
     }
@@ -179,15 +187,18 @@ export default class KeyManager extends CrudBase implements List {
             this.$store.commit('message', Messages.error(error));
         }
 
-         return Promise.resolve(this);
+        return Promise.resolve(this);
     }
 
-    public async touch(item: EtcdItem, selection: boolean = false): Promise<KeyManager> {
+    public async touch(
+        item: EtcdItem | null,
+        selection: boolean = false
+    ): Promise<KeyManager> {
         if (selection && !this.hasSelection()) {
             this.noSelection = true;
             return Promise.resolve(this);
         }
-        const toBeTouched = selection ? this.getSelectedKeys() : [item.key];
+        const toBeTouched = selection ? this.getSelectedKeys() : [(item as EtcdItem).key];
         this.noSelection = false;
         try {
             this.toggleLoading();
@@ -199,7 +210,7 @@ export default class KeyManager extends CrudBase implements List {
             this.toggleLoading();
         }
 
-         return Promise.resolve(this);
+        return Promise.resolve(this);
     }
 
     public async confirmPurge(): Promise<KeyManager> {
@@ -219,7 +230,7 @@ export default class KeyManager extends CrudBase implements List {
             // @ts-ignore
             const result = await CrudBase.options.methods.confirmDelete.call(
                 this,
-                'key',
+                'key'
             );
             this.$store.commit('message', Messages.success());
         } catch (error) {

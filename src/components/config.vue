@@ -268,6 +268,7 @@ import {
     url,
 } from 'vuelidate/lib/validators';
 import { omit } from 'lodash-es';
+import Mousetrap from 'mousetrap';
 
 @Component({
     // @ts-ignore
@@ -318,6 +319,19 @@ export default class Configuration extends Vue {
 
     private tabsLength: number = 4;
     private active = 0;
+
+    created() {
+        const keyboardEvents = new Mousetrap();
+        keyboardEvents.bind('meta+s', () => {
+            this.persist();
+        });
+        keyboardEvents.bind('right', () => {
+            this.next();
+        });
+         keyboardEvents.bind('left', () => {
+            this.prev();
+        });
+    }
 
     get endpoint() {
         return this.$store.state.etcd.hosts;
@@ -520,6 +534,10 @@ export default class Configuration extends Vue {
 
     public next() {
         this.active = this.active < this.tabsLength ? this.active + 1 : 0;
+    }
+
+    public prev() {
+        this.active = this.active > 0 ? this.active - 1 : 0;
     }
 
     public persist() {
