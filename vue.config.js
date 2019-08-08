@@ -50,17 +50,24 @@ module.exports = {
         electronBuilder: {
             builderOptions: {
                 win: {
+                    appId: 'com.electron.${productName}',
                     icon: './public/icons/icon.ico',
-                    artifactName: '${productName}-${version}-win64.${ext}'
+                    artifactName: '${productName}-${version}-win64.${ext}',
+                    copyright: 'Copyright ${year} year ${author}'
                 },
                 linux:{
+                    appId: 'com.electron.${productName}',
                     icon: './public/icons/512x512.png',
                     artifactName: '${productName}-${version}-linux.${ext}',
+                    copyright: 'Copyright ${year} year ${author}',
                     category: 'Utility'
                 },
                 mac: {
+                    appId: 'com.electron.${productName}',
                     icon: './public/icons/icon.icns',
-                    artifactName: '${productName}-${version}-osx.${ext}'
+                    artifactName: '${productName}-${version}-osx.${ext}',
+                    copyright: 'Copyright ${year} year ${author}',
+                    category: 'public.app-category.developer-tools'
                 },
                 files: [
                     '**/*',
