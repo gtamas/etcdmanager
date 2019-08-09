@@ -16,12 +16,13 @@
     },
     "main": "background.js",
     "dependencies": {
-        "electron-builder": "20.44.0",
         "@grpc/proto-loader": "^0.5.1",
         "@trodi/electron-splashscreen": "^0.3.4",
+        "electron-builder": "20.44.0",
         "etcd3": "^0.2.11",
         "grpc": "^1.22.2",
         "lodash-es": "^4.17.11",
+        "mousetrap": "^1.6.3",
         "protobufjs": "^6.8.8",
         "uuid": "^3.3.2",
         "vue": "^2.6.10",
@@ -37,6 +38,7 @@
     },
     "devDependencies": {
         "@types/lodash-es": "^4.17.3",
+        "@types/mousetrap": "^1.6.3",
         "@types/uuid": "^3.4.4",
         "@types/vuelidate": "^0.7.5",
         "@vue/cli-plugin-babel": "^3.7.0",
