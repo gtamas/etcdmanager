@@ -12,7 +12,8 @@
         "electron:serve": "vue-cli-service electron:serve",
         "postinstall": "npx electron-builder install-app-deps",
         "postuninstall": "npx electron-builder install-app-deps",
-        "test:e2e": "vue-cli-service test:e2e"
+        "test:e2e": "vue-cli-service test:e2e",
+        "test": "mocha test/spec"
     },
     "main": "background.js",
     "dependencies": {
@@ -45,11 +46,15 @@
         "@vue/cli-plugin-e2e-cypress": "^3.7.0",
         "@vue/cli-plugin-typescript": "^3.7.0",
         "@vue/cli-service": "^3.7.0",
+        "chai": "^4.2.0",
+        "chai-as-promised": "^7.1.1",
         "electron": "^5.0.0",
         "electron-icon-builder": "^1.0.1",
         "husky": "^3.0.0",
+        "mocha": "^6.2.0",
         "node-sass": "^4.9.0",
         "sass-loader": "^7.1.0",
+        "spectron": "^7.0.0",
         "tslint-config-airbnb": "^5.11.1",
         "typescript": "^3.4.3",
         "vue-cli-plugin-electron-builder": "^1.3.2",
