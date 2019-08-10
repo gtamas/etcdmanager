@@ -1,7 +1,7 @@
-var ManageKeysPage = require('../pageobjects/manage_keys_page');
+let ManageKeysPage = require('../pageobjects/manage_keys_page');
 const assert = require('assert');
 
-var page;
+let page;
 
 describe('manage keys app scenarios', function() {
     this.timeout(10000);
@@ -15,16 +15,31 @@ describe('manage keys app scenarios', function() {
 
     it('open manage key editor', async () => {
         page.clickEtcdBtn();
-        const endpointValue = await page.writeEndpoint('test');
-        assert.equal(endpointValue, 'test');
-        // Check if manage keys button exist and clickable
-        const manageKeysButton = await page.clickManageKeys();
+        const endpointValue = await page.writeEndpoint(
+            'http://hubphq-icon-sandbox-d001.icellmobilsoft.hu'
+        );
+        assert.equal(
+            endpointValue,
+            'http://hubphq-icon-sandbox-d001.icellmobilsoft.hu'
+        );
+        page.clickSubmitBtn();
     });
 
     it('add new key value pair', async () => {
-        page.clickAddBtn();
-        const keyValue = await page.writeKey('test2');
-        assert.equal(keyValue, 'test2');
-        page.clickAddKeyBtn();
+        await page.clickManageKeys();
+        await page.clickAddBtn();
+
+        const randomKey = await page.writeKey('testKey');
+        assert.equal(randomKey, 'testKey');
+
+        const randomValue = await page.writeValue('testValue');
+        assert.equal(randomValue, 'testValue');
+
+        await page.clickAddKeyBtn();
     });
+
+    // TODO fix clickManageKeys and add functions to test edit key value pair
+    // it('edit key value pair', async () => {
+    //     await page.clickManageKeys();
+    // })
 });

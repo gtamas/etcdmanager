@@ -32,7 +32,7 @@ class ManageKeysPage extends BasePage {
     }
 
     clickAddBtn() {
-        return this.app.client.click('//button[text()="add"]');
+        return this.app.client.click('//span[text()="Add"]');
     }
 
     writeKey(value) {
@@ -42,8 +42,19 @@ class ManageKeysPage extends BasePage {
             .should.eventually.equal(value);
     }
 
+    writeValue(value) {
+        return this.app.client
+            .setValue('input[aria-label="Value"]', value)
+            .getValue('input[aria-label="Value"]')
+            .should.eventually.equal(value);
+    }
+
     clickAddKeyBtn() {
-        return this.app.client.click('//button[text()="add"]');
+        return this.app.client.click('//div[text()="Add"]');
+    }
+
+    clickEditBtn() {
+        return this.app.client.click('//i[text()="edit"]');
     }
 }
 
