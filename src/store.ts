@@ -5,8 +5,8 @@ import Vuex from 'vuex';
 import EtcdService from './services/etcd.service';
 import { i18n, loadedLang } from './main';
 import { join } from 'path';
-const app = require('electron').remote.app;
-
+import VueI18n from 'vue-i18n';
+const { ipcRenderer, remote: { app } } = require('electron');
 
 Vue.use(Vuex);
 
@@ -107,9 +107,10 @@ export default new Vuex.Store({
     },
     actions: {
         async locale(context, payload) {
-            function setLanguage(lang: string) {
+            function setLanguage(lang: string, translations: VueI18n.LocaleMessageObject) {
                 i18n.locale = lang;
                 document.querySelector('html')!.setAttribute('lang', lang);
+                ipcRenderer.send('update-menu', translations);
                 return lang;
             }
 
@@ -120,9 +121,8 @@ export default new Vuex.Store({
                     i18n.setLocaleMessage(lang, translations.default[lang]);
                     loadedLang.push(lang);
                     context.commit('config', { language: lang });
-                    return setLanguage(lang);
                 }
-                return Promise.resolve(setLanguage(lang));
+                return Promise.resolve(setLanguage(lang, i18n.getLocaleMessage(lang)));
             }
             return Promise.resolve(lang);
         },

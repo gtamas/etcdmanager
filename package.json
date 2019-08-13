@@ -41,6 +41,7 @@
         "@types/mousetrap": "^1.6.3",
         "@types/uuid": "^3.4.4",
         "@types/vuelidate": "^0.7.5",
+        "@vue/cli": "^3.10.0",
         "@vue/cli-plugin-babel": "^3.7.0",
         "@vue/cli-plugin-e2e-cypress": "^3.7.0",
         "@vue/cli-plugin-typescript": "^3.7.0",
