@@ -8,6 +8,7 @@ import {
     MenuItemConstructorOptions,
     Tray,
     shell,
+    ipcMain,
 } from 'electron';
 import {
     createProtocol,
@@ -16,8 +17,17 @@ import {
 import * as Splashscreen from '@trodi/electron-splashscreen';
 import { join } from 'path';
 import { readFileSync } from 'fs';
+import { get } from 'lodash-es';
 
-const pkg = JSON.parse(readFileSync(join(process.platform !== 'win32' ? '/' : '', app.getAppPath(), 'package.json')).toString());
+const pkg = JSON.parse(
+    readFileSync(
+        join(
+            process.platform !== 'win32' ? '/' : '',
+            app.getAppPath(),
+            'package.json'
+        )
+    ).toString()
+);
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
 let menu: Menu | null = null;
@@ -33,110 +43,183 @@ protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
-function createAppMenu() {
+function createAppMenu(translations: any) {
     const menuRouter = (where: string) => {
-        // @ts-ignore
-        return (menuItem: any, win: BrowserWindow) => {
+        // tslint:disable-next-line: variable-name
+        return (_menuItem: any, win: BrowserWindow) => {
             win.webContents.send('navigate', where);
         };
     };
 
     const template: MenuItemConstructorOptions[] = [
         {
-            label: 'Manage',
+            label: get(translations, ['appMenu', 'edit'], 'Edit'),
+            // @ts-ignore
             submenu: [
                 {
-                    label: 'Settings',
+                    role: 'undo',
+                    label: get(translations, ['appMenu', 'undo'], 'Undo'),
+                },
+                {
+                    role: 'redo',
+                    label: get(translations, ['appMenu', 'redo'], 'Redo'),
+                },
+                { type: 'separator' },
+                {
+                    role: 'cut',
+                    label: get(translations, ['appMenu', 'cut'], 'Cut'),
+                },
+                {
+                    role: 'copy',
+                    label: get(translations, ['appMenu', 'copy'], 'Copy'),
+                },
+                {
+                    role: 'paste',
+                    label: get(translations, ['appMenu', 'paste'], 'Paste'),
+                },
+                ...(isMac
+                    ? [
+                          {
+                              role: 'pasteAndMatchStyle',
+                              label: get(
+                                  translations,
+                                  ['appMenu', 'pasteAndMatchStyle'],
+                                  'Paste and match style'
+                              ),
+                          },
+                      ]
+                    : []),
+                {
+                    role: 'delete',
+                    label: get(translations, ['appMenu', 'delete'], 'Delete'),
+                },
+                { type: 'separator' },
+                {
+                    role: 'selectAll',
+                    label: get(
+                        translations,
+                        ['appMenu', 'selectAll'],
+                        'Select all'
+                    ),
+                },
+            ],
+        },
+        {
+            label: get(translations, ['appMenu', 'view'], 'View'),
+            // @ts-ignore
+            submenu: [
+                ...(isDevelopment
+                    ? [
+                          {
+                              role: 'reload',
+                              label: get(
+                                  translations,
+                                  ['appMenu', 'reload'],
+                                  'Reload'
+                              ),
+                          },
+                          {
+                              role: 'forcereload',
+                              label: get(
+                                  translations,
+                                  ['appMenu', 'forcereload'],
+                                  'Force reload'
+                              ),
+                          },
+                      ]
+                    : []),
+                { type: 'separator' },
+                {
+                    role: 'resetzoom',
+                    label: get(
+                        translations,
+                        ['appMenu', 'resetzoom'],
+                        'Reset zoom'
+                    ),
+                },
+                {
+                    role: 'zoomin',
+                    label: get(translations, ['appMenu', 'zoomin'], 'Zoom in'),
+                },
+                {
+                    role: 'zoomout',
+                    label: get(translations, ['appMenu', 'zoomout'], 'Zoom out'),
+                },
+                { type: 'separator' },
+                {
+                    role: 'togglefullscreen',
+                    label: get(
+                        translations,
+                        ['appMenu', 'togglefullscreen'],
+                        'Toggle fullscreen'
+                    ),
+                },
+                ...(isDevelopment
+                    ? [
+                          { type: 'separator' },
+                          {
+                              role: 'toggledevtools',
+                              label: get(
+                                  translations,
+                                  ['appMenu', 'toggledevtools'],
+                                  'Toggle DevTools'
+                              ),
+                          },
+                      ]
+                    : []),
+            ],
+        },
+        {
+            label: get(translations, ['appMenu', 'manage'], 'Manage'),
+            submenu: [
+                {
+                    label: get(translations, ['appMenu', 'settings'], 'Settings'),
                     accelerator: 'CommandOrControl+Alt+S',
                     click: menuRouter('configure'),
                 },
                 {
-                    label: 'Cluster',
+                    label: get(translations, ['appMenu', 'cluster'], 'Cluster'),
                     accelerator: 'CommandOrControl+Alt+C',
                     click: menuRouter('cluster'),
                 },
                 {
-                    label: 'Keys',
+                    label: get(translations, ['appMenu', 'keys'], 'Keys'),
                     accelerator: 'CommandOrControl+Alt+K',
                     click: menuRouter('keys'),
                 },
                 {
-                    label: 'Watchers',
+                    label: get(translations, ['appMenu', 'watchers'], 'Watchers'),
                     accelerator: 'CommandOrControl+Alt+W',
                     click: menuRouter('watchers'),
                 },
                 {
-                    label: 'Roles',
+                    label: get(translations, ['appMenu', 'roles'], 'Roles'),
                     accelerator: 'CommandOrControl+Alt+R',
                     click: menuRouter('roles'),
                 },
                 {
-                    label: 'Users',
+                    label: get(translations, ['appMenu', 'users'], 'Users'),
                     accelerator: 'CommandOrControl+Alt+U',
                     click: menuRouter('users'),
                 },
             ],
         },
         {
-            label: 'Beta',
-             // @ts-ignore
+            label: get(translations, ['appMenu', 'beta'], 'Beta'),
+            // @ts-ignore
             submenu: [
                 {
-                    label: 'Report a bug',
+                    label: get(
+                        translations,
+                        ['appMenu', 'reportBug'],
+                        'Report a bug'
+                    ),
                     accelerator: 'CommandOrControl+Alt+B',
                     click: () => {
                         shell.openExternal(pkg.bugs.url);
                     },
                 },
             ],
-        },
-        {
-            label: 'Edit',
-            // @ts-ignore
-            submenu: [
-                { role: 'undo' },
-                { role: 'redo' },
-                { type: 'separator' },
-                { role: 'cut' },
-                { role: 'copy' },
-                { role: 'paste' },
-                ...(isMac
-                    ? [
-                          { role: 'pasteAndMatchStyle' },
-                          { role: 'delete' },
-                          { role: 'selectAll' },
-                          { type: 'separator' },
-                      ]
-                    : [
-                          { role: 'delete' },
-                          { type: 'separator' },
-                          { role: 'selectAll' },
-                      ]),
-            ],
-        },
-        {
-            label: 'View',
-            // @ts-ignore
-            submenu: [
-                ...(isDevelopment ? [
-                    { role: 'reload' },
-                    { role: 'forcereload' },
-                ] : [
-                ]),
-                { type: 'separator' },
-                { role: 'resetzoom' },
-                { role: 'zoomin' },
-                { role: 'zoomout' },
-                { type: 'separator' },
-                { role: 'togglefullscreen' },
-                ...(isDevelopment
-                    ? [{ type: 'separator' }, { role: 'toggledevtools' }]
-                    : []),
-            ],
-        },
-        {
-            label: 'Window',
-            role: 'windowMenu',
         },
     ];
 
@@ -145,20 +228,55 @@ function createAppMenu() {
             ? {
                   label: app.getName(),
                   submenu: [
-                      { role: 'about' },
+                      {
+                          role: 'about',
+                          label: get(translations, ['appMenu', 'about'], 'About'),
+                      },
                       { type: 'separator' },
-                      { role: 'services' },
+                      {
+                          role: 'services',
+                          label: get(
+                              translations,
+                              ['appMenu', 'services'],
+                              'Services'
+                          ),
+                      },
                       { type: 'separator' },
-                      { role: 'hide' },
-                      { role: 'hideothers' },
-                      { role: 'unhide' },
+                      {
+                          role: 'hide',
+                          label: get(translations, ['appMenu', 'hide'], 'Hide'),
+                      },
+                      {
+                          role: 'hideothers',
+                          label: get(
+                              translations,
+                              ['appMenu', 'hideothers'],
+                              'Hide others'
+                          ),
+                      },
+                      {
+                          role: 'unhide',
+                          label: get(
+                              translations,
+                              ['appMenu', 'unhide'],
+                              'Unhide'
+                          ),
+                      },
                       { type: 'separator' },
-                      { role: 'quit' },
+                      {
+                          role: 'quit',
+                          label: get(translations, ['appMenu', 'quit'], 'Quit'),
+                      },
                   ],
               }
             : {
-                  label: 'File',
-                  submenu: [{ role: 'quit' }],
+                  label: get(translations, ['appMenu', 'file'], 'File'),
+                  submenu: [
+                      {
+                          role: 'quit',
+                          label: get(translations, ['appMenu', 'quit'], 'Quit'),
+                      },
+                  ],
               }
     );
 
@@ -166,7 +284,8 @@ function createAppMenu() {
     Menu.setApplicationMenu(menu);
 }
 
-function setAboutPanel() {
+// tslint:disable-next-line: variable-name
+function setAboutPanel(_translations: any) {
     const year = new Date().getFullYear();
     if (process.platform !== 'win32') {
         app.setAboutPanelOptions({
@@ -181,7 +300,6 @@ function setAboutPanel() {
 }
 
 function createWindow() {
-
     // Create the browser window.
     const mainOpts = {
         width: 800,
@@ -208,7 +326,6 @@ function createWindow() {
     win.on('page-title-updated', (e) => {
         e.preventDefault();
     });
-
 
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
@@ -259,9 +376,12 @@ app.on('ready', async () => {
         }
     }
     new Tray(join(__static, '/icons/24x24.png'));
-    createAppMenu();
-    setAboutPanel();
     createWindow();
+    // tslint:disable-next-line: variable-name
+    ipcMain.on('update-menu', (_event: any, translations: any) => {
+        createAppMenu(translations);
+        setAboutPanel(translations);
+    });
 });
 
 // Exit cleanly on request from parent process in development mode.
