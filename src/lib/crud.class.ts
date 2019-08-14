@@ -65,7 +65,7 @@ export class CrudBase extends Vue implements List {
         });
         this.keyboardEvents.bind('meta+h', (e: ExtendedKeyboardEvent) => {
             e.preventDefault();
-            this.help = this.help === 0 ? null : 0;
+            this.toggleHelp();
         });
         this.keyboardEvents.bind('esc', (e: ExtendedKeyboardEvent) => {
             e.stopPropagation();
