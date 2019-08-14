@@ -18,6 +18,8 @@ import * as Splashscreen from '@trodi/electron-splashscreen';
 import { join } from 'path';
 import { readFileSync } from 'fs';
 import { get } from 'lodash-es';
+import * as defaultTranslations from './i18n/en';
+
 
 const pkg = JSON.parse(
     readFileSync(
@@ -43,7 +45,7 @@ protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
-function createAppMenu(translations: any) {
+function createAppMenu(translations: any = defaultTranslations.default.en) {
     const menuRouter = (where: string) => {
         // tslint:disable-next-line: variable-name
         return (_menuItem: any, win: BrowserWindow) => {
@@ -285,7 +287,7 @@ function createAppMenu(translations: any) {
 }
 
 // tslint:disable-next-line: variable-name
-function setAboutPanel(_translations: any) {
+function setAboutPanel(_translations: any = defaultTranslations.default.en) {
     const year = new Date().getFullYear();
     if (process.platform !== 'win32') {
         app.setAboutPanelOptions({
@@ -376,6 +378,8 @@ app.on('ready', async () => {
         }
     }
     new Tray(join(__static, '/icons/24x24.png'));
+    createAppMenu();
+    setAboutPanel();
     createWindow();
     // tslint:disable-next-line: variable-name
     ipcMain.on('update-menu', (_event: any, translations: any) => {
