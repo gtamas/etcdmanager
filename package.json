@@ -65,13 +65,14 @@
         "Tamas Geschitz <getamas@gmail.com>",
         "Jozsef Szalai",
         "David Onofer",
-        "Daniel Rudolf"
+        "Gabor Nagy"
     ],
     "contributors": [
         "Tamas Geschitz <getamas@gmail.com>",
         "Jozsef Szalai",
         "David Onofer",
-        "Daniel Rudolf"
+        "Daniel Rudolf",
+        "Gabor Nagy"
     ],
     "engines": {
         "node": ">= 10.0.0"
