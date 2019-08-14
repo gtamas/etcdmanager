@@ -224,11 +224,11 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
             ],
         },
         {
-            label: 'Help',
+            label: get(translations, ['appMenu', 'help'], 'Help'),
              // @ts-ignore
             submenu: [
                 {
-                    label: 'Go to Wiki',
+                    label: get(translations, ['appMenu', 'gotoWiki'], 'Go to Wiki'),
                     accelerator: 'CommandOrControl+Alt+L',
                     click: () => {
                         shell.openExternal(`${pkg.homepage}/wiki`);
