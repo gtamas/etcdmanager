@@ -63,6 +63,25 @@ export default {
             about: 'Az alkalmazásról',
         },
         common: {
+            help: {
+                tooltip: 'Mutassa a segtítség panelt',
+                infoTitle: `Tudta?`,
+                tabs: {
+                    info: 'Info',
+                    shortcuts: 'Gyorsbillentyűk',
+                },
+                shortcuts: {
+                    save: 'Adatok ellenőrzése és mentése',
+                    help: 'Mutassa ezt a panelt',
+                    enter: 'Adatok ellenőrzése és mentése',
+                    esc: 'Szerkesztő bezárása',
+                    openEditor: 'Szerkesztő megnyitása',
+                    closeEditor: 'Szerkesztő bezárása',
+                    search: 'Fókusz a kereső mezőre',
+                    purge: 'Minden elem törlése',
+                    remove: 'Kiválasztott elemek törlése',
+                },
+            },
             items: {
                 watcher: 'figyelő | figyelők',
                 key: 'kulcs | kulcsok',
@@ -110,6 +129,40 @@ export default {
         },
         settings: {
             title: 'Beállítások',
+            help: {
+                etcd: `* Itt konfigurálhatja az ETCD kapcsolatot es néhány opcionális beállítást.
+                * A legfontosabb a **host** és a **port** beállítása, mivel ezek szükségesek a kapcsolódáshoz.
+                * A **host** értéke egy **IPv4 cím** vagy **URL** lehet.
+                * A **port** értéke az a port szám amin az ETCD figyel. Ez alapértelmezésben **2379**.
+
+                > Ha az ETCD beállítások hibásak vagy az ETCD nem elérhető, **nem fog tudni elnavigálni** a beállítások képernyőről.
+                Biztosítsa, hogy mentésre kerüljenek a bállítások és az ETCD valóban fusson a megadott címen és porton.
+                `,
+                auth: `* Itt módosíthatja az autentikációs beállításokat.
+                * A **username** és **password** mezők az autentikáló ETCD felhasználó nevét és jelszavát tartalmazzák.
+
+                > Ehhez az ETCD-ben [engedélyezni kell](http://etcd.io) az autentikácó használatát.
+                Ez alapértelemzés szerint ki van kapcsolva. Ha nincs szüksége autentikációra, **hagyja üresen** ezeket a mezőket.`,
+                watchers: `* A figyelők (eseménykezelők) beállításait találja itt.
+                * Engedélyezheti a figyelők **automatikus betöltését** az app indításakor (**ajánlott**).
+                * Engedélyezheti vagy letilthatja az alapértelmezett figyelőket.
+
+                > A figyelők addig aktvak amíg az app fut. Ez azt jelenti, hogy **nem kap éretesítéseket** az app bezárása után.
+                Azonban ha bekapcsolja a fent említett auto betöltést, a figyelők automatikusan aktiválódnak az app következő indításakor.`,
+                users: `* Ezek itt az **ETCD felhasználók** kezelésével kapcsolatos beállítások.
+                * Az alábbi jelszó minta új felhasználó létrehozásakor és jelszó változtatásakor egyaránt alkalmazásra kerül.
+
+                > Ha nem ad meg mintát, akkor az alapértelmezett lesz használva: a jelszó 8-16 karakter, nincs benne szóköz és az angol
+                ABC kis és nagy betüit is tartalmaznia kell.`,
+                misc: `* Egyéb beálltások.
+                    * Többek között, itt választhat **nyelvet**.`,
+                shortcuts: {
+                    leftArrowLabel: 'bal nyil',
+                    rightArrowLabel: 'jobb nyil',
+                    leftArrow: 'Előző fül',
+                    rightArrow: 'Következő Fül',
+                },
+            },
             etcd: {
                 title: 'ETCD',
                 fields: {
@@ -230,6 +283,11 @@ export default {
         },
         cluster: {
             title: 'Klaszter',
+            help: {
+                text: `* Alapvető információk az ETCD klaszterről és annak elemeiről.
+                * További részletekéert egy node-ról, kattintson az **info** ikonra.
+                * Ellenőrizheti bármely node pillanatnyi állapotát a **szív** inonra kattintva.`,
+            },
             subtitle: 'Csomópont',
             header: {
                 clusterId: 'Klaszter ID',
@@ -264,6 +322,19 @@ export default {
         },
         keyManager: {
             title: 'Kulcsok',
+            help: {
+                text: `Ez az ETCD-ben tárolt összes **kulcs** listája.
+
+                * Rendezheti a listát bármely oszlop alapján (az **oszlop fejlécére** kattintva).
+                * Kereshet bármely kulcszsó szerint (használja a **kereső mezőt**).
+                * Letörölheti a kiválasztott kulcsokat (kattintson az **Eltávolít**) gombra.
+                * Letörölhet minden kulcsot (kattintson a **Tisztít** gombra).
+                * Frissítheti a kiválasztott kulcsokat (touch) (kattintson a **Frissít** gombra)
+                * Módosíthatja, törölheti vagy frissítheti az egyes kulcsokat a megfelelő **akció ikon** használatával.`,
+                shortcuts: {
+                    touch: 'Kiválasztott kulcsok frissítése',
+                },
+            },
             columns: {
                 key: 'Kulcs',
                 value: 'Érték',
@@ -280,6 +351,11 @@ export default {
         },
         keyEditor: {
             title: 'Kulcsok',
+            help: {
+                text: `Itt kulcsokat **hozhat létre** és **szerkeszthet**.
+
+                * Léttrehozás után **nem** változtathatja a kulcs nevét. A névnek **egyedinek** kell lennie.`,
+            },
             fields: {
                 key: {
                     label: 'Kulcs',
@@ -323,19 +399,31 @@ export default {
         },
         watcherManager: {
             title: 'Figyelők',
+            help: {
+                text: `Ez a **figyelők** listája.
+
+                * Rendezheti a listát bármely oszlop alapján (az **oszlop fejllécére** kattintva).
+                * Kereshet bármely kulcszsó szerint (használja a **kereső mezőt**).
+                * Letörölheti a kiválasztott figyelőket (kattintson az **Eltávolít**) gombra.
+                * Letörölhet minden figyelőt (kattintson **Tisztít** gombra).
+                * Aktiválhatja vagy deaktiválhatja a kiválasztott figyelőket (kattintson a **harang** ikonra)
+                * Módosíthajta, törölheti, aktiválhatja az egyes figyelőket a megfelelő **akció ikon** használatával,
+
+                > A figyelők addig kapnak értesítéseket amíg aktívak, azaz amíg **az app fut** (vagy amíg le nem állítja őket). Ha megszakad az ETCD kapcsolat, a
+                figyelők újrakonnektálnak amint lehetséges és megkapják a kihagyott eseményeket is.`,
+                shortcuts: {
+                    toggle: 'Kiválasztott figyelők aktiválása / deaktiválása',
+                },
+            },
             columns: {
                 key: 'Kulcs',
                 name: 'Név',
                 prefix: 'Előtag',
             },
             actions: {
-                notificationOn: {
-                    label: 'Be',
-                    tooltip: 'Kiválasztott figyelők aktiválása',
-                },
-                notificationOff: {
-                    label: 'Ki',
-                    tooltip: 'Kiválasztott figyelők deaktiválása',
+                notificationToggle: {
+                    label: 'Be / Ki',
+                    tooltip: 'Kiválasztottak ki / be',
                 },
                 edit: 'Figyelő szerkesztése',
                 remove: 'Figyelő eltávolítása',
@@ -343,6 +431,17 @@ export default {
             },
         },
         watcherEditor: {
+            help: {
+                text: `Itt létező figyelőket **módosíthat** vagy újakat **kreálhat**.
+
+                * Létrehozás után **nem** változtathatja meg a figyelő nevét. A névnek **egyedinek** kell lennie.
+                * Egy figyelő dolgozhat egyetlen kulcsal. (**ne használja ** az előtagot)
+                * Egy figyelő figyelhet bizonyos előtaggal rendelkező kulcsokat is. (**használja** az előtagot)
+                * Egy figyelő akárhány **akciót** végrehajthat, de legalább **egyet** hozzá kell rendelni.`,
+                shortcuts: {
+                    addAction: 'Űj akció hozzáadása',
+                },
+            },
             fields: {
                 name: {
                     label: 'Név',
@@ -394,6 +493,15 @@ export default {
             },
         },
         roleManager: {
+            help: {
+                text: `Ez az ETCD **szerepkörök** listája.
+
+                * Rendezheti a listát bármely oszlop alapján (az **oszlop fejllécére** kattintva).
+                * Kereshet bármely kulcszsó szerint (használja a **kereső mezőt**).
+                * Letörölheti a kiválasztott szerepeket (kattintson az **Eltávolít**) gombra.
+                * Letörölhet minden szerepet (kattintson **Tisztít** gombra).
+                * Módosíthatja vagy törölheti az egyes szerepeket a megfelelő **akció ikon** használatával.`,
+            },
             title: 'Szerepek',
             columns: {
                 name: 'Név',
@@ -404,6 +512,16 @@ export default {
             },
         },
         roleEditor: {
+            help: {
+                text: `Itt létezó szerepet **módosithat** vagy újat **kreálhat**.
+
+                * Létrehozás után **nem** módosíthatja a szerep nevét. A névnek **egyedinek** kell lennie.
+                * Minden szerephez jogokat kell rendelni, **legalább egyet**.
+                * A jogok **azonnal** kiosztásra vagy visszavonásra kerülnek, ehhez nem kell a mentésre kattintania.`,
+                shortcuts: {
+                    addPermission: 'Új jod hozzáadása',
+                },
+            },
             fields: {
                 name: {
                     label: 'Név',
@@ -412,13 +530,13 @@ export default {
                 },
             },
             actions: {
-                edit: 'Engedély szerkesztése',
-                revoke: 'Engedély visszavonása',
-                permissions: 'Engedélyek',
+                edit: 'Jog szerkesztése',
+                revoke: 'Jog visszavonása',
+                permissions: 'Jogok',
             },
             columns: {
                 key: 'Kulcs',
-                permission: 'Engedély',
+                permission: 'Jog',
                 prefix: 'Előtag',
             },
         },
@@ -431,9 +549,9 @@ export default {
                         'A kulcs neve, amihez a szerep hozzáférést biztosít.',
                 },
                 permission: {
-                    label: 'Engedélyek',
+                    label: 'Jogok',
                     tooltip:
-                        'Az engedély, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné, akkor állítsa be az írást és az olvasást is.',
+                        'A jog, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné, akkor állítsa be az írást és az olvasást is.',
                 },
                 prefix: {
                     label: 'Ez egy előtag',
@@ -467,6 +585,15 @@ export default {
         },
         userManager: {
             title: 'Felhasználók',
+            help: {
+                text: `Ez az **ETCD felhasználók** listája.
+
+                * Rendezheti a listát bármely oszlop alapján (az **oszlop fejllécére** kattintva).
+                * Kereshet bármely kulcszsó szerint (használja a **kereső mezőt**).
+                * Letörölheti a kiválasztott felhasználókat (kattintson az **Eltávolít**) gombra.
+                * Letörölhet minden felhasználót (kattintson **Tisztít** gombra).
+                * Módosíthatja vagy törölheti az egyes felhasználókat a megfelelő **akció ikon** használatával.`,
+            },
             columns: {
                 name: 'Név',
             },
@@ -477,6 +604,14 @@ export default {
         },
         userEditor: {
             title: 'Felhasználók',
+            help: {
+                text: `Itt létező felhasználó jelszavát **módosíthatja** vagy új usert **kreálhat**.
+
+                * Létrehozás után **nem** változtathatja meg a user nevét. A névnek **egyedinek** kell lennie.
+                * A szerepkörök **azonnal** kiosztásra vagy visszavonásra kerülnek, ehhez nem kell a mentésre kattintania.
+
+                > A jelszavaknak meg kell felelnie egy jelszó mintának. Ha az alapértelmezett minta nem felel meg, megváltoztathatja a **beállítások fülön**.`,
+            },
             subtitle: 'Szerepek',
             fields: {
                 name: {

@@ -1,96 +1,168 @@
 <template>
-  <v-card>
-    <v-toolbar dark flat>
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-      <v-divider class="mx-2" inset vertical></v-divider>
-      <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-container fill-height fluid>
-      <v-layout fill-height>
-        <v-flex xs12 align-end flexbox>
-          <v-form ref="userForm" v-model="valid" lazy-validation>
-            <v-text-field
-              dark
-              v-model="name"
-              ref="name"
-              :error-messages="nameErrors"
-              :label="$t('userEditor.fields.name.label')"
-              :readonly="editMode"
-              :placeholder="$t('userEditor.fields.name.placeholder')"
-              required
-              @input="$v.name.$touch()"
-              @blur="$v.name.$touch()"
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('userEditor.fields.name.tooltip') }}</span>
-              </v-tooltip>
-            </v-text-field>
+    <v-card>
+        <v-expansion-panel focusable dark class="help" v-model="help">
+            <v-expansion-panel-content dark class="darker">
+                <template v-slot:actions>
+                    <v-tooltip slot="prepend" bottom max-width="200">
+                        <v-icon slot="activator" color="primary" light medium>help</v-icon>
+                        <span>{{ $t('common.help.tooltip') }}</span>
+                    </v-tooltip>
+                </template>
+                <template v-slot:header>
+                    <v-toolbar-title>{{ title }}</v-toolbar-title>
+                </template>
+                <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
+                    <v-tab ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                    <v-tab-item>
+                        <v-card dark>
+                            <v-card-text>
+                                <h2 class="title">{{ $t("common.help.infoTitle") }}</h2>
+                                <p class="spacer"></p>
+                                <p v-html="platformService.getHelp($t('userEditor.help.text'))"></p>
+                                <p class="spacer"></p>
+                            </v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                    <v-tab-item>
+                        <v-card dark>
+                            <v-card-text>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">{{ `${platformService.getMeta()} + s` }}</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">enter</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">esc</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.closeEditor") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">{{ `${platformService.getMeta()} + h` }}</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p class="label">{{ $t("common.help.shortcuts.help") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                            </v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                </v-tabs>
+                <hr class="blackLine" />
+            </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-container fill-height fluid>
+            <v-layout fill-height>
+                <v-flex xs12 align-end flexbox>
+                    <v-form ref="userForm" v-model="valid" lazy-validation>
+                        <v-text-field
+                            dark
+                            v-model="name"
+                            ref="name"
+                            :error-messages="nameErrors"
+                            :label="$t('userEditor.fields.name.label')"
+                            :readonly="editMode"
+                            :placeholder="$t('userEditor.fields.name.placeholder')"
+                            required
+                            @input="$v.name.$touch()"
+                            @blur="$v.name.$touch()"
+                        >
+                            <v-tooltip slot="prepend" bottom max-width="200">
+                                <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                <span>{{ $t('userEditor.fields.name.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-text-field>
 
-            <v-text-field
-              dark
-              v-model="password"
-              :error-messages="passwordErrors"
-              :label="$t('userEditor.fields.password.label')"
-              :placeholder="$t('userEditor.fields.password.placeholder')"
-              :type="getType()"
-              :append-icon="showPassword ? 'visibility' : 'visibility_off'"
-              counter
-              @click:append="showPassword = !showPassword"
-              @input="$v.password.$touch()"
-              @blur="$v.password.$touch()"
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('userEditor.fields.password.tooltip') }}</span>
-              </v-tooltip>
-            </v-text-field>
+                        <v-text-field
+                            dark
+                            v-model="password"
+                            :error-messages="passwordErrors"
+                            :label="$t('userEditor.fields.password.label')"
+                            :placeholder="$t('userEditor.fields.password.placeholder')"
+                            :type="getType()"
+                            :append-icon="showPassword ? 'visibility' : 'visibility_off'"
+                            counter
+                            @click:append="showPassword = !showPassword"
+                            @input="$v.password.$touch()"
+                            @blur="$v.password.$touch()"
+                        >
+                            <v-tooltip slot="prepend" bottom max-width="200">
+                                <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                <span>{{ $t('userEditor.fields.password.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-text-field>
 
-            <v-text-field
-              dark
-              id="pwcheck"
-              v-model="pwcheck"
-              counter
-              :label="$t('userEditor.fields.pwcheck.label')"
-              :placeholder="$t('userEditor.fields.pwcheck.placeholder')"
-              :type="getType()"
-              required
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('userEditor.fields.pwcheck.tooltip') }}</span>
-              </v-tooltip>
-            </v-text-field>
+                        <v-text-field
+                            dark
+                            id="pwcheck"
+                            v-model="pwcheck"
+                            counter
+                            :label="$t('userEditor.fields.pwcheck.label')"
+                            :placeholder="$t('userEditor.fields.pwcheck.placeholder')"
+                            :type="getType()"
+                            required
+                        >
+                            <v-tooltip slot="prepend" bottom max-width="200">
+                                <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                <span>{{ $t('userEditor.fields.pwcheck.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-text-field>
 
-            <template v-if="showRights">
-              <h2 class="subheading">Roles</h2>
-              <hr />
-              <v-alert
-                v-if="roles.length === 0"
-                :value="true"
-                color="error"
-                icon="warning"
-              >{{ $t('userEditor.messages.norights') }}</v-alert>
-               <v-card height="200" class="scrollable">
-              <v-checkbox
-                @change="setRole(role)"
-                v-for="role in roles"
-                v-model="ownRoles"
-                v-bind:label="role.name"
-                v-bind:key="role.name"
-                v-bind:value="role.name"
-              ></v-checkbox>
-               </v-card>
-            </template>
+                        <template v-if="showRights">
+                            <h2 class="subheading">Roles</h2>
+                            <hr />
+                            <v-alert
+                                v-if="roles.length === 0"
+                                :value="true"
+                                color="error"
+                                icon="warning"
+                            >{{ $t('userEditor.messages.norights') }}</v-alert>
+                            <v-card height="200" class="scrollable">
+                                <v-checkbox
+                                    @change="setRole(role)"
+                                    v-for="role in roles"
+                                    v-model="ownRoles"
+                                    v-bind:label="role.name"
+                                    v-bind:key="role.name"
+                                    v-bind:value="role.name"
+                                ></v-checkbox>
+                            </v-card>
+                        </template>
 
-            <v-btn :disabled="!valid" round color="primary" @click="submit">{{ opTitle }}</v-btn>
-            <v-btn color="warning" round @click="cancel">{{ $t('common.actions.close.label') }}</v-btn>
-            <v-spacer></v-spacer>
-          </v-form>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-card>
+                        <v-btn
+                            :disabled="!valid"
+                            round
+                            color="primary"
+                            @click="submit"
+                        >{{ opTitle }}</v-btn>
+                        <v-btn
+                            color="warning"
+                            round
+                            @click="cancel"
+                        >{{ $t('common.actions.close.label') }}</v-btn>
+                        <v-spacer></v-spacer>
+                    </v-form>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-card>
 </template>
 
 <script lang='ts'>

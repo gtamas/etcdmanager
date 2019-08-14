@@ -70,6 +70,25 @@ export default {
                 new: 'New',
                 edit: 'Edit',
             },
+            help: {
+                tooltip: 'Show help panel',
+                infoTitle: `Did you know?`,
+                tabs: {
+                    info: 'Info',
+                    shortcuts: 'Keyboard shortcuts',
+                },
+                shortcuts: {
+                    save: 'Validate and persist data',
+                    help: 'Show this help',
+                    enter: 'Persist data',
+                    esc: 'Close editor',
+                    openEditor: 'Open editor',
+                    closeEditor: 'Close editor',
+                    search: 'Focus search box',
+                    purge: 'Purge all items',
+                    remove: 'Remove selected items',
+                },
+            },
             actions: {
                 add: 'Add',
                 save: 'Save',
@@ -106,6 +125,39 @@ export default {
         },
         settings: {
             title: 'Settings',
+            help: {
+                etcd: `* This where you configure your ETCD connection and some of the related (optional) settings.
+                * The most important is to define **host** and the **port**, since these are required to connect to ETCD.
+                * The value of **host** should be the valid **IPv4 address** or **URL** of the ETCD server.
+                * The value of **port** should be the port number ETCD is listening at. The default is **2379**.
+
+                > If your settings are incorrect or ETCD is not reachable, **you won't be able to navigate away** from the settings screen.
+                To prevent this, make sure the correct settings are saved and ETCD is actually running at the address you defined.
+                `,
+                auth: `* This is where you can specify authentication settings.
+                * The **username** and **password** below should be equal to your ETCD username and password, respectively.
+
+                > In order to make these settings work, you have to [enable authentication](http://etcd.io) in ETCD.
+                It is turned off by default. If you don't need authentication, **leave these settings blank**.`,
+                watchers: `* The watcher settings can be found below
+                * You may enable watcher **autoloading on startup**
+                * You may also enable or disable default watchers.
+
+                > Watchers will live as long as the app is running. This means that you'll **stop receiving watcher events** once the app shuts down.
+                However, if you enable autoloading below, watchers will be reactivated automatically when you restart app.`,
+                users: `* These settings are related to ETCD user management
+                * This password pattern applies to user creation as well as changing an existing user's password.
+
+                > If you leave the pattern blank, the default one will be used: 8-16 characters, no whitespace, must include capital letters and numbers.`,
+                misc: `* Miscellaneous settings.
+                    * Among other things, you may also **change the language** here.`,
+                shortcuts: {
+                    leftArrowLabel: 'left arrow',
+                    rightArrowLabel: 'right arrow',
+                    leftArrow: 'Previous Tab',
+                    rightArrow: 'Next Tab',
+                },
+            },
             etcd: {
                 title: 'ETCD',
                 fields: {
@@ -226,6 +278,11 @@ export default {
         },
         cluster: {
             title: 'Cluster',
+            help: {
+                text: `* Basic info is displayed below about the ETCD cluster and its nodes.
+                * For additional details about each node, click the **info** button.
+                * You can perform **health check** on each node, by clicking the **heart** icon.`,
+            },
             subtitle: 'Nodes',
             header: {
                 clusterId: 'Cluster ID',
@@ -260,6 +317,19 @@ export default {
         },
         keyManager: {
             title: 'Keys',
+            help: {
+                text: `This is the list of **all keys**. Here you may:
+
+                * Order the list by any column (click the **column title**).
+                * Filter the list by any column (use the **search box**).
+                * Delete selected keys (click **remove**).
+                * Delete all keys (click **purge**).
+                * Touch selected keys (click **touch**)
+                * You may also edit, delete or touch individual keys using the appropriate **action icon**.`,
+                shortcuts: {
+                    touch: 'Touch selected keys',
+                },
+            },
             columns: {
                 key: 'Key',
                 value: 'Value',
@@ -276,6 +346,12 @@ export default {
         },
         keyEditor: {
             title: 'Keys',
+            help: {
+                text: `You can **create** and **edit** keys here.
+
+                * One created, you **cannot** change the name of a key.
+                * Keys must be **unique**`,
+            },
             fields: {
                 key: {
                     label: 'Key',
@@ -319,19 +395,32 @@ export default {
         },
         watcherManager: {
             title: 'Watchers',
+            help: {
+                text: `This is the list of **all watchers**. Here you may:
+
+                * Order the list by any column (click the **column title**).
+                * Filter the list by any column (use the **search box**).
+                * Delete selected watchers (click **remove**).
+                * Delete all watchers (click **purge**).
+                * Activate or deactivate selected watchers (click the **bell icon**)
+                * You may also edit, delete or (de)activate individual watchers using the appropriate **action icon**.
+
+                > Watchers receive events only when active. Once activated, they will **stay active as long as the app is
+                running** (or until you shut them down). Should the connection to ETCD be lost, watchers will try to reconnect
+                automatically and they gonna catch up on missed events.`,
+                shortcuts: {
+                    toggle: 'Activate / deactivate selected watchers',
+                },
+            },
             columns: {
                 key: 'Key',
                 name: 'Name',
                 prefix: 'Prefix',
             },
             actions: {
-                notificationOn: {
+                notificationToggle: {
                     label: 'On',
-                    tooltip: 'Activate selected watchers',
-                },
-                notificationOff: {
-                    label: 'Off',
-                    tooltip: 'Deactivate selected watchers',
+                    tooltip: 'Turn selected watchers on / off',
                 },
                 edit: 'Edit watcher',
                 remove: 'Remove watcher',
@@ -339,6 +428,17 @@ export default {
             },
         },
         watcherEditor: {
+            help: {
+                text: `You can **edit** or **create** watchers here.
+
+                * Once created, you **cannot** change the name of the watcher. It must be **unique**.
+                * A watcher may watch a single key. (**don't use** prefix)
+                * A Watcher may watch every key starting with a certain string. (**use** prefix)
+                * Each watcher may perform as many **actions** as needed, but it has to be associated with **at least one**.`,
+                shortcuts: {
+                    addAction: 'Add new action',
+                },
+            },
             fields: {
                 name: {
                     label: 'Name',
@@ -390,6 +490,15 @@ export default {
         },
         roleManager: {
             title: 'Roles',
+            help: {
+                text: `This is the list of **all ETCD roles**. Here you may:
+
+                * Order the list by any column (click the **column title**).
+                * Filter the list by any column (use the **search box**).
+                * Delete selected roles (click **remove**).
+                * Delete all roles (click **purge**).
+                * You may also edit or delete individual roles using the appropriate **action icon**.`,
+            },
             columns: {
                 name: 'Name',
             },
@@ -399,6 +508,16 @@ export default {
             },
         },
         roleEditor: {
+            help: {
+                text: `You can **edit** or **create** roles here.
+
+                * Once created, you **cannot** change the name of the role. It must be **unique**.
+                * A role must be associated **at least one** permission.
+                * Permissions get assigned and revoked **immediately**, you don't need to click save.`,
+                shortcuts: {
+                    addPermission: 'Add new permission',
+                },
+            },
             fields: {
                 name: {
                     label: 'Name',
@@ -459,6 +578,15 @@ export default {
         },
         userManager: {
             title: 'Users',
+            help: {
+                text: `This is the list of **all ETCD users**. Here you may:
+
+                * Order the list by any column (click the **column title**).
+                * Filter the list by any column (use the **search box**).
+                * Delete selected users (click **remove**).
+                * Delete all users (click **purge**).
+                * You may also edit or delete individual users using the appropriate **action icon**.`,
+            },
             columns: {
                 name: 'Name',
             },
@@ -469,6 +597,15 @@ export default {
         },
         userEditor: {
             title: 'Users',
+            help: {
+                text: `You can **edit** or **create** users here.
+
+                * Once created, you **cannot** change the user's name. It must be **unique**.
+                * You may also **change a user's password** here.
+                * Roles get assigned and revoked **immediately**, you don't need to click save.
+
+                > Passwords are validated against a password rule. If you don't like the default rule, you may change it in the **settings tab**.`,
+            },
             subtitle: 'Roles',
             fields: {
                 name: {

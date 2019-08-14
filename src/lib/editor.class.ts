@@ -1,3 +1,4 @@
+import { PlatformService } from './../services/platform.service';
 import { GenericObject } from './../../types/index';
 
 import Vue from 'vue';
@@ -16,11 +17,15 @@ export class BaseEditor extends Vue {
     public itemType!: string;
     public headers: GenericObject[] = [];
     protected keyboardEvents: any;
+    public help: number | null = null;
+    public platformService: PlatformService;
+    public helpbar: any = 0;
 
     @Prop() mode!: string;
 
     constructor() {
         super();
+        this.platformService = new PlatformService();
     }
 
     protected focus(refName: string) {
@@ -32,16 +37,24 @@ export class BaseEditor extends Vue {
         // @ts-ignore
         const form = this.$refs[refName].$el;
         this.keyboardEvents = new Mousetrap(form as HTMLFormElement);
-        this.keyboardEvents.stopCallback = () => false;
-        this.keyboardEvents.bind('meta+s', () => {
+        this.keyboardEvents.bind('meta+s', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
             this.submit();
         });
         this.keyboardEvents.bind('enter', (e: ExtendedKeyboardEvent) => {
             e.preventDefault();
+            e.stopPropagation();
             this.submit();
         });
-        this.keyboardEvents.bind('esc', () => {
+        this.keyboardEvents.bind('esc', (e: ExtendedKeyboardEvent) => {
+            e.stopPropagation();
             this.cancel();
+        });
+        this.keyboardEvents.bind('meta+h', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.help = this.help === 0 ? null : 0;
         });
     }
 
@@ -83,7 +96,7 @@ export class BaseEditor extends Vue {
         if (store.state.loading) {
             setTimeout(() => {
                 store.commit('loading');
-            }, 500);
+            },         500);
         } else {
             store.commit('loading');
         }

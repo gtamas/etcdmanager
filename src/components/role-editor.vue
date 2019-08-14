@@ -1,95 +1,178 @@
 <template>
-  <v-card>
-    <v-toolbar dark flat>
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-      <v-divider class="mx-2" inset vertical></v-divider>
-      <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-container fill-height fluid>
-      <v-layout fill-height>
-        <v-flex xs12 align-end flexbox>
-          <v-form ref="roleForm" v-model="valid" lazy-validation>
-            <v-text-field
-              dark
-              :readonly="roleExists"
-              v-model="name"
-              ref="name"
-              :error-messages="nameErrors"
-              :label="$t('roleEditor.fields.name.label')"
-              :placeholder="$t('roleEditor.fields.name.placeholder')"
-              required
-              @input="$v.name.$touch()"
-              @blur="$v.name.$touch()"
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('roleEditor.fields.name.tooltip') }}</span>
-              </v-tooltip>
-            </v-text-field>
+    <v-card>
+        <v-expansion-panel focusable dark class="help" v-model="help">
+            <v-expansion-panel-content dark class="darker">
+                <template v-slot:actions>
+                    <v-tooltip slot="prepend" bottom max-width="200">
+                        <v-icon slot="activator" color="primary" light medium>help</v-icon>
+                        <span>{{ $t('common.help.tooltip') }}</span>
+                    </v-tooltip>
+                </template>
+                <template v-slot:header>
+                    <v-toolbar-title>{{ title }}</v-toolbar-title>
+                </template>
+                <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
+                    <v-tab ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                    <v-tab-item>
+                        <v-card dark>
+                            <v-card-text>
+                                <h2 class="title">{{ $t("common.help.infoTitle") }}</h2>
+                                <p class="spacer"></p>
+                                <p v-html="platformService.getHelp($t('roleEditor.help.text'))"></p>
+                                <p class="spacer"></p>
+                            </v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                    <v-tab ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                    <v-tab-item>
+                        <v-card dark>
+                            <v-card-text>
+                                 <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">{{ `${platformService.getMeta()} + s` }}</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">enter</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">esc</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.closeEditor") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                 <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">{{ `${platformService.getMeta()} + n` }}</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p
+                                            class="label"
+                                        >{{ $t("roleEditor.help.shortcuts.addPermission") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p class="rounded">{{ `${platformService.getMeta()} + h` }}</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p class="label">{{ $t("common.help.shortcuts.help") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                            </v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                </v-tabs>
+                <hr class="blackLine" />
+            </v-expansion-panel-content>
+        </v-expansion-panel>
+        <v-container fill-height fluid>
+            <v-layout fill-height>
+                <v-flex xs12 align-end flexbox>
+                    <v-form ref="roleForm" v-model="valid" lazy-validation>
+                        <v-text-field
+                            dark
+                            :readonly="roleExists"
+                            v-model="name"
+                            ref="name"
+                            :error-messages="nameErrors"
+                            :label="$t('roleEditor.fields.name.label')"
+                            :placeholder="$t('roleEditor.fields.name.placeholder')"
+                            required
+                            @input="$v.name.$touch()"
+                            @blur="$v.name.$touch()"
+                        >
+                            <v-tooltip slot="prepend" bottom max-width="200">
+                                <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                <span>{{ $t('roleEditor.fields.name.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-text-field>
 
-            <v-data-table
-              v-if="roleExists"
-              :headers="headers"
-              v-bind:items="permissions"
-              item-key="key"
-              hide-actions
-            >
-              <template v-slot:items="props">
-                <td>{{ props.item.key }}</td>
-                <td class="text-xs-right">{{ props.item.permission }}</td>
-                <td class="text-xs-right">{{ props.item.prefix }}</td>
-                <td class="justify-center layout px-0">
-                  <v-tooltip bottom max-width="200">
-                    <template v-slot:activator="{ on }">
-                      <v-icon small @click="editPermission(props.item)" v-on="on">edit</v-icon>
-                    </template>
-                    <span>{{ $t('roleEditor.actions.edit') }}</span>
-                  </v-tooltip>
-                  <v-tooltip bottom max-width="200">
-                    <template v-slot:activator="{ on }">
-                      <v-icon
-                        small
-                        slot="activator"
-                        @click="revokePermission(props.item)"
-                        v-on="on"
-                      >delete</v-icon>
-                    </template>
-                    <span>{{ $t('roleEditor.actions.revoke') }}</span>
-                  </v-tooltip>
-                </td>
-              </template>
-            </v-data-table>
+                        <v-data-table
+                            v-if="roleExists"
+                            :headers="headers"
+                            v-bind:items="permissions"
+                            item-key="key"
+                            hide-actions
+                        >
+                            <template v-slot:items="props">
+                                <td>{{ props.item.key }}</td>
+                                <td class="text-xs-right">{{ props.item.permission }}</td>
+                                <td class="text-xs-right">{{ props.item.prefix }}</td>
+                                <td class="justify-center layout px-0">
+                                    <v-tooltip bottom max-width="200">
+                                        <template v-slot:activator="{ on }">
+                                            <v-icon
+                                                small
+                                                @click="editPermission(props.item)"
+                                                v-on="on"
+                                            >edit</v-icon>
+                                        </template>
+                                        <span>{{ $t('roleEditor.actions.edit') }}</span>
+                                    </v-tooltip>
+                                    <v-tooltip bottom max-width="200">
+                                        <template v-slot:activator="{ on }">
+                                            <v-icon
+                                                small
+                                                slot="activator"
+                                                @click="revokePermission(props.item)"
+                                                v-on="on"
+                                            >delete</v-icon>
+                                        </template>
+                                        <span>{{ $t('roleEditor.actions.revoke') }}</span>
+                                    </v-tooltip>
+                                </td>
+                            </template>
+                        </v-data-table>
 
-            <v-btn :disabled="isValid()" v-if="!roleExists" round color="primary" @click="submit">
-              <v-icon>add</v-icon>
-              <span>{{ opTitle }}</span>
-            </v-btn>
-            <v-btn :disabled="!roleExists" round color="primary" @click="addPermission">
-              <v-icon>verified_user</v-icon>
-              <span>{{ $t('roleEditor.actions.permissions') }}</span>
-            </v-btn>
-            <v-btn color="warning" round @click="cancel">
-              <v-icon>close</v-icon>
-              <span>{{ $t('common.actions.close.label') }}</span>
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-form>
-        </v-flex>
-      </v-layout>
-      <v-dialog v-model="permissionDialog" persistent max-width="290">
-        <v-card dark>
-          <permission-editor
-            v-on:cancel="cancelPermission"
-            v-on:permission="savePermission"
-            :data="currentPermission"
-            :name="name"
-            :mode="permissionEditorMode"
-            v-if="permissionDialog"
-          ></permission-editor>
-        </v-card>
-      </v-dialog>
-    </v-container>
-  </v-card>
+                        <v-btn
+                            :disabled="isValid()"
+                            v-if="!roleExists"
+                            round
+                            color="primary"
+                            @click="submit"
+                        >
+                            <v-icon>add</v-icon>
+                            <span>{{ opTitle }}</span>
+                        </v-btn>
+                        <v-btn :disabled="!roleExists" round color="primary" @click="addPermission">
+                            <v-icon>verified_user</v-icon>
+                            <span>{{ $t('roleEditor.actions.permissions') }}</span>
+                        </v-btn>
+                        <v-btn color="warning" round @click="cancel">
+                            <v-icon>close</v-icon>
+                            <span>{{ $t('common.actions.close.label') }}</span>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                    </v-form>
+                </v-flex>
+            </v-layout>
+            <v-dialog v-model="permissionDialog" persistent max-width="290">
+                <v-card dark>
+                    <permission-editor
+                        v-on:cancel="cancelPermission"
+                        v-on:permission="savePermission"
+                        :data="currentPermission"
+                        :name="name"
+                        :mode="permissionEditorMode"
+                        v-if="permissionDialog"
+                    ></permission-editor>
+                </v-card>
+            </v-dialog>
+        </v-container>
+    </v-card>
 </template>
 
 <script lang='ts'>
