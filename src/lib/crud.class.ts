@@ -1,3 +1,4 @@
+import { PlatformService } from './../services/platform.service';
 import Vue from 'vue';
 import { GenericObject } from './../../types/index';
 import EtcdService from '@/services/etcd.service';
@@ -31,14 +32,19 @@ export class CrudBase extends Vue implements List {
     protected defaultItem: GenericObject = { key: '', value: '' };
     protected etcd!: EtcdService;
     protected keyboardEvents: any;
+    public help: number | null = null;
+    public platformService: PlatformService;
+    public helpbar: any = 0;
 
     constructor() {
         super();
+        this.platformService = new PlatformService();
         this.bindDefaultEvents();
     }
 
     protected bindDefaultEvents() {
         this.keyboardEvents = new Mousetrap();
+        this.unbindDefaultEvents();
         this.keyboardEvents.stopCallback = () => false;
         this.keyboardEvents.bind('meta+a', (e: ExtendedKeyboardEvent) => {
             e.preventDefault();
@@ -49,17 +55,30 @@ export class CrudBase extends Vue implements List {
             // @ts-ignore
             this.$nextTick(this.$refs.search.focus);
         });
-        this.keyboardEvents.bind('meta+p', () => {
+        this.keyboardEvents.bind('meta+p', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
             this.purge();
         });
         this.keyboardEvents.bind('meta+r', (e: ExtendedKeyboardEvent) => {
             e.preventDefault();
             this.deleteMany();
         });
+        this.keyboardEvents.bind('meta+h', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
+            this.help = this.help === 0 ? null : 0;
+        });
+        this.keyboardEvents.bind('esc', (e: ExtendedKeyboardEvent) => {
+            e.stopPropagation();
+            this.closeEditor();
+        });
     }
 
     protected unbindDefaultEvents() {
         this.keyboardEvents = this.keyboardEvents.reset();
+    }
+
+    public toggleHelp() {
+        this.help = this.help === 0 ? null : 0;
     }
 
     public translateHeaders(...keys: string[]) {

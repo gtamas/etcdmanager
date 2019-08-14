@@ -249,4 +249,50 @@ export default class App extends Vue {
 .theme--dark.v-input:not(.v-input--is-disabled) textarea {
     color: rgba(0, 255, 0, 0.5) !important;
 }
+
+.help {
+    .darker {
+        background-color: #212121 !important;
+    }
+    .rounded {
+        width: auto;
+        flex: none;
+        border-radius: 10px;
+        border: solid 1px gray;
+        font-weight: 700;
+        padding: 5px 10px 5px 10px;
+        background: #212121;
+        text-transform: uppercase;
+        display: block;
+        margin-right: 20px;
+        box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.75);
+    }
+    blockquote {
+        &::before {
+            content: '...';
+            font-weight: 700;
+            font-size: 48px;
+            line-height: 10px;
+            color: red;
+        }
+        border-left: solid 10px gray;
+        background: white;
+        color: black;
+        padding: 10px 5px;
+        margin-top: 16px;
+        box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.75);
+        clear: both;
+    }
+}
+
+.blackLine {
+    border: solid 1px #000 !important;
+    height: 2px;
+}
+
+.editor {
+    max-width: 30vw;
+    min-width: 20vw;
+}
+
 </style>

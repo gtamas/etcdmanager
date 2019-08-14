@@ -221,6 +221,19 @@ function createAppMenu(translations: any) {
                 },
             ],
         },
+        {
+            label: 'Help',
+             // @ts-ignore
+            submenu: [
+                {
+                    label: 'Go to Wiki',
+                    accelerator: 'CommandOrControl+Alt+L',
+                    click: () => {
+                        shell.openExternal(`${pkg.homepage}/wiki`);
+                    },
+                },
+            ],
+        },
     ];
 
     template.unshift(
