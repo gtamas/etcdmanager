@@ -13,6 +13,9 @@
   * [Coming soon..](#coming-soon)
 
 
+![Alt text](/screenshots/screen1.png?raw=true "ETCD Manager")
+
+
 This is a free, cross-platform [ETCD](http://www.etcd.io) v3 client and GUI. The goal of the project is twofold:
 
 - Provide an efficient, modern GUI for desktop (Windows, Linux, Mac), mobile (iOS and Android) and web.
