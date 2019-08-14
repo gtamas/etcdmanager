@@ -3,256 +3,336 @@
 </style>
 
 <template>
-  <v-layout column>
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <v-toolbar dark flat>
-        <v-toolbar-title>{{ $t("settings.title") }}</v-toolbar-title>
-        <v-divider class="mx-2" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-      </v-toolbar>
-      <v-tabs v-model="active" dark color="black" slider-color="warning" grow>
-        <v-tab ripple>{{ $t('settings.etcd.title') }}</v-tab>
-        <v-tab-item>
-          <v-card raised>
-            <v-container fluid>
-              <v-layout>
-                <v-flex xs12 align-end flexbox>
-                  <v-text-field
-                    dark
-                    v-model="endpoint"
-                    :error-messages="endpointErrors"
-                    :label="$t('settings.etcd.fields.endpoint.label')"
-                    :placeholder="$t('settings.etcd.fields.endpoint.placeholder')"
-                    required
-                    @input="$v.endpoint.$touch()"
-                    @blur="$v.endpoint.$touch()"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.etcd.fields.endpoint.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-text-field>
+    <v-layout column>
+        <v-form ref="form" v-model="valid" lazy-validation>
+            <v-expansion-panel focusable dark class="help" v-model="help">
+                <v-expansion-panel-content dark class="darker">
+                    <template v-slot:actions>
+                        <v-tooltip slot="prepend" bottom max-width="200">
+                            <v-icon slot="activator" color="primary" light medium>help</v-icon>
+                            <span>{{ $t('common.help.tooltip') }}</span>
+                        </v-tooltip>
+                    </template>
+                    <template v-slot:header>
+                        <v-toolbar-title>{{ $t("settings.title") }}</v-toolbar-title>
+                    </template>
+                    <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
+                        <v-tab ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                        <v-tab-item>
+                            <v-card dark>
+                                <v-card-text>
+                                    <h2 class="title">{{ $t("common.help.infoTitle") }}</h2>
+                                    <p class="spacer"></p>
+                                    <p v-html="getHelp()"></p>
+                                    <p class="spacer"></p>
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+                        <v-tab ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                        <v-tab-item>
+                            <v-card dark>
+                                <v-card-text>
+                                    <v-layout align-center justify-start row>
+                                        <v-flex xs2>
+                                            <p
+                                                class="rounded"
+                                            >{{ `${platformService.getMeta()} + ${$t('settings.help.shortcuts.leftArrowLabel')}` }}</p>
+                                        </v-flex>
+                                        <v-flex xs10>
+                                            <p
+                                                class="label"
+                                            >{{ $t("settings.help.shortcuts.leftArrow") }}</p>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout align-center justify-start row>
+                                        <v-flex xs2>
+                                            <p
+                                                class="rounded"
+                                            >{{ `${platformService.getMeta()} + ${$t('settings.help.shortcuts.rightArrowLabel')}` }}</p>
+                                        </v-flex>
+                                        <v-flex xs10>
+                                            <p
+                                                class="label"
+                                            >{{ $t("settings.help.shortcuts.rightArrow") }}</p>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout align-center justify-start row>
+                                        <v-flex xs2>
+                                            <p
+                                                class="rounded"
+                                            >{{ `${platformService.getMeta()} + s` }}</p>
+                                        </v-flex>
+                                        <v-flex xs10>
+                                            <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
+                                        </v-flex>
+                                    </v-layout>
+                                    <v-layout align-center justify-start row>
+                                        <v-flex xs2>
+                                            <p
+                                                class="rounded"
+                                            >{{ `${platformService.getMeta()} + h` }}</p>
+                                        </v-flex>
+                                        <v-flex xs10>
+                                            <p class="label">{{ $t("common.help.shortcuts.help") }}</p>
+                                        </v-flex>
+                                    </v-layout>
+                                </v-card-text>
+                            </v-card>
+                        </v-tab-item>
+                    </v-tabs>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-tabs v-model="active" dark color="black" slider-color="warning" grow>
+                <v-tab ripple>{{ $t('settings.etcd.title') }}</v-tab>
+                <v-tab-item>
+                    <v-card raised>
+                        <v-container fluid>
+                            <v-layout>
+                                <v-flex xs12 align-end flexbox>
+                                    <v-text-field
+                                        dark
+                                        v-model="endpoint"
+                                        :error-messages="endpointErrors"
+                                        :label="$t('settings.etcd.fields.endpoint.label')"
+                                        :placeholder="$t('settings.etcd.fields.endpoint.placeholder')"
+                                        required
+                                        @input="$v.endpoint.$touch()"
+                                        @blur="$v.endpoint.$touch()"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.etcd.fields.endpoint.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-text-field>
 
-                  <v-text-field
-                    dark
-                    type="number"
-                    v-model="port"
-                    :error-messages="portErrors"
-                    :placeholder="$t('settings.etcd.fields.port.placeholder')"
-                    :label="$t('settings.etcd.fields.port.label')"
-                    required
-                    @input="$v.timeout.$touch()"
-                    @blur="$v.timeout.$touch()"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.etcd.fields.port.tooltip') }}.</span>
-                    </v-tooltip>
-                  </v-text-field>
+                                    <v-text-field
+                                        dark
+                                        type="number"
+                                        v-model="port"
+                                        :error-messages="portErrors"
+                                        :placeholder="$t('settings.etcd.fields.port.placeholder')"
+                                        :label="$t('settings.etcd.fields.port.label')"
+                                        required
+                                        @input="$v.timeout.$touch()"
+                                        @blur="$v.timeout.$touch()"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.etcd.fields.port.tooltip') }}.</span>
+                                        </v-tooltip>
+                                    </v-text-field>
 
-                  <v-switch dark v-model="retry" :label="$t('settings.etcd.fields.retries.label')">
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.etcd.fields.retries.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-switch>
+                                    <v-switch
+                                        dark
+                                        v-model="retry"
+                                        :label="$t('settings.etcd.fields.retries.label')"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.etcd.fields.retries.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-switch>
 
-                  <v-text-field
-                    dark
-                    type="number"
-                    v-model="timeout"
-                    :error-messages="timeoutErrors"
-                    :placeholder="$t('settings.etcd.fields.timeout.placeholder')"
-                    :label="$t('settings.etcd.fields.timeout.label')"
-                    required
-                    @input="$v.timeout.$touch()"
-                    @blur="$v.timeout.$touch()"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.etcd.fields.timeout.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card>
-        </v-tab-item>
-        <v-tab ripple>{{ $t('settings.auth.title') }}</v-tab>
-        <v-tab-item>
-          <v-card raised>
-            <v-container fluid>
-              <v-layout>
-                <v-flex xs12 align-end flexbox>
-                  <v-text-field
-                    dark
-                    type="text"
-                    v-model="username"
-                    :error-messages="usernameErrors"
-                    :placeholder="$t('settings.auth.fields.username.placeholder')"
-                    :label="$t('settings.auth.fields.username.label')"
-                    @input="$v.username.$touch()"
-                    @blur="$v.username.$touch()"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.auth.fields.username.tooltip') }}.</span>
-                    </v-tooltip>
-                  </v-text-field>
+                                    <v-text-field
+                                        dark
+                                        type="number"
+                                        v-model="timeout"
+                                        :error-messages="timeoutErrors"
+                                        :placeholder="$t('settings.etcd.fields.timeout.placeholder')"
+                                        :label="$t('settings.etcd.fields.timeout.label')"
+                                        required
+                                        @input="$v.timeout.$touch()"
+                                        @blur="$v.timeout.$touch()"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.etcd.fields.timeout.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-card>
+                </v-tab-item>
+                <v-tab ripple>{{ $t('settings.auth.title') }}</v-tab>
+                <v-tab-item>
+                    <v-card raised>
+                        <v-container fluid>
+                            <v-layout>
+                                <v-flex xs12 align-end flexbox>
+                                    <v-text-field
+                                        dark
+                                        type="text"
+                                        v-model="username"
+                                        :error-messages="usernameErrors"
+                                        :placeholder="$t('settings.auth.fields.username.placeholder')"
+                                        :label="$t('settings.auth.fields.username.label')"
+                                        @input="$v.username.$touch()"
+                                        @blur="$v.username.$touch()"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.auth.fields.username.tooltip') }}.</span>
+                                        </v-tooltip>
+                                    </v-text-field>
 
-                  <v-text-field
-                    id="auth"
-                    dark
-                    type="password"
-                    v-model="password"
-                    :placeholder="$t('settings.auth.fields.password.placeholder')"
-                    :error-messages="passwordErrors"
-                    :label="$t('settings.auth.fields.password.label')"
-                    @input="$v.password.$touch()"
-                    @blur="$v.password.$touch()"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.auth.fields.password.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card>
-        </v-tab-item>
-        <v-tab ripple>{{ $t('settings.watchers.title') }}</v-tab>
-        <v-tab-item>
-          <v-card raised>
-            <v-container fluid>
-              <v-layout>
-                <v-flex xs12 align-end flexbox>
-                  <v-switch
-                    dark
-                    v-model="loadWatchers"
-                    :label="$t('settings.watchers.fields.loadWatchers.label')"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.watchers.fields.loadWatchers.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-switch>
-                  <v-switch
-                    dark
-                    v-model="errorListener"
-                    :label="$t('settings.watchers.fields.errorListener.label')"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.watchers.fields.errorListener.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-switch>
-                  <v-switch
-                    dark
-                    v-model="disconnectListener"
-                    :label="$t('settings.watchers.fields.disconnectListener.label')"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.watchers.fields.disconnectListener.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-switch>
-                  <v-switch
-                    dark
-                    v-model="reconnectListener"
-                    :label="$t('settings.watchers.fields.reconnectListener.label')"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.watchers.fields.reconnectListener.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-switch>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card>
-        </v-tab-item>
-        <v-tab ripple>{{ $t('settings.users.title') }}</v-tab>
-        <v-tab-item>
-          <v-card raised>
-            <v-container fluid>
-              <v-layout>
-                <v-flex xs12 align-end flexbox>
-                  <v-text-field
-                    dark
-                    type="text"
-                    v-model="pwpattern"
-                    :error-messages="pwpatternErrors"
-                    :placeholder="$t('settings.users.fields.pwpattern.placeholder')"
-                    :label="$t('settings.users.fields.pwpattern.label')"
-                    @input="$v.pwpattern.$touch()"
-                    @blur="$v.pwpattern.$touch()"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.users.fields.pwpattern.tooltip') }}.</span>
-                    </v-tooltip>
-                  </v-text-field>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card>
-        </v-tab-item>
-        <v-tab ripple>{{ $t('settings.misc.title') }}</v-tab>
-        <v-tab-item>
-          <v-card raised>
-            <v-container fluid>
-              <v-layout>
-                <v-flex xs12 align-end flexbox>
-                  <v-select
-                    dark
-                    v-model="language"
-                    :items="languages"
-                    :label="$t('settings.misc.fields.language.label')"
-                    item-text="name"
-                    item-value="value"
-                    required
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.misc.fields.language.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-select>
-                  <v-switch
-                    dark
-                    v-model="animateBg"
-                    :label="$t('settings.misc.fields.animateBg.label')"
-                  >
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.misc.fields.animateBg.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-switch>
-                  <v-switch dark v-model="bg" :label="$t('settings.misc.fields.bg.label')">
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                      <v-icon slot="activator" color="primary" dark>info</v-icon>
-                      <span>{{ $t('settings.misc.fields.bg.tooltip') }}</span>
-                    </v-tooltip>
-                  </v-switch>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card>
-        </v-tab-item>
-      </v-tabs>
-      <v-card raised>
-        <v-layout align-start justify-center row>
-          <v-btn
-            :disabled="!valid"
-            round
-            color="primary"
-            @click="persist"
-          >{{ $t('settings.actions.submit') }}</v-btn>
-          <v-btn round color="warning" @click="next">{{ $t('settings.actions.next') }}</v-btn>
-        </v-layout>
-      </v-card>
-    </v-form>
-  </v-layout>
+                                    <v-text-field
+                                        id="auth"
+                                        dark
+                                        type="password"
+                                        v-model="password"
+                                        :placeholder="$t('settings.auth.fields.password.placeholder')"
+                                        :error-messages="passwordErrors"
+                                        :label="$t('settings.auth.fields.password.label')"
+                                        @input="$v.password.$touch()"
+                                        @blur="$v.password.$touch()"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.auth.fields.password.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-card>
+                </v-tab-item>
+                <v-tab ripple>{{ $t('settings.watchers.title') }}</v-tab>
+                <v-tab-item>
+                    <v-card raised>
+                        <v-container fluid>
+                            <v-layout>
+                                <v-flex xs12 align-end flexbox>
+                                    <v-switch
+                                        dark
+                                        v-model="loadWatchers"
+                                        :label="$t('settings.watchers.fields.loadWatchers.label')"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.watchers.fields.loadWatchers.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-switch>
+                                    <v-switch
+                                        dark
+                                        v-model="errorListener"
+                                        :label="$t('settings.watchers.fields.errorListener.label')"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.watchers.fields.errorListener.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-switch>
+                                    <v-switch
+                                        dark
+                                        v-model="disconnectListener"
+                                        :label="$t('settings.watchers.fields.disconnectListener.label')"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.watchers.fields.disconnectListener.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-switch>
+                                    <v-switch
+                                        dark
+                                        v-model="reconnectListener"
+                                        :label="$t('settings.watchers.fields.reconnectListener.label')"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.watchers.fields.reconnectListener.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-switch>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-card>
+                </v-tab-item>
+                <v-tab ripple>{{ $t('settings.users.title') }}</v-tab>
+                <v-tab-item>
+                    <v-card raised>
+                        <v-container fluid>
+                            <v-layout>
+                                <v-flex xs12 align-end flexbox>
+                                    <v-text-field
+                                        dark
+                                        type="text"
+                                        v-model="pwpattern"
+                                        :error-messages="pwpatternErrors"
+                                        :placeholder="$t('settings.users.fields.pwpattern.placeholder')"
+                                        :label="$t('settings.users.fields.pwpattern.label')"
+                                        @input="$v.pwpattern.$touch()"
+                                        @blur="$v.pwpattern.$touch()"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.users.fields.pwpattern.tooltip') }}.</span>
+                                        </v-tooltip>
+                                    </v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-card>
+                </v-tab-item>
+                <v-tab ripple>{{ $t('settings.misc.title') }}</v-tab>
+                <v-tab-item>
+                    <v-card raised>
+                        <v-container fluid>
+                            <v-layout>
+                                <v-flex xs12 align-end flexbox>
+                                    <v-select
+                                        dark
+                                        v-model="language"
+                                        :items="languages"
+                                        :label="$t('settings.misc.fields.language.label')"
+                                        item-text="name"
+                                        item-value="value"
+                                        required
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.misc.fields.language.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-select>
+                                    <v-switch
+                                        dark
+                                        v-model="animateBg"
+                                        :label="$t('settings.misc.fields.animateBg.label')"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.misc.fields.animateBg.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-switch>
+                                    <v-switch
+                                        dark
+                                        v-model="bg"
+                                        :label="$t('settings.misc.fields.bg.label')"
+                                    >
+                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
+                                            <span>{{ $t('settings.misc.fields.bg.tooltip') }}</span>
+                                        </v-tooltip>
+                                    </v-switch>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-card>
+                </v-tab-item>
+            </v-tabs>
+            <v-card raised>
+                <v-layout align-start justify-center row>
+                    <v-btn
+                        :disabled="!valid"
+                        round
+                        color="primary"
+                        @click="persist"
+                    >{{ $t('settings.actions.submit') }}</v-btn>
+                    <v-btn round color="warning" @click="next">{{ $t('settings.actions.next') }}</v-btn>
+                </v-layout>
+            </v-card>
+        </v-form>
+    </v-layout>
 </template>
 
 <script lang="ts">
@@ -268,7 +348,7 @@ import {
     url,
 } from 'vuelidate/lib/validators';
 import { omit } from 'lodash-es';
-import Mousetrap from 'mousetrap';
+import { PlatformService } from '../services/platform.service';
 
 @Component({
     // @ts-ignore
@@ -319,6 +399,15 @@ export default class Configuration extends Vue {
 
     private tabsLength: number = 4;
     private active = 0;
+    private help: number | null = null;
+
+    public platformService: PlatformService;
+    public helpbar: any = 0;
+
+    constructor() {
+        super();
+        this.platformService = new PlatformService();
+    }
 
     created() {
         const keyboardEvents = new Mousetrap();
@@ -328,8 +417,12 @@ export default class Configuration extends Vue {
         keyboardEvents.bind('right', () => {
             this.next();
         });
-         keyboardEvents.bind('left', () => {
+        keyboardEvents.bind('left', () => {
             this.prev();
+        });
+        keyboardEvents.bind('meta+h', (e: ExtendedKeyboardEvent) => {
+            e.preventDefault();
+            this.help = this.help === null ? 0 : null;
         });
     }
 
@@ -530,6 +623,31 @@ export default class Configuration extends Vue {
         !this.$v.pwpattern.invalid &&
             errors.push(this.$t('common.validation.pattern'));
         return errors;
+    }
+
+    public getHelp() {
+        let key = '';
+        switch (this.active) {
+            default:
+            case 0:
+                key = 'settings.help.etcd';
+                break;
+            case 1:
+                key = 'settings.help.auth';
+                break;
+            case 2:
+                key = 'settings.help.watchers';
+                break;
+
+            case 3:
+                key = 'settings.help.users';
+                break;
+            case 4:
+                key = 'settings.help.misc';
+                break;
+        }
+
+        return this.platformService.getHelp(this.$t(key));
     }
 
     public next() {
