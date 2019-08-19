@@ -302,7 +302,6 @@ export default class WatcherManager extends CrudBase implements List {
     }
 
     created() {
-        this.defaultItem = new WatcherEntry();
         this.load();
         this.translateHeaders(
             'watcherManager.columns.name',

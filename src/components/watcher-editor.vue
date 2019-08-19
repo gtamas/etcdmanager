@@ -346,6 +346,7 @@ export default class WatcherEditor extends BaseEditor {
             if (!exists) {
                 action.id = uuidv1();
                 this.actions.push(action);
+                this.submit();
             } else {
                 this.$store.commit(
                     'message',
@@ -361,6 +362,7 @@ export default class WatcherEditor extends BaseEditor {
             });
             Vue.set(current as WatcherAction, 'action', action.action);
             Vue.set(current as WatcherAction, 'event', action.event);
+            this.submit();
         }
         this.cancelAction();
     }
@@ -375,6 +377,9 @@ export default class WatcherEditor extends BaseEditor {
         this.actions = this.actions.filter((action) => {
             return action.id !== actionToDelete.id;
         });
+        if (this.actions.length) {
+            this.submit();
+        }
         this.focus('name');
     }
 
