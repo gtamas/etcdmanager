@@ -193,14 +193,11 @@ export default class PermissionEditor extends BaseEditor {
             if (e === false) {
                 this.$store.commit(
                     'message',
-                    Messages.error(
-                        this.$t(
-                            'permissionEditor.messages.duplicateKey'
-                        ).toString()
-                    )
+                    Messages.error('permissionEditor.messages.duplicateKey', true)
                 );
+            } else {
+                this.$store.commit('message', Messages.error(e));
             }
-            this.$store.commit('message', Messages.error(e));
         }
 
         return Promise.resolve(this);

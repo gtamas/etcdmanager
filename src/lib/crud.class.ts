@@ -91,10 +91,11 @@ export class CrudBase extends Vue implements List {
         this.noSelection = false;
     }
 
-    public addItem() {
+    public async addItem() {
+        await this.closeEditor();
         this.editor = true;
         this.operation = 'create';
-        this.currentItem = { ...this.currentItem, ...this.defaultItem };
+        this.currentItem = { ...{}, ...this.defaultItem };
     }
 
     // @ts-ignore

@@ -277,10 +277,13 @@ export default {
             actions: {
                 submit: 'Elküld',
                 next: 'Következő',
+                testConnection: 'Kapcsolat teszt',
             },
             messages: {
                 success: 'A beállítások sikeresen elmentve.',
                 ipOrUrl: 'Az IP-cím, vagy URL érvénytelen.',
+                error: 'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
+                connectSuccess: 'A kapcsolat létrejött',
             },
         },
         cluster: {
@@ -478,6 +481,7 @@ export default {
             },
             messages: {
                 duplicate: 'Már létezik ilyen nevű figyelő',
+                duplicateAction: 'Ilyen típusu akció már létezik',
             },
         },
         actionEditor: {

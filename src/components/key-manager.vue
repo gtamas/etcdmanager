@@ -243,7 +243,7 @@
 <script lang='ts'>
 import Component from 'vue-class-component';
 import Messages from '@/lib/messages';
-import { GenericObject, EtcdItem } from '../../types';
+import { GenericObject, EtcdItem, EtcdKey } from '../../types';
 import KeyEditor from './key-editor.vue';
 import KeyService from '../services/key.service';
 import { CrudBase, List } from '../lib/crud.class';
@@ -273,6 +273,7 @@ export default class KeyManager extends CrudBase implements List {
         this.etcd = new KeyService(this.$store.state.connection.getClient());
     }
 
+
     public mounted() {
         this.keyboardEvents.bind('meta+t', () => {
             this.touch(null, true);
@@ -280,6 +281,7 @@ export default class KeyManager extends CrudBase implements List {
     }
 
     public created() {
+        this.defaultItem = new EtcdKey();
         this.translateHeaders(
             'keyManager.columns.key',
             'keyManager.columns.value'

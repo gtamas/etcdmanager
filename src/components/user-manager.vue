@@ -210,7 +210,7 @@ import Component from 'vue-class-component';
 import { CrudBase, List } from '../lib/crud.class';
 import UserService from '../services/user.service';
 import Messages from '@/lib/messages';
-import { GenericObject } from '../../types';
+import { GenericObject, EtcdUser } from '../../types';
 import UserEditor from './user-editor.vue';
 
 @Component({
@@ -227,17 +227,16 @@ export default class UserManager extends CrudBase implements List {
             value: 'name',
         },
     ];
-    protected defaultItem: { name: string };
 
     protected etcd: UserService;
 
     constructor() {
         super();
         this.etcd = new UserService(this.$store.state.connection.getClient());
-        this.defaultItem = { name: '' };
     }
 
     public created() {
+        this.defaultItem = new EtcdUser();
         this.translateHeaders('userManager.columns.name');
         this.load();
     }

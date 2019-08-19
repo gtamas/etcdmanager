@@ -8,12 +8,16 @@
     + [End users..](#end-users)
     + [Contributors..](#contributors)
     + [Running the dev build](#running-the-dev-build)
+  * [Usage and support](#usage-and-support)
   * [Upgrading](#upgrading)
   * [Bugs and feature requests](#bugs-and-feature-requests)
-  * [Coming soon..](#coming-soon)
 
 
-![Alt text](/screenshots/screen1.png?raw=true "ETCD Manager")
+![Alt text](/screenshots/screen1.png?raw=true "ETCD Manager settings")
+
+![Alt text](/screenshots/screen2.png?raw=true "ETCD Manager - keys & values")
+
+![Alt text](/screenshots/screen3.png?raw=true "ETCD Manager - watchers")
 
 
 This is a free, cross-platform [ETCD](http://www.etcd.io) v3 client and GUI. The goal of the project is twofold:
@@ -83,7 +87,7 @@ or
 npm install etcd-manager
 ```
 
-Please also check out the [contribution guide](./CONTRIBUTION.md) before writing any code.
+Please also check out the [contribution guide](./CONTRIBUTING.md) before writing any code.
 
 ### Running the dev build
 
@@ -109,6 +113,20 @@ npm install
 npm run electron:serve
 ```
 
+## Usage and support
+
+First of all, in order to work properly, ETCD Manager must be configured. 
+
+You need to provide only two mandatory settings: the **host** and the **port** ETCD is running at. You'll find these on the **settings** screen, under the **ETCD tab**. 
+If your ETCD host requires authentication, you'll also need to provide a password / username pair, which you can do under the **auth tab**.
+There are several additional configuration options, but these are all optional.
+
+Detailed documentation is not available (yet), but you may want to activate **quick help**, which is available everywhere. Press **CTRL / CMD + H** to open the help pane. Here you'll find some basic info as well as all the **keyborad shortcuts**. This should be enough to get you started.
+
+If you still need help, please feel free to contact us. Open an [issue](https://github.com/gtamas/etcdmanager/issues) using the **help** label.
+
+Once the documentation is ready, it'll be available in the wiki.
+
 ## Upgrading
 
 We don't have automatic updates yet. If you've already installed this product and would like to upgrade, you have to download and install the the new release manually. Please see our [releases](https://github.com/gtamas/etcdmanager/releases) page. 
@@ -120,13 +138,4 @@ As for the dev version, you may update that by the usual means (Yarn or Git). In
 This is the beta version, so probably there are bugs. If you find one of them, please report it using our [issue tracker](https://github.com/gtamas/etcdmanager/issues).
 
 This is also the place to request new features or ask questions. Please label your your issue appropriately, use the "bug", "enchantment" and "question" labels, respectively.
-
-## Coming soon..
-
-- [X] Builds for all OSes.
-- [ ] Usage instructions / docs.
-- [ ] End to end test coverage
-- [X] NPM package available
-
-
 

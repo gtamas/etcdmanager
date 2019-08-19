@@ -5,7 +5,13 @@
                 <v-expansion-panel-content dark class="darker">
                     <template v-slot:actions>
                         <v-tooltip slot="prepend" bottom max-width="200">
-                            <v-icon @click="toggleHelp" slot="activator" color="primary" light medium>help</v-icon>
+                            <v-icon
+                                @click="toggleHelp"
+                                slot="activator"
+                                color="primary"
+                                light
+                                medium
+                            >help</v-icon>
                             <span>{{ $t('common.help.tooltip') }}</span>
                         </v-tooltip>
                     </template>
@@ -64,7 +70,9 @@
                                 <v-card-text>
                                     <h2 class="title">{{ $t("common.help.infoTitle") }}</h2>
                                     <p class="spacer"></p>
-                                    <p v-html="platformService.getHelp($t('roleManager.help.text'))"></p>
+                                    <p
+                                        v-html="platformService.getHelp($t('roleManager.help.text'))"
+                                    ></p>
                                     <p class="spacer"></p>
                                 </v-card-text>
                             </v-card>
@@ -207,7 +215,7 @@
 <script lang='ts'>
 import Component from 'vue-class-component';
 import Messages from '@/lib/messages';
-import { GenericObject } from '../../types';
+import { GenericObject, EtcdRole } from '../../types';
 import RoleService from '../services/role.service';
 import { CrudBase, List } from '../lib/crud.class';
 import RoleEditor from './role-editor.vue';
@@ -230,15 +238,14 @@ export default class RoleManager extends CrudBase implements List {
     ];
 
     protected etcd: RoleService;
-    protected defaultItem: { name: string };
 
     constructor() {
         super();
         this.etcd = new RoleService(this.$store.state.connection.getClient());
-        this.defaultItem = { name: '' };
     }
 
     public created() {
+        this.defaultItem = new EtcdRole();
         this.load();
         this.translateHeaders('roleManager.columns.name');
     }

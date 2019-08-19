@@ -1,5 +1,41 @@
 
 <style scoped>
+.custom-loader {
+    animation: loader 1s infinite;
+    display: flex;
+}
+@-moz-keyframes loader {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+@-webkit-keyframes loader {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+@-o-keyframes loader {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+@keyframes loader {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
 </style>
 
 <template>
@@ -91,6 +127,8 @@
                                 <v-flex xs12 align-end flexbox>
                                     <v-text-field
                                         dark
+                                        ref="endpoint"
+                                        tab="0"
                                         v-model="endpoint"
                                         :error-messages="endpointErrors"
                                         :label="$t('settings.etcd.fields.endpoint.label')"
@@ -107,6 +145,8 @@
 
                                     <v-text-field
                                         dark
+                                        ref="port"
+                                        tab="0"
                                         type="number"
                                         v-model="port"
                                         :error-messages="portErrors"
@@ -136,6 +176,8 @@
                                     <v-text-field
                                         dark
                                         type="number"
+                                        ref="timeout"
+                                        tab="0"
                                         v-model="timeout"
                                         :error-messages="timeoutErrors"
                                         :placeholder="$t('settings.etcd.fields.timeout.placeholder')"
@@ -163,6 +205,8 @@
                                     <v-text-field
                                         dark
                                         type="text"
+                                        ref="username"
+                                        tab="1"
                                         v-model="username"
                                         :error-messages="usernameErrors"
                                         :placeholder="$t('settings.auth.fields.username.placeholder')"
@@ -179,6 +223,8 @@
                                     <v-text-field
                                         id="auth"
                                         dark
+                                        ref="password"
+                                        tab="1"
                                         type="password"
                                         v-model="password"
                                         :placeholder="$t('settings.auth.fields.password.placeholder')"
@@ -257,6 +303,8 @@
                                     <v-text-field
                                         dark
                                         type="text"
+                                        ref="pwpattern"
+                                        tab="2"
                                         v-model="pwpattern"
                                         :error-messages="pwpatternErrors"
                                         :placeholder="$t('settings.users.fields.pwpattern.placeholder')"
@@ -329,6 +377,20 @@
                         @click="persist"
                     >{{ $t('settings.actions.submit') }}</v-btn>
                     <v-btn round color="warning" @click="next">{{ $t('settings.actions.next') }}</v-btn>
+                    <v-btn
+                        round
+                        :loading="testing"
+                        :disabled="testing"
+                        :color="testColor"
+                        @click="testConnection"
+                    >
+                        {{ $t('settings.actions.testConnection') }}
+                        <template v-slot:loader>
+                            <span class="custom-loader">
+                                <v-icon light>cached</v-icon>
+                            </span>
+                        </template>
+                    </v-btn>
                 </v-layout>
             </v-card>
         </v-form>
@@ -349,6 +411,8 @@ import {
 } from 'vuelidate/lib/validators';
 import { omit } from 'lodash-es';
 import { PlatformService } from '../services/platform.service';
+import Messages from '../lib/messages';
+import KeyService from '../services/key.service';
 
 @Component({
     // @ts-ignore
@@ -392,6 +456,9 @@ export default class Configuration extends Vue {
     public valid = false;
     public success = false;
     public auth = false;
+    public testing = false;
+    public etcd: KeyService | null = null;
+    public testColor: string = 'primary';
     public languages = [
         { name: 'English', value: 'en' },
         { name: 'Hungarian', value: 'hu' },
@@ -658,9 +725,42 @@ export default class Configuration extends Vue {
         this.active = this.active > 0 ? this.active - 1 : 0;
     }
 
+    public async testConnection() {
+        this.etcd = new KeyService(this.$store.state.connection.getClient());
+        this.testing = true;
+        try {
+            await this.etcd.loadAllKeys();
+            this.testColor = 'info';
+            this.testing = false;
+            this.$store.commit(
+                'message',
+                Messages.success('settings.messages.connectSuccess')
+            );
+        } catch (e) {
+            this.testColor = 'error';
+            this.testing = false;
+            this.$store.commit('message', Messages.error(e));
+        }
+    }
+
+    private findError() {
+        for (const i of Object.keys(this.$v)) {
+            if (this.$v[i] && this.$v[i].$error) {
+                // @ts-ignore
+                this.active = parseInt(this.$refs[i].$attrs.tab, 10);
+                this.$store.commit(
+                    'message',
+                    Messages.error('settings.messages.error', true)
+                );
+                break;
+            }
+        }
+    }
+
     public persist() {
         this.$v.$touch();
         if (this.$v.$invalid) {
+            this.findError();
             return false;
         }
         const newConfig: { [key: string]: any } = {
