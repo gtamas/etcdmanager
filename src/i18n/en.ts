@@ -164,7 +164,7 @@ export default {
                 title: 'ETCD',
                 fields: {
                     endpoint: {
-                        label: 'Endpoint',
+                        label: 'Host',
                         placeholder: 'Type in an URL or IP address..',
                         tooltip: 'The URL or IP address of the ETCD server',
                     },
@@ -272,8 +272,11 @@ export default {
             actions: {
                 submit: 'Submit',
                 next: 'Next',
+                testConnection: 'Test Connection',
             },
             messages: {
+                error: 'The input data is invalid or mandatory info is missing!',
+                connectSuccess: 'Your connection is fine',
                 success: 'Configuration has been saved successfully',
                 ipOrUrl: 'The IP address or URL appears to be invalid',
             },
@@ -475,6 +478,7 @@ export default {
             },
             messages: {
                 duplicate: 'A watcher with this name already exists',
+                duplicateAction: 'An action of this type already exists',
             },
         },
         actionEditor: {

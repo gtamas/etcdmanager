@@ -91,10 +91,11 @@ export class CrudBase extends Vue implements List {
         this.noSelection = false;
     }
 
-    public addItem() {
+    public async addItem() {
+        await this.closeEditor();
         this.editor = true;
         this.operation = 'create';
-        this.currentItem = { ...this.currentItem, ...this.defaultItem };
+        this.currentItem = { ...{}, ...this.defaultItem };
     }
 
     // @ts-ignore
@@ -140,6 +141,7 @@ export class CrudBase extends Vue implements List {
             // @ts-ignore
             await this.etcd.purge();
             await this.load();
+            await this.closeEditor();
             this.toggleLoading();
             this.purgeDialog = false;
             return Promise.resolve(this);
@@ -159,8 +161,10 @@ export class CrudBase extends Vue implements List {
             // @ts-ignore
             await this.etcd.remove(toBeRemoved);
             await this.load();
+            await this.closeEditor();
             this.toggleLoading();
             this.itemToDelete = null;
+            await this.closeEditor();
             if (this.hasSelection()) {
                 this.selected = [];
             }

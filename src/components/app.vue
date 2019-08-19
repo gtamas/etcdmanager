@@ -291,8 +291,7 @@ export default class App extends Vue {
 }
 
 .editor {
-    max-width: 30vw;
-    min-width: 20vw;
+    width: 30vw;
 }
 
 </style>

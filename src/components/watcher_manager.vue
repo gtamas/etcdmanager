@@ -444,12 +444,6 @@ export default class WatcherManager extends CrudBase implements List {
         return Promise.resolve(this);
     }
 
-    public async addItem() {
-        await this.closeEditor();
-        // @ts-ignore
-        CrudBase.options.methods.addItem.call(this);
-        this.currentItem = new WatcherEntry();
-    }
 }
 </script>
 

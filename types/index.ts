@@ -57,3 +57,23 @@ export interface NamedWatcher {
     name: string;
     watcher: Watcher;
 }
+
+
+export class EtcdKey {
+    constructor(
+        public key: string = '',
+        public value: string = '') {
+    }
+}
+
+export class EtcdRole {
+    constructor(
+        public name: string = '') {
+    }
+}
+
+export class EtcdUser {
+    constructor(
+        public name: string = '') {
+    }
+}

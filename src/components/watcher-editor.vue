@@ -27,7 +27,7 @@
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
-                                  <v-layout align-center justify-start row>
+                                <v-layout align-center justify-start row>
                                     <v-flex xs4>
                                         <p class="rounded">{{ `${platformService.getMeta()} + s` }}</p>
                                     </v-flex>
@@ -35,7 +35,7 @@
                                         <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
                                     </v-flex>
                                 </v-layout>
-                                 <v-layout align-center justify-start row>
+                                <v-layout align-center justify-start row>
                                     <v-flex xs4>
                                         <p class="rounded">enter</p>
                                     </v-flex>
@@ -43,20 +43,24 @@
                                         <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
                                     </v-flex>
                                 </v-layout>
-                                 <v-layout align-center justify-start row>
+                                <v-layout align-center justify-start row>
                                     <v-flex xs4>
                                         <p class="rounded">esc</p>
                                     </v-flex>
                                     <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.closeEditor") }}</p>
+                                        <p
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.closeEditor") }}</p>
                                     </v-flex>
                                 </v-layout>
-                                  <v-layout align-center justify-start row>
+                                <v-layout align-center justify-start row>
                                     <v-flex xs4>
                                         <p class="rounded">{{ `${platformService.getMeta()} + x` }}</p>
                                     </v-flex>
                                     <v-flex xs8>
-                                        <p class="label">{{ $t("watcherEditor.help.shortcuts.addAction") }}</p>
+                                        <p
+                                            class="label"
+                                        >{{ $t("watcherEditor.help.shortcuts.addAction") }}</p>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout align-center justify-start row>
@@ -330,14 +334,35 @@ export default class WatcherEditor extends BaseEditor {
 
     saveAction(action: WatcherAction) {
         if (!action.id) {
-            action.id = uuidv1();
-            this.actions.push(action);
+            const exists = this.actions.find((act) => {
+                if (
+                    act.action.name === action.action.name &&
+                    act.event.name === action.event.name
+                ) {
+                    return true;
+                }
+                return false;
+            });
+            if (!exists) {
+                action.id = uuidv1();
+                this.actions.push(action);
+                this.submit();
+            } else {
+                this.$store.commit(
+                    'message',
+                    Messages.error(
+                        'watcherEditor.messages.duplicateAction',
+                        true
+                    )
+                );
+            }
         } else {
             const current = this.actions.find((ac) => {
                 return action.id === ac.id;
             });
             Vue.set(current as WatcherAction, 'action', action.action);
             Vue.set(current as WatcherAction, 'event', action.event);
+            this.submit();
         }
         this.cancelAction();
     }
@@ -352,6 +377,9 @@ export default class WatcherEditor extends BaseEditor {
         this.actions = this.actions.filter((action) => {
             return action.id !== actionToDelete.id;
         });
+        if (this.actions.length) {
+            this.submit();
+        }
         this.focus('name');
     }
 
@@ -384,9 +412,7 @@ export default class WatcherEditor extends BaseEditor {
         if (!res) {
             this.$store.commit(
                 'message',
-                Messages.error(
-                    this.$t('watcherEditor.messages.duplicate').toString()
-                )
+                Messages.error('watcherEditor.messages.duplicate', true)
             );
             return false;
         }
