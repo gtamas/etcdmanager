@@ -35,7 +35,7 @@
                                 <template v-slot:activator="{ on }">
                                     <v-btn color="primary" round dark @click="addItem" v-on="on">
                                         <v-icon>add</v-icon>
-                                        <span>{{ $t("common.actions.create.label") }}</span>
+                                        <span data-test="key-manager.add.button">{{ $t("common.actions.create.label") }}</span>
                                     </v-btn>
                                 </template>
                                 <span>{{ $t("common.actions.create.tooltip") }}</span>

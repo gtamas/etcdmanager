@@ -18,8 +18,8 @@ class ManageKeysPage extends BasePage {
 
     writeEndpoint(value) {
         return this.app.client
-            .setValue('input[aria-label="Endpoint"]', value)
-            .getValue('input[aria-label="Endpoint"]')
+            .setValue('input[aria-label="Host"]', value)
+            .getValue('input[aria-label="Host"]')
             .should.eventually.equal(value);
     }
 
@@ -32,7 +32,7 @@ class ManageKeysPage extends BasePage {
     }
 
     clickAddBtn() {
-        return this.app.client.click('//span[text()="Add"]');
+        return this.app.client.click('span[data-test="key-manager.add.button"]');
     }
 
     writeKey(value) {
