@@ -1,7 +1,7 @@
 # How to contribute?
 
-Wanna help out? That's absolutely awesome, thank you! :) We definitely appreciate all contributions. 
-In order to contribute any code, please follow the these steps: 
+Wanna help out? That's absolutely awesome, thank you! :) We definitely appreciate all contributions.
+In order to contribute any code, please follow the these steps:
 
 - Fork this project on [Github](https://github.com/etcdmanager)
 - Implement your changes and then send us a pull request.
@@ -15,10 +15,11 @@ Once your changes are ready:
 - Make sure all tests are still super green and everything is jolly good by running the following command.:
 
 ```
-yarn test:e2e
+yarn test:e2e:electron
 ```
 
-- Your Typescript code should follow the AirBnB JS coding guidelines. If your are not familiar with those, please [see this page](https://github.com/airbnb/javascript) for more info. Or just run the damn linter and make sure it doesn't print any errors or warnings :)
+- Your Typescript code should follow the AirBnB JS coding guidelines. If your are not familiar with those, please [see this page](https://github.com/airbnb/javascript)
+for more info. Or just run the damn linter and make sure it doesn't print any errors or warnings :)
 
 ```
 yarn lint
@@ -32,10 +33,9 @@ We would like to make this application available in as many languages as possibl
 
 Here is how to help us:
 
-- Clone the project 
-- Open **src/i18n/en.json** in your favorite text editor. 
+- Clone the project
+- Open **src/i18n/en.json** in your favorite text editor.
 - Translate the text to another language and save it as **src/i18n/xy.json** (where "xy" is the lower case, two letter ISO language code)
 - Send a PR :)
 
 That's it!
-

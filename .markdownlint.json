@@ -1,0 +1,20 @@
+{
+    "default": true,
+    "header-style": {
+        "style": "atx"
+    },
+    "line-length": {
+        "line_length": 240
+    },
+    "fenced-code-language": false,
+    "no-hard-tabs": false,
+    "blanks-around-headings": false,
+    "blanks-around-lists": false,
+    "no-duplicate-header": false,
+    "no-multiple-blanks": true,
+    "no-trailing-punctuation": false,
+    "ul-style": false,
+    "ul-indent": {
+        "indent": 2
+    }
+}

@@ -1,0 +1,5 @@
+--require ./test/test.js
+./test/e2e/specs/**/*.e2e-spec.ts
+--timeout 50000
+--recursive
+--exit

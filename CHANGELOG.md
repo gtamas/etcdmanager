@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Reopening editor views after edit now properly clears all fields.
 - Adding the same action twice is prevented (watchers)
-- Show validation error automatically if its on another tab (settings) 
+- Show validation error automatically if its on another tab (settings)
 
 ### Changed
 - Added basic usage instructions, screenshot and new sections to README.
@@ -22,4 +22,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.2-beta] - 2019-08-03
 ### Added
 - The first publicly available version and the corresponding binary builds
-
