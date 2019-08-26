@@ -25,6 +25,7 @@ yarn lint
 ```
 
 - Unless they are super trivial, your changes should always be covered by automated tests. We use end to end tests written in [Spectron](https://electronjs.org/spectron) to test the UI. Please don't forget to add these.
+- All visible UI elements in templates shall have data-test attributes with uniqe string value. Tests use these atributes as selectors. Name conventions of attributes: name of component + ui operation + type of element. E.g.: data-test="config.settings-actions-submit.v-btn"
 
 ## Contributing translations
 
