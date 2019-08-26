@@ -1,16 +1,25 @@
 <template>
-  <v-dialog v-model="isOpen" max-width="290">
-    <v-card dark>
-      <v-toolbar dark flat>
-        <v-toolbar-title>{{ $t("noSelectionDialog.title") }}</v-toolbar-title>
-      </v-toolbar>
-      <v-card-text>{{ $t("noSelectionDialog.content") }}</v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" round @click="close">{{ $t("noSelectionDialog.actions.ok") }}</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    <v-dialog v-model="isOpen" max-width="290">
+        <v-card dark>
+            <v-toolbar dark flat>
+                <v-toolbar-title
+                    data-test="no-selection-dialog.noselectiondialog-title.v-toolbar"
+                >{{ $t("noSelectionDialog.title") }}</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text
+                data-test="no-selection-dialog.noselectiondialog-content.v-card-text"
+            >{{ $t("noSelectionDialog.content") }}</v-card-text>
+            <v-card-actions>
+                <v-spacer data-test="no-selection-dialog.spacer.v-spacer"></v-spacer>
+                <v-btn
+                    data-test="no-selection-dialog.noselectiondialog-actions.v-btn"
+                    color="primary"
+                    round
+                    @click="close"
+                >{{ $t("noSelectionDialog.actions.ok") }}</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 

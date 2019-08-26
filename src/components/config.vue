@@ -45,37 +45,39 @@
                 <v-expansion-panel-content dark class="darker">
                     <template v-slot:actions>
                         <v-tooltip slot="prepend" bottom max-width="200">
-                            <v-icon slot="activator" color="primary" light medium>help</v-icon>
-                            <span>{{ $t('common.help.tooltip') }}</span>
+                            <v-icon data-test="config.help.v-icon" slot="activator" color="primary" light medium>help</v-icon>
+                            <span data-test="config.help.span">{{ $t('common.help.tooltip') }}</span>
                         </v-tooltip>
                     </template>
                     <template v-slot:header>
-                        <v-toolbar-title>{{ $t("settings.title") }}</v-toolbar-title>
+                        <v-toolbar-title data-test="config.settings-title.v-toolbar-title">{{ $t("settings.title") }}</v-toolbar-title>
                     </template>
                     <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
-                        <v-tab ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                        <v-tab data-test="config.info-title.v-tab" ripple>{{ $t('common.help.tabs.info') }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text>
-                                    <h2 class="title">{{ $t("common.help.infoTitle") }}</h2>
+                                    <h2 data-test="config.info-title.h2" class="title">{{ $t("common.help.infoTitle") }}</h2>
                                     <p class="spacer"></p>
                                     <p v-html="getHelp()"></p>
                                     <p class="spacer"></p>
                                 </v-card-text>
                             </v-card>
                         </v-tab-item>
-                        <v-tab ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                        <v-tab data-test="config.help-tab.v-tab" ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text>
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
                                             <p
+                                                data-test="config.shortcut-left-arrow-label.p"
                                                 class="rounded"
                                             >{{ `${platformService.getMeta()} + ${$t('settings.help.shortcuts.leftArrowLabel')}` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
+                                                data-test="config.shortcut-left-arrow.p"
                                                 class="label"
                                             >{{ $t("settings.help.shortcuts.leftArrow") }}</p>
                                         </v-flex>
@@ -83,11 +85,13 @@
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
                                             <p
+                                                data-test="config.shortcut-right-arrow-label.p"
                                                 class="rounded"
                                             >{{ `${platformService.getMeta()} + ${$t('settings.help.shortcuts.rightArrowLabel')}` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
+                                                data-test="config.shortcut-right-arrow.p"
                                                 class="label"
                                             >{{ $t("settings.help.shortcuts.rightArrow") }}</p>
                                         </v-flex>
@@ -95,21 +99,23 @@
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
                                             <p
+                                                data-test="config.shortcut-save-rounded.p"
                                                 class="rounded"
                                             >{{ `${platformService.getMeta()} + s` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
-                                            <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
+                                            <p data-test="config.shortcut-save-label.p" class="label">{{ $t("common.help.shortcuts.save") }}</p>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
                                             <p
+                                                data-test="config.shortcut-help-rounded.p"
                                                 class="rounded"
                                             >{{ `${platformService.getMeta()} + h` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
-                                            <p class="label">{{ $t("common.help.shortcuts.help") }}</p>
+                                            <p data-test="config.shortcut-help-label.p" class="label">{{ $t("common.help.shortcuts.help") }}</p>
                                         </v-flex>
                                     </v-layout>
                                 </v-card-text>
@@ -119,13 +125,14 @@
                 </v-expansion-panel-content>
             </v-expansion-panel>
             <v-tabs v-model="active" dark color="black" slider-color="warning" grow>
-                <v-tab ripple>{{ $t('settings.etcd.title') }}</v-tab>
+                <v-tab data-test="config.settings-etcd-title.v-tab" ripple>{{ $t('settings.etcd.title') }}</v-tab>
                 <v-tab-item>
                     <v-card raised>
                         <v-container fluid>
                             <v-layout>
                                 <v-flex xs12 align-end flexbox>
                                     <v-text-field
+                                        data-test="config.etcd-fields-endpoint.v-text-field"
                                         dark
                                         ref="endpoint"
                                         tab="0"
@@ -138,12 +145,13 @@
                                         @blur="$v.endpoint.$touch()"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.etcd.fields.endpoint.tooltip') }}</span>
+                                            <v-icon data-test="config.etcd-fields-endpoint.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.etcd-fields-endpoint.span">{{ $t('settings.etcd.fields.endpoint.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-text-field>
 
                                     <v-text-field
+                                        data-test="config.etcd-fields-port.v-text-field"
                                         dark
                                         ref="port"
                                         tab="0"
@@ -157,8 +165,8 @@
                                         @blur="$v.timeout.$touch()"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.etcd.fields.port.tooltip') }}.</span>
+                                            <v-icon data-test="config.etcd-fields-port.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.etcd-fields-port.span" >{{ $t('settings.etcd.fields.port.tooltip') }}.</span>
                                         </v-tooltip>
                                     </v-text-field>
 
@@ -168,12 +176,13 @@
                                         :label="$t('settings.etcd.fields.retries.label')"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.etcd.fields.retries.tooltip') }}</span>
+                                            <v-icon data-test="config.etcd-fields-retries.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.etcd-fields-retries.span">{{ $t('settings.etcd.fields.retries.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-switch>
 
                                     <v-text-field
+                                        data-test="config.etcd-fields-timeout.v-text-field"
                                         dark
                                         type="number"
                                         ref="timeout"
@@ -187,8 +196,8 @@
                                         @blur="$v.timeout.$touch()"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.etcd.fields.timeout.tooltip') }}</span>
+                                            <v-icon data-test="config.etcd-fields-timeout.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.etcd-fields-timeout.span">{{ $t('settings.etcd.fields.timeout.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-text-field>
                                 </v-flex>
@@ -196,13 +205,14 @@
                         </v-container>
                     </v-card>
                 </v-tab-item>
-                <v-tab ripple>{{ $t('settings.auth.title') }}</v-tab>
+                <v-tab data-test="config.settings-auth-title.v-tab" ripple>{{ $t('settings.auth.title') }}</v-tab>
                 <v-tab-item>
                     <v-card raised>
                         <v-container fluid>
                             <v-layout>
                                 <v-flex xs12 align-end flexbox>
                                     <v-text-field
+                                        data-test="config.etcd-fields-username.v-text-field"
                                         dark
                                         type="text"
                                         ref="username"
@@ -215,12 +225,13 @@
                                         @blur="$v.username.$touch()"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.auth.fields.username.tooltip') }}.</span>
+                                            <v-icon data-test="config.etcd-fields-username.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.etcd-fields-username.span">{{ $t('settings.auth.fields.username.tooltip') }}.</span>
                                         </v-tooltip>
                                     </v-text-field>
 
                                     <v-text-field
+                                        data-test="config.etcd-fields-password.v-text-field"
                                         id="auth"
                                         dark
                                         ref="password"
@@ -234,8 +245,8 @@
                                         @blur="$v.password.$touch()"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.auth.fields.password.tooltip') }}</span>
+                                            <v-icon data-test="config.etcd-fields-password.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.etcd-fields-password.span">{{ $t('settings.auth.fields.password.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-text-field>
                                 </v-flex>
@@ -243,7 +254,7 @@
                         </v-container>
                     </v-card>
                 </v-tab-item>
-                <v-tab ripple>{{ $t('settings.watchers.title') }}</v-tab>
+                <v-tab data-test="config.settings-watchers-title.v-tab" ripple>{{ $t('settings.watchers.title') }}</v-tab>
                 <v-tab-item>
                     <v-card raised>
                         <v-container fluid>
@@ -255,8 +266,8 @@
                                         :label="$t('settings.watchers.fields.loadWatchers.label')"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.watchers.fields.loadWatchers.tooltip') }}</span>
+                                            <v-icon data-test="config.watcher-fields-load.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.watcher-fields-load.span">{{ $t('settings.watchers.fields.loadWatchers.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-switch>
                                     <v-switch
@@ -265,8 +276,8 @@
                                         :label="$t('settings.watchers.fields.errorListener.label')"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.watchers.fields.errorListener.tooltip') }}</span>
+                                            <v-icon data-test="config.watcher-fields-error-listener.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.watcher-fields-error-listener.span">{{ $t('settings.watchers.fields.errorListener.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-switch>
                                     <v-switch
@@ -275,8 +286,8 @@
                                         :label="$t('settings.watchers.fields.disconnectListener.label')"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.watchers.fields.disconnectListener.tooltip') }}</span>
+                                            <v-icon data-test="config.watcher-fields-disconnect-listener.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.watcher-fields-disconnect-listener.span">{{ $t('settings.watchers.fields.disconnectListener.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-switch>
                                     <v-switch
@@ -285,8 +296,8 @@
                                         :label="$t('settings.watchers.fields.reconnectListener.label')"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.watchers.fields.reconnectListener.tooltip') }}</span>
+                                            <v-icon data-test="config.watcher-fields-reconnect-listener.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.watcher-fields-reconnect-listener.span">{{ $t('settings.watchers.fields.reconnectListener.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-switch>
                                 </v-flex>
@@ -294,13 +305,14 @@
                         </v-container>
                     </v-card>
                 </v-tab-item>
-                <v-tab ripple>{{ $t('settings.users.title') }}</v-tab>
+                <v-tab data-test="config.settings-users-title.v-tab" ripple>{{ $t('settings.users.title') }}</v-tab>
                 <v-tab-item>
                     <v-card raised>
                         <v-container fluid>
                             <v-layout>
                                 <v-flex xs12 align-end flexbox>
                                     <v-text-field
+                                        data-test="config.settings-users-fields-pwpattern.v-text-field"
                                         dark
                                         type="text"
                                         ref="pwpattern"
@@ -313,8 +325,8 @@
                                         @blur="$v.pwpattern.$touch()"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.users.fields.pwpattern.tooltip') }}.</span>
+                                            <v-icon data-test="config.settings-users-fields-pwpattern.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.settings-users-fields-pwpattern.span">{{ $t('settings.users.fields.pwpattern.tooltip') }}.</span>
                                         </v-tooltip>
                                     </v-text-field>
                                 </v-flex>
@@ -322,13 +334,14 @@
                         </v-container>
                     </v-card>
                 </v-tab-item>
-                <v-tab ripple>{{ $t('settings.misc.title') }}</v-tab>
+                <v-tab data-test="config.settings-misc-title.v-tab" ripple>{{ $t('settings.misc.title') }}</v-tab>
                 <v-tab-item>
                     <v-card raised>
                         <v-container fluid>
                             <v-layout>
                                 <v-flex xs12 align-end flexbox>
                                     <v-select
+                                        data-test="config.settings-misc-fields-language.v-select"
                                         dark
                                         v-model="language"
                                         :items="languages"
@@ -338,8 +351,8 @@
                                         required
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.misc.fields.language.tooltip') }}</span>
+                                            <v-icon data-test="config.settings-misc-fields-language.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.settings-misc-fields-language.span">{{ $t('settings.misc.fields.language.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-select>
                                     <v-switch
@@ -348,8 +361,8 @@
                                         :label="$t('settings.misc.fields.animateBg.label')"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.misc.fields.animateBg.tooltip') }}</span>
+                                            <v-icon data-test="config.settings-misc-fields-animatebg.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.settings-misc-fields-animatebg.span">{{ $t('settings.misc.fields.animateBg.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-switch>
                                     <v-switch
@@ -358,8 +371,8 @@
                                         :label="$t('settings.misc.fields.bg.label')"
                                     >
                                         <v-tooltip slot="prepend" bottom max-width="200">
-                                            <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                            <span>{{ $t('settings.misc.fields.bg.tooltip') }}</span>
+                                            <v-icon data-test="config.settings-misc-fields-bg.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                            <span data-test="config.settings-misc-fields-bg.span">{{ $t('settings.misc.fields.bg.tooltip') }}</span>
                                         </v-tooltip>
                                     </v-switch>
                                 </v-flex>
@@ -371,6 +384,7 @@
             <v-card raised>
                 <v-layout align-start justify-center row>
                     <v-btn
+                        data-test="config.settings-actions-submit.v-btn"
                         :disabled="!valid"
                         round
                         color="primary"
@@ -378,6 +392,7 @@
                     >{{ $t('settings.actions.submit') }}</v-btn>
                     <v-btn round color="warning" @click="next">{{ $t('settings.actions.next') }}</v-btn>
                     <v-btn
+                        data-test="config.settings-actions-testconnection.v-btn"
                         round
                         :loading="testing"
                         :disabled="testing"

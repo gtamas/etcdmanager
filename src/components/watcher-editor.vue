@@ -3,79 +3,136 @@
         <v-expansion-panel focusable dark class="help" v-model="help">
             <v-expansion-panel-content dark class="darker">
                 <template v-slot:actions>
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                        <v-icon slot="activator" color="primary" light medium>help</v-icon>
-                        <span>{{ $t('common.help.tooltip') }}</span>
+                    <v-tooltip
+                        data-test="watcher-editor.common-help-tooltip.v-tooltip"
+                        slot="prepend"
+                        bottom
+                        max-width="200"
+                    >
+                        <v-icon
+                            data-test="watcher-editor.common-help-tooltip.v-icon"
+                            slot="activator"
+                            color="primary"
+                            light
+                            medium
+                        >help</v-icon>
+                        <span
+                            data-test="watcher-editor.common-help-tooltip.span"
+                        >{{ $t('common.help.tooltip') }}</span>
                     </v-tooltip>
                 </template>
                 <template v-slot:header>
-                    <v-toolbar-title>{{ title }}</v-toolbar-title>
+                    <v-toolbar-title data-test="watcher-editor.title.v-toolbar-title">{{ title }}</v-toolbar-title>
                 </template>
                 <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
-                    <v-tab ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                    <v-tab
+                        data-test="watcher-editor.common-help-tabs-info.v-tab"
+                        ripple
+                    >{{ $t('common.help.tabs.info') }}</v-tab>
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
-                                <h2 class="title">{{ $t("common.help.infoTitle") }}</h2>
-                                <p class="spacer"></p>
-                                <p v-html="platformService.getHelp($t('watcherEditor.help.text'))"></p>
-                                <p class="spacer"></p>
+                                <h2
+                                    data-test="watcher-editor.common-help-tabs-infotitle.h2"
+                                    class="title"
+                                >{{ $t("common.help.infoTitle") }}</h2>
+                                <p
+                                    data-test="watcher-editor.common-help-tabs-spacer-1.p"
+                                    class="spacer"
+                                ></p>
+                                <p
+                                    data-test="watcher-editor.common-help-tabs-text.p"
+                                    v-html="platformService.getHelp($t('watcherEditor.help.text'))"
+                                ></p>
+                                <p
+                                    data-test="watcher-editor.common-help-tabs-spacer-2.p"
+                                    class="spacer"
+                                ></p>
                             </v-card-text>
                         </v-card>
                     </v-tab-item>
-                    <v-tab ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                    <v-tab
+                        data-test="watcher-editor.common-help-tabs-shortcuts.v-tab"
+                        ripple
+                    >{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
                                 <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">{{ `${platformService.getMeta()} + s` }}</p>
-                                    </v-flex>
-                                    <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout align-center justify-start row>
-                                    <v-flex xs4>
-                                        <p class="rounded">enter</p>
-                                    </v-flex>
-                                    <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout align-center justify-start row>
-                                    <v-flex xs4>
-                                        <p class="rounded">esc</p>
+                                        <p
+                                            data-test="watcher-editor.common-help-shortcuts-save-rounded.p"
+                                            class="rounded"
+                                        >{{ `${platformService.getMeta()} + s` }}</p>
                                     </v-flex>
                                     <v-flex xs8>
                                         <p
+                                            data-test="watcher-editor.common-help-shortcuts-save-label.p"
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.save") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p
+                                            data-test="watcher-editor.common-help-shortcuts-save-rounded-enter.p"
+                                            class="rounded"
+                                        >enter</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p
+                                            data-test="watcher-editor.common-help-shortcuts-save-label-enter.p"
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.save") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p
+                                            data-test="watcher-editor.common-help-shortcuts-closeeditor-rounded.p"
+                                            class="rounded"
+                                        >esc</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p
+                                            data-test="watcher-editor.common-help-shortcuts-closeeditor-label.p"
                                             class="label"
                                         >{{ $t("common.help.shortcuts.closeEditor") }}</p>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">{{ `${platformService.getMeta()} + x` }}</p>
+                                        <p
+                                            data-test="watcher-editor.common-help-shortcuts-addaction-rounded.p"
+                                            class="rounded"
+                                        >{{ `${platformService.getMeta()} + x` }}</p>
                                     </v-flex>
                                     <v-flex xs8>
                                         <p
+                                            data-test="watcher-editor.common-help-shortcuts-addaction-label.p"
                                             class="label"
                                         >{{ $t("watcherEditor.help.shortcuts.addAction") }}</p>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">{{ `${platformService.getMeta()} + h` }}</p>
+                                        <p
+                                            data-test="watcher-editor.common-help-shortcuts-help-rounded.p"
+                                            class="rounded"
+                                        >{{ `${platformService.getMeta()} + h` }}</p>
                                     </v-flex>
                                     <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.help") }}</p>
+                                        <p
+                                            data-test="watcher-editor.common-help-shortcuts-help-label.p"
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.help") }}</p>
                                     </v-flex>
                                 </v-layout>
                             </v-card-text>
                         </v-card>
                     </v-tab-item>
                 </v-tabs>
-                <hr class="blackLine" />
+                <hr data-test="watcher-editor.blackline.hr" class="blackLine" />
             </v-expansion-panel-content>
         </v-expansion-panel>
         <v-container fill-height fluid>
@@ -83,6 +140,7 @@
                 <v-flex xs12 align-end flexbox>
                     <v-form ref="watcherForm" v-model="valid" lazy-validation>
                         <v-text-field
+                            data-test="watcher-editor.fields-name.v-text-field"
                             ref="name"
                             dark
                             v-model="name"
@@ -94,13 +152,26 @@
                             @input="$v.name.$touch()"
                             @blur="$v.name.$touch()"
                         >
-                            <v-tooltip slot="prepend" bottom max-width="200">
-                                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                <span>{{ $t('watcherEditor.fields.name.tooltip') }}</span>
+                            <v-tooltip
+                                data-test="watcher-editor.fields-name.v-tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="watcher-editor.fields-name.v-icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                >info</v-icon>
+                                <span
+                                    data-test="watcher-editor.fields-name.span"
+                                >{{ $t('watcherEditor.fields.name.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
 
                         <v-text-field
+                            data-test="watcher-editor.fields-key.v-text-field"
                             dark
                             type="text"
                             v-model="key"
@@ -111,21 +182,41 @@
                             @input="$v.key.$touch()"
                             @blur="$v.key.$touch()"
                         >
-                            <v-tooltip slot="prepend" bottom max-width="200">
-                                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                <span>{{ $t('watcherEditor.fields.key.tooltip') }}</span>
+                            <v-tooltip
+                                data-test="watcher-editor.fields-key.v-tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="watcher-editor.fields-key.v-icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                >info</v-icon>
+                                <span
+                                    data-test="watcher-editor.fields-key.span"
+                                >{{ $t('watcherEditor.fields.key.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
 
                         <v-checkbox
+                            data-test="watcher-editor.fields-prefix.v-text-field"
                             dark
                             v-model="prefix"
                             :label="$t('watcherEditor.fields.prefix.label')"
                             required
                         >
                             <v-tooltip slot="prepend" bottom max-width="200">
-                                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                <span>{{ $t('watcherEditor.fields.prefix.tooltip') }}</span>
+                                <v-icon
+                                    data-test="watcher-editor.fields-prefix.v-icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                >info</v-icon>
+                                <span
+                                    data-test="watcher-editor.fields-prefix.span"
+                                >{{ $t('watcherEditor.fields.prefix.tooltip') }}</span>
                             </v-tooltip>
                         </v-checkbox>
 
@@ -136,47 +227,64 @@
                             hide-actions
                         >
                             <template v-slot:items="props">
-                                <td>{{ props.item.action.name }}</td>
-                                <td class="text-xs-right">{{ props.item.event.name }}</td>
+                                <td
+                                    data-test="watcher-editor.actionlist-action-name.td"
+                                >{{ props.item.action.name }}</td>
+                                <td
+                                    data-test="watcher-editor.actionlist-event-name.td"
+                                    class="text-xs-right"
+                                >{{ props.item.event.name }}</td>
                                 <td class="justify-center layout px-0">
                                     <v-tooltip bottom max-width="200">
                                         <template v-slot:activator="{ on }">
                                             <v-icon
+                                                data-test="watcher-editor.actionlist-actions-edit.v-icon"
                                                 small
                                                 @click="editAction(props.item)"
                                                 v-on="on"
                                             >edit</v-icon>
                                         </template>
-                                        <span>{{ $t('watcherEditor.actionList.actions.edit')}}</span>
+                                        <span
+                                            data-test="watcher-editor.actionlist-actions-edit.span"
+                                        >{{ $t('watcherEditor.actionList.actions.edit')}}</span>
                                     </v-tooltip>
                                     <v-tooltip bottom max-width="200">
                                         <template v-slot:activator="{ on }">
                                             <v-icon
+                                                data-test="watcher-editor.actionlist-actions-remove.v-icon"
                                                 small
                                                 slot="activator"
                                                 @click="deleteAction(props.item)"
                                                 v-on="on"
                                             >delete</v-icon>
                                         </template>
-                                        <span>{{ $t('watcherEditor.actionList.actions.remove') }}</span>
+                                        <span
+                                            data-test="watcher-editor.actionlist-actions-remove.span"
+                                        >{{ $t('watcherEditor.actionList.actions.remove') }}</span>
                                     </v-tooltip>
                                 </td>
                             </template>
                         </v-data-table>
 
                         <v-btn :disabled="!isValid()" round color="primary" @click="submit">
-                            <v-icon>add</v-icon>
-                            <span>{{ opTitle }}</span>
+                            <v-icon data-test="watcher-editor.actionlist-actions-submit.v-icon">add</v-icon>
+                            <span
+                                data-test="watcher-editor.actionlist-actions-submit-title.span"
+                            >{{ opTitle }}</span>
                         </v-btn>
                         <v-btn round color="primary" @click="addAction">
-                            <v-icon>event</v-icon>
-                            <span>{{ $t('watcherEditor.actions.actions.label') }}</span>
+                            <v-icon data-test="watcher-editor.actionlist-actions-add.v-icon">event</v-icon>
+                            <span
+                                data-test="watcher-editor.actionlist-actions-add-label.span"
+                            >{{ $t('watcherEditor.actions.actions.label') }}</span>
                         </v-btn>
                         <v-btn color="warning" round @click="cancel">
-                            <v-icon>close</v-icon>
-                            <span>{{ $t('common.actions.close.label') }}</span>
+                            <v-icon data-test="watcher-editor.actionlist-actions-close.v-icon">close</v-icon>
+                            <span
+                                data-test="watcher-editor.actionlist-actions-close-label.span"
+                            >{{ $t('common.actions.close.label') }}</span>
                         </v-btn>
-                        <v-spacer></v-spacer>
+                        <v-spacer data-test="watcher-editor.actionlist.spacer"></v-spacer>
                     </v-form>
                 </v-flex>
             </v-layout>

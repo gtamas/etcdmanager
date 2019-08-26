@@ -37,9 +37,4 @@ describe('manage keys app scenarios', function() {
 
         await page.clickAddKeyBtn();
     });
-
-    // TODO fix clickManageKeys and add functions to test edit key value pair
-    // it('edit key value pair', async () => {
-    //     await page.clickManageKeys();
-    // })
 });

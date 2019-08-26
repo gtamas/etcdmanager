@@ -1,74 +1,77 @@
 <template>
-  <v-card>
-    <v-toolbar dark flat>
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-      <v-divider class="mx-2" inset vertical></v-divider>
-      <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-container fill-height fluid>
-      <v-layout fill-height>
-        <v-flex xs12 align-end flexbox>
-          <v-form ref="permissionForm" v-model="valid" lazy-validation>
-            <v-text-field
-              dark
-              v-model="key"
-              ref="key"
-              :readonly="editMode"
-              :error-messages="keyErrors"
-              :label="$t('permissionEditor.fields.key.label')"
-              :placeholder="$t('permissionEditor.fields.key.placeholder')"
-              required
-              @input="$v.key.$touch()"
-              @blur="$v.key.$touch()"
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('permissionEditor.fields.key.tooltip') }}</span>
-              </v-tooltip>
-            </v-text-field>
+    <v-card>
+        <v-toolbar dark flat>
+            <v-toolbar-title data-test="permission-editor.title.v-toolbar-title">{{ title }}</v-toolbar-title>
+            <v-divider data-test="permission-editor.divider.v-divider" class="mx-2" inset vertical></v-divider>
+            <v-spacer data-test="permission-editor.spacer.v-spacer"></v-spacer>
+        </v-toolbar>
+        <v-container fill-height fluid>
+            <v-layout fill-height>
+                <v-flex xs12 align-end flexbox>
+                    <v-form ref="permissionForm" v-model="valid" lazy-validation>
+                        <v-text-field
+                            data-test="permission-editor.permissioneditor-fields-key.v-text-field"
+                            dark
+                            v-model="key"
+                            ref="key"
+                            :readonly="editMode"
+                            :error-messages="keyErrors"
+                            :label="$t('permissionEditor.fields.key.label')"
+                            :placeholder="$t('permissionEditor.fields.key.placeholder')"
+                            required
+                            @input="$v.key.$touch()"
+                            @blur="$v.key.$touch()"
+                        >
+                            <v-tooltip data-test="permission-editor.permissioneditor-fields-key.v-tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="permission-editor.permissioneditor-fields-key.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="permission-editor.permissioneditor-fields-key.span">{{ $t('permissionEditor.fields.key.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-text-field>
 
-            <v-checkbox
-              dark
-              v-model="prefix"
-              :label="$t('permissionEditor.fields.prefix.label')"
-              required
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('permissionEditor.fields.prefix.tooltip') }}</span>
-              </v-tooltip>
-            </v-checkbox>
+                        <v-checkbox
+                            data-test="permission-editor.permissioneditor-fields-prefix.v-checkbox"
+                            dark
+                            v-model="prefix"
+                            :label="$t('permissionEditor.fields.prefix.label')"
+                            required
+                        >
+                            <v-tooltip data-test="permission-editor.permissioneditor-fields-prefix.v-tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="permission-editor.permissioneditor-fields-prefix.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="permission-editor.permissioneditor-fields-prefix.span">{{ $t('permissionEditor.fields.prefix.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-checkbox>
 
-            <v-select
-              dark
-              v-model="permission"
-              :items="permissionValues"
-              :label="$t('permissionEditor.fields.permission.label')"
-              item-text="name"
-              item-value="value"
-              return-object
-              required
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('permissionEditor.fields.permission.tooltip') }}</span>
-              </v-tooltip>
-            </v-select>
+                        <v-select
+                            data-test="permission-editor.permissioneditor-fields-permission.v-select"
+                            dark
+                            v-model="permission"
+                            :items="permissionValues"
+                            :label="$t('permissionEditor.fields.permission.label')"
+                            item-text="name"
+                            item-value="value"
+                            return-object
+                            required
+                        >
+                            <v-tooltip data-test="permission-editor.permissioneditor-fields-permission.v-tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="permission-editor.permissioneditor-fields-permission.v-icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="permission-editor.permissioneditor-fields-permission.span">{{ $t('permissionEditor.fields.permission.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-select>
 
-            <v-btn :disabled="!valid" round color="primary" @click="submit">
-              <v-icon>add</v-icon>
-              <span>{{ $t('permissionEditor.actions.grant.label')}}</span>
-            </v-btn>
-            <v-btn color="warning" round @click="cancel">
-              <v-icon>close</v-icon>
-              <span>{{ $t('common.actions.close.label') }}</span>
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-form>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-card>
+                        <v-btn data-test="permission-editor.permissioneditor-actions-grant.v-btn" :disabled="!valid" round color="primary" @click="submit">
+                            <v-icon data-test="permission-editor.permissioneditor-actions-grant.icon">add</v-icon>
+                            <span data-test="permission-editor.permissioneditor-actions-grant.span">{{ $t('permissionEditor.actions.grant.label')}}</span>
+                        </v-btn>
+                        <v-btn data-test="permission-editor.permissioneditor-actions-close.v-btn" color="warning" round @click="cancel">
+                            <v-icon data-test="permission-editor.permissioneditor-actions-close.v-icon">close</v-icon>
+                            <span data-test="permission-editor.permissioneditor-actions-close.span">{{ $t('common.actions.close.label') }}</span>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                    </v-form>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-card>
 </template>
 
 <script lang='ts'>
@@ -193,7 +196,10 @@ export default class PermissionEditor extends BaseEditor {
             if (e === false) {
                 this.$store.commit(
                     'message',
-                    Messages.error('permissionEditor.messages.duplicateKey', true)
+                    Messages.error(
+                        'permissionEditor.messages.duplicateKey',
+                        true
+                    )
                 );
             } else {
                 this.$store.commit('message', Messages.error(e));
