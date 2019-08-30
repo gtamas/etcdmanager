@@ -14,31 +14,31 @@ class ManageKeysPage extends BasePage {
 
     clickEtcdBtn() {
         return this.app.client.click(
-            'div[data-test="config.settings-etcd-title.v-tab"]'
+            'div[data-test="config.etcd-title.tab"]'
         );
     }
 
     writeEndpoint(value) {
         return this.app.client
             .setValue(
-                'input[data-test="config.etcd-fields-endpoint.v-text-field"]',
+                'input[data-test="config.etcd-fields-endpoint.text-field"]',
                 value
             )
             .getValue(
-                'input[data-test="config.etcd-fields-endpoint.v-text-field"]'
+                'input[data-test="config.etcd-fields-endpoint.text-field"]'
             )
             .should.eventually.equal(value);
     }
 
     clickManageKeys() {
         return this.app.client.click(
-            'div[data-test="menu.keys.v-list-tile-title"]'
+            'div[data-test="menu.keys.list-tile-title"]'
         );
     }
 
     clickSubmitBtn() {
         return this.app.client.click(
-            'button[data-test="config.settings-actions-submit.v-btn"]'
+            'button[data-test="config.submit.button"]'
         );
     }
 
@@ -51,11 +51,11 @@ class ManageKeysPage extends BasePage {
     writeKey(value) {
         return this.app.client
             .setValue(
-                'input[data-test="key-editor.keyeditor-key.v-text-field"]',
+                'input[data-test="key-editor.key.text-field"]',
                 value
             )
             .getValue(
-                'input[data-test="key-editor.keyeditor-key.v-text-field"]'
+                'input[data-test="key-editor.key.text-field"]'
             )
             .should.eventually.equal(value);
     }
@@ -63,18 +63,18 @@ class ManageKeysPage extends BasePage {
     writeValue(value) {
         return this.app.client
             .setValue(
-                'input[data-test="key-editor.keyeditor-value.v-text-field"]',
+                'input[data-test="key-editor.value.text-field"]',
                 value
             )
             .getValue(
-                'input[data-test="key-editor.keyeditor-value.v-text-field"]'
+                'input[data-test="key-editor.value.text-field"]'
             )
             .should.eventually.equal(value);
     }
 
     clickAddKeyBtn() {
         return this.app.client.click(
-            'button[data-test="key-editor.submit.v-btn"]'
+            'button[data-test="key-editor.submit.button"]'
         );
     }
 }

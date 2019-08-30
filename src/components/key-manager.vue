@@ -4,18 +4,18 @@
             <v-expansion-panel focusable dark class="help" v-model="help" :readonly="true">
                 <v-expansion-panel-content dark class="darker">
                     <template v-slot:actions>
-                        <v-tooltip data-test="key-manager.help.v-tooltip" slot="prepend" bottom max-width="200">
-                            <v-icon data-test="key-manager.help.v-icon" @click="toggleHelp" slot="activator" color="primary" light medium>help</v-icon>
+                        <v-tooltip data-test="key-manager.help.tooltip" slot="prepend" bottom max-width="200">
+                            <v-icon data-test="key-manager.help.icon" @click="toggleHelp" slot="activator" color="primary" light medium>help</v-icon>
                             <span data-test="key-manager.help.span">{{ $t('common.help.tooltip') }}</span>
                         </v-tooltip>
                     </template>
                     <template v-slot:header>
                         <v-toolbar raised dark>
-                            <v-toolbar-title data-test="key-manager.keymanager-help.v-toolbar-title">{{ $t("keyManager.title") }}</v-toolbar-title>
-                            <v-divider data-test="key-manager.keymanager-help.v-divider" class="mx-2" inset vertical></v-divider>
-                            <v-spacer data-test="key-manager.keymanager-help.v-spacer"></v-spacer>
+                            <v-toolbar-title data-test="key-manager.help.toolbar-title">{{ $t("keyManager.title") }}</v-toolbar-title>
+                            <v-divider data-test="key-manager.help.divider" class="mx-2" inset vertical></v-divider>
+                            <v-spacer data-test="key-manager.help.spacer"></v-spacer>
                             <v-text-field
-                                data-test="key-manager.keymanager-help.v-text-field"
+                                data-test="key-manager.help.text-field"
                                 dark
                                 ref="search"
                                 color="white"
@@ -23,73 +23,73 @@
                                 prepend-icon="search"
                                 :placeholder="$t('common.lists.filter')"
                             ></v-text-field>
-                            <v-tooltip data-test="key-manager.keymanager-purgeall.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="key-manager.purgeAll.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
-                                    <v-btn data-test="key-manager.purgeall.v-btn" color="error" round dark @click="purge" v-on="on">
-                                        <v-icon data-test="key-manager.purgeall.v-icon">remove_circle</v-icon>
-                                        <span data-test="key-manager.purgeall-label.span">{{ $t("common.actions.purgeAll.label") }}</span>
+                                    <v-btn data-test="key-manager.purgeAll.button" color="error" round dark @click="purge" v-on="on">
+                                        <v-icon data-test="key-manager.purgeAll.icon">remove_circle</v-icon>
+                                        <span data-test="key-manager.purgeAll-label.span">{{ $t("common.actions.purgeAll.label") }}</span>
                                     </v-btn>
                                 </template>
-                                <span data-test="key-manager.purgeall-tooltip.span">{{ $t("common.actions.purgeAll.tooltip") }}</span>
+                                <span data-test="key-manager.purgeAll-tooltip.span">{{ $t("common.actions.purgeAll.tooltip") }}</span>
                             </v-tooltip>
-                            <v-tooltip data-test="key-manager.create.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="key-manager.create.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
-                                    <v-btn data-test="key-manager.create.v-btn" color="primary" round dark @click="addItem" v-on="on">
-                                        <v-icon data-test="key-manager.create.v-icon">add</v-icon>
+                                    <v-btn data-test="key-manager.create.button" color="primary" round dark @click="addItem" v-on="on">
+                                        <v-icon data-test="key-manager.create.icon">add</v-icon>
                                         <span data-test="key-manager.create-label.span">{{ $t("common.actions.create.label") }}</span>
                                     </v-btn>
                                 </template>
                                 <span data-test="key-manager.create-tooltip.span">{{ $t("common.actions.create.tooltip") }}</span>
                             </v-tooltip>
 
-                            <v-tooltip data-test="key-manager.removeall.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="key-manager.removeAll.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
                                     <v-btn
-                                        data-test="key-manager.removeall.v-btn"
+                                        data-test="key-manager.removeAll.button"
                                         color="primary"
                                         @click.stop="deleteMany"
                                         round
                                         dark
                                         v-on="on"
                                     >
-                                        <v-icon data-test="key-manager.removeall.v-icon">delete</v-icon>
-                                        <span data-test="key-manager.removeall-label.span">{{ $t("common.actions.removeAll.label") }}</span>
+                                        <v-icon data-test="key-manager.removeAll.icon">delete</v-icon>
+                                        <span data-test="key-manager.removeAll-label.span">{{ $t("common.actions.removeAll.label") }}</span>
                                     </v-btn>
                                 </template>
-                                <span data-test="key-manager.removeall-tooltip.span">{{ $t("common.actions.removeAll.tooltip") }}</span>
+                                <span data-test="key-manager.removeAll-tooltip.span">{{ $t("common.actions.removeAll.tooltip") }}</span>
                             </v-tooltip>
 
                             <v-tooltip bottom max-width="200">
                                 <template v-slot:activator="{ on }">
                                     <v-btn
-                                        data-test="key-manager.removeall.v-btn"
+                                        data-test="key-manager.removeAll.button"
                                         color="primary"
                                         @click.stop="touch(null, true)"
                                         round
                                         dark
                                         v-on="on"
                                     >
-                                        <v-icon data-test="key-manager.touchall.v-icon">touch_app</v-icon>
-                                        <span data-test="key-manager.touchall-label.span">{{ $t("keyManager.actions.touchAll.label") }}</span>
+                                        <v-icon data-test="key-manager.touchAll.icon">touch_app</v-icon>
+                                        <span data-test="key-manager.touchAll-label.span">{{ $t("keyManager.actions.touchAll.label") }}</span>
                                     </v-btn>
                                 </template>
-                                <span data-test="key-manager.touchall-tooltip.span">{{$t("keyManager.actions.touchAll.tooltip") }}</span>
+                                <span data-test="key-manager.touchAll-tooltip.span">{{$t("keyManager.actions.touchAll.tooltip") }}</span>
                             </v-tooltip>
                         </v-toolbar>
                     </template>
                     <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
-                        <v-tab data-test="key-manager.common-help-tabs-info.v-tab" ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                        <v-tab data-test="key-manager.common-help-tabs-info.tab" ripple>{{ $t('common.help.tabs.info') }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
-                                <v-card-text data-test="key-manager.common-help-infotitle.v-card-text">
-                                    <h2 data-test="key-manager.common-help-infotitle.h2" class="title">{{ $t("common.help.infoTitle") }}</h2>
-                                    <p data-test="key-manager.common-help-infotitle-1.p" class="spacer"></p>
+                                <v-card-text data-test="key-manager.common-help-infoTitle.card-text">
+                                    <h2 data-test="key-manager.common-help-infoTitle.h2" class="title">{{ $t("common.help.infoTitle") }}</h2>
+                                    <p data-test="key-manager.common-help-infoTitle-1.p" class="spacer"></p>
                                     <p data-test="key-manager.common-help-text.p" v-html="platformService.getHelp($t('keyManager.help.text'))"></p>
-                                    <p data-test="key-manager.common-help-infotitle-2.p" class="spacer"></p>
+                                    <p data-test="key-manager.common-help-infoTitle-2.p" class="spacer"></p>
                                 </v-card-text>
                             </v-card>
                         </v-tab-item>
-                        <v-tab data-test="key-manager.common-help-tabs-shortcuts.v-tab" ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                        <v-tab data-test="key-manager.common-help-tabs-shortcuts.tab" ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text>
@@ -101,7 +101,7 @@
                                             >{{ `${platformService.getMeta()} + a` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
-                                            <p data-test="key-manager.common-help-tabs-shortcuts-openeditor.p" class="label">{{ $t("common.help.shortcuts.openEditor") }}</p>
+                                            <p data-test="key-manager.common-help-tabs-shortcuts-openEditor.p" class="label">{{ $t("common.help.shortcuts.openEditor") }}</p>
                                         </v-flex>
                                     </v-layout>
                                      <v-layout align-center justify-start row>
@@ -112,7 +112,7 @@
                                             >{{ `esc` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
-                                            <p data-test="key-manager.common-help-tabs-shortcuts-closeeditor.p" class="label">{{ $t("common.help.shortcuts.closeEditor") }}</p>
+                                            <p data-test="key-manager.common-help-tabs-shortcuts-closeEditor.p" class="label">{{ $t("common.help.shortcuts.closeEditor") }}</p>
                                         </v-flex>
                                     </v-layout>
                                      <v-layout align-center justify-start row>
@@ -177,24 +177,24 @@
                     v-model="selected"
                     :loading="loading"
                 >
-                    <v-progress-linear data-test="key-manager.progress.v-progress-linear" v-slot:progress color="blue" indeterminate></v-progress-linear>
+                    <v-progress-linear data-test="key-manager.progress.progress-linear" v-slot:progress color="blue" indeterminate></v-progress-linear>
                     <template v-slot:items="props">
                         <td>
-                            <v-checkbox data-test="key-manager.checkbox.v-chechbox" v-model="props.selected" primary hide-details></v-checkbox>
+                            <v-checkbox data-test="key-manager.props-selected.chechbox" v-model="props.selected" primary hide-details></v-checkbox>
                         </td>
                         <td data-test="key-manager.props-item-key.td" class="text-xs-left">{{ props.item.key }}</td>
                         <td data-test="key-manager.props-item-value.td" class="text-xs-left">{{ props.item.value }}</td>
                         <td data-test="key-manager.actions-edit.td" class="justify-center layout px-0">
-                            <v-tooltip data-test="key-manager.actions-edit.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="key-manager.actions-edit.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
-                                    <v-icon data-test="key-manager.actions-edit.v-icon" small @click="editItem(props.item)" v-on="on">edit</v-icon>
+                                    <v-icon data-test="key-manager.actions-edit.icon" small @click="editItem(props.item)" v-on="on">edit</v-icon>
                                 </template>
                                 <span data-test="key-manager.actions-edit.span">{{ $t("keyManager.actions.edit") }}</span>
                             </v-tooltip>
-                            <v-tooltip data-test="key-manager.actions-remove.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="key-manager.actions-remove.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
                                     <v-icon
-                                        data-test="key-manager.actions-remove.v-icon"
+                                        data-test="key-manager.actions-remove.icon"
                                         small
                                         slot="activator"
                                         @click="deleteSingle(props.item)"
@@ -203,10 +203,10 @@
                                 </template>
                                 <span data-test="key-manager.actions-remove.span">{{ $t("keyManager.actions.remove") }}</span>
                             </v-tooltip>
-                            <v-tooltip data-test="key-manager.actions-touch.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="key-manager.actions-touch.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
                                     <v-icon
-                                        data-test="key-manager.actions-touch.v-icon"
+                                        data-test="key-manager.actions-touch.icon"
                                         small
                                         slot="activator"
                                         @click="touch(props.item)"

@@ -1,16 +1,16 @@
 <template>
     <v-card>
         <v-toolbar dark flat>
-            <v-toolbar-title data-test="permission-editor.title.v-toolbar-title">{{ title }}</v-toolbar-title>
-            <v-divider data-test="permission-editor.divider.v-divider" class="mx-2" inset vertical></v-divider>
-            <v-spacer data-test="permission-editor.spacer.v-spacer"></v-spacer>
+            <v-toolbar-title data-test="permission-editor.title.toolbar-title">{{ title }}</v-toolbar-title>
+            <v-divider data-test="permission-editor.title.divider" class="mx-2" inset vertical></v-divider>
+            <v-spacer data-test="permission-editor.title.spacer"></v-spacer>
         </v-toolbar>
         <v-container fill-height fluid>
             <v-layout fill-height>
                 <v-flex xs12 align-end flexbox>
                     <v-form ref="permissionForm" v-model="valid" lazy-validation>
                         <v-text-field
-                            data-test="permission-editor.permissioneditor-fields-key.v-text-field"
+                            data-test="permission-editor.fields-key.text-field"
                             dark
                             v-model="key"
                             ref="key"
@@ -22,27 +22,27 @@
                             @input="$v.key.$touch()"
                             @blur="$v.key.$touch()"
                         >
-                            <v-tooltip data-test="permission-editor.permissioneditor-fields-key.v-tooltip" slot="prepend" bottom max-width="200">
-                                <v-icon data-test="permission-editor.permissioneditor-fields-key.v-icon" slot="activator" color="primary" dark>info</v-icon>
-                                <span data-test="permission-editor.permissioneditor-fields-key.span">{{ $t('permissionEditor.fields.key.tooltip') }}</span>
+                            <v-tooltip data-test="permission-editor.fields-key.tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="permission-editor.fields-key.icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="permission-editor.fields-key.span">{{ $t('permissionEditor.fields.key.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
 
                         <v-checkbox
-                            data-test="permission-editor.permissioneditor-fields-prefix.v-checkbox"
+                            data-test="permission-editor.fields-prefix.checkbox"
                             dark
                             v-model="prefix"
                             :label="$t('permissionEditor.fields.prefix.label')"
                             required
                         >
-                            <v-tooltip data-test="permission-editor.permissioneditor-fields-prefix.v-tooltip" slot="prepend" bottom max-width="200">
-                                <v-icon data-test="permission-editor.permissioneditor-fields-prefix.v-icon" slot="activator" color="primary" dark>info</v-icon>
-                                <span data-test="permission-editor.permissioneditor-fields-prefix.span">{{ $t('permissionEditor.fields.prefix.tooltip') }}</span>
+                            <v-tooltip data-test="permission-editor.fields-prefix.tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="permission-editor.fields-prefix.icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="permission-editor.fields-prefix.span">{{ $t('permissionEditor.fields.prefix.tooltip') }}</span>
                             </v-tooltip>
                         </v-checkbox>
 
                         <v-select
-                            data-test="permission-editor.permissioneditor-fields-permission.v-select"
+                            data-test="permission-editor.fields-permission.select"
                             dark
                             v-model="permission"
                             :items="permissionValues"
@@ -52,19 +52,19 @@
                             return-object
                             required
                         >
-                            <v-tooltip data-test="permission-editor.permissioneditor-fields-permission.v-tooltip" slot="prepend" bottom max-width="200">
-                                <v-icon data-test="permission-editor.permissioneditor-fields-permission.v-icon" slot="activator" color="primary" dark>info</v-icon>
-                                <span data-test="permission-editor.permissioneditor-fields-permission.span">{{ $t('permissionEditor.fields.permission.tooltip') }}</span>
+                            <v-tooltip data-test="permission-editor.fields-permission.tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="permission-editor.fields-permission.icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="permission-editor.fields-permission.span">{{ $t('permissionEditor.fields.permission.tooltip') }}</span>
                             </v-tooltip>
                         </v-select>
 
-                        <v-btn data-test="permission-editor.permissioneditor-actions-grant.v-btn" :disabled="!valid" round color="primary" @click="submit">
-                            <v-icon data-test="permission-editor.permissioneditor-actions-grant.icon">add</v-icon>
-                            <span data-test="permission-editor.permissioneditor-actions-grant.span">{{ $t('permissionEditor.actions.grant.label')}}</span>
+                        <v-btn data-test="permission-editor.actions-grant.button" :disabled="!valid" round color="primary" @click="submit">
+                            <v-icon data-test="permission-editor.actions-grant.icon">add</v-icon>
+                            <span data-test="permission-editor.actions-grant.span">{{ $t('permissionEditor.actions.grant.label')}}</span>
                         </v-btn>
-                        <v-btn data-test="permission-editor.permissioneditor-actions-close.v-btn" color="warning" round @click="cancel">
-                            <v-icon data-test="permission-editor.permissioneditor-actions-close.v-icon">close</v-icon>
-                            <span data-test="permission-editor.permissioneditor-actions-close.span">{{ $t('common.actions.close.label') }}</span>
+                        <v-btn data-test="permission-editor.actions-close.button" color="warning" round @click="cancel">
+                            <v-icon data-test="permission-editor.actions-close.icon">close</v-icon>
+                            <span data-test="permission-editor.actions-close.span">{{ $t('common.actions.close.label') }}</span>
                         </v-btn>
                         <v-spacer></v-spacer>
                     </v-form>

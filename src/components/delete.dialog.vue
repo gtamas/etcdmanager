@@ -3,22 +3,22 @@
         <v-card dark>
             <v-toolbar dark flat>
                 <v-toolbar-title
-                    data-test="delete-dialog.title.v-toolbar-title"
+                    data-test="delete-dialog.title.toolbar-title"
                 >{{ $t("deleteDialog.title") }}</v-toolbar-title>
             </v-toolbar>
             <v-card-text
-                data-test="delete-dialog.content.v-card-test"
+                data-test="delete-dialog.content.card-text"
             >{{ $t("deleteDialog.content", {type: itemName}) }}</v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
-                    data-test="delete-dialog.actions-remove.v-btn"
+                    data-test="delete-dialog.actions-remove.button"
                     color="primary"
                     round
                     @click="confirm()"
                 >{{ $t("deleteDialog.actions.remove") }}</v-btn>
                 <v-btn
-                    data-test="delete-dialog.actions-cancel.v-btn"
+                    data-test="delete-dialog.actions-cancel.button"
                     color="warning"
                     round
                     @click="cancel"

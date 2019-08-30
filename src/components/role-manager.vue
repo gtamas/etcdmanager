@@ -4,25 +4,25 @@
             <v-expansion-panel focusable dark class="help" v-model="help" :readonly="true">
                 <v-expansion-panel-content dark class="darker">
                     <template v-slot:actions>
-                        <v-tooltip data-test="role-manager.common-help-tooltip.v-tooltip" slot="prepend" bottom max-width="200">
+                        <v-tooltip data-test="role-manager.help.tooltip" slot="prepend" bottom max-width="200">
                             <v-icon
-                                data-test="role-manager.common-help-tooltip.v-icon"
+                                data-test="role-manager.help.icon"
                                 @click="toggleHelp"
                                 slot="activator"
                                 color="primary"
                                 light
                                 medium
                             >help</v-icon>
-                            <span data-test="role-manager.common-help-tooltip.span">{{ $t('common.help.tooltip') }}</span>
+                            <span data-test="role-manager.help.span">{{ $t('common.help.tooltip') }}</span>
                         </v-tooltip>
                     </template>
                     <template v-slot:header>
                         <v-toolbar raised dark>
-                            <v-toolbar-title data-test="role-manager.rolemanager-title.v-toolbar-title">{{ $t('roleManager.title') }}</v-toolbar-title>
-                            <v-divider data-test="role-manager.divider.v-divider" class="mx-2" inset vertical></v-divider>
-                            <v-spacer data-test="role-manager.spacer.v-spacer"></v-spacer>
+                            <v-toolbar-title data-test="role-manager.rolemanager-title.toolbar-title">{{ $t('roleManager.title') }}</v-toolbar-title>
+                            <v-divider data-test="role-manager.divider.divider" class="mx-2" inset vertical></v-divider>
+                            <v-spacer data-test="role-manager.spacer.spacer"></v-spacer>
                             <v-text-field
-                                data-test="role-manager.common-list-filter.v-text-field"
+                                data-test="role-manager.filter.text-field"
                                 dark
                                 ref="search"
                                 color="white"
@@ -30,82 +30,82 @@
                                 prepend-icon="search"
                                 :placeholder="$t('common.lists.filter')"
                             ></v-text-field>
-                            <v-tooltip data-test="role-manager.common-actions-purgeall.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="role-manager.purgeAll.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
-                                    <v-btn data-test="role-manager.common-actions-purgeall.v-btn" color="error" round dark @click="purge" v-on="on">
-                                        <v-icon data-test="role-manager.common-actions-purgeall.v-icon">remove_circle</v-icon>
-                                        <span data-test="role-manager.common-actions-purgeall.span">{{ $t('common.actions.purgeAll.label') }}</span>
+                                    <v-btn data-test="role-manager.purgeAll.button" color="error" round dark @click="purge" v-on="on">
+                                        <v-icon data-test="role-manager.purgeAll.icon">remove_circle</v-icon>
+                                        <span data-test="role-manager.purgeAll-label.span">{{ $t('common.actions.purgeAll.label') }}</span>
                                     </v-btn>
                                 </template>
-                                <span data-test="role-manager.common-actions-purgeall-tooltip.span">{{ $t('common.actions.purgeAll.tooltip') }}</span>
+                                <span data-test="role-manager.purgeAll-tooltip.span">{{ $t('common.actions.purgeAll.tooltip') }}</span>
                             </v-tooltip>
-                            <v-tooltip data-test="role-manager.common-actions-create-tooltip.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="role-manager.create.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
-                                    <v-btn data-test="role-manager.common-actions-create.v-btn" color="primary" round dark @click="addItem" v-on="on">
-                                        <v-icon data-test="role-manager.common-actions-create.v-icon">add</v-icon>
-                                        <span data-test="role-manager.common-actions-create.span">{{ $t('common.actions.create.label') }}</span>
+                                    <v-btn data-test="role-manager.create.button" color="primary" round dark @click="addItem" v-on="on">
+                                        <v-icon data-test="role-manager.create.icon">add</v-icon>
+                                        <span data-test="role-manager.create-label.span">{{ $t('common.actions.create.label') }}</span>
                                     </v-btn>
                                 </template>
-                                <span data-test="role-manager.common-actions-create-tooltip.span">{{ $t('common.actions.create.tooltip') }}</span>
+                                <span data-test="role-manager.create-tooltip.span">{{ $t('common.actions.create.tooltip') }}</span>
                             </v-tooltip>
-                            <v-tooltip data-test="role-manager.common-actions-removeall-tooltip.v-tooltip" bottom max-width="200">
+                            <v-tooltip data-test="role-manager.removeAll.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
                                     <v-btn
-                                        data-test="role-manager.common-actions-removeall.v-btn"
+                                        data-test="role-manager.removeAll.button"
                                         color="primary"
                                         @click.stop="deleteMany"
                                         round
                                         dark
                                         v-on="on"
                                     >
-                                        <v-icon data-test="role-manager.common-actions-removeall.v-icon">delete</v-icon>
-                                        <span data-test="role-manager.common-actions-removeall.span">{{ $t('common.actions.removeAll.label') }}</span>
+                                        <v-icon data-test="role-manager.removeAll.icon">delete</v-icon>
+                                        <span data-test="role-manager.removeAll-label.span">{{ $t('common.actions.removeAll.label') }}</span>
                                     </v-btn>
                                 </template>
-                                <span data-test="role-manager.common-actions-removeall-tooltip.span">{{ $t('common.actions.removeAll.tooltip') }}</span>
+                                <span data-test="role-manager.removeAll-tooltip.span">{{ $t('common.actions.removeAll.tooltip') }}</span>
                             </v-tooltip>
                         </v-toolbar>
                     </template>
                     <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
-                        <v-tab data-test="role-manager.common-help-tabs-info.v-tab" ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                        <v-tab data-test="role-manager.info.tab" ripple>{{ $t('common.help.tabs.info') }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text>
-                                    <h2 data-test="role-manager.common-help-infotitle.h2" class="title">{{ $t("common.help.infoTitle") }}</h2>
-                                    <p data-test="role-manager.common-help-spacer-1.p" class="spacer"></p>
+                                    <h2 data-test="role-manager.infoTitle.h2" class="title">{{ $t("common.help.infoTitle") }}</h2>
+                                    <p data-test="role-manager.spacer-1.p" class="spacer"></p>
                                     <p
-                                        data-test="role-manager.common-help-text.p"
+                                        data-test="role-manager.text.p"
                                         v-html="platformService.getHelp($t('roleManager.help.text'))"
                                     ></p>
-                                    <p data-test="role-manager.common-help-spacer-2.p" class="spacer"></p>
+                                    <p data-test="role-manager.spacer-2.p" class="spacer"></p>
                                 </v-card-text>
                             </v-card>
                         </v-tab-item>
-                        <v-tab data-test="role-manager.common-help-tabs-shortcuts.v-tab" ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                        <v-tab data-test="role-manager.shortcuts.tab" ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text>
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
                                             <p
-                                                data-test="role-manager.common-help-shortcuts-openeditor-rounded.p"
+                                                data-test="role-manager.shortcuts-openEditor-rounded.p"
                                                 class="rounded"
                                             >{{ `${platformService.getMeta()} + a` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
-                                                data-test="role-manager.common-help-shortcuts-openeditor-label.p"
+                                                data-test="role-manager.shortcuts-openEditor-label.p"
                                                 class="label"
                                             >{{ $t("common.help.shortcuts.openEditor") }}</p>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
-                                            <p data-test="role-manager.common-help-shortcuts-closeeditor-rounded.p" class="rounded">{{ `esc` }}</p>
+                                            <p data-test="role-manager.shortcuts-closeEditor-rounded.p" class="rounded">{{ `esc` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
-                                                data-test="role-manager.common-help-shortcuts-closeeditor-label.p"
+                                                data-test="role-manager.shortcuts-closeEditor-label.p"
                                                 class="label"
                                             >{{ $t("common.help.shortcuts.closeEditor") }}</p>
                                         </v-flex>
@@ -113,24 +113,24 @@
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
                                             <p
-                                                data-test="role-manager.common-help-shortcuts-purge-rounded.p"
+                                                data-test="role-manager.shortcuts-purge-rounded.p"
                                                 class="rounded"
                                             >{{ `${platformService.getMeta()} + p` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
-                                            <p data-test="role-manager.common-help-shortcuts-purge-label.p" class="label">{{ $t("common.help.shortcuts.purge") }}</p>
+                                            <p data-test="role-manager.shortcuts-purge-label.p" class="label">{{ $t("common.help.shortcuts.purge") }}</p>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
                                             <p
-                                                data-test="role-manager.common-help-shortcuts-remove-rounded.p"
+                                                data-test="role-manager.shortcuts-remove-rounded.p"
                                                 class="rounded"
                                             >{{ `${platformService.getMeta()} + r` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
-                                                data-test="role-manager.common-help-shortcuts-remove-label.p"
+                                                data-test="role-manager.shortcuts-remove-label.p"
                                                 class="label"
                                             >{{ $t("common.help.shortcuts.remove") }}</p>
                                         </v-flex>
@@ -138,12 +138,12 @@
                                     <v-layout align-center justify-start row>
                                         <v-flex xs2>
                                             <p
-                                                data-test="role-manager.common-help-shortcuts-help-rounded.p"
+                                                data-test="role-manager.shortcuts-help-rounded.p"
                                                 class="rounded"
                                             >{{ `${platformService.getMeta()} + h` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
-                                            <p data-test="role-manager.common-help-shortcuts-help-label.p" class="label">{{ $t("common.help.shortcuts.help") }}</p>
+                                            <p data-test="role-manager.shortcuts-help-label.p" class="label">{{ $t("common.help.shortcuts.help") }}</p>
                                         </v-flex>
                                     </v-layout>
                                 </v-card-text>
@@ -163,30 +163,30 @@
                     v-model="selected"
                     :loading="loading"
                 >
-                    <v-progress-linear data-test="role-manager.progress.v-progress-linear" v-slot:progress color="blue" indeterminate></v-progress-linear>
+                    <v-progress-linear data-test="role-manager.progress.progress-linear" v-slot:progress color="blue" indeterminate></v-progress-linear>
                     <template v-slot:items="props">
                         <td>
-                            <v-checkbox data-test="role-manager.actions.v-checkbox" v-model="props.selected" primary hide-details></v-checkbox>
+                            <v-checkbox data-test="role-manager.actions.checkbox" v-model="props.selected" primary hide-details></v-checkbox>
                         </td>
                         <td>{{ props.item.name }}</td>
                         <td data-test="role-manager.actions.td" class="justify-center layout px-0">
                             <v-tooltip data-test="role-manager.actions-edit.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
-                                    <v-icon data-test="role-manager.actions-edit.v-icon" small @click="editItem(props.item)" v-on="on">edit</v-icon>
+                                    <v-icon data-test="role-manager.actions-edit.icon" small @click="editItem(props.item)" v-on="on">edit</v-icon>
                                 </template>
                                 <span data-test="role-manager.actions-edit.span">{{ $t('roleManager.actions.edit') }}</span>
                             </v-tooltip>
-                            <v-tooltip data-test="role-manager.actions.remove.tooltip" bottom max-width="200">
+                            <v-tooltip data-test="role-manager.actions-remove.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
                                     <v-icon
-                                        data-test="role-manager.actions.remove.v-icon"
+                                        data-test="role-manager.actions-remove.icon"
                                         small
                                         slot="activator"
                                         @click="deleteSingle(props.item)"
                                         v-on="on"
                                     >delete</v-icon>
                                 </template>
-                                <span data-test="role-manager.actions.remove.span">{{ $t('roleManager.actions.remove') }}</span>
+                                <span data-test="role-manager.actions-remove.span">{{ $t('roleManager.actions.remove') }}</span>
                             </v-tooltip>
                         </td>
                     </template>

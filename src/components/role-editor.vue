@@ -3,27 +3,27 @@
         <v-expansion-panel focusable dark class="help" v-model="help">
             <v-expansion-panel-content dark class="darker">
                 <template v-slot:actions>
-                    <v-tooltip data-test="role-editor.help.v-tooltip" slot="prepend" bottom max-width="200">
-                        <v-icon data-test="role-editor.help.v-icon" slot="activator" color="primary" light medium>help</v-icon>
+                    <v-tooltip data-test="role-editor.help.tooltip" slot="prepend" bottom max-width="200">
+                        <v-icon data-test="role-editor.help.icon" slot="activator" color="primary" light medium>help</v-icon>
                         <span data-test="role-editor.help.span">{{ $t('common.help.tooltip') }}</span>
                     </v-tooltip>
                 </template>
                 <template v-slot:header>
-                    <v-toolbar-title data-test="role-editor.title.v-toolbar-title">{{ title }}</v-toolbar-title>
+                    <v-toolbar-title data-test="role-editor.title.toolbar-title">{{ title }}</v-toolbar-title>
                 </template>
                 <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
-                    <v-tab data-test="role-editor.common-help-tab-info.v-tab" ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                    <v-tab data-test="role-editor.common-help-tab-info.tab" ripple>{{ $t('common.help.tabs.info') }}</v-tab>
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
-                                <h2 data-test="role-editor.common-help-infotitle.h2" class="title">{{ $t("common.help.infoTitle") }}</h2>
+                                <h2 data-test="role-editor.common-help-infoTitle.h2" class="title">{{ $t("common.help.infoTitle") }}</h2>
                                 <p data-test="role-editor.spacer-1.p" class="spacer"></p>
-                                <p data-test="role-editor.roleeditor-help-text.p" v-html="platformService.getHelp($t('roleEditor.help.text'))"></p>
+                                <p data-test="role-editor.help-text.p" v-html="platformService.getHelp($t('roleEditor.help.text'))"></p>
                                 <p data-test="role-editor.spacer-2.p" class="spacer"></p>
                             </v-card-text>
                         </v-card>
                     </v-tab-item>
-                    <v-tab data-test="role-editor.common-help-tab-shortcuts.v-tab" ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                    <v-tab data-test="role-editor.common-help-tab-shortcuts.tab" ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
@@ -49,7 +49,7 @@
                                     </v-flex>
                                     <v-flex xs8>
                                         <p
-                                            data-test="role-editor.common-help-shortcuts-closeeditor.p"
+                                            data-test="role-editor.common-help-shortcuts-closeEditor.p"
                                             class="label"
                                         >{{ $t("common.help.shortcuts.closeEditor") }}</p>
                                     </v-flex>
@@ -60,7 +60,7 @@
                                     </v-flex>
                                     <v-flex xs8>
                                         <p
-                                            data-test="role-editor.common-help-shortcuts-addpermission.p"
+                                            data-test="role-editor.common-help-shortcuts-addPermission.p"
                                             class="label"
                                         >{{ $t("roleEditor.help.shortcuts.addPermission") }}</p>
                                     </v-flex>
@@ -85,7 +85,7 @@
                 <v-flex xs12 align-end flexbox>
                     <v-form ref="roleForm" v-model="valid" lazy-validation>
                         <v-text-field
-                            data-test="role-editor.fields-name-placeholder.v-text-field"
+                            data-test="role-editor.filter.text-field"
                             dark
                             :readonly="roleExists"
                             v-model="name"
@@ -97,9 +97,9 @@
                             @input="$v.name.$touch()"
                             @blur="$v.name.$touch()"
                         >
-                            <v-tooltip data-test="role-editor.fields-name-placeholder.v-tooltip" slot="prepend" bottom max-width="200">
-                                <v-icon data-test="role-editor.fields-name-placeholder.v-icon" slot="activator" color="primary" dark>info</v-icon>
-                                <span data-test="role-editor.fields-name-placeholder.span">{{ $t('roleEditor.fields.name.tooltip') }}</span>
+                            <v-tooltip data-test="role-editor.filter.tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="role-editor.filter.icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="role-editor.filter.span">{{ $t('roleEditor.fields.name.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
 
@@ -115,21 +115,21 @@
                                 <td data-test="role-editor.props-item-permission.td" class="text-xs-right">{{ props.item.permission }}</td>
                                 <td data-test="role-editor.props-item-prefix.td" class="text-xs-right">{{ props.item.prefix }}</td>
                                 <td class="justify-center layout px-0">
-                                    <v-tooltip data-test="role-editor.props-item-tooltip.v-tooltip" bottom max-width="200">
+                                    <v-tooltip data-test="role-editor.props-item-tooltip.tooltip" bottom max-width="200">
                                         <template v-slot:activator="{ on }">
                                             <v-icon
-                                                data-test="role-editor.props-item.v-icon"
+                                                data-test="role-editor.props-item.icon"
                                                 small
                                                 @click="editPermission(props.item)"
                                                 v-on="on"
                                             >edit</v-icon>
                                         </template>
-                                        <span data-test="role-editor.actions-edit.v-icon">{{ $t('roleEditor.actions.edit') }}</span>
+                                        <span data-test="role-editor.actions-edit.span">{{ $t('roleEditor.actions.edit') }}</span>
                                     </v-tooltip>
                                     <v-tooltip bottom max-width="200">
                                         <template v-slot:activator="{ on }">
                                             <v-icon
-                                                data-test="role-editor.actions-revoke.v-icon"
+                                                data-test="role-editor.actions-revoke.icon"
                                                 small
                                                 slot="activator"
                                                 @click="revokePermission(props.item)"
@@ -143,25 +143,25 @@
                         </v-data-table>
 
                         <v-btn
-                            data-test="role-editor.submit.v-btn"
+                            data-test="role-editor.submit.button"
                             :disabled="isValid()"
                             v-if="!roleExists"
                             round
                             color="primary"
                             @click="submit"
                         >
-                            <v-icon data-test="role-editor.submit.v-icon">add</v-icon>
+                            <v-icon data-test="role-editor.submit.icon">add</v-icon>
                             <span data-test="role-editor.submit.span">{{ opTitle }}</span>
                         </v-btn>
-                        <v-btn data-test="role-editor.actions-permissions.v-btn" :disabled="!roleExists" round color="primary" @click="addPermission">
-                            <v-icon data-test="role-editor.actions-permissions.v-icon">verified_user</v-icon>
+                        <v-btn data-test="role-editor.actions-permissions.button" :disabled="!roleExists" round color="primary" @click="addPermission">
+                            <v-icon data-test="role-editor.actions-permissions.icon">verified_user</v-icon>
                             <span data-test="role-editor.actions-permissions.span">{{ $t('roleEditor.actions.permissions') }}</span>
                         </v-btn>
-                        <v-btn data-test="role-editor.actions-close.v-btn" color="warning" round @click="cancel">
-                            <v-icon data-test="role-editor.actions-close.v-icon">close</v-icon>
+                        <v-btn data-test="role-editor.actions-close.button" color="warning" round @click="cancel">
+                            <v-icon data-test="role-editor.actions-close.icon">close</v-icon>
                             <span data-test="role-editor.actions-close.span">{{ $t('common.actions.close.label') }}</span>
                         </v-btn>
-                        <v-spacer data-test="role-editor.spacer.v-spacer"></v-spacer>
+                        <v-spacer data-test="role-editor.actions.spacer"></v-spacer>
                     </v-form>
                 </v-flex>
             </v-layout>

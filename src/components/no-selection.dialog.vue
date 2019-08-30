@@ -3,16 +3,16 @@
         <v-card dark>
             <v-toolbar dark flat>
                 <v-toolbar-title
-                    data-test="no-selection-dialog.noselectiondialog-title.v-toolbar"
+                    data-test="no-selection-dialog.title.toolbar"
                 >{{ $t("noSelectionDialog.title") }}</v-toolbar-title>
             </v-toolbar>
             <v-card-text
-                data-test="no-selection-dialog.noselectiondialog-content.v-card-text"
+                data-test="no-selection-dialog.content.card-text"
             >{{ $t("noSelectionDialog.content") }}</v-card-text>
             <v-card-actions>
-                <v-spacer data-test="no-selection-dialog.spacer.v-spacer"></v-spacer>
+                <v-spacer data-test="no-selection-dialog.actions.spacer"></v-spacer>
                 <v-btn
-                    data-test="no-selection-dialog.noselectiondialog-actions.v-btn"
+                    data-test="no-selection-dialog.actions.button"
                     color="primary"
                     round
                     @click="close"

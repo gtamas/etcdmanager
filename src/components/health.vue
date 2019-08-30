@@ -5,13 +5,13 @@
                 <v-expansion-panel-content dark class="darker">
                     <template v-slot:actions>
                         <v-tooltip
-                            data-test="health.help.v-tooltip"
+                            data-test="health.help.tooltip"
                             slot="prepend"
                             bottom
                             max-width="200"
                         >
                             <v-icon
-                                data-test="health.help.v-icon"
+                                data-test="health.help.icon"
                                 slot="activator"
                                 color="primary"
                                 light
@@ -22,12 +22,12 @@
                     </template>
                     <template v-slot:header>
                         <v-toolbar-title
-                            data-test="health.title.v-toolbar-title"
+                            data-test="health.title.toolbar-title"
                         >{{ $t("cluster.title") }}</v-toolbar-title>
                     </template>
                     <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
                         <v-tab
-                            data-test="health.help-info.v-tab"
+                            data-test="health.help-info.tab"
                             ripple
                         >{{ $t('common.help.tabs.info') }}</v-tab>
                         <v-tab-item>
@@ -47,7 +47,7 @@
                             </v-card>
                         </v-tab-item>
                         <v-tab
-                            data-test="health.help-shortcuts.v-tab"
+                            data-test="health.help-shortcuts.tab"
                             ripple
                         >{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                         <v-tab-item>
@@ -78,37 +78,37 @@
                 <v-list dense>
                     <v-list-tile>
                         <v-list-tile-content
-                            data-test="health.header-clusterid.v-list-tile-content"
+                            data-test="health.header-clusterId.tile-content"
                         >{{ $t("cluster.header.clusterId") }}:</v-list-tile-content>
                         <v-list-tile-content
-                            data-test="health.data-header-clusterid.v-list-tile-content"
+                            data-test="health.data-header-clusterId.tile-content"
                             class="align-end"
                         >{{ data.header.cluster_id }}</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content
-                            data-test="health.header-memberid.v-list-tile-content"
+                            data-test="health.header-memberId.tile-content"
                         >{{ $t("cluster.header.memberId") }}:</v-list-tile-content>
                         <v-list-tile-content
-                            data-test="health.data-header-memberid.v-list-tile-content"
+                            data-test="health.data-header-memberId.tile-content"
                             class="align-end"
                         >{{ data.header.member_id }}</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content
-                            data-test="health.header-revision.v-list-tile-content"
+                            data-test="health.header-revision.tile-content"
                         >{{ $t("cluster.header.revision") }}:</v-list-tile-content>
                         <v-list-tile-content
-                            data-test="health.data-header-revision.v-list-tile-content"
+                            data-test="health.data-header-revision.tile-content"
                             class="align-end"
                         >{{ data.header.revision }}</v-list-tile-content>
                     </v-list-tile>
                     <v-list-tile>
                         <v-list-tile-content
-                            data-test="health.header-raftterm.v-list-tile-content"
+                            data-test="health.header-raftTerm.tile-content"
                         >{{ $t("cluster.header.raftTerm") }}:</v-list-tile-content>
                         <v-list-tile-content
-                            data-test="health.data-header-raftterm.v-list-tile-content"
+                            data-test="health.data-header-raftTerm.tile-content"
                             class="align-end"
                         >{{ data.header.raft_term }}</v-list-tile-content>
                     </v-list-tile>
@@ -125,10 +125,10 @@
                 <template v-slot:header>
                     <v-toolbar dark flat>
                         <v-toolbar-title
-                            data-test="health.cluster-subtitle.v-toolbar-title"
+                            data-test="health.cluster-subtitle.toolbar-title"
                         >{{ $t("cluster.subtitle") }}</v-toolbar-title>
                         <v-divider
-                            data-test="health.cluster-subtitle.v-divider"
+                            data-test="health.cluster-subtitle.divider"
                             class="mx-2"
                             inset
                             vertical
@@ -140,37 +140,37 @@
                     <v-flex xs12 sm6 md4 lg3>
                         <v-card>
                             <v-card-title
-                                data-test="health.cluster-propname.v-card-title"
+                                data-test="health.cluster-propName.card-title"
                                 class="subheading font-weight-bold"
                             >{{ props.item.name }}</v-card-title>
-                            <v-divider data-test="health.cluster-propname.divider"></v-divider>
+                            <v-divider data-test="health.cluster-propName.divider"></v-divider>
                             <v-list dense>
                                 <v-list-tile>
                                     <v-list-tile-content
-                                        data-test="health.cluster-columns-id.v-list-tile-content"
+                                        data-test="health.cluster-columns-id.tile-content"
                                     >{{ $t("cluster.columns.id") }}:</v-list-tile-content>
                                     <v-list-tile-content
-                                        data-test="health.cluster-propitem-id.v-list-tile-content"
+                                        data-test="health.cluster-propItem-id.tile-content"
                                         class="align-end"
                                     >{{ props.item.ID }}</v-list-tile-content>
                                 </v-list-tile>
 
                                 <v-list-tile>
                                     <v-list-tile-content
-                                        data-test="health.cluster-columns-clienturl.v-list-tile-content"
+                                        data-test="health.cluster-columns-clientUrl.tile-content"
                                     >{{ $t("cluster.columns.clientUrls") }}:</v-list-tile-content>
                                     <v-list-tile-content
-                                        data-test="health.cluster-propitem-clienturl.v-list-tile-content"
+                                        data-test="health.cluster-propItem-clientUrl.tile-content"
                                         class="align-end"
                                     >{{ props.item.clientURLs.join(',') }}</v-list-tile-content>
                                 </v-list-tile>
 
                                 <v-list-tile>
                                     <v-list-tile-content
-                                        data-test="health.cluster-columns-peerurl.v-list-tile-content"
+                                        data-test="health.cluster-columns-peerUrl.tile-content"
                                     >{{ $t("cluster.columns.peerUrls") }}:</v-list-tile-content>
                                     <v-list-tile-content
-                                        data-test="health.cluster-propitem-peerurl.v-list-tile-content"
+                                        data-test="health.cluster-propitem-peerUrl.tile-content"
                                         class="align-end"
                                     >{{ props.item.peerURLs.join(',') }}</v-list-tile-content>
                                 </v-list-tile>
@@ -181,7 +181,7 @@
                                         <template v-slot:activator="{ on }">
                                             <v-hover>
                                                 <v-btn
-                                                    data-test="health.cluster-healthcheck.v-btn"
+                                                    data-test="health.cluster-healthCheck.button"
                                                     slot-scope="{ hover }"
                                                     :color="hover ? 'warning' : 'none'"
                                                     icon
@@ -189,7 +189,7 @@
                                                     v-on="on"
                                                 >
                                                     <v-icon
-                                                        data-test="health.cluster-favorite.v-icon"
+                                                        data-test="health.cluster-favorite.icon"
                                                     >favorite</v-icon>
                                                 </v-btn>
                                             </v-hover>
@@ -202,7 +202,7 @@
                                         <template v-slot:activator="{ on }">
                                             <v-hover>
                                                 <v-btn
-                                                    data-test="health.cluster-status.v-btn"
+                                                    data-test="health.cluster-status.button"
                                                     slot-scope="{ hover }"
                                                     :color="hover ? 'warning' : 'none'"
                                                     icon
@@ -210,7 +210,7 @@
                                                     v-on="on"
                                                 >
                                                     <v-icon
-                                                        data-test="health.cluster-info.v-icon"
+                                                        data-test="health.cluster-info.icon"
                                                     >info</v-icon>
                                                 </v-btn>
                                             </v-hover>
@@ -221,7 +221,7 @@
                                     </v-tooltip>
                                     <v-spacer></v-spacer>
                                     <v-icon
-                                        data-test="health.props-item-id.v-icon"
+                                        data-test="health.props-item-id.icon"
                                         dark
                                         v-bind:color="getColor(props.item.ID)"
                                     >{{ getIcon(props.item.ID) }}</v-icon>
@@ -236,56 +236,56 @@
                 <v-card dark>
                     <v-toolbar dark flat>
                         <v-toolbar-title
-                            data-test="health.cluster-dialogs-info-title.v-toolbar-title"
+                            data-test="health.cluster-dialogs-info-title.toolbar-title"
                         >{{ $t("cluster.dialogs.info.title") }}</v-toolbar-title>
                     </v-toolbar>
                     <v-list dense>
                         <v-list-tile>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-labels-db.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-labels-db.tile-content"
                             >{{ $t("cluster.dialogs.info.labels.db") }}:</v-list-tile-content>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-currentstats-dbsize.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-currentStats-dbSize.v-list-tile-content"
                                 class="align-end"
                             >{{ currentStats.dbSize }}</v-list-tile-content>
                         </v-list-tile>
 
                         <v-list-tile>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-labels-leader.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-labels-leader.tile-content"
                             >{{ $t("cluster.dialogs.info.labels.leader") }}:</v-list-tile-content>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-currentstats-leader.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-currentStats-leader.tile-content"
                                 class="align-end"
                             >{{ currentStats.leader }}</v-list-tile-content>
                         </v-list-tile>
 
                         <v-list-tile>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-labels-raftindex.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-labels-raftIndex.tile-content"
                             >{{ $t("cluster.dialogs.info.labels.raftIndex") }}:</v-list-tile-content>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-currentstats-raftindex.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-currentStats-raftIndex.tile-content"
                                 class="align-end"
                             >{{ currentStats.raftIndex }}</v-list-tile-content>
                         </v-list-tile>
 
                         <v-list-tile>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-labels-raftterm.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-labels-raftTerm.tile-content"
                             >{{ $t("cluster.dialogs.info.labels.raftTerm") }}:</v-list-tile-content>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-currentstats-raftterm.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-currentStats-raftTerm.tile-content"
                                 class="align-end"
                             >{{ currentStats.raftTerm }}</v-list-tile-content>
                         </v-list-tile>
 
                         <v-list-tile>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-labels-version.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-labels-version.tile-content"
                             >{{ $t("cluster.dialogs.info.labels.version") }}:</v-list-tile-content>
                             <v-list-tile-content
-                                data-test="health.cluster-dialogs-info-currentstats-version.v-list-tile-content"
+                                data-test="health.cluster-dialogs-info-currentStats-version.tile-content"
                                 class="align-end"
                             >{{ currentStats.version }}</v-list-tile-content>
                         </v-list-tile>
@@ -293,7 +293,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn
-                            data-test="health.cluster-dialogs-info-actions-close.v-btn"
+                            data-test="health.cluster-dialogs-close.button"
                             color="warning"
                             round
                             @click="cancelStatusDialog"

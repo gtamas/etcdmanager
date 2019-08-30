@@ -17,7 +17,7 @@
                             />
                         </div>
                         <h3
-                            data-test="about.subheading.h3"
+                            data-test="about.subheading-tagline.h3"
                             class="subheading text-md-center"
                         >{{ $t('about.tagline') }}</h3>
                         <div data-test="about.copyright.div">{{ $t('about.copyright', {year}) }}</div>
@@ -27,7 +27,7 @@
                                     <template v-slot:activator="{ on }">
                                         <v-hover>
                                             <v-btn
-                                                data-test="about.bug-report.v-btn"
+                                                data-test="about.bug-report.button"
                                                 slot-scope="{ hover }"
                                                 :color="hover ? 'primary' : 'none'"
                                                 icon
@@ -44,7 +44,7 @@
                                     <template v-slot:activator="{ on }">
                                         <v-hover>
                                             <v-btn
-                                                data-test="about.donate.v-btn"
+                                                data-test="about.donate.button"
                                                 slot-scope="{ hover }"
                                                 :color="hover ? 'primary' : 'none'"
                                                 icon
@@ -61,7 +61,7 @@
                                     <template v-slot:activator="{ on }">
                                         <v-hover>
                                             <v-btn
-                                                data-test="about.update.v-btn"
+                                                data-test="about.update.button"
                                                 slot-scope="{ hover }"
                                                 :color="hover ? 'primary' : 'none'"
                                                 icon
@@ -78,7 +78,7 @@
                                     <template v-slot:activator="{ on }">
                                         <v-hover>
                                             <v-btn
-                                                data-test="about.home.v-btn"
+                                                data-test="about.home.button"
                                                 slot-scope="{ hover }"
                                                 :color="hover ? 'primary' : 'none'"
                                                 icon
@@ -95,7 +95,7 @@
                                     <template v-slot:activator="{ on }">
                                         <v-hover>
                                             <v-btn
-                                                data-test="about.contributors.v-btn"
+                                                data-test="about.contributors.button"
                                                 slot-scope="{ hover }"
                                                 :color="hover ? 'primary' : 'none'"
                                                 icon
@@ -106,7 +106,7 @@
                                             </v-btn>
                                         </v-hover>
                                     </template>
-                                    <span>{{ $t('about.actions.credits') }}</span>
+                                    <span data-test="about.actions-credits.span">{{ $t('about.actions.credits') }}</span>
                                 </v-tooltip>
                             </v-layout>
                         </v-toolbar>
@@ -116,20 +116,20 @@
             <v-expand-x-transition>
                 <v-card max-width="500" v-show="contributors" raised>
                     <v-layout align-center justify-space-around column fill-height>
-                        <h2 data-test="about.subheading.h2" class="subheading">Contributors</h2>
+                        <h2 data-test="about.subheading-contributors.h2" class="subheading">Contributors</h2>
                         <v-list dense>
                             <v-list-tile
                                 v-for="(contributor, index) of getContributors()"
                                 :key="index"
                             >
-                                <v-list-tile-content data-test="about.contributor.v-list-tile-content" class="align-end">{{ contributor.name }}</v-list-tile-content>
+                                <v-list-tile-content data-test="about.contributor.list-tile-content" class="align-end">{{ contributor.name }}</v-list-tile-content>
                                 <v-list-tile-action>
                                     <a
                                         :href="`mailto:${contributor.email}`"
                                         v-if="contributor.email"
                                     >
                                         <v-btn color="primary" fab small dark>
-                                            <v-icon>email</v-icon>
+                                            <v-icon data-test="about.contributor-e-mail.icon">email</v-icon>
                                         </v-btn>
                                     </a>
                                 </v-list-tile-action>
