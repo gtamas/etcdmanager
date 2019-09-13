@@ -107,79 +107,85 @@ export default class App extends Vue {
 
 
 <template>
-  <v-app id="inspire" dark>
-    <v-snackbar
-      v-model="message.show"
-      :right="true"
-      :top="true"
-      :color="message.color"
-      :multi-line="true"
-      :timeout="message.timeout"
-    >
-      {{ message.text }}
-      <v-btn dark flat @click="hide()">Close</v-btn>
-    </v-snackbar>
+    <v-app id="inspire" dark>
+        <v-snackbar
+            data-test="app.message.snackbar"
+            v-model="message.show"
+            :right="true"
+            :top="true"
+            :color="message.color"
+            :multi-line="true"
+            :timeout="message.timeout"
+        >
+            {{ message.text }}
+            <v-btn data-test="app.message-close.button" dark flat @click="hide()">Close</v-btn>
+        </v-snackbar>
 
-    <v-dialog v-model="loading" persistent max-width="290">
-      <v-card dark>
-        <v-toolbar dark flat>
-          <v-toolbar-title>Loading..</v-toolbar-title>
+        <v-dialog v-model="loading" persistent max-width="290">
+            <v-card dark>
+                <v-toolbar dark flat>
+                    <v-toolbar-title data-test="app.loading.toolbar-title">Loading..</v-toolbar-title>
+                </v-toolbar>
+                <v-card-text>
+                    <v-progress-linear data-test="app.progress-bar.progress-linear" :indeterminate="true"></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
+
+        <main-menu v-bind:drawer="drawer"></main-menu>
+        <v-toolbar app fixed clipped-left>
+            <v-toolbar-side-icon @click.stop="drawer = !drawer">
+                <v-icon data-test="app.menu.icon">menu</v-icon>
+            </v-toolbar-side-icon>
+            <v-toolbar-title data-test="app.version.toolbar-title">ETCD Manager v{{ version }}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <img data-test="app.logo.img" src="/assets/etcd-glyph-color.png" alt="ETCD" class="logo" />
         </v-toolbar>
-        <v-card-text>
-          <v-progress-linear :indeterminate="true"></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
-    <main-menu v-bind:drawer="drawer"></main-menu>
-    <v-toolbar app fixed clipped-left>
-      <v-toolbar-side-icon @click.stop="drawer = !drawer">
-        <v-icon>menu</v-icon>
-      </v-toolbar-side-icon>
-      <v-toolbar-title>ETCD Manager v{{ version }}</v-toolbar-title>
-      <v-spacer></v-spacer>
-      <img src="/assets/etcd-glyph-color.png" alt="ETCD" class="logo" />
-    </v-toolbar>
-    <v-content>
-      <v-container v-bind:class="{ 'bg-pan-left': animate, bg: background }" fluid fill-height>
-        <v-layout align-start justify-center row fill-height>
-          <v-flex xs12 v-bind:class="{ fg: background }">
-            <transition name="fade" appear>
-              <router-view />
-            </transition>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
-    <v-footer app fixed>
-      <v-layout align-center justify-end row fill-height>
-        <span>&copy; {{ year }}</span>
-        <v-spacer></v-spacer>
-        <v-bottom-sheet inset>
-          <template v-slot:activator>
-            <v-btn icon dark>
-              <v-icon>desktop_mac</v-icon>
-            </v-btn>
-          </template>
-          <v-card raised dark>
-            <v-textarea
-              dark
-              name="console"
-              label="Console"
-              clearable
-              solo
-              color="rgba(0,255,0,0.5)"
-              readonly
-              no-resize
-              single-line
-              rows="20"
-              :value="console"
-            ></v-textarea>
-          </v-card>
-        </v-bottom-sheet>
-      </v-layout>
-    </v-footer>
-  </v-app>
+        <v-content>
+            <v-container
+                v-bind:class="{ 'bg-pan-left': animate, bg: background }"
+                fluid
+                fill-height
+            >
+                <v-layout align-start justify-center row fill-height>
+                    <v-flex xs12 v-bind:class="{ fg: background }">
+                        <transition name="fade" appear>
+                            <router-view />
+                        </transition>
+                    </v-flex>
+                </v-layout>
+            </v-container>
+        </v-content>
+        <v-footer app fixed>
+            <v-layout align-center justify-end row fill-height>
+                <span data-test="app.year.span">&copy; {{ year }}</span>
+                <v-spacer></v-spacer>
+                <v-bottom-sheet inset>
+                    <template v-slot:activator>
+                        <v-btn icon dark>
+                            <v-icon data-test="app.open-console.icon">desktop_mac</v-icon>
+                        </v-btn>
+                    </template>
+                    <v-card raised dark>
+                        <v-textarea
+                            data-test="app.console.textarea"
+                            dark
+                            name="console"
+                            label="Console"
+                            clearable
+                            solo
+                            color="rgba(0,255,0,0.5)"
+                            readonly
+                            no-resize
+                            single-line
+                            rows="20"
+                            :value="console"
+                        ></v-textarea>
+                    </v-card>
+                </v-bottom-sheet>
+            </v-layout>
+        </v-footer>
+    </v-app>
 </template>
 
 
@@ -293,5 +299,4 @@ export default class App extends Vue {
 .editor {
     width: 30vw;
 }
-
 </style>

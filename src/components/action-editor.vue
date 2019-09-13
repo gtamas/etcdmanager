@@ -1,62 +1,64 @@
 <template>
-  <v-card>
-    <v-toolbar dark flat>
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
-      <v-divider class="mx-2" inset vertical></v-divider>
-      <v-spacer></v-spacer>
-    </v-toolbar>
-    <v-container fill-height fluid>
-      <v-layout fill-height>
-        <v-flex xs12 align-end flexbox>
-          <v-form ref="actionForm" v-model="valid" lazy-validation>
-            <v-select
-              ref="actionType"
-              dark
-              v-model="action.action"
-              :items="actions"
-              :label="$t('actionEditor.fields.action.label')"
-              item-text="name"
-              item-value="value"
-              return-object
-              required
-              @change="change"
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('actionEditor.fields.action.tooltip') }}</span>
-              </v-tooltip>
-            </v-select>
+    <v-card>
+        <v-toolbar dark flat>
+            <v-toolbar-title data-test="action-editor.title.toolbar-title">{{ title }}</v-toolbar-title>
+            <v-divider data-test="action-editor.title.divider" class="mx-2" inset vertical></v-divider>
+            <v-spacer data-test="action-editor.title.spacer"></v-spacer>
+        </v-toolbar>
+        <v-container fill-height fluid>
+            <v-layout fill-height>
+                <v-flex xs12 align-end flexbox>
+                    <v-form ref="actionForm" v-model="valid" lazy-validation>
+                        <v-select
+                            data-test="action-editor.action-type.select-input"
+                            ref="actionType"
+                            dark
+                            v-model="action.action"
+                            :items="actions"
+                            :label="$t('actionEditor.fields.action.label')"
+                            item-text="name"
+                            item-value="value"
+                            return-object
+                            required
+                            @change="change"
+                        >
+                            <v-tooltip slot="prepend" bottom max-width="200">
+                                <v-icon data-test="action-editor.action-info.icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="action-editor.action-tooltip.span">{{ $t('actionEditor.fields.action.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-select>
 
-            <v-select
-              dark
-              v-model="action.event"
-              :items="events"
-              :label="$t('actionEditor.fields.event.label')"
-              item-text="name"
-              item-value="value"
-              return-object
-              required
-              @change="change"
-            >
-              <v-tooltip slot="prepend" bottom max-width="200">
-                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                <span>{{ $t('actionEditor.fields.event.tooltip') }}</span>
-              </v-tooltip>
-            </v-select>
-            <v-btn :disabled="!valid" round color="primary" @click="submit">
-              <v-icon>add</v-icon>
-              <span>{{ opTitle }}</span>
-            </v-btn>
-            <v-btn color="warning" round @click="cancel">
-              <v-icon>close</v-icon>
-              <span>{{ $t('common.actions.close.label') }}</span>
-            </v-btn>
-            <v-spacer></v-spacer>
-          </v-form>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </v-card>
+                        <v-select
+                            data-test="action-editor.event.select-input"
+                            dark
+                            v-model="action.event"
+                            :items="events"
+                            :label="$t('actionEditor.fields.event.label')"
+                            item-text="name"
+                            item-value="value"
+                            return-object
+                            required
+                            @change="change"
+                        >
+                            <v-tooltip slot="prepend" bottom max-width="200">
+                                <v-icon data-test="action-editor.event-info.icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="action-editor.event-tooltip.span">{{ $t('actionEditor.fields.event.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-select>
+                        <v-btn :disabled="!valid" round color="primary" @click="submit">
+                            <v-icon data-test="action-editor.op-title.icon">add</v-icon>
+                            <span data-test="action-editor.op-title.span">{{ opTitle }}</span>
+                        </v-btn>
+                        <v-btn color="warning" round @click="cancel">
+                            <v-icon data-test="action-editor.close.icon">close</v-icon>
+                            <span data-test="action-editor.close.span">{{ $t('common.actions.close.label') }}</span>
+                        </v-btn>
+                        <v-spacer></v-spacer>
+                    </v-form>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-card>
 </template>
 
 <script lang='ts'>

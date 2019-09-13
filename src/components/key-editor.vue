@@ -3,67 +3,67 @@
         <v-expansion-panel focusable dark class="help" v-model="help">
             <v-expansion-panel-content dark class="darker">
                 <template v-slot:actions>
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                        <v-icon slot="activator" color="primary" light medium>help</v-icon>
-                        <span>{{ $t('common.help.tooltip') }}</span>
+                    <v-tooltip data-test="key-editor.help.tooltip" slot="prepend" bottom max-width="200">
+                        <v-icon data-test="key-editor.help.icon" slot="activator" color="primary" light medium>help</v-icon>
+                        <span data-test="key-editor.help.span">{{ $t('common.help.tooltip') }}</span>
                     </v-tooltip>
                 </template>
                 <template v-slot:header>
-                    <v-toolbar-title>{{ title }}</v-toolbar-title>
+                    <v-toolbar-title data-test="key-editor.title.toolbar-title">{{ title }}</v-toolbar-title>
                 </template>
                 <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
-                    <v-tab ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                    <v-tab data-test="key-editor.common-helps-tab-info.tab" ripple>{{ $t('common.help.tabs.info') }}</v-tab>
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
-                                <h2 class="title">{{ $t("common.help.infoTitle") }}</h2>
-                                <p class="spacer"></p>
-                                <p v-html="platformService.getHelp($t('keyEditor.help.text'))"></p>
-                                <p class="spacer"></p>
+                                <h2 data-test="key-editor.common-help-infoTitle.h2" class="title">{{ $t("common.help.infoTitle") }}</h2>
+                                <p data-test="key-editor.common-help-infoTitle-spacer-1.p" class="spacer"></p>
+                                <p data-test="key-editor.help-text.p" v-html="platformService.getHelp($t('keyEditor.help.text'))"></p>
+                                <p data-test="key-editor.common-help-infoTitle-spacer-2.p" class="spacer"></p>
                             </v-card-text>
                         </v-card>
                     </v-tab-item>
-                    <v-tab ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                    <v-tab data-test="key-editor.common-helps-tab-shortcuts.tab" ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
                                  <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">{{ `${platformService.getMeta()} + s` }}</p>
+                                        <p data-test="key-editor.common-help-shortcuts-platformService-1.p" class="rounded">{{ `${platformService.getMeta()} + s` }}</p>
                                     </v-flex>
                                     <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
+                                        <p data-test="key-editor.common-help-shortcuts-save-1.p" class="label">{{ $t("common.help.shortcuts.save") }}</p>
                                     </v-flex>
                                 </v-layout>
                                  <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">enter</p>
+                                        <p data-test="key-editor.common-help-shortcuts-enter.p" class="rounded">enter</p>
                                     </v-flex>
                                     <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
+                                        <p data-test="key-editor.common-help-shortcuts-save-2.p" class="label">{{ $t("common.help.shortcuts.save") }}</p>
                                     </v-flex>
                                 </v-layout>
                                  <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">esc</p>
+                                        <p data-test="key-editor.common-help-shortcuts-esc.p" class="rounded">esc</p>
                                     </v-flex>
                                     <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.closeEditor") }}</p>
+                                        <p data-test="key-editor.common-help-shortcuts-close-editor.p" class="label">{{ $t("common.help.shortcuts.closeEditor") }}</p>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">{{ `${platformService.getMeta()} + h` }}</p>
+                                        <p data-test="key-editor.common-help-shortcuts-platformService-2.p" class="rounded">{{ `${platformService.getMeta()} + h` }}</p>
                                     </v-flex>
                                     <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.help") }}</p>
+                                        <p data-test="key-editor.common-help-shortcuts-help.p" class="label">{{ $t("common.help.shortcuts.help") }}</p>
                                     </v-flex>
                                 </v-layout>
                             </v-card-text>
                         </v-card>
                     </v-tab-item>
                 </v-tabs>
-                <hr class="blackLine" />
+                <hr data-test="key-editor.blackline.hr" class="blackLine" />
             </v-expansion-panel-content>
         </v-expansion-panel>
         <v-container fill-height fluid>
@@ -71,6 +71,7 @@
                 <v-flex xs12 align-end flexbox>
                     <v-form ref="keyForm" v-model="valid" lazy-validation>
                         <v-text-field
+                            data-test="key-editor.key.text-field"
                             dark
                             ref="key"
                             v-model="key"
@@ -82,13 +83,14 @@
                             @input="$v.key.$touch()"
                             @blur="$v.key.$touch()"
                         >
-                            <v-tooltip slot="prepend" bottom max-width="200">
-                                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                <span>{{ $t('keyEditor.fields.key.tooltip') }}</span>
+                            <v-tooltip data-test="key-editor.key.tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="key-editor.key.icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="key-editor.key.span">{{ $t('keyEditor.fields.key.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
 
                         <v-text-field
+                            data-test="key-editor.value.text-field"
                             dark
                             type="text"
                             v-model="value"
@@ -99,24 +101,26 @@
                             @input="$v.value.$touch()"
                             @blur="$v.value.$touch()"
                         >
-                            <v-tooltip slot="prepend" bottom max-width="200">
-                                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                <span>{{ $t('keyEditor.fields.value.tooltip') }}.</span>
+                            <v-tooltip data-test="key-editor.value.tooltip" slot="prepend" bottom max-width="200">
+                                <v-icon data-test="key-editor.value.icon" slot="activator" color="primary" dark>info</v-icon>
+                                <span data-test="key-editor.value.span">{{ $t('keyEditor.fields.value.tooltip') }}.</span>
                             </v-tooltip>
                         </v-text-field>
 
                         <v-btn
+                            data-test="key-editor.submit.button"
                             :disabled="!valid"
                             round
                             color="primary"
                             @click="submit"
                         >{{ opTitle }}</v-btn>
                         <v-btn
+                            data-test="key-editor.close.button"
                             color="warning"
                             round
                             @click="cancel"
                         >{{ $t('common.actions.close.label') }}</v-btn>
-                        <v-spacer></v-spacer>
+                        <v-spacer data-test="key-editor.close.spacer"></v-spacer>
                     </v-form>
                 </v-flex>
             </v-layout>

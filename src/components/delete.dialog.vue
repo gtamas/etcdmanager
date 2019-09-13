@@ -1,16 +1,30 @@
 <template>
- <v-dialog v-model="open" persistent max-width="290">
-      <v-card dark>
-        <v-toolbar dark flat>
-          <v-toolbar-title>{{ $t("deleteDialog.title") }}</v-toolbar-title>
-        </v-toolbar>
-        <v-card-text>{{ $t("deleteDialog.content", {type: itemName}) }}</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" round @click="confirm()">{{ $t("deleteDialog.actions.remove") }}</v-btn>
-          <v-btn color="warning" round @click="cancel">{{ $t("deleteDialog.actions.cancel") }}</v-btn>
-        </v-card-actions>
-      </v-card>
+    <v-dialog v-model="open" persistent max-width="290">
+        <v-card dark>
+            <v-toolbar dark flat>
+                <v-toolbar-title
+                    data-test="delete-dialog.title.toolbar-title"
+                >{{ $t("deleteDialog.title") }}</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text
+                data-test="delete-dialog.content.card-text"
+            >{{ $t("deleteDialog.content", {type: itemName}) }}</v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    data-test="delete-dialog.actions-remove.button"
+                    color="primary"
+                    round
+                    @click="confirm()"
+                >{{ $t("deleteDialog.actions.remove") }}</v-btn>
+                <v-btn
+                    data-test="delete-dialog.actions-cancel.button"
+                    color="warning"
+                    round
+                    @click="cancel"
+                >{{ $t("deleteDialog.actions.cancel") }}</v-btn>
+            </v-card-actions>
+        </v-card>
     </v-dialog>
 </template>
 
@@ -28,7 +42,6 @@ export default class DeleteDialog extends Dialog {
     @Prop() open: boolean;
     // @ts-ignore
     @Prop() itemName: string;
-
 }
 </script>
 

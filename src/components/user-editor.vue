@@ -3,69 +3,122 @@
         <v-expansion-panel focusable dark class="help" v-model="help">
             <v-expansion-panel-content dark class="darker">
                 <template v-slot:actions>
-                    <v-tooltip slot="prepend" bottom max-width="200">
-                        <v-icon slot="activator" color="primary" light medium>help</v-icon>
-                        <span>{{ $t('common.help.tooltip') }}</span>
+                    <v-tooltip
+                        data-test="user-editor.help.tooltip"
+                        slot="prepend"
+                        bottom
+                        max-width="200"
+                    >
+                        <v-icon
+                            data-test="user-editor.help-tooltip.icon"
+                            slot="activator"
+                            color="primary"
+                            light
+                            medium
+                        >help</v-icon>
+                        <span
+                            data-test="user-editor.help-tooltip.span"
+                        >{{ $t('common.help.tooltip') }}</span>
                     </v-tooltip>
                 </template>
                 <template v-slot:header>
-                    <v-toolbar-title>{{ title }}</v-toolbar-title>
+                    <v-toolbar-title data-test="user-editor.title.toolbar-title">{{ title }}</v-toolbar-title>
                 </template>
                 <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
-                    <v-tab ripple>{{ $t('common.help.tabs.info') }}</v-tab>
+                    <v-tab
+                        data-test="user-editor.info.tab"
+                        ripple
+                    >{{ $t('common.help.tabs.info') }}</v-tab>
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
-                                <h2 class="title">{{ $t("common.help.infoTitle") }}</h2>
-                                <p class="spacer"></p>
-                                <p v-html="platformService.getHelp($t('userEditor.help.text'))"></p>
-                                <p class="spacer"></p>
+                                <h2
+                                    data-test="user-editor.tab-infoTitle.h2"
+                                    class="title"
+                                >{{ $t("common.help.infoTitle") }}</h2>
+                                <p
+                                    data-test="user-editor.tab-spacer-1.p"
+                                    class="spacer"
+                                ></p>
+                                <p
+                                    data-test="user-editor.tab-text.p"
+                                    v-html="platformService.getHelp($t('userEditor.help.text'))"
+                                ></p>
+                                <p
+                                    data-test="user-editor.tab-spacer-2.p"
+                                    class="spacer"
+                                ></p>
                             </v-card-text>
                         </v-card>
                     </v-tab-item>
-                    <v-tab ripple>{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                    <v-tab
+                        data-test="user-editor.shortcuts.tab"
+                        ripple
+                    >{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                     <v-tab-item>
                         <v-card dark>
                             <v-card-text>
                                 <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">{{ `${platformService.getMeta()} + s` }}</p>
-                                    </v-flex>
-                                    <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout align-center justify-start row>
-                                    <v-flex xs4>
-                                        <p class="rounded">enter</p>
-                                    </v-flex>
-                                    <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.save") }}</p>
-                                    </v-flex>
-                                </v-layout>
-                                <v-layout align-center justify-start row>
-                                    <v-flex xs4>
-                                        <p class="rounded">esc</p>
+                                        <p
+                                            data-test="user-editor.shortcuts-save-rounded.p"
+                                            class="rounded"
+                                        >{{ `${platformService.getMeta()} + s` }}</p>
                                     </v-flex>
                                     <v-flex xs8>
                                         <p
+                                            data-test="user-editor.shortcuts-save-label.p"
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.save") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p
+                                            data-test="user-editor.shortcuts-save-rounded-enter.p"
+                                            class="rounded"
+                                        >enter</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p
+                                            data-test="user-editor.shortcuts-save-label-enter.p"
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.save") }}</p>
+                                    </v-flex>
+                                </v-layout>
+                                <v-layout align-center justify-start row>
+                                    <v-flex xs4>
+                                        <p
+                                            data-test="user-editor.shortcuts-closeEditor-rounded.p"
+                                            class="rounded"
+                                        >esc</p>
+                                    </v-flex>
+                                    <v-flex xs8>
+                                        <p
+                                            data-test="user-editor.shortcuts-closeEditor-label.p"
                                             class="label"
                                         >{{ $t("common.help.shortcuts.closeEditor") }}</p>
                                     </v-flex>
                                 </v-layout>
                                 <v-layout align-center justify-start row>
                                     <v-flex xs4>
-                                        <p class="rounded">{{ `${platformService.getMeta()} + h` }}</p>
+                                        <p
+                                            data-test="user-editor.shortcuts-help-rounded.p"
+                                            class="rounded"
+                                        >{{ `${platformService.getMeta()} + h` }}</p>
                                     </v-flex>
                                     <v-flex xs8>
-                                        <p class="label">{{ $t("common.help.shortcuts.help") }}</p>
+                                        <p
+                                            data-test="user-editor.shortcuts-help-label.p"
+                                            class="label"
+                                        >{{ $t("common.help.shortcuts.help") }}</p>
                                     </v-flex>
                                 </v-layout>
                             </v-card-text>
                         </v-card>
                     </v-tab-item>
                 </v-tabs>
-                <hr class="blackLine" />
+                <hr data-test="user-editor.blackline.hr" class="blackLine" />
             </v-expansion-panel-content>
         </v-expansion-panel>
         <v-container fill-height fluid>
@@ -73,6 +126,7 @@
                 <v-flex xs12 align-end flexbox>
                     <v-form ref="userForm" v-model="valid" lazy-validation>
                         <v-text-field
+                            data-test="user-editor.filter.text-field"
                             dark
                             v-model="name"
                             ref="name"
@@ -84,13 +138,26 @@
                             @input="$v.name.$touch()"
                             @blur="$v.name.$touch()"
                         >
-                            <v-tooltip slot="prepend" bottom max-width="200">
-                                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                <span>{{ $t('userEditor.fields.name.tooltip') }}</span>
+                            <v-tooltip
+                                data-test="user-editor.name.tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="user-editor.name.icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                >info</v-icon>
+                                <span
+                                    data-test="user-editor.name.span"
+                                >{{ $t('userEditor.fields.name.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
 
                         <v-text-field
+                            data-test="user-editor.password.text-field"
                             dark
                             v-model="password"
                             :error-messages="passwordErrors"
@@ -103,13 +170,26 @@
                             @input="$v.password.$touch()"
                             @blur="$v.password.$touch()"
                         >
-                            <v-tooltip slot="prepend" bottom max-width="200">
-                                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                <span>{{ $t('userEditor.fields.password.tooltip') }}</span>
+                            <v-tooltip
+                                data-test="user-editor.password.tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="user-editor.password.icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                >info</v-icon>
+                                <span
+                                    data-test="user-editor.password.span"
+                                >{{ $t('userEditor.fields.password.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
 
                         <v-text-field
+                            data-test="user-editor.password.text-field"
                             dark
                             id="pwcheck"
                             v-model="pwcheck"
@@ -119,23 +199,41 @@
                             :type="getType()"
                             required
                         >
-                            <v-tooltip slot="prepend" bottom max-width="200">
-                                <v-icon slot="activator" color="primary" dark>info</v-icon>
-                                <span>{{ $t('userEditor.fields.pwcheck.tooltip') }}</span>
+                            <v-tooltip
+                                data-test="user-editor.password.tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="user-editor.password.icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                >info</v-icon>
+                                <span
+                                    data-test="user-editor.password.span"
+                                >{{ $t('userEditor.fields.pwcheck.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
 
                         <template v-if="showRights">
-                            <h2 class="subheading">Roles</h2>
-                            <hr />
+                            <h2 data-test="user-editor.subheading.h2" class="subheading">Roles</h2>
+                            <hr data-test="user-editor.subheading.hr" />
                             <v-alert
+                                data-test="user-editor.message-noRights.alert"
                                 v-if="roles.length === 0"
                                 :value="true"
                                 color="error"
                                 icon="warning"
                             >{{ $t('userEditor.messages.norights') }}</v-alert>
-                            <v-card height="200" class="scrollable">
+                            <v-card
+                                data-test="user-editor.message-noRights.card"
+                                height="200"
+                                class="scrollable"
+                            >
                                 <v-checkbox
+                                    data-test="user-editor.message-noRights.checkbox"
                                     @change="setRole(role)"
                                     v-for="role in roles"
                                     v-model="ownRoles"
@@ -147,17 +245,19 @@
                         </template>
 
                         <v-btn
+                            data-test="user-editor.submit.button"
                             :disabled="!valid"
                             round
                             color="primary"
                             @click="submit"
                         >{{ opTitle }}</v-btn>
                         <v-btn
+                            data-test="user-editor.close.button"
                             color="warning"
                             round
                             @click="cancel"
                         >{{ $t('common.actions.close.label') }}</v-btn>
-                        <v-spacer></v-spacer>
+                        <v-spacer data-test="user-editor.userForm.spacer"></v-spacer>
                     </v-form>
                 </v-flex>
             </v-layout>
