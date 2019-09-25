@@ -1,15 +1,22 @@
 const BasePage = require('./base_page');
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+
+chai.should();
+chai.use(chaiAsPromised);
 
 class SettingsPage extends BasePage {
-    constructor() {
-        super();
+    constructor(app = undefined) {
+        super(app);
     }
 
-    clickEtcdBtn() {
+    async clickEtcdBtn() {
+        await this.app.client.waitUntilTextExists('div[data-test="config.etcd-title.tab"]','ETCD');
         return this.app.client.click('div[data-test="config.etcd-title.tab"]');
     }
 
-    writeEndpoint(value) {
+    async writeEndpoint(value) {
+        await this.app.client.waitUntilTextExists('input[data-test="config.etcd-fields-endpoint.text-field"]','');
         return this.app.client.setValue('input[data-test="config.etcd-fields-endpoint.text-field"]', value);
     }
 

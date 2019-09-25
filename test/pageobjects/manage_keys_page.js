@@ -1,6 +1,4 @@
 const BasePage = require('./base_page');
-const Application = require('spectron').Application;
-const assert = require('assert');
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 
@@ -8,31 +6,65 @@ chai.should();
 chai.use(chaiAsPromised);
 
 class ManageKeysPage extends BasePage {
-    constructor() {
-        super();
+    constructor(app = undefined) {
+        super(app);
     }
 
-    clickEtcdBtn() {
+    async clickKeyMenu() {
+        await this.app.client.waitUntilTextExists(
+            'div[data-test="menu.keys.list-tile-title"]',
+            'Manage keys'
+        );
         return this.app.client.click(
-            'div[data-test="config.etcd-title.tab"]'
+            'div[data-test="menu.keys.list-tile-title"]'
         );
     }
 
-    writeEndpoint(value) {
-        return this.app.client
-            .setValue(
-                'input[data-test="config.etcd-fields-endpoint.text-field"]',
-                value
-            )
-            .getValue(
-                'input[data-test="config.etcd-fields-endpoint.text-field"]'
-            )
-            .should.eventually.equal(value);
+    async findListTitle() {
+        return await this.app.client.waitUntilTextExists(
+            'div[data-test="key-manager.help.toolbar-title"]',
+            'Keys'
+        );
     }
 
-    clickManageKeys() {
-        return this.app.client.click(
-            'div[data-test="menu.keys.list-tile-title"]'
+    async isNewRowExists(key, value) {
+        await this.app.client.waitUntilTextExists('td', key);
+        return await this.app.client.waitUntilTextExists('td', value);
+    }
+
+    async openDeleteDialog() {
+        await this.app.client
+            .$('tr*=testKey')
+            .$('i[data-test="key-manager.actions-edit.icon"]')
+            .click();
+
+        return await this.app.client.waitUntilTextExists('div', 'Attention!');
+    }
+
+    async openEditor() {
+        await this.app.client
+            .$('tr*=testKey')
+            .$('i[data-test="key-manager.actions-edit.icon"]')
+            .click();
+
+        return await this.app.client.waitUntilTextExists(
+            'div',
+            'Edit: testKey'
+        );
+    }
+
+    async clickDeleteDialogOk() {
+        await this.app.client.click(
+            'button[data-test="delete-dialog.actions-remove.button"]'
+        );
+        return await this.isElementAvailable(
+            'div[data-test="app.message.snackbar"]'
+        );
+    }
+
+    async clickEditorCloseBtn() {
+        return await this.app.client.click(
+            'button[data-test="key-editor.close.button"]'
         );
     }
 
@@ -48,33 +80,20 @@ class ManageKeysPage extends BasePage {
         );
     }
 
-    writeKey(value) {
-        return this.app.client
-            .setValue(
-                'input[data-test="key-editor.key.text-field"]',
-                value
-            )
-            .getValue(
-                'input[data-test="key-editor.key.text-field"]'
-            )
-            .should.eventually.equal(value);
+    async writeKey(value) {
+        return await this.writeInput('input[data-test="key-editor.key.text-field"]', value);
     }
 
-    writeValue(value) {
-        return this.app.client
-            .setValue(
-                'input[data-test="key-editor.value.text-field"]',
-                value
-            )
-            .getValue(
-                'input[data-test="key-editor.value.text-field"]'
-            )
-            .should.eventually.equal(value);
+    async writeValue(value) {
+        return await this.writeInput('input[data-test="key-editor.value.text-field"]', value);
     }
 
-    clickAddKeyBtn() {
-        return this.app.client.click(
+    async clickAddKeyBtn() {
+        await this.app.client.click(
             'button[data-test="key-editor.submit.button"]'
+        );
+        await this.waitUntilNotDisplayed(
+            '[data-test="app.loading.toolbar-title"]'
         );
     }
 }

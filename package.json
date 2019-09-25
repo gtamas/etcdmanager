@@ -12,7 +12,6 @@
         "electron:serve": "vue-cli-service electron:serve",
         "postinstall": "npx electron-builder install-app-deps",
         "postuninstall": "npx electron-builder install-app-deps",
-        "test:e2e": "vue-cli-service test:e2e",
         "test": "mocha test/spec"
     },
     "main": "background.js",
@@ -45,7 +44,6 @@
         "@types/vuelidate": "^0.7.5",
         "@vue/cli": "^3.10.0",
         "@vue/cli-plugin-babel": "^3.7.0",
-        "@vue/cli-plugin-e2e-cypress": "^3.7.0",
         "@vue/cli-plugin-typescript": "^3.7.0",
         "@vue/cli-service": "^3.7.0",
         "chai": "^4.2.0",
