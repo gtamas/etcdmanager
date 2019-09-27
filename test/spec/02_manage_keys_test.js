@@ -14,7 +14,7 @@ describe('manage keys app scenarios', function() {
 
     it('open key manage list', async () => {
         await settingsPage.clickEtcdBtn();
-        await settingsPage.writeEndpoint('127.0.0.1');
+        await settingsPage.writeEndpoint('http://hubphq-icon-sandbox-d001.icellmobilsoft.hu');
         await settingsPage.clickSubmitBtn();
         await page.clickKeyMenu();
         await page.findListTitle();
@@ -32,6 +32,7 @@ describe('manage keys app scenarios', function() {
 
         await page.clickAddKeyBtn();
         await page.clickEditorCloseBtn();
+        await page.filterKeys(randomKey);
         await page.isNewRowExists(randomKey, randomValue);
 
     });
@@ -48,9 +49,9 @@ describe('manage keys app scenarios', function() {
 
     });
 
-    // it('delete key value pair', async () => {
-    //     await page.openDeleteDialog();
-    //     await page.clickDeleteDialogOk();
-    //     // await page.isNewRowExists();
-    // });
+     it('delete key value pair', async () => {
+         await page.openDeleteDialog();
+         await page.clickDeleteDialogOk();
+         //await page.isNewRowExists();
+    });
 });

@@ -1,5 +1,5 @@
-const SettingsPage = require('./pageobjects/settings_page');
-const shared = require('./shared/shared');
+const SettingsPage = require('../pageobjects/settings_page');
+const shared = require('../shared/shared');
 
 describe('settings app scenarios', function() {
     this.timeout(10000);

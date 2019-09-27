@@ -49,11 +49,19 @@ class BasePage {
         return await this.waitUntilChange(locator, value, false, negate);
     }
 
+    async clearValue(selector) {
+        let value = await this.app.client.getValue(selector);
+        for (let i = 0; i < value.length; i++) {
+            await this.app.client.setValue(selector, '\uE003');
+        }
+    }
+
     async writeInput(selector, value) {
+        await this.clearValue(selector);
+
         return await this.app.client
-        .setValue(selector, '')
-        .setValue(selector, value)
-        .getValue(selector);
+            .setValue(selector, value)
+            .getValue(selector);
     }
 }
 
