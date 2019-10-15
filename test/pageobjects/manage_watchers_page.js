@@ -10,16 +10,15 @@ class ManageWatchersPage extends BasePage {
         super(app);
     }
 
-    async clickEditWatcher(key) {
+    async clickEditWatcher() {
         await this.app.client
-            .$('tr*='+key)
             .$('i[data-test="watcher-manager.edit.icon"]')
             .click();
 
-        return await this.app.client.waitUntilTextExists(
-            'div',
-            'Edit: '+key
-        );
+        //return await this.app.client.waitUntilTextExists(
+          //  'div',
+            //'Edit: teszt'
+       // );
     }
 
     async clickWatchersMenu() {

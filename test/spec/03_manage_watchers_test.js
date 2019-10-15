@@ -37,18 +37,18 @@ describe('manage watchers app scenarios', function() {
         await page.isNewRowExists(randomName, randomKey);
     });
 
-    it('modify watcher', async () => {
+    /*it('modify watcher', async () => {
         await page.clickEditWatcher();
 
-        const randomValue = await page.writeName('changedName');
-        assert.equal(randomValue, 'changedName');
+       const randomValue = await page.writeName('changedName');
+       assert.equal(randomValue, 'changedName');
 
-        await page.clickSubmitBtn();
+       //await page.clickSubmitBtn();
         //await page.clickEditorCloseBtn();
         //await page.isNewRowExists('testKey', 'changedValue');
     });
 
-    /*it('delete key value pair', async () => {
+    it('delete key value pair', async () => {
          await page.openDeleteDialog();
          await page.clickDeleteDialogOk();
          //await page.isNewRowExists();
