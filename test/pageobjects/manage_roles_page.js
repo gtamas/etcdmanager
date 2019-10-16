@@ -66,5 +66,13 @@ class ManageRolesPage extends BasePage {
         .$('i[data-test="role-manager.actions-edit.icon"]')
         .click();
     }
+
+
+    async selectPermission(){
+        await this.app.client.click(
+            'input[data-test="permission-editor.fields-permission.select"]'
+        ); 
+        
+    }
 }
 module.exports = ManageRolesPage;
