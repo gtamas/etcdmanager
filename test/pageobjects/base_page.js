@@ -18,6 +18,13 @@ class BasePage {
         );
     }
 
+    async waitUntilEnabled(locator, negate = false) {
+        return await this.app.client.waitUntil(async () => {
+            const res = await this.app.client.$(locator).isEnabled();
+            return negate ? !res : res;
+        });
+    }
+
     async waitUntilDisplayed(locator, negate = false) {
         return await this.app.client.waitUntil(async () => {
             const res = await this.app.client.$(locator).isVisible();
@@ -62,7 +69,7 @@ class BasePage {
         return await this.app.client
             .setValue(selector, value)
             .getValue(selector);
-    }
+    }  
 }
 
 module.exports = BasePage;

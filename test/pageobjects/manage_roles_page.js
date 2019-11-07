@@ -41,38 +41,66 @@ class ManageRolesPage extends BasePage {
             'input[data-test="role-editor.filter.text-field"]',
             role.name
         );
-
-        return this.app.client.click(
+        return await this.app.client.click(
             'button[data-test="role-editor.submit.button"]'
         );
     }
 
-    async setPermission() {
-        await this.app.client.waitUntilTextExists(
-            'td',
-            'No data available'
-        );
-        //await this.app.client.click(
-          //  'button[data-test="role-editor.actions-close.button"]'
-        //);
-        
-        await this.app.client.click(
-            'button[data-test="role-editor.actions-permissions.button"]'
-        );        
+    async clickPermissionBtn() {
+       return await this.app.client
+        .$('button[data-test="role-editor.actions-permissions.button"]')  
+        .click();
     }
+
+    async clickDeleteRoleBtn(){
+       return await this.app.client
+        .$('tr*='+role.name)
+        .$('i[data-test="role-manager.actions-remove.icon"]')
+        .click().then(async() =>{
+            await this.app.client
+            .$('button[data-test="delete-dialog.actions-remove.button"]')  
+            .click();
+        });
+    }
+
     async clickEditRoleBtn(){
-        await this.app.client
+        return await this.app.client
         .$('tr*='+role.name)
         .$('i[data-test="role-manager.actions-edit.icon"]')
         .click();
     }
+    
+    async wirtePermissionKey(){
+        await this.writeInput(
+            'input[data-test="permission-editor.fields-key.text-field"]',
+            role.permissionKey
+        );
+    }
 
+    async selectPermission(choose){
 
-    async selectPermission(){
-        await this.app.client.click(
-            'input[data-test="permission-editor.fields-permission.select"]'
-        ); 
-        
+      await this.app.client
+       .$('input[data-test="permission-editor.fields-permission.select"]')
+       .$("//ancestor::div[@role='combobox']//i[text()='arrow_drop_down']")
+       .click();
+
+      return await this.app.client
+        .$('div.v-select-list')
+        .$('.v-list__tile__title='+choose)
+        .click();
+    }
+
+    async clickGrantBtn(){
+        return await this.app.client
+        .$('button[data-test="permission-editor.actions-grant.button"]')  
+        .click();
+    }
+
+    async searchRoleByName(){
+        return await this.writeInput(
+            'input[data-test="role-manager.filter.text-field"]',
+            role.name
+        );
     }
 }
 module.exports = ManageRolesPage;

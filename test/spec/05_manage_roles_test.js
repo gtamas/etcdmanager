@@ -24,7 +24,15 @@ describe('manage roles app scenarios', function() {
     it('add new role', async () => {
         await page.clickAddRoleBtn();
         await page.writeName();
-        await page.setPermission();
+        await page.clickPermissionBtn();
+        await page.wirtePermissionKey();
+        await page.selectPermission('Read & Write');
+        await page.clickGrantBtn();
+    });
+
+    it('delete role', async () => {
+        await page.searchRoleByName();
+        await page.clickDeleteRoleBtn();
     });
     
 });
