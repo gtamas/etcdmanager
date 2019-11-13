@@ -34,5 +34,4 @@ describe('manage roles app scenarios', function() {
         await page.searchRoleByName();
         await page.clickDeleteRoleBtn();
     });
-    
 });

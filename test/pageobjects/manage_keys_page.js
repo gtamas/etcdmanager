@@ -120,6 +120,17 @@ class ManageKeysPage extends BasePage {
             '[data-test="app.loading.toolbar-title"]'
         );
     }
+
+    async clickKeyCheckBox(){
+
+        return await this.app.client
+        .$('//div[@data-test="key-manager.props-selected.chechbox"]//div[contains(@class,"controls__ripple")]')
+        .click();
+    }
+    
+    async clickRemoveBtn(){
+        return await this.app.client.click('button[data-test="key-manager.removeAll.button"]')
+    }
 }
 
 module.exports = ManageKeysPage;

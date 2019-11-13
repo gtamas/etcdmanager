@@ -69,7 +69,19 @@ class BasePage {
         return await this.app.client
             .setValue(selector, value)
             .getValue(selector);
-    }  
+    }
+
+    async select(selector, value){
+        await this.app.client
+        .$(selector)
+        .$("//ancestor::div[@role='combobox']//i[text()='arrow_drop_down']")
+        .click();
+ 
+       return await this.app.client
+         .$('div.v-select-list')
+         .$('.v-list__tile__title='+value)
+         .click();
+    }
 }
 
 module.exports = BasePage;

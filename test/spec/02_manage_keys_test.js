@@ -49,9 +49,14 @@ describe('manage keys app scenarios', function() {
 
     });
 
-     it('delete key value pair', async () => {
+    it('remove key', async () => {
+        await page.clickKeyCheckBox();
+        await page.clickRemoveBtn();
+        await page.clickDeleteDialogOk();
+    });
+
+     /*it('delete key value pair', async () => {
          await page.openDeleteDialog();
          await page.clickDeleteDialogOk();
-         //await page.isNewRowExists();
-    });
+    });*/
 });

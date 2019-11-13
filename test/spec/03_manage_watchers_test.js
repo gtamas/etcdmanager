@@ -2,9 +2,11 @@ const ManageWatchersPage = require('../pageobjects/manage_watchers_page');
 const SettingsPage = require('../pageobjects/settings_page');
 const assert = require('assert');
 const shared = require('../shared/shared');
+const Watcher = require('../pageobjects/user/watcher');
 
 describe('manage watchers app scenarios', function() {
     this.timeout(10000);
+    let watcher = new Watcher();
     const page = new ManageWatchersPage();
     const settingsPage = new SettingsPage(page.app);
 
@@ -22,35 +24,25 @@ describe('manage watchers app scenarios', function() {
         await page.findListTitle();
     });
 
-    it('add new watcher', async () => {
+    it('add new watcher', async () => { 
         await page.clickAddBtn();
-
-        const randomName = await page.writeName('testName');
-        assert.equal(randomName, 'testName');
-
-        const randomKey = await page.writeKey('testkey');
-        assert.equal(randomKey, 'testkey');
-
+        await page.writeName(watcher.watcher_name);
+        await page.writeKey(watcher.key);
         await page.clickActionsKeyBtn();
         await page.clickActionsAddBtn();
-        await page.filterData(randomKey);
-        await page.isNewRowExists(randomName, randomKey);
+        await page.filterData(watcher.key);
+        await page.isNewRowExists(watcher.watcher_name, watcher.key);
     });
 
-    /*it('modify watcher', async () => {
-        await page.clickEditWatcher();
-
-       const randomValue = await page.writeName('changedName');
-       assert.equal(randomValue, 'changedName');
-
-       //await page.clickSubmitBtn();
-        //await page.clickEditorCloseBtn();
-        //await page.isNewRowExists('testKey', 'changedValue');
+    it('modify watcher', async () => {
+       await page.clickEditWatcher(watcher.watcher_name);
+       await page.writeKey(`ch${watcher.key}`);
+       await page.clickSubmitBtn();
     });
 
-    it('delete key value pair', async () => {
-         await page.openDeleteDialog();
-         await page.clickDeleteDialogOk();
-         //await page.isNewRowExists();
-    });*/
+    it('purge watchers', async () => {
+        await page.filterData(watcher.key);
+        await page.clickPurgeBtn();
+        await page.attentionRemove();
+    });
 });

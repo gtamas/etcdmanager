@@ -79,6 +79,19 @@ class ManageUsersPage extends BasePage {
         return await chai.expect('delete-dialog.title.toolbar-title','div[data-test]')
     }
 
+    async checkRole(){
+        await this.app.client
+        .$('//div[@data-test="user-editor.message-noRights.card"]//div[@class="v-input--selection-controls__ripple"]')
+        .click();
+
+        await this.app.client
+        .waitUntilTextExists('div.v-snack__content','Operation successful',10000);
+
+        return this.app.client.$('div.v-snack__content').getText().then(text =>{
+                chai.expect(text).to.have.contains('Operation successful');
+             });     
+    }
+
     async remove(){
         return this.app.client.click('button[data-test="delete-dialog.actions-remove.button"]');
     }

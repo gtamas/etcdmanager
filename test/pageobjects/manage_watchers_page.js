@@ -11,14 +11,9 @@ class ManageWatchersPage extends BasePage {
     }
 
     async clickEditWatcher() {
-        await this.app.client
+       return await this.app.client
             .$('i[data-test="watcher-manager.edit.icon"]')
             .click();
-
-        //return await this.app.client.waitUntilTextExists(
-          //  'div',
-            //'Edit: teszt'
-       // );
     }
 
     async clickWatchersMenu() {
@@ -33,7 +28,7 @@ class ManageWatchersPage extends BasePage {
 
     async clickAddBtn() {
         return this.app.client.click(
-            'span[data-test="watcher-manager.create-label.span"]'
+            'button[data-test="watcher-manager.create.button"]'
         );
     }
 
@@ -101,10 +96,26 @@ class ManageWatchersPage extends BasePage {
     }
 
     async selectPrefix() {
-        let checkbox = this.app.client.get;
         return this.app.client.click(
             'input[data-test="watcher-editor.prefix.text-field"]'
         );
+    }
+
+    async clickPurgeBtn(){
+        return this.app.client.$('button[data-test="watcher-manager.purgeAll.button"]').click()
+    }
+
+    async attentionRemove(){
+        await this.app.client.waitUntilTextExists(
+            'div[data-test="purge-dialog.title.toolbar-title"]',
+            'Attention!'
+        );
+
+        return this.app.client.$('button[data-test="purge-dialog.actions-remove.button"]').click()
+    }
+
+    async clickEditorCloseBtn(){
+        return this.app.client.$('//span[@data-test="watcher-editor.close-label.span"]//ancestor::button').click()
     }
 }
 
