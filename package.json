@@ -35,7 +35,6 @@
         "vuelidate": "^0.7.4",
         "vuetify": "^1.5.14",
         "vuex": "^3.0.1",
-        "webdriverio": "^5.16.2",
         "webpack-proto-loader": "^0.5.1"
     },
     "devDependencies": {
