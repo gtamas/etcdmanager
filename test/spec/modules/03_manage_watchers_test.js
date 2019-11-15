@@ -4,7 +4,8 @@ const Watcher = require('../../pageobjects/user/watcher');
 module.exports = p => {
     
     describe('manage watchers app scenarios', function() {
-    this.timeout(10000);
+
+    this.timeout(20000);
     let watcher = new Watcher();
     const page = new ManageWatchersPage(p.app);
 

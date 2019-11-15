@@ -1,13 +1,12 @@
 const ManageKeysPage = require('../../pageobjects/manage_keys_page');
-const SettingsPage = require('../../pageobjects/settings_page');
+const Key = require('../../pageobjects/user/key');
 const assert = require('assert');
-const shared = require('../../shared/shared');
 
 module.exports =  p => {
 
 describe('manage keys app scenarios', function() {
-    this.timeout(10000);
     const page = new ManageKeysPage(p.app);
+    const key = new Key();
 
     it('open key manage list', async () => {
         await page.clickKeyMenu();
@@ -18,11 +17,11 @@ describe('manage keys app scenarios', function() {
     it('add new key value pair', async () => {
         await page.clickAddBtn();
 
-        const randomKey = await page.writeKey('testKey');
-        assert.equal(randomKey, 'testKey');
+        const randomKey = await page.writeKey(key.key);
+        assert.equal(randomKey, key.key);
 
-        const randomValue = await page.writeValue('testValue');
-        assert.equal(randomValue, 'testValue');
+        const randomValue = await page.writeValue(key.value);
+        assert.equal(randomValue, key.value);
 
         await page.clickAddKeyBtn();
         await page.clickEditorCloseBtn();
@@ -34,12 +33,12 @@ describe('manage keys app scenarios', function() {
     it('modify new key value pair', async () => {
         await page.openEditor();
 
-        const randomValue = await page.writeValue('changedValue');
-        assert.equal(randomValue, 'changedValue');
+        const randomValue = await page.writeValue(`changed${key.value}`);
+        assert.equal(randomValue, `changed${key.value}`);
 
         await page.clickAddKeyBtn();
         await page.clickEditorCloseBtn();
-        await page.isNewRowExists('testKey', 'changedValue');
+        await page.isNewRowExists(key.key, randomValue);
 
     });
 

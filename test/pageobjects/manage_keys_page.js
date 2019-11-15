@@ -58,15 +58,9 @@ class ManageKeysPage extends BasePage {
     }
 
     async openEditor() {
-        await this.app.client
-            .$('tr*=testKey')
+        return await this.app.client
             .$('i[data-test="key-manager.actions-edit.icon"]')
             .click();
-
-        return await this.app.client.waitUntilTextExists(
-            'div',
-            'Edit: testKey'
-        );
     }
 
     async clickDeleteDialogOk() {
@@ -74,9 +68,16 @@ class ManageKeysPage extends BasePage {
             'button[data-test="delete-dialog.actions-remove.button"]'
         );
 
-        return await this.waitUntilDisplayed(
+        await this.waitUntilDisplayed(
             'div[data-test="app.message.snackbar"]'
         );
+
+        await this.app.client
+        .waitUntilTextExists('div.v-snack__content','Operation successful',20000);
+
+        return this.app.client.$('div.v-snack__content').getText().then(text =>{
+                chai.expect(text).to.have.contains('Operation successful');
+             }); 
     }
 
     async clickEditorCloseBtn() {
@@ -116,10 +117,9 @@ class ManageKeysPage extends BasePage {
         await this.app.client.click(
             'button[data-test="key-editor.submit.button"]'
         );
-        await this.waitUntilNotDisplayed(
-            '[data-test="app.loading.toolbar-title"]'
-        );
-    }
+       return await this.app.client
+            .waitUntilTextExists('div.v-snack__content','Operation successful',10000);
+       }
 
     async clickKeyCheckBox(){
 

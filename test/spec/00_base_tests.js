@@ -8,7 +8,7 @@ describe('electron tests', function() {
     
     it('set etcd connection', async () =>{
          await page.clickEtcdBtn();
-         await page.writeEndpoint(process.env.ETCDMANAGER_URL || '127.0.0.1') ;
+         await page.writeEndpoint('http://hubphq-icon-sandbox-d001.icellmobilsoft.hu' || '127.0.0.1') ;
          await page.clickSubmitBtn();
     });
 
@@ -18,6 +18,7 @@ describe('electron tests', function() {
     require('./modules/04_manage_users_tests')(page);
     require('./modules/05_manage_roles_test')(page);
     require('./modules/06_manage_cluster_test')(page);
+    
 
     after(shared.appEnd(page));
 });

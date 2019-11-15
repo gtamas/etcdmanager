@@ -17,13 +17,13 @@ class ManageWatchersPage extends BasePage {
     }
 
     async clickWatchersMenu() {
+
         await this.app.client.waitUntilTextExists(
             'div[data-test="menu.watchers.list-tile-title"]',
             'Manage watchers'
         );
-        return this.app.client.click(
-            'div[data-test="menu.watchers.list-tile-title"]'
-        );
+
+        await this.app.client.$('div[data-test="menu.watchers.list-tile-title"]').click();
     }
 
     async clickAddBtn() {
@@ -111,7 +111,14 @@ class ManageWatchersPage extends BasePage {
             'Attention!'
         );
 
-        return this.app.client.$('button[data-test="purge-dialog.actions-remove.button"]').click()
+        await this.app.client.$('button[data-test="purge-dialog.actions-remove.button"]').click()
+
+        await this.app.client
+        .waitUntilTextExists('div.v-snack__content','Operation successful',20000);
+
+        return this.app.client.$('div.v-snack__content').getText().then(text =>{
+                chai.expect(text).to.have.contains('Operation successful');
+             }); 
     }
 
     async clickEditorCloseBtn(){
