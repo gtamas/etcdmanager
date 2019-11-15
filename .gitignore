@@ -5,6 +5,10 @@ node_modules
 /tests/e2e/videos/
 /tests/e2e/screenshots/
 
+
+# vscode
+*.code-workspace
+
 # local env files
 .env.local
 .env.*.local
