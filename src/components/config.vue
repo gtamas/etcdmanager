@@ -434,6 +434,7 @@ import { PlatformService } from '../services/platform.service';
 import Messages from '../lib/messages';
 import KeyService from '../services/key.service';
 
+ // @ts-ignore
 @Component({
     // @ts-ignore
     name: 'config',

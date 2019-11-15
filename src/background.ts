@@ -20,7 +20,6 @@ import { readFileSync } from 'fs';
 import { get } from 'lodash-es';
 import * as defaultTranslations from './i18n/en';
 
-
 const pkg = JSON.parse(
     readFileSync(
         join(
@@ -145,7 +144,11 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
                 },
                 {
                     role: 'zoomout',
-                    label: get(translations, ['appMenu', 'zoomout'], 'Zoom out'),
+                    label: get(
+                        translations,
+                        ['appMenu', 'zoomout'],
+                        'Zoom out'
+                    ),
                 },
                 { type: 'separator' },
                 {
@@ -156,26 +159,27 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
                         'Toggle fullscreen'
                     ),
                 },
-                ...(isDevelopment
-                    ? [
-                          { type: 'separator' },
-                          {
-                              role: 'toggledevtools',
-                              label: get(
-                                  translations,
-                                  ['appMenu', 'toggledevtools'],
-                                  'Toggle DevTools'
-                              ),
-                          },
-                      ]
-                    : []),
+                { type: 'separator' },
+                {
+                    role: 'toggledevtools',
+                    label: get(
+                        translations,
+                        ['appMenu', 'toggledevtools'],
+                        'Toggle DevTools'
+                    ),
+                },
+                ,
             ],
         },
         {
             label: get(translations, ['appMenu', 'manage'], 'Manage'),
             submenu: [
                 {
-                    label: get(translations, ['appMenu', 'settings'], 'Settings'),
+                    label: get(
+                        translations,
+                        ['appMenu', 'settings'],
+                        'Settings'
+                    ),
                     accelerator: 'CommandOrControl+Alt+S',
                     click: menuRouter('configure'),
                 },
@@ -190,7 +194,11 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
                     click: menuRouter('keys'),
                 },
                 {
-                    label: get(translations, ['appMenu', 'watchers'], 'Watchers'),
+                    label: get(
+                        translations,
+                        ['appMenu', 'watchers'],
+                        'Watchers'
+                    ),
                     accelerator: 'CommandOrControl+Alt+W',
                     click: menuRouter('watchers'),
                 },
@@ -225,10 +233,14 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
         },
         {
             label: get(translations, ['appMenu', 'help'], 'Help'),
-             // @ts-ignore
+            // @ts-ignore
             submenu: [
                 {
-                    label: get(translations, ['appMenu', 'gotoWiki'], 'Go to Wiki'),
+                    label: get(
+                        translations,
+                        ['appMenu', 'gotoWiki'],
+                        'Go to Wiki'
+                    ),
                     accelerator: 'CommandOrControl+Alt+L',
                     click: () => {
                         shell.openExternal(`${pkg.homepage}/wiki`);
@@ -245,7 +257,11 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
                   submenu: [
                       {
                           role: 'about',
-                          label: get(translations, ['appMenu', 'about'], 'About'),
+                          label: get(
+                              translations,
+                              ['appMenu', 'about'],
+                              'About'
+                          ),
                       },
                       { type: 'separator' },
                       {

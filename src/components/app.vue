@@ -121,7 +121,7 @@ export default class App extends Vue {
             <v-btn data-test="app.message-close.button" dark flat @click="hide()">Close</v-btn>
         </v-snackbar>
 
-        <v-dialog v-model="loading" persistent max-width="290">
+        <v-dialog v-model="loading" persistent max-width="290" id="loading">
             <v-card dark>
                 <v-toolbar dark flat>
                     <v-toolbar-title data-test="app.loading.toolbar-title">Loading..</v-toolbar-title>

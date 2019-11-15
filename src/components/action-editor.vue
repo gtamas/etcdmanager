@@ -45,7 +45,7 @@
                                 <span data-test="action-editor.event-tooltip.span">{{ $t('actionEditor.fields.event.tooltip') }}</span>
                             </v-tooltip>
                         </v-select>
-                        <v-btn :disabled="!valid" round color="primary" @click="submit">
+                        <v-btn data-test="action-editor.add.button" :disabled="!valid" round color="primary" @click="submit">
                             <v-icon data-test="action-editor.op-title.icon">add</v-icon>
                             <span data-test="action-editor.op-title.span">{{ opTitle }}</span>
                         </v-btn>

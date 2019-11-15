@@ -266,13 +266,13 @@
                             </template>
                         </v-data-table>
 
-                        <v-btn :disabled="!isValid()" round color="primary" @click="submit">
+                        <v-btn data-test="watcher-editor.submit.button" :disabled="!isValid()" round color="primary" @click="submit">
                             <v-icon data-test="watcher-editor.submit.icon">add</v-icon>
                             <span
                                 data-test="watcher-editor.submit-title.span"
                             >{{ opTitle }}</span>
                         </v-btn>
-                        <v-btn round color="primary" @click="addAction">
+                        <v-btn data-test="watcher-editor.actions.button" round color="primary" @click="addAction">
                             <v-icon data-test="watcher-editor.add.icon">event</v-icon>
                             <span
                                 data-test="watcher-editor.add-label.span"

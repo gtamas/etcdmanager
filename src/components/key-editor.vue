@@ -131,7 +131,7 @@
 <script lang='ts'>
 import Component from 'vue-class-component';
 
-import { required, alphaNum } from 'vuelidate/lib/validators';
+import { required } from 'vuelidate/lib/validators';
 import Messages from '@/lib/messages';
 import KeyService from '../services/key.service';
 import { BaseEditor } from '../lib/editor.class';
@@ -153,11 +153,9 @@ class KeyError extends Error {
     validations: {
         key: {
             required,
-            alphaNum,
         },
         value: {
             required,
-            alphaNum,
         },
     },
 })
@@ -198,10 +196,6 @@ export default class KeyEditor extends BaseEditor {
         if (!this.$v.key.required) {
             errors.push(this.$t('common.validation.required'));
         }
-        // @ts-ignore
-        if (!this.$v.key.alphaNum) {
-            errors.push(this.$t('common.validation.alphanumeric'));
-        }
         return errors;
     }
 
@@ -215,10 +209,7 @@ export default class KeyEditor extends BaseEditor {
         if (!this.$v.value.required) {
             errors.push(this.$t('common.validation.required').toString());
         }
-        // @ts-ignore
-        if (!this.$v.value.alphaNum) {
-            errors.push(this.$t('common.validation.alphanumeric').toString());
-        }
+
         return errors;
     }
 

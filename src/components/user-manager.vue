@@ -34,7 +34,7 @@
                             </v-tooltip>
                             <v-tooltip data-test="user-manager.create.tooltip" bottom max-width="200">
                                 <template v-slot:activator="{ on }">
-                                    <v-btn color="primary" round dark @click="addItem" v-on="on">
+                                    <v-btn data-test="user-manager.create.button" color="primary" round dark @click="addItem" v-on="on">
                                         <v-icon data-test="user-manager.create.icon">add</v-icon>
                                         <span data-test="user-manager.create.span">{{ $t("common.actions.create.label") }}</span>
                                     </v-btn>
