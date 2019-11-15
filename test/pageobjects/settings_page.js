@@ -5,7 +5,6 @@ const user = new User();
 
 class SettingsPage extends BasePage {
 
-
     constructor(app = undefined) {
         super(app);
     }
