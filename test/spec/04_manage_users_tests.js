@@ -18,7 +18,7 @@ describe('manage users app scenarios', function() {
     it('open users manage list', async () => {
         await settingsPage.clickEtcdBtn();
         await settingsPage.writeEndpoint(
-            'http://hubphq-icon-sandbox-d001.icellmobilsoft.hu'
+            process.env.ETCDMANAGER_URL || '127.0.0.1'
         );
         await settingsPage.clickSubmitBtn();
         await page.clickUsersMenu();

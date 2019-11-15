@@ -12,7 +12,7 @@ describe('settings app scenarios', function() {
 
    it('submit etcd values test', async () => {
         await page.clickEtcdBtn();
-        await page.writeEndpoint('http://hubphq-icon-sandbox-d001.icellmobilsoft.hu');
+        await page.writeEndpoint(process.env.ETCDMANAGER_URL || '127.0.0.1') ;
         await page.clickSubmitBtn();
     });
 
