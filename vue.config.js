@@ -50,6 +50,7 @@ module.exports = {
             builderOptions: {
                 appId: 'io.etcdmanager.app',
                 copyright: `ICell Ltd and contributors ${new Date().getFullYear()}`,
+                publish: ['github'],
                 nsis: {
                     oneClick: false,
                     perMachine: false,
@@ -65,7 +66,13 @@ module.exports = {
                 },
                 win: {
                     icon: './public/icons/icon.ico',
-                    artifactName: '${productName}-${version}-win64.${ext}'
+                    artifactName: '${productName}-${version}-win64.${ext}',
+                    target: [
+                        {
+                            target: 'nsis',
+                            arch: ['x64', 'ia32'],
+                        },
+                    ],
                 },
                 appImage: {
                     license: 'LICENSE',
@@ -85,7 +92,17 @@ module.exports = {
                         'Application Name': 'Multi-platform ETCD client',
                     },
                     synopsis:
-                        'Free, multi-platform ETCD client with a modern UI'
+                        'Free, multi-platform ETCD client with a modern UI',
+                    target: [
+                        {
+                            target: 'AppImage',
+                            arch: 'x64',
+                        },
+                        {
+                            target: 'tar.gz',
+                            arch: 'x64',
+                        },
+                    ],
                 },
                 pkg: {
                     allowAnywhere: false,
@@ -95,14 +112,20 @@ module.exports = {
                         scaling: 'proportional',
                     },
                     license: 'LICENSE',
-                    welcome: './build_files/welcome.rtf',
-                    conclusion: './build_files/conclusion.rtf',
-                    isVersionChecked: false
+                    welcome: './build_files/welcome.html',
+                    conclusion: './build_files/conclusion.html',
+                    isVersionChecked: false,
                 },
                 mac: {
                     category: 'public.app-category.developer-tools',
                     icon: './public/icons/icon.icns',
-                    artifactName: '${productName}-${version}-osx.${ext}'
+                    artifactName: '${productName}-${version}-osx.${ext}',
+                    target: [
+                        {
+                            target: 'pkg',
+                            arch: 'x64',
+                        },
+                    ],
                 },
                 files: [
                     '**/*',
