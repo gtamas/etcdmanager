@@ -19,6 +19,7 @@ import { join } from 'path';
 import { readFileSync } from 'fs';
 import { get } from 'lodash-es';
 import * as defaultTranslations from './i18n/en';
+import { autoUpdater } from 'electron-updater';
 
 const pkg = JSON.parse(
     readFileSync(
@@ -368,6 +369,8 @@ function createWindow() {
         createProtocol('app');
         // Load the index.html when not in development
         win.loadURL('app://./index.html');
+        autoUpdater.checkForUpdatesAndNotify();
+
     }
 
     win.maximize();
