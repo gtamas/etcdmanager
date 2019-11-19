@@ -250,8 +250,8 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
             ],
         },
     ];
-
     template.unshift(
+        // @ts-ignore
         isMac
             ? {
                   label: app.getName(),
