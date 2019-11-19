@@ -51,7 +51,7 @@ We plan to add tons of cool features in the future. The most important ones are 
 - ETCD Dashboard: live dashboard with graphs.
 - Report generation in different formats (HTML, PDF, XML etc)
 
-**Platforms**
+**Future platforms**
 
 - Android and iOS 
 - Web (browser version)
@@ -62,13 +62,13 @@ A better organized overview of these plans will be available soon. Stay tuned :)
 
 ### End users..
 
-The current stable (prod) version is 1.0 and it's available for Mac OS (Yosemite+), MS Windows (7+) and some major Linux distros (Ubuntu, Arch etc). The following are pre-built binaries and this is the recommended way to install. Grab one now:
+The current stable (prod) version is 1.0. It's available for Mac OS X (Yosemite+), MS Windows (7+) and some major Linux distros (Ubuntu, Arch etc). The following are pre-built binaries and this is the recommended way to install. Grab one now:
 
 - [Windows](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-win64.exe)
 - [MacOS](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-osx.dmg)
 - [Linux](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-linux.AppImage)
 
-Other packages are available for download as well, please see the [releases (https://github.com/icellmobilsoft/etcdmanager/releases) page.
+Other packages are available for download as well, please see the [releases](https://github.com/icellmobilsoft/etcdmanager/releases) page.
 
 ### Contributors..
 
