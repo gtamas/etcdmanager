@@ -48,9 +48,13 @@ module.exports = {
         externals: ['@grpc/proto-loader'],
         electronBuilder: {
             builderOptions: {
+                directories: {
+                    buildResources: './build_files',
+                },
                 appId: 'io.etcdmanager.app',
                 copyright: `ICell Ltd and contributors ${new Date().getFullYear()}`,
                 publish: ['github'],
+                npmRebuild: false,
                 nsis: {
                     oneClick: false,
                     perMachine: false,
@@ -104,8 +108,27 @@ module.exports = {
                         },
                     ],
                 },
+                dmg: {
+                    background: './build_files/icon_gray.png',
+                    title: '${productName} v${version}',
+                    contents: [
+                        {
+                            x: 150,
+                            y: 220,
+                        },
+                        {
+                            x: 390,
+                            y: 220,
+                            type: 'link',
+                            path: '/Applications',
+                        },
+                    ],
+                },
                 pkg: {
                     allowAnywhere: false,
+                    installLocation: '/Applications',
+                    allowCurrentUserHome: true,
+                    overwriteAction: 'upgrade',
                     background: {
                         file: './build_files/icon.png',
                         alignment: 'topleft',
