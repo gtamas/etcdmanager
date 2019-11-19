@@ -216,23 +216,6 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
             ],
         },
         {
-            label: get(translations, ['appMenu', 'beta'], 'Beta'),
-            // @ts-ignore
-            submenu: [
-                {
-                    label: get(
-                        translations,
-                        ['appMenu', 'reportBug'],
-                        'Report a bug'
-                    ),
-                    accelerator: 'CommandOrControl+Alt+B',
-                    click: () => {
-                        shell.openExternal(pkg.bugs.url);
-                    },
-                },
-            ],
-        },
-        {
             label: get(translations, ['appMenu', 'help'], 'Help'),
             // @ts-ignore
             submenu: [
@@ -247,14 +230,27 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
                         shell.openExternal(`${pkg.homepage}/wiki`);
                     },
                 },
+                {
+                    label: get(
+                        translations,
+                        ['appMenu', 'reportBug'],
+                        'Report a bug'
+                    ),
+                    accelerator: 'CommandOrControl+Alt+B',
+                    click: () => {
+                        shell.openExternal(pkg.bugs.url);
+                    },
+                },
             ],
         },
     ];
+
     template.unshift(
         // @ts-ignore
         isMac
             ? {
                   label: app.getName(),
+
                   submenu: [
                       {
                           role: 'about',
