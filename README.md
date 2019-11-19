@@ -25,11 +25,6 @@ This is a free, cross-platform [ETCD](http://www.etcd.io) v3 client and GUI. The
 - Provide an efficient, modern GUI for desktop (Windows, Linux, Mac), mobile (iOS and Android) and web.
 - Cover all ETCD functionality. Anything you can do with ***etcdctl***, you should be able to do with this tool. This should be useful for simple and power users alike.
 
-Currently only the **beta** desktop version is available.
-
-**Attention!**
-This is still a work in progress, it's **NOT** production ready yet! Use it at your own risk!
-
 ## Features
 
 ### Available now
@@ -67,7 +62,13 @@ A better organized overview of these plans will be available soon. Stay tuned :)
 
 ### End users..
 
-We have pre-built binaries for OSX (Yosemite+), Windows (7+) as well as the major Linux distributions (Debian, Ubuntu etc). Download one of these packages from the [releases](https://github.com/icellmobilsoft/etcdmanager/releases) page.
+The current stable (prod) version is 1.0 and it's available for Mac OS (Yosemite+), MS Windows (7+) and some major Linux distros (Ubuntu, Arch etc). The following are pre-built binaries and this is the recommended way to install. Grab one now:
+
+- [Windows](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-win64.exe)
+- [MacOS](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-osx.dmg)
+- [Linux](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-linux.AppImage)
+
+Other packages are available for download as well, please see the [releases (https://github.com/icellmobilsoft/etcdmanager/releases) page.
 
 ### Contributors..
 
@@ -77,14 +78,10 @@ You may install the dev version by cloning this repository.
 git clone https://github.com/icellmobilsoft/etcdmanager.git
 ```
 
-Or you may also install the Yarn / NPM package, although this is not recommended, since the package might not contain the latest code.
+Or you may also install the NPM package, although this is not recommended, since the package might not contain the latest code.
 
 ```
 yarn add etcd-manager
-
-or
-
-npm install etcd-manager
 ```
 
 Please also check out the [contribution guide](./CONTRIBUTING.md) before writing any code.
@@ -93,24 +90,12 @@ Please also check out the [contribution guide](./CONTRIBUTING.md) before writing
 
 Once you have the code, simply execute the following commands. 
 
-Run this only if you've installed the package via Yarn / NPM:
+Run this only if you've installed the package via Yarn:
 
 ```
 cd node_modules/etcd-manager
-```
-
-And then..
-
-```
 yarn install
 yarn electron:serve
-```
-
-or
-
-```
-npm install
-npm run electron:serve
 ```
 
 ## Usage and support
@@ -118,24 +103,25 @@ npm run electron:serve
 First of all, in order to work properly, ETCD Manager must be configured. 
 
 You need to provide only two mandatory settings: the **host** and the **port** ETCD is running at. You'll find these on the **settings** screen, under the **ETCD tab**. 
-If your ETCD host requires authentication, you'll also need to provide a password / username pair, which you can do under the **auth tab**.
-There are several additional configuration options, but these are all optional.
+If your ETCD host requires authentication, you will also need to provide a password / username pair, which you can do under the **auth tab**.
+There are several additional configuration options, but those are all optional.
 
 Detailed documentation is not available (yet), but you may want to activate **quick help**, which is available everywhere. Press **CTRL / CMD + H** to open the help pane. Here you'll find some basic info as well as all the **keyborad shortcuts**. This should be enough to get you started.
 
-If you still need help, please feel free to contact us. Open an [issue](https://github.com/icellmobilsoft/etcdmanager/issues) using the **help** label.
+If you still need help, please feel free to contact us. Open an [issue](https://github.com/icellmobilsoft/etcdmanager/issues) (question / support request).
 
 Once the documentation is ready, it'll be available in the wiki.
 
 ## Upgrading
 
-We don't have automatic updates yet. If you've already installed this product and would like to upgrade, you have to download and install the the new release manually. Please see our [releases](https://github.com/icellmobilsoft/etcdmanager/releases) page. 
+If you've installed the app using the Windows or Mac installer or the Linux AppImage, you'll be notified automatically whenever a new release is available. Simply reestart the app, and it'll check for updates. 
+Otherwiese, you have to download and install the new version manually.
 
 As for the dev version, you may update that by the usual means (Yarn or Git). In any case, please read our [changelog](./CHANGELOG.md) for an overview of the most recent changes.
 
 ## Bugs and feature requests
 
-This is the beta version, so probably there are bugs. If you find one of them, please report it using our [issue tracker](https://github.com/icellmobilsoft/etcdmanager/issues).
+If you find a bug, please report it using our [issue tracker](https://github.com/icellmobilsoft/etcdmanager/issues).
 
 This is also the place to request new features or ask questions. Please label your your issue appropriately, use the "bug", "enchantment" and "question" labels, respectively.
 
