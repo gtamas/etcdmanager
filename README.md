@@ -114,7 +114,8 @@ Once the documentation is ready, it'll be available in the wiki.
 
 ## Upgrading
 
-If you've installed the app using the Windows or Mac installer or the Linux AppImage, you'll be notified automatically whenever a new release is available. Simply reestart the app, and it'll check for updates. 
+If you've installed the app using the Windows or Mac installer or the Linux AppImage, you'll be notified automatically whenever a new release is available. Simply restart the app, and it'll check for updates. 
+
 Otherwiese, you have to download and install the new version manually.
 
 As for the dev version, you may update that by the usual means (Yarn or Git). In any case, please read our [changelog](./CHANGELOG.md) for an overview of the most recent changes.
