@@ -9,7 +9,7 @@
     "lint": "npx tslint -p tsconfig.json",
     "electron:build": "vue-cli-service electron:build",
     "electron:build:mac": "vue-cli-service electron:build --macos dmg --x64",
-    "electron:publish:mac": "vue-cli-service electron:build --macos pkg --x64 -p always",
+    "electron:publish:mac": "vue-cli-service electron:build --macos dmg --x64 -p always",
     "electron:build:win": "vue-cli-service electron:build  --windows nsis --x64 --ia32",
     "electron:publish:win": "vue-cli-service electron:build  --windows nsis --x64 --ia32 -p always",
     "electron:build:linux": "vue-cli-service electron:build  --linux AppImage snap tar.gz --x64",
