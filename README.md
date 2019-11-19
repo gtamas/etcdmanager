@@ -67,14 +67,14 @@ A better organized overview of these plans will be available soon. Stay tuned :)
 
 ### End users..
 
-We have pre-built binaries for OSX (Yosemite+), Windows (7+) as well as the major Linux distributions (Debian, Ubuntu etc). Download one of these packages from the [releases](https://github.com/gtamas/etcdmanager/releases) page.
+We have pre-built binaries for OSX (Yosemite+), Windows (7+) as well as the major Linux distributions (Debian, Ubuntu etc). Download one of these packages from the [releases](https://github.com/icellmobilsoft/etcdmanager/releases) page.
 
 ### Contributors..
 
 You may install the dev version by cloning this repository.
 
 ```
-git clone git@github.com:gtamas/etcdmanager.git
+git clone https://github.com/icellmobilsoft/etcdmanager.git
 ```
 
 Or you may also install the Yarn / NPM package, although this is not recommended, since the package might not contain the latest code.
@@ -123,19 +123,19 @@ There are several additional configuration options, but these are all optional.
 
 Detailed documentation is not available (yet), but you may want to activate **quick help**, which is available everywhere. Press **CTRL / CMD + H** to open the help pane. Here you'll find some basic info as well as all the **keyborad shortcuts**. This should be enough to get you started.
 
-If you still need help, please feel free to contact us. Open an [issue](https://github.com/gtamas/etcdmanager/issues) using the **help** label.
+If you still need help, please feel free to contact us. Open an [issue](https://github.com/icellmobilsoft/etcdmanager/issues) using the **help** label.
 
 Once the documentation is ready, it'll be available in the wiki.
 
 ## Upgrading
 
-We don't have automatic updates yet. If you've already installed this product and would like to upgrade, you have to download and install the the new release manually. Please see our [releases](https://github.com/gtamas/etcdmanager/releases) page. 
+We don't have automatic updates yet. If you've already installed this product and would like to upgrade, you have to download and install the the new release manually. Please see our [releases](https://github.com/icellmobilsoft/etcdmanager/releases) page. 
 
 As for the dev version, you may update that by the usual means (Yarn or Git). In any case, please read our [changelog](./CHANGELOG.md) for an overview of the most recent changes.
 
 ## Bugs and feature requests
 
-This is the beta version, so probably there are bugs. If you find one of them, please report it using our [issue tracker](https://github.com/gtamas/etcdmanager/issues).
+This is the beta version, so probably there are bugs. If you find one of them, please report it using our [issue tracker](https://github.com/icellmobilsoft/etcdmanager/issues).
 
 This is also the place to request new features or ask questions. Please label your your issue appropriately, use the "bug", "enchantment" and "question" labels, respectively.
 
