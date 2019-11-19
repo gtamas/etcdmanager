@@ -70,7 +70,7 @@
     "vue-template-compiler": "^2.5.21"
   },
   "bugs": {
-    "url": "https://github.com/icellmobilsoft/etcdmanager/issues"
+    "url": "https://github.com/icellmobilsoft/etcdmanager/issues/new?assignees=&labels=&template=bug_report.md&title=%5BBUG%5D"
   },
   "collaborators": [
     "Tamas Geschitz <getamas@gmail.com>",
