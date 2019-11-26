@@ -1,14 +1,16 @@
 const Application = require('spectron').Application;
 const electronPath = require('electron');
+const TestUtils = require('../helpers/test-utils');
 
 class BasePage {
     constructor(app = undefined) {
-        this.execPath = process.argv[3].split('=')[1];
-        this.app =
-            app ||
-            new Application({
-                path: this.execPath,
-            });
+        // this.execPath = process.argv[3].split('=')[1];
+        // this.execPath = electronPath;
+        this.app = app;
+        // this.app = app || (new TestUtils()).setupTestbed();
+        // this.app = app || new Application({
+        //     path: this.execPath,
+        // });
     }
 
     async clickNotClickable(el) {
@@ -71,16 +73,16 @@ class BasePage {
             .getValue(selector);
     }
 
-    async select(selector, value){
+    async select(selector, value) {
         await this.app.client
-        .$(selector)
-        .$("//ancestor::div[@role='combobox']//i[text()='arrow_drop_down']")
-        .click();
- 
-       return await this.app.client
-         .$('div.v-select-list')
-         .$('.v-list__tile__title='+value)
-         .click();
+            .$(selector)
+            .$("//ancestor::div[@role='combobox']//i[text()='arrow_drop_down']")
+            .click();
+
+        return await this.app.client
+            .$('div.v-select-list')
+            .$('.v-list__tile__title=' + value)
+            .click();
     }
 }
 
