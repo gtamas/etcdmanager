@@ -62,7 +62,11 @@ A better organized overview of these plans will be available soon. Stay tuned :)
 
 ### End users..
 
-The current stable (prod) version is 1.0. It's available for Mac OS X (Yosemite+), MS Windows (7+) and some major Linux distros (Ubuntu, Arch etc). The following are pre-built binaries and this is the recommended way to install. Grab one now:
+The current stable (prod) version is 1.0. It's available for **Mac OS X (Mojave+)**, **MS Windows (7, 8, 10+)** and some major **Linux distros (Ubuntu 10.04+, Arch etc)**. The following are pre-built binaries and this is the recommended way to install. 
+
+If you have Ubuntu LTS or an up-to-date rolling release distro like Arch, everything should work fine. However, please note that older Linux distros are not supported at the moment. This is something we are working on and will provcide a solution asap.
+
+Grab one now:
 
 - [Windows](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-win64.exe)
 - [MacOS](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-osx.dmg)
