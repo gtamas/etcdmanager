@@ -1,6 +1,6 @@
 # ETCD Manager
 
-[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/etcd-manager)
+[![etcd-manager](https://snapcraft.io//etcd-manager/badge.svg)](https://snapcraft.io/etcd-manager)
 
 - [ETCD Manager](#etcd-manager)
   * [Features](#features)
@@ -76,7 +76,9 @@ Grab one now:
 
 Other packages are available for download as well, please see the [releases](https://github.com/icellmobilsoft/etcdmanager/releases) page.
 
-### Snapcraft
+### We are on SnapCraft!
+
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/etcd-manager)
 
 Install [snap](https://snapcraft.io/docs/installing-snap-on-ubuntu) and run the following command:
 ```
