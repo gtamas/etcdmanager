@@ -78,7 +78,7 @@ Other packages are available for download as well, please see the [releases](htt
 
 ### Snapcraft
 
-Install snap and run the following command:
+Install [snap](https://snapcraft.io/docs/installing-snap-on-ubuntu) and run the following command:
 ```
 snap install etcd-manager
 ```
