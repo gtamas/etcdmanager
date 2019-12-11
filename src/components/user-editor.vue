@@ -218,7 +218,7 @@
                         </v-text-field>
 
                         <template v-if="showRights">
-                            <h2 data-test="user-editor.subheading.h2" class="subheading">Roles</h2>
+                            <h2 data-test="user-editor.subheading.h2" class="subheading">{{ $t('userEditor.subtitle') }}</h2>
                             <hr data-test="user-editor.subheading.hr" />
                             <v-alert
                                 data-test="user-editor.message-noRights.alert"

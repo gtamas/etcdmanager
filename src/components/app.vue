@@ -299,4 +299,8 @@ export default class App extends Vue {
 .editor {
     width: 30vw;
 }
+
+.paddedTop25 {
+    margin: 25px auto auto auto;
+}
 </style>
