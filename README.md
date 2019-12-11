@@ -66,7 +66,7 @@ A better organized overview of these plans will be available soon. Stay tuned :)
 
 The current stable (prod) version is 1.0. It's available for **Mac OS X (Mojave+)**, **MS Windows (7, 8, 10+)** and some major **Linux distros (Ubuntu 10.04+, Arch etc)**. The following are pre-built binaries and this is the recommended way to install. 
 
-If you have Ubuntu LTS or an up-to-date rolling release distro like Arch, everything should work fine. However, please note that older Linux distros are not supported at the moment. This is something we are working on and will provcide a solution asap.
+If you have relatively recent major Linux distro (Ubuntu, Redhat, Suse etc), or Ubuntu LTS or an up-to-date rolling release distro like Arch, everything should work fine. However, **very old** Linux versions might not work as expected. If you have difficulties installing the app, please report the problem in our issue tracker. 
 
 Grab one now:
 
@@ -97,21 +97,38 @@ Or you may also install the NPM package, although this is not recommended, since
 
 ```
 yarn add etcd-manager
+cd node_modules/etcd-manager
 ```
 
 Please also check out the [contribution guide](./CONTRIBUTING.md) before writing any code.
 
 ### Running the dev build
 
-Once you have the code, simply execute the following commands. 
-
-Run this only if you've installed the package via Yarn:
+Once you have the code, simply execute the following commands.:
 
 ```
-cd node_modules/etcd-manager
 yarn install
+```
+
+The next step is to compile the GRPC Node extension. This requires the usual build tools (gcc, make etc) to be installed. Make sure you have these, then run:
+
+```
+npm rebuild --target=ELECTRON_VERSION --runtime=electron --dist-url=https://atom.io/download/electron
+```
+
+... where ELECTRON_VERSION is the **exact** version number of the Electron framework the app uses. You can determnine this by running:
+
+```
+yarn list electron
+```
+
+Finally, start the dev server like this:
+
+```
 yarn electron:serve
 ```
+
+This will start a dev build, and the app sholuld appear shortly.
 
 ## Usage and support
 
@@ -139,5 +156,5 @@ As for the dev version, you may update that by the usual means (Yarn or Git). In
 
 If you find a bug, please report it using our [issue tracker](https://github.com/icellmobilsoft/etcdmanager/issues).
 
-This is also the place to request new features or ask questions. Please label your your issue appropriately, use the "bug", "enchantment" and "question" labels, respectively.
+This is also the place for requesting new features or asking questions. Please label your issue appropriately, use the "bug", "enchantment" and "question" labels, respectively.
 
