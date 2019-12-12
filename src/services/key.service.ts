@@ -1,4 +1,4 @@
-import { DataService } from './../../types/index';
+import { DataService, RevisionListType } from './../../types/index';
 import {
     MultiRangeBuilder,
     Range,
@@ -10,6 +10,34 @@ export default class KeyService extends EtcdService implements DataService {
 
     constructor(client?: Etcd3) {
         super(client);
+    }
+
+    public async getRevisions(key: string): Promise<RevisionListType> {
+
+        const result: RevisionListType = {
+            revisions: [],
+            watcher: null as any,
+        };
+
+        const current = await this.client.watch().key(key);
+
+        current.request.start_revision = 1;
+
+        result.watcher = await current.create();
+        result.watcher.on('data', (res) => {
+            res.events.forEach((event) => {
+                result.revisions.unshift({
+                    key: event.kv.value.toString(),
+                    version: event.kv.version,
+                    createRevision: event.kv.create_revision,
+                    modRevision: event.kv.mod_revision,
+                    type: event.type,
+                });
+            });
+        });
+
+        return result;
+
     }
 
     public loadKey(key: string): Promise<any> {

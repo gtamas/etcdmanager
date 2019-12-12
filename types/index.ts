@@ -11,6 +11,11 @@ export interface GenericObject {
 export type EtcdEventType = 'put' | 'delete' | 'all';
 export type EtcdPermissionType = 'Read' | 'Write' | 'Readwrite';
 
+export interface RevisionListType {
+    revisions: any[];
+    watcher: Watcher;
+}
+
 export type PermissionObject = {
     key: string,
     prefix: boolean,

@@ -351,6 +351,7 @@ export default {
         },
         keyEditor: {
             title: 'Keys',
+            subtitle: 'Revisions',
             help: {
                 text: `You can **create** and **edit** keys here.
 
@@ -369,8 +370,19 @@ export default {
                     tooltip: 'The value associated with this key',
                 },
             },
+            buttons: {
+                revisions: 'Show revisions',
+                revisionsHide: 'Hide revisions',
+            },
             messages: {
                 duplicateKey: 'This key already exists!',
+            },
+            columns: {
+                key: 'Previous value',
+                version: 'Version',
+                createRev: 'Create Rev',
+                modRev: 'Mod Rev',
+                type: 'Type',
             },
         },
         purgeDialog: {
@@ -584,6 +596,7 @@ export default {
         },
         userManager: {
             title: 'Users',
+            subtitle: 'Roles',
             help: {
                 text: `This is the list of **all ETCD users**. Here you may:
 

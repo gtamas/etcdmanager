@@ -356,6 +356,7 @@ export default {
         },
         keyEditor: {
             title: 'Kulcsok',
+            subtitle: 'Revíziók',
             help: {
                 text: `Itt kulcsokat **hozhat létre** és **szerkeszthet**.
 
@@ -373,8 +374,19 @@ export default {
                     tooltip: 'A kulcshoz társított érték',
                 },
             },
+            buttons: {
+                revisions: 'Revíziók',
+                revisionsHide: 'Revíziók off',
+            },
             messages: {
                 duplicateKey: 'Ez a kulcs már létezik!',
+            },
+            columns: {
+                key: 'Előző érték',
+                version: 'Verzió',
+                createRev: 'Létrehoz Rev',
+                modRev: 'Mod Rev',
+                type: 'Típus',
             },
         },
         purgeDialog: {
@@ -610,6 +622,7 @@ export default {
         },
         userEditor: {
             title: 'Felhasználók',
+            subtitle: 'Szerepek',
             help: {
                 text: `Itt létező felhasználó jelszavát **módosíthatja** vagy új usert **kreálhat**.
 
@@ -618,7 +631,6 @@ export default {
 
                 > A jelszavaknak meg kell felelnie egy jelszó mintának. Ha az alapértelmezett minta nem felel meg, megváltoztathatja a **beállítások fülön**.`,
             },
-            subtitle: 'Szerepek',
             fields: {
                 name: {
                     label: 'Név',
