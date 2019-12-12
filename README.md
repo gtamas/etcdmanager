@@ -27,6 +27,8 @@ This is a free, cross-platform [ETCD](http://www.etcd.io) v3 client and GUI. The
 - Provide an efficient, modern GUI for desktop (Windows, Linux, Mac), mobile (iOS and Android) and web.
 - Cover all ETCD functionality. Anything you can do with ***etcdctl***, you should be able to do with this tool. This should be useful for simple and power users alike.
 
+Please note that this app currenlty **does not** support the ETCD V2 API! At the moment, it's for **V3** only.
+
 ## Features
 
 ### Available now
