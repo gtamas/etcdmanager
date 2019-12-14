@@ -512,7 +512,7 @@ export default class KeyEditor extends BaseEditor {
             () => {
                 this.$store.commit(
                     'message',
-                    Messages.success('keyEditor.messages.copyError')
+                    Messages.error('keyEditor.messages.copyError')
                 );
             }
         );
