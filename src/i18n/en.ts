@@ -123,6 +123,8 @@ export default {
             messages: {
                 success: 'Operation successful',
                 error: 'Could not perform operation',
+                copyClipboardSuccess: 'Copied to clipboard successfully.',
+                copyClipboardSuccessError: 'Could not copy to clipboard.',
             },
         },
         settings: {
@@ -376,8 +378,6 @@ export default {
             },
             messages: {
                 duplicateKey: 'This key already exists!',
-                copySuccess: 'Copied to clipboard successfully.',
-                copyError: 'Could not copy to clipboard.',
             },
             columns: {
                 key: 'Previous value',

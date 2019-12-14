@@ -506,13 +506,13 @@ export default class KeyEditor extends BaseEditor {
             () => {
                 this.$store.commit(
                     'message',
-                    Messages.success('keyEditor.messages.copySuccess')
+                    Messages.success('common.messages.copyClipboardSuccess')
                 );
             },
             () => {
                 this.$store.commit(
                     'message',
-                    Messages.error('keyEditor.messages.copyError')
+                    Messages.error('common.messages.copyClipboardError')
                 );
             }
         );

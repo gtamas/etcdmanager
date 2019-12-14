@@ -182,7 +182,7 @@
                         <td>
                             <v-checkbox data-test="key-manager.props-selected.chechbox" v-model="props.selected" primary hide-details></v-checkbox>
                         </td>
-                        <td data-test="key-manager.props-item-key.td" class="text-xs-left">{{ props.item.key }}</td>
+                        <td data-test="key-manager.props-item-key.td" class="text-xs-left" @click="copyToClipboard(props.item.key)">{{ props.item.key }}</td>
                         <td data-test="key-manager.props-item-value.td" class="text-xs-left">{{ props.item.value }}</td>
                         <td data-test="key-manager.actions-edit.td" class="justify-center layout px-0">
                             <v-tooltip data-test="key-manager.actions-edit.tooltip" bottom max-width="200">
@@ -298,6 +298,23 @@ export default class KeyManager extends CrudBase implements List {
             'keyManager.columns.value'
         );
         this.load();
+    }
+
+    public copyToClipboard(value: any) {
+        navigator.clipboard.writeText(value).then(
+            () => {
+                this.$store.commit(
+                    'message',
+                    Messages.success('common.messages.copyClipboardSuccess')
+                );
+            },
+            () => {
+                this.$store.commit(
+                    'message',
+                    Messages.error('common.messages.copyClipboardError')
+                );
+            }
+        );
     }
 
     public async editItem(item: GenericObject): Promise<KeyManager> {
