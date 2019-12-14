@@ -376,6 +376,8 @@ export default {
             },
             messages: {
                 duplicateKey: 'This key already exists!',
+                copySuccess: 'Copied to clipboard successfully.',
+                copyError: 'Could not copy to clipboard.',
             },
             columns: {
                 key: 'Previous value',

@@ -380,6 +380,8 @@ export default {
             },
             messages: {
                 duplicateKey: 'Ez a kulcs már létezik!',
+                copySuccess: 'Sikeresen vágólapra másolva.',
+                copyError: 'A vágólapra másolás nem sikerült.',
             },
             columns: {
                 key: 'Előző érték',
