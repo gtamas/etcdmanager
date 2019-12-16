@@ -218,7 +218,7 @@
                                 $t('keyEditor.fields.value.placeholder')
                             "
                             :append-icon="'file_copy'"
-                            @click:append="copyToClipboard(value)"
+                            @click:append="clipboardService.copyToClipboard(value)"
                             required
                             @input="$v.value.$touch()"
                             @blur="$v.value.$touch()"
@@ -499,23 +499,6 @@ export default class KeyEditor extends BaseEditor {
 
     public revertValue(item: any) {
         this.value = item.key;
-    }
-
-    public copyToClipboard(inputValue: any) {
-        navigator.clipboard.writeText(inputValue).then(
-            () => {
-                this.$store.commit(
-                    'message',
-                    Messages.success('keyEditor.messages.copySuccess')
-                );
-            },
-            () => {
-                this.$store.commit(
-                    'message',
-                    Messages.error('keyEditor.messages.copyError')
-                );
-            }
-        );
     }
 
     public async submit(): Promise<KeyEditor | ValidationError> {

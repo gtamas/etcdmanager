@@ -182,7 +182,7 @@
                         <td>
                             <v-checkbox data-test="key-manager.props-selected.chechbox" v-model="props.selected" primary hide-details></v-checkbox>
                         </td>
-                        <td data-test="key-manager.props-item-key.td" class="text-xs-left">{{ props.item.key }}</td>
+                        <td data-test="key-manager.props-item-key.td" class="text-xs-left" @click="clipboardService.copyToClipboard(props.item.key)">{{ props.item.key }}</td>
                         <td data-test="key-manager.props-item-value.td" class="text-xs-left">{{ props.item.value }}</td>
                         <td data-test="key-manager.actions-edit.td" class="justify-center layout px-0">
                             <v-tooltip data-test="key-manager.actions-edit.tooltip" bottom max-width="200">

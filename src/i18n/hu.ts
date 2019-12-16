@@ -127,6 +127,8 @@ export default {
             messages: {
                 success: 'Sikeres művelet',
                 error: 'A művelet nem végrehajtható',
+                copyClipboardSuccess: 'Sikeresen vágólapra másolva.',
+                copyClipboardError: 'A vágólapra másolás nem sikerült.',
             },
         },
         settings: {
@@ -380,8 +382,6 @@ export default {
             },
             messages: {
                 duplicateKey: 'Ez a kulcs már létezik!',
-                copySuccess: 'Sikeresen vágólapra másolva.',
-                copyError: 'A vágólapra másolás nem sikerült.',
             },
             columns: {
                 key: 'Előző érték',
