@@ -458,7 +458,6 @@ import KeyService from '../services/key.service';
             required: requiredIf('password'),
         },
         password: {
-            alphaNum,
             required: requiredIf('username'),
         },
         pwpattern: {
