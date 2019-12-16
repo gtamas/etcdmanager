@@ -163,7 +163,7 @@
                             :error-messages="passwordErrors"
                             :label="$t('userEditor.fields.password.label')"
                             :placeholder="$t('userEditor.fields.password.placeholder')"
-                            :type="getType()"
+                            :type="inputActionService.getType(this.showPassword)"
                             :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                             counter
                             @click:append="showPassword = !showPassword"
@@ -196,7 +196,7 @@
                             counter
                             :label="$t('userEditor.fields.pwcheck.label')"
                             :placeholder="$t('userEditor.fields.pwcheck.placeholder')"
-                            :type="getType()"
+                            :type="inputActionService.getType(this.showPassword)"
                             required
                         >
                             <v-tooltip
@@ -278,6 +278,7 @@ import {
 import Messages from '@/lib/messages';
 import { BaseEditor } from '../lib/editor.class';
 import { Prop } from 'vue-property-decorator';
+import { InputActionService } from '../services/input-action.service';
 import UserService from '../services/user.service';
 import RoleService from '../services/role.service';
 import store from '../store';
@@ -334,11 +335,13 @@ export default class UserEditor extends BaseEditor {
     public roles: Role[] = [];
     public ownRoles: string[] = [];
     public showRights: boolean = false;
+    public inputActionService: InputActionService;
     private roleService: RoleService;
     private userService: UserService;
 
     constructor() {
         super();
+        this.inputActionService = new InputActionService();
         this.roleService = new RoleService(
             this.$store.state.connection.getClient()
         );
@@ -422,8 +425,8 @@ export default class UserEditor extends BaseEditor {
         this.showRights = !this.createMode;
     }
 
-    public getType(): string {
-        return this.showPassword ? 'text' : 'password';
+    public getType(showPassword: any): string {
+        return showPassword ? 'text' : 'password';
     }
 
     public async submit(): Promise<UserEditor | ValidationError> {
