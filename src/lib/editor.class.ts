@@ -1,3 +1,4 @@
+import { ClipboardService } from '@/services/clipboard.service';
 import { PlatformService } from './../services/platform.service';
 import { GenericObject } from './../../types/index';
 
@@ -18,6 +19,7 @@ export class BaseEditor extends Vue {
     public headers: GenericObject[] = [];
     protected keyboardEvents: any;
     public help: number | null = null;
+    public clipboardService: ClipboardService;
     public platformService: PlatformService;
     public helpbar: any = 0;
 
@@ -25,6 +27,7 @@ export class BaseEditor extends Vue {
 
     constructor() {
         super();
+        this.clipboardService = new ClipboardService();
         this.platformService = new PlatformService();
     }
 
