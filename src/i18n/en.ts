@@ -340,6 +340,8 @@ export default {
                 value: 'Value',
             },
             actions: {
+                treeView: 'Tree',
+                flatView: 'Flat',
                 touchAll: {
                     label: 'Touch',
                     tooltip: 'Touch selected keys',

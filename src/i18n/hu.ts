@@ -345,6 +345,8 @@ export default {
                 value: 'Érték',
             },
             actions: {
+                treeView: 'Fa',
+                flatView: 'Táblázat',
                 touchAll: {
                     label: 'Hozzáad',
                     tooltip: 'Kiválasztott kulcsok hozzáadása',

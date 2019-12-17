@@ -42,8 +42,9 @@
                                 inset
                                 vertical
                             ></v-divider>
-                            <v-btn color="primary" round dark>
-                                <i class="material-icons">account_tree</i>Info
+                            <v-btn color="primary" @click="setViewType()" round dark>
+                                <i class="material-icons">{{ getViewIcon() }}</i>
+                                {{ getViewType() }}
                             </v-btn>
                             <v-spacer
                                 data-test="key-manager.help.spacer"
@@ -402,8 +403,9 @@
                 </v-expansion-panel-content>
             </v-expansion-panel>
             <v-card raised dark>
-                <v-treeview :items="treeData"> </v-treeview>
+                <v-treeview :items="treeData" v-if="isTreeView()"> </v-treeview>
                 <v-data-table
+                    v-if="!isTreeView()"
                     ref="table"
                     :search="filter"
                     :headers="headers"
@@ -549,7 +551,16 @@ import { GenericObject, EtcdItem, EtcdKey } from '../../types';
 import KeyEditor from './key-editor.vue';
 import KeyService from '../services/key.service';
 import { CrudBase, List } from '../lib/crud.class';
-import { union } from 'lodash-es';
+import { set as _set, get as _get } from 'lodash-es';
+import * as Tree from 'list-to-tree';
+
+interface TreeNodeType {
+    id?: string | number;
+    isLeaf?: boolean;
+    parent?: string | number;
+    name?: string;
+    children?: TreeNodeType[];
+}
 
 @Component({
     name: 'key-manager',
@@ -558,8 +569,6 @@ import { union } from 'lodash-es';
     },
 })
 export default class KeyManager extends CrudBase implements List {
-    public none = 0;
-    public counter = 1;
     public treeData = [];
     public headers = [
         {
@@ -570,6 +579,7 @@ export default class KeyManager extends CrudBase implements List {
         },
         { text: '', value: 'value', sortable: true },
     ];
+    public view: 'tree' | 'flat' = 'flat';
 
     protected etcd: KeyService;
 
@@ -676,50 +686,79 @@ export default class KeyManager extends CrudBase implements List {
             this.$store.commit('message', Messages.error(error));
         }
         this.loadTree();
-        return Promise.resolve(this);
+
+       return Promise.resolve(this);
     }
 
-    public fillArray(keys, item) {
-        let object = {};
-        if (keys.length > 1) {
-            keys.forEach((key) => {
-                object.id = this.counter++;
-                object.name = key;
-                keys.shift();
-                object.children = [this.fillArray(keys, item)];
-            });
-        } else {
-            object.id = this.counter++;
-            object.name = keys[0];
-            object.children = [
-                {
-                    id: this.counter++,
-                    name: item.value,
-                },
-            ];
-        }
-        return object;
+
+    public isTreeView() {
+        return this.view === 'tree';
     }
-    public mergedKeys() {
-        return this.data.reduce((acc, curr) => {
-            return union(acc, curr.key.split('.'));
-        }, []);
+
+    public setViewType() {
+        this.view = this.view === 'tree' ? 'flat' : 'tree';
     }
+
+    public getViewType() {
+        return this.$t(`keyManager.actions.${this.isTreeView() ? 'flat' : 'tree'}View`);
+    }
+
+    public getViewIcon() {
+        return this.isTreeView() ? 'list' : 'account_tree';
+    }
+
 
     public loadTree() {
-        this.data.forEach((item) => {
-            let keys = item.key.split('.');
-            this.treeData.push(this.fillArray(keys, item));
-        });
-        this.mergedKeys().forEach((key) => {
-            let response = this.treeData.filter((item) => {
-                return item.name === key;
-            });
-        });
-        /*console.log(this.treeData.filter((item) => {
-            return item.name === 'private';
-        }));
-        console.log(JSON.stringify(this.treeData));*/
+        const tmp: TreeNodeType[] = [];
+        const keyMap = {};
+        let counter = 1;
+
+        for (const item of this.data) {
+            const keys = item.key.split('.');
+
+            for (let i = 0; i < keys.length; i += 1) {
+                const object: TreeNodeType = {};
+                object.id = counter += 1;
+                object.name = keys[i];
+
+                _set(keyMap, keys.slice(0, i + 1), {
+                    nodeId: object.id,
+                    ...(_get(keyMap, keys.slice(0, i + 1)) as any),
+                });
+
+                const parentId: { nodeId: number } = _get(
+                    keyMap,
+                    keys.slice(0, i)
+                );
+
+                object.parent = 0;
+                if (parentId) {
+                    object.parent = parentId.nodeId;
+                }
+
+                if (
+                    !tmp.find(
+                        (node) =>
+                            node.name === object.name &&
+                            node.parent === object.parent
+                    )
+                ) {
+                    tmp.push(object);
+                }
+            }
+            let object: TreeNodeType = {};
+            object.id = counter += 1;
+            object.name = item.value;
+            object.parent = tmp[tmp.length - 1].id;
+            tmp.push(object);
+        }
+
+        this.treeData = new Tree(tmp, {
+            key_id: 'id',
+            key_parent: 'parent',
+            key_child: 'children',
+            empty_children: false,
+        }).GetTree();
     }
 }
 </script>

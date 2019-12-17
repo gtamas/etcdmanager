@@ -28,6 +28,7 @@
     "electron-updater": "^4.2.0",
     "etcd3": "^0.2.11",
     "grpc": "1.24.2",
+    "list-to-tree": "^2.2.3",
     "lodash-es": "^4.17.11",
     "markdown": "^0.5.0",
     "mousetrap": "^1.6.3",
