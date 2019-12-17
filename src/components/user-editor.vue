@@ -425,10 +425,6 @@ export default class UserEditor extends BaseEditor {
         this.showRights = !this.createMode;
     }
 
-    public getType(showPassword: any): string {
-        return showPassword ? 'text' : 'password';
-    }
-
     public async submit(): Promise<UserEditor | ValidationError> {
         this.$v.$touch();
         if (this.$v.$invalid) {
