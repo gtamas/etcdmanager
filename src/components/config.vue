@@ -237,11 +237,13 @@
                                         dark
                                         ref="password"
                                         tab="1"
-                                        type="password"
                                         v-model="password"
+                                        :append-icon="showPassword ? 'visibility' : 'visibility_off'"
                                         :placeholder="$t('settings.auth.fields.password.placeholder')"
                                         :error-messages="passwordErrors"
                                         :label="$t('settings.auth.fields.password.label')"
+                                        :type="inputActionService.getType(this.showPassword)"
+                                        @click:append="showPassword = !showPassword"
                                         @input="$v.password.$touch()"
                                         @blur="$v.password.$touch()"
                                     >
@@ -430,6 +432,7 @@ import {
     url,
 } from 'vuelidate/lib/validators';
 import { omit } from 'lodash-es';
+import { InputActionService } from '../services/input-action.service';
 import { PlatformService } from '../services/platform.service';
 import Messages from '../lib/messages';
 import KeyService from '../services/key.service';
@@ -483,6 +486,8 @@ export default class Configuration extends Vue {
         { name: 'English', value: 'en' },
         { name: 'Hungarian', value: 'hu' },
     ];
+    public showPassword: boolean = false;
+    public inputActionService: InputActionService;
 
     private tabsLength: number = 4;
     private active = 0;
@@ -494,6 +499,7 @@ export default class Configuration extends Vue {
     constructor() {
         super();
         this.platformService = new PlatformService();
+        this.inputActionService = new InputActionService();
     }
 
     created() {
