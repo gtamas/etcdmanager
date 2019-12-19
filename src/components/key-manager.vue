@@ -403,7 +403,7 @@
                 </v-expansion-panel-content>
             </v-expansion-panel>
             <v-card raised dark>
-                <v-treeview :items="treeData" v-if="isTreeView()"> </v-treeview>
+                <v-treeview :items="treeData" hoverable v-if="isTreeView()"> </v-treeview>
                 <v-data-table
                     v-if="!isTreeView()"
                     ref="table"
