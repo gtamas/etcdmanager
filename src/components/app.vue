@@ -1,11 +1,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Menu from './menu.vue';
-import { omit } from 'lodash-es';
 import { ipcRenderer } from 'electron';
 import WatcherService from '../services/watcher.service';
 import { GenericObject } from '../../types';
+import { LocalStorageService } from '../services/local-storage.service';
+import { ConfigService } from '../services/config.service';
 const app = require('electron').remote.app;
+
 
 @Component({
     name: 'App',
@@ -16,9 +18,14 @@ const app = require('electron').remote.app;
 export default class App extends Vue {
     public drawer: boolean = true;
     public year = new Date().getFullYear();
+    private localStorageService: LocalStorageService;
+    private configService: ConfigService;
 
     constructor() {
         super();
+          // @ts-ignore
+        this.localStorageService = new LocalStorageService(this.$ls);
+        this.configService = new ConfigService(this.localStorageService);
     }
 
     created() {
@@ -79,27 +86,11 @@ export default class App extends Vue {
 
     public mounted() {
         // @ts-ignore
-        const config = this.$ls.get('config');
+        const config = this.configService.getConfig();
 
         if (config) {
-            const cfg = JSON.parse(config);
-            this.$store.commit('config', cfg.config);
-            this.$store.commit('users', cfg.users);
-            this.$store.commit('etcdConfig', cfg.etcd);
-            this.$store.commit('watcherConfig', cfg.watchers);
-            this.$store.dispatch('locale', cfg.config.language);
-            if (cfg.etcdAuth) {
-                this.$store.commit('etcdAuthConfig', cfg.etcdAuth);
-            }
-            if (cfg.etcd.hosts) {
-                const auth = cfg.etcdAuth ? { auth: cfg.etcdAuth } : {};
-                this.$store.commit('etcdConnect', {
-                    ...omit(cfg.etcd, 'port'),
-                    ...auth,
-                    ...{ hosts: `${cfg.etcd.hosts}:${cfg.etcd.port}` },
-                });
-            }
-            this.loadOrDisabledWatchers(cfg);
+            this.configService.replaceConfigState(config);
+            this.loadOrDisabledWatchers(config);
         }
     }
 }

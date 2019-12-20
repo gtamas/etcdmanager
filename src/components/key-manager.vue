@@ -62,7 +62,7 @@
                             <v-tooltip bottom max-width="200">
                                 <template v-slot:activator="{ on }">
                                     <v-btn
-                                        data-test="key-manager.removeAll.button"
+                                        data-test="key-manager.touchAll.button"
                                         color="primary"
                                         @click.stop="touch(null, true)"
                                         round
