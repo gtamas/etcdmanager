@@ -4,6 +4,7 @@
 
 - [ETCD Manager](#etcd-manager)
   * [Features](#features)
+    + [Coming soon: v1.1](#coming-soon)
     + [Available now](#available-now)
     + [Planned](#planned)
   * [Installation](#installation)
@@ -31,7 +32,9 @@ Please note that this app currenlty **does not** support the ETCD V2 API! At the
 
 ## Features
 
-### Coming soon (v1.1 - January 2020)
+### Coming soon
+
+The following will be released in **January 2020**
 
 - Key Manager: Browse keys in tree view or list view. Search by keyword.
 - Key Manager: copy value of any key to the clipboard with a single click. 
