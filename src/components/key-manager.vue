@@ -42,8 +42,15 @@
                                 inset
                                 vertical
                             ></v-divider>
-                            <v-btn color="primary" @click="setViewType()" round dark>
-                                <i class="material-icons">{{ getViewIcon() }}</i>
+                            <v-btn
+                                color="primary"
+                                @click="setViewType()"
+                                round
+                                dark
+                            >
+                                <i class="material-icons">{{
+                                    getViewIcon()
+                                }}</i>
                                 {{ getViewType() }}
                             </v-btn>
                             <v-spacer
@@ -403,7 +410,25 @@
                 </v-expansion-panel-content>
             </v-expansion-panel>
             <v-card raised dark>
-                <v-treeview :items="treeData" hoverable v-if="isTreeView()"> </v-treeview>
+                <v-layout align-center justify-start row>
+                    <v-flex xs2>
+                        <v-text-field
+                            v-if="isTreeView()"
+                            :label="$t('keyManager.treeview.separator')"
+                            data-test="key-manager.separator.text-field"
+                            ref="separator"
+                            v-model="separator"
+                            v-on:change="loadTree"
+                        ></v-text-field>
+                    </v-flex>
+                </v-layout>
+                <v-treeview
+                    :items="treeData"
+                    :search="filter"
+                    hoverable
+                    v-if="isTreeView()"
+                >
+                </v-treeview>
                 <v-data-table
                     v-if="!isTreeView()"
                     ref="table"
@@ -570,6 +595,8 @@ interface TreeNodeType {
 })
 export default class KeyManager extends CrudBase implements List {
     public treeData = [];
+    public separator: string = '.';
+
     public headers = [
         {
             text: '',
@@ -687,9 +714,8 @@ export default class KeyManager extends CrudBase implements List {
         }
         this.loadTree();
 
-       return Promise.resolve(this);
+        return Promise.resolve(this);
     }
-
 
     public isTreeView() {
         return this.view === 'tree';
@@ -700,21 +726,21 @@ export default class KeyManager extends CrudBase implements List {
     }
 
     public getViewType() {
-        return this.$t(`keyManager.actions.${this.isTreeView() ? 'flat' : 'tree'}View`);
+        return this.$t(
+            `keyManager.actions.${this.isTreeView() ? 'flat' : 'tree'}View`
+        );
     }
 
     public getViewIcon() {
         return this.isTreeView() ? 'list' : 'account_tree';
     }
 
-
     public loadTree() {
         const tmp: TreeNodeType[] = [];
         const keyMap = {};
         let counter = 1;
-
         for (const item of this.data) {
-            const keys = item.key.split('.');
+            const keys = item.key.split(`${this.separator}`);
 
             for (let i = 0; i < keys.length; i += 1) {
                 const object: TreeNodeType = {};

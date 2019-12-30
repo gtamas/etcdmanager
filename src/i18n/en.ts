@@ -350,6 +350,9 @@ export default {
                 remove: 'Remove key',
                 touch: 'Touch key',
             },
+            treeview: {
+                separator: 'Separator'
+            }
         },
         keyEditor: {
             title: 'Keys',

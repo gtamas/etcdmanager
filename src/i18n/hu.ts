@@ -282,7 +282,8 @@ export default {
             messages: {
                 success: 'A beállítások sikeresen elmentve.',
                 ipOrUrl: 'Az IP-cím, vagy URL érvénytelen.',
-                error: 'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
+                error:
+                    'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
                 connectSuccess: 'A kapcsolat létrejött',
             },
         },
@@ -354,6 +355,9 @@ export default {
                 edit: 'Kulcs szerkesztése',
                 remove: 'Kulcs eltávolítása',
                 touch: 'Kulcs hozzáadása',
+            },
+            treeview: {
+                separator: 'Separátor',
             },
         },
         keyEditor: {
