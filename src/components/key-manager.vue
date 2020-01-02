@@ -42,17 +42,84 @@
                                 inset
                                 vertical
                             ></v-divider>
-                            <v-btn
-                                color="primary"
-                                @click="setViewType()"
-                                round
-                                dark
+                            <v-tooltip
+                                data-test="key-manager.changeView.tooltip"
+                                bottom
                             >
-                                <i class="material-icons">{{
-                                    getViewIcon()
-                                }}</i>
-                                {{ getViewType() }}
-                            </v-btn>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn
+                                        color="primary"
+                                        @click="setViewType()"
+                                        v-on="on"
+                                        round
+                                        dark
+                                    >
+                                        <i class="material-icons">{{
+                                            getViewIcon()
+                                        }}</i>
+                                        {{ getViewType() }}
+                                    </v-btn>
+                                </template>
+                                <span
+                                    data-test="key-manager.changeView-tooltip.span"
+                                    >{{
+                                        $t('common.actions.changeView.tooltip')
+                                    }}</span
+                                >
+                            </v-tooltip>
+                            <v-tooltip
+                                data-test="key-manager.openAll.tooltip"
+                                bottom
+                            >
+                                <template v-slot:activator="{ on }">
+                                    <v-btn
+                                        v-if="isTreeView()"
+                                        v-on="on"
+                                        color="primary"
+                                        @click="setOpenAll()"
+                                        round
+                                        dark
+                                    >
+                                        <v-icon
+                                            data-test="key-manager.openAll.icon"
+                                            >{{ changeOpenAllIcon() }}</v-icon
+                                        >
+                                        <span
+                                            data-test="key-manager.openAll.span"
+                                            >{{ changeLabelText() }}</span
+                                        >
+                                    </v-btn>
+                                </template>
+                                <span
+                                    data-test="key-manager.openAll-tooltip.span"
+                                    >{{
+                                        $t('common.actions.openAll.tooltip')
+                                    }}</span
+                                >
+                            </v-tooltip>
+                            <v-layout row>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                            v-if="isTreeView()"
+                                            prepend-icon="vertical_split"
+                                            data-test="key-manager.separator.text-field"
+                                            ref="separator"
+                                            v-on="on"
+                                            v-model="separator"
+                                            v-on:change="loadTree"
+                                            :error-messages="separatorErrors"
+                                            required
+                                            @input="$v.separator.$touch()"
+                                            @blur="$v.separator.$touch()"
+                                        >
+                                        </v-text-field>
+                                    </template>
+                                    <span>{{
+                                        $t('common.actions.separator.tooltip')
+                                    }}</span>
+                                </v-tooltip>
+                            </v-layout>
                             <v-spacer
                                 data-test="key-manager.help.spacer"
                             ></v-spacer>
@@ -410,24 +477,38 @@
                 </v-expansion-panel-content>
             </v-expansion-panel>
             <v-card raised dark>
-                <v-layout align-center justify-start row>
-                    <v-flex xs2>
-                        <v-text-field
-                            v-if="isTreeView()"
-                            :label="$t('keyManager.treeview.separator')"
-                            data-test="key-manager.separator.text-field"
-                            ref="separator"
-                            v-model="separator"
-                            v-on:change="loadTree"
-                        ></v-text-field>
-                    </v-flex>
-                </v-layout>
                 <v-treeview
                     :items="treeData"
                     :search="filter"
+                    :open-all="isOpenAll"
+                    ref="tree"
                     hoverable
+                    v-model="selected"
+                    :open-on-click="true"
+                    :selectable="true"
                     v-if="isTreeView()"
+                    expand-icon="expand_more"
+                    on-icon="bookmark"
+                    off-icon="bookmark_border"
+                    return-object
                 >
+                    <template v-slot:append="{ item }">
+                        <v-icon
+                            v-if="!item.children"
+                            @click="editItem(item.original)"
+                            >edit</v-icon
+                        >
+                        <v-icon
+                            v-if="!item.children"
+                            @click="deleteSingle(item.original)"
+                            >delete</v-icon
+                        >
+                        <v-icon
+                            v-if="!item.children"
+                            @click="touch(item.original)"
+                            >touch_app</v-icon
+                        >
+                    </template>
                 </v-treeview>
                 <v-data-table
                     v-if="!isTreeView()"
@@ -570,6 +651,7 @@
 </template>
 
 <script lang="ts">
+import Vue from 'vue';
 import Component from 'vue-class-component';
 import Messages from '@/lib/messages';
 import { GenericObject, EtcdItem, EtcdKey } from '../../types';
@@ -578,6 +660,15 @@ import KeyService from '../services/key.service';
 import { CrudBase, List } from '../lib/crud.class';
 import { set as _set, get as _get } from 'lodash-es';
 import * as Tree from 'list-to-tree';
+import {
+    required,
+    requiredIf,
+    alphaNum,
+    integer,
+    ipAddress,
+    or,
+    url,
+} from 'vuelidate/lib/validators';
 
 interface TreeNodeType {
     id?: string | number;
@@ -585,17 +676,23 @@ interface TreeNodeType {
     parent?: string | number;
     name?: string;
     children?: TreeNodeType[];
+    original?: GenericObject;
 }
 
 @Component({
     name: 'key-manager',
+    validations: {
+        separator: {
+            required,
+        },
+    },
     components: {
         'key-editor': KeyEditor,
     },
 })
 export default class KeyManager extends CrudBase implements List {
     public treeData = [];
-    public separator: string = '.';
+    public separator: string = '';
 
     public headers = [
         {
@@ -608,7 +705,22 @@ export default class KeyManager extends CrudBase implements List {
     ];
     public view: 'tree' | 'flat' = 'flat';
 
+    public isOpenAll: boolean = false;
+
     protected etcd: KeyService;
+
+    get separatorErrors() {
+        const errors: any = [];
+        // @ts-ignore
+        if (!this.$v.separator.$dirty) {
+            return errors;
+        }
+
+        // @ts-ignore
+        !this.$v.separator.required &&
+            errors.push(this.$t('common.validation.required'));
+        return errors;
+    }
 
     constructor() {
         super();
@@ -619,6 +731,7 @@ export default class KeyManager extends CrudBase implements List {
         this.keyboardEvents.bind('meta+t', () => {
             this.touch(null, true);
         });
+        this.separator = this.$store.state.separator;
     }
 
     public created() {
@@ -721,6 +834,21 @@ export default class KeyManager extends CrudBase implements List {
         return this.view === 'tree';
     }
 
+    public changeOpenAllIcon() {
+        return this.isOpenAll ? 'lock' : 'lock_open';
+    }
+    public changeLabelText() {
+        if (this.isOpenAll) {
+            return this.$t('common.actions.openAll.label.close');
+        }
+        return this.$t('common.actions.openAll.label.open');
+    }
+
+    public setOpenAll() {
+        Vue.set(this, 'isOpenAll', !this.isOpenAll);
+        (this.$refs.tree as any).updateAll(this.isOpenAll);
+    }
+
     public setViewType() {
         this.view = this.view === 'tree' ? 'flat' : 'tree';
     }
@@ -736,6 +864,15 @@ export default class KeyManager extends CrudBase implements List {
     }
 
     public loadTree() {
+        if (!this.separator) {
+            return;
+        }
+        this.$store.commit('separator', this.separator);
+        // @ts-ignore
+        const config = JSON.parse(this.$ls.get('config'));
+        config.separator = this.separator;
+        // @ts-ignore
+        this.$ls.set('config', JSON.stringify(config));
         const tmp: TreeNodeType[] = [];
         const keyMap = {};
         let counter = 1;
@@ -746,6 +883,10 @@ export default class KeyManager extends CrudBase implements List {
                 const object: TreeNodeType = {};
                 object.id = counter += 1;
                 object.name = keys[i];
+                object.original = {
+                    key: item.key,
+                    value: item.value,
+                };
 
                 _set(keyMap, keys.slice(0, i + 1), {
                     nodeId: object.id,
@@ -764,7 +905,7 @@ export default class KeyManager extends CrudBase implements List {
 
                 if (
                     !tmp.find(
-                        (node) =>
+                        (node: TreeNodeType) =>
                             node.name === object.name &&
                             node.parent === object.parent
                     )
@@ -772,10 +913,14 @@ export default class KeyManager extends CrudBase implements List {
                     tmp.push(object);
                 }
             }
-            let object: TreeNodeType = {};
+            const object: TreeNodeType = {};
             object.id = counter += 1;
             object.name = item.value;
             object.parent = tmp[tmp.length - 1].id;
+            object.original = {
+                key: item.key,
+                value: item.value,
+            };
             tmp.push(object);
         }
 

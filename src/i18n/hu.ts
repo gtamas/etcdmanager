@@ -98,9 +98,22 @@ export default {
             actions: {
                 add: 'Hozzáad',
                 save: 'Mentés',
+                separator: {
+                    tooltip: 'Kulcs szeparátor',
+                },
                 purgeAll: {
                     label: 'Tisztít',
                     tooltip: 'Mindet tisztít',
+                },
+                openAll: {
+                    label: {
+                        open: 'Kinyit',
+                        close: 'Becsuk',
+                    },
+                    tooltip:'Mindent kinyit/becsuk',
+                },
+                changeView: {
+                    tooltip:'A nézet típusának megváltoztatása',
                 },
                 create: {
                     label: 'Hozzáad',

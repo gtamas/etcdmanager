@@ -94,9 +94,22 @@ export default {
             actions: {
                 add: 'Add',
                 save: 'Save',
+                separator: {
+                    tooltip: 'Key separator',
+                },
                 purgeAll: {
                     label: 'Purge',
                     tooltip: 'Purge all',
+                },
+                openAll: {
+                    label: {
+                        open: 'Open',
+                        close: 'Close',
+                    },
+                    tooltip:'Open/close every node',
+                },
+                changeView: {
+                    tooltip:'Change the type of the view',
                 },
                 create: {
                     label: 'Add',
@@ -351,8 +364,8 @@ export default {
                 touch: 'Touch key',
             },
             treeview: {
-                separator: 'Separator'
-            }
+                separator: 'Separator',
+            },
         },
         keyEditor: {
             title: 'Keys',

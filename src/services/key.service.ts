@@ -1,4 +1,4 @@
-import { DataService, RevisionListType } from './../../types/index';
+import { DataService, RevisionListType, GenericObject } from './../../types/index';
 import {
     MultiRangeBuilder,
     Range,
@@ -68,10 +68,17 @@ export default class KeyService extends EtcdService implements DataService {
         return this.client.delete().all();
     }
 
-    public touch(keys: string[]): Promise<any> {
+    public touch(keys: GenericObject[] | string[]): Promise<any> {
         const promises: Promise<any>[] = [];
-
-        keys.forEach((key) => {
+        let keySet = new Set<string>();   
+        if(typeof keys[0] !== 'string'){
+            (keys as GenericObject[]).forEach((key:GenericObject) =>{
+                keySet.add(key.original.key);
+            });
+        }else{
+            keySet = new Set(keys as string[]);
+        }
+        keySet.forEach((key) => {
             promises.push(this.client
                 .put(key)
                 .touch(key));
@@ -80,18 +87,18 @@ export default class KeyService extends EtcdService implements DataService {
         return Promise.all(promises);
     }
 
-    public remove(keys: string[], isPrefix: boolean = false): Promise<any> {
-        if (isPrefix) {
-            const range = Range.prefix(keys[0]);
-            return this.client
-                .delete()
-                .range(range)
-                .exec();
-        }
+    public remove(keys: GenericObject[] | string[]): Promise<any> {
 
         const promises: Promise<any>[] = [];
-
-        keys.forEach((key) => {
+        let keySet = new Set<string>();   
+        if(typeof keys[0] !== 'string'){
+            (keys as GenericObject[]).forEach((key:GenericObject) =>{
+                keySet.add(key.original.key);
+            });
+        }else{
+            keySet = new Set(keys as string[]);
+        }
+        keySet.forEach((key: string) => {
             promises.push(this.client
                 .delete()
                 .key(key)

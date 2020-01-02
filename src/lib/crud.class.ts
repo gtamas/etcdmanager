@@ -185,7 +185,10 @@ export class CrudBase extends Vue implements List {
         this.deleteDialog = false;
     }
 
-    protected getSelectedKeys(uniqueKey: string = 'key'): string[] {
+    protected getSelectedKeys(uniqueKey: string = 'key'): GenericObject[] | string[] {
+        if(this.selected[0].original){
+            return this.selected;
+        }
         return this.selected.map(item => item[uniqueKey]);
     }
 
