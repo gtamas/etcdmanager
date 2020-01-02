@@ -1,3 +1,4 @@
+import { ClipboardService } from './../services/clipboard.service';
 import { PlatformService } from './../services/platform.service';
 import Vue from 'vue';
 import { GenericObject } from './../../types/index';
@@ -33,11 +34,13 @@ export class CrudBase extends Vue implements List {
     protected etcd!: EtcdService;
     protected keyboardEvents: any;
     public help: number | null = null;
+    public clipboardService: ClipboardService;
     public platformService: PlatformService;
     public helpbar: any = 0;
 
     constructor() {
         super();
+        this.clipboardService = new ClipboardService();
         this.platformService = new PlatformService();
         this.bindDefaultEvents();
     }

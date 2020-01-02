@@ -140,6 +140,8 @@ export default {
             messages: {
                 success: 'Sikeres művelet',
                 error: 'A művelet nem végrehajtható',
+                copyClipboardSuccess: 'Sikeresen vágólapra másolva.',
+                copyClipboardError: 'A vágólapra másolás nem sikerült.',
             },
         },
         settings: {

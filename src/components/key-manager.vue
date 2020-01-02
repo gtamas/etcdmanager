@@ -539,6 +539,7 @@
                         <td
                             data-test="key-manager.props-item-key.td"
                             class="text-xs-left"
+                            @dblclick="clipboardService.copyToClipboard(props.item.key)"
                         >
                             {{ props.item.key }}
                         </td>

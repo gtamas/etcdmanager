@@ -217,6 +217,8 @@
                             :placeholder="
                                 $t('keyEditor.fields.value.placeholder')
                             "
+                            :append-icon="'file_copy'"
+                            @click:append="clipboardService.copyToClipboard(value)"
                             required
                             @input="$v.value.$touch()"
                             @blur="$v.value.$touch()"
