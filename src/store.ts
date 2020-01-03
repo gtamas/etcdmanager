@@ -13,6 +13,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         profiles: [],
+        separator: '.',
         config: {
             language: 'en',
             animateBg: false,
@@ -62,6 +63,9 @@ export default new Vuex.Store({
         },
     },
     mutations: {
+        separator(state, payload) {
+            state.separator = payload;
+        },
         loading(state) {
             state.loading = !state.loading;
         },

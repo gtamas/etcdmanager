@@ -863,6 +863,11 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@denq/iron-tree@^1.3.1":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@denq/iron-tree/-/iron-tree-1.3.2.tgz#b125c9847556e31f3a794a629d66726ab763dcb3"
+  integrity sha512-LcwTy4yH9W4z9jgMWOdhxshT0FISjkKgsK8YkPF18nBW9ob4De667KSeRVft+p7d7r7TU+mOUPjcBKFBvoK8hw==
+
 "@develar/schema-utils@~2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@develar/schema-utils/-/schema-utils-2.1.0.tgz#eceb1695bfbed6f6bb84666d5d3abe5e1fd54e17"
@@ -8282,6 +8287,13 @@ lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
   integrity sha1-HADHQ7QzzQpOgHWPe2SldEDZ/wA=
+
+list-to-tree@^2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/list-to-tree/-/list-to-tree-2.2.3.tgz#8b36499850d6e4ed61db620e7adf7a910aeb488f"
+  integrity sha512-u15N2C9Gek5JbkwquMRnt5XQtTRuj1IhHdkqSDjLcgPuVlhxvwO8opbmB0omhDmEcTzJCpaK3t1JbqlYU6+QsA==
+  dependencies:
+    "@denq/iron-tree" "^1.3.1"
 
 listr-silent-renderer@^1.1.1:
   version "1.1.1"

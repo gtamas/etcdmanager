@@ -94,9 +94,22 @@ export default {
             actions: {
                 add: 'Add',
                 save: 'Save',
+                separator: {
+                    tooltip: 'Key separator',
+                },
                 purgeAll: {
                     label: 'Purge',
                     tooltip: 'Purge all',
+                },
+                openAll: {
+                    label: {
+                        open: 'Open',
+                        close: 'Close',
+                    },
+                    tooltip:'Open/close every node',
+                },
+                changeView: {
+                    tooltip:'Change the type of the view',
                 },
                 create: {
                     label: 'Add',
@@ -336,6 +349,7 @@ export default {
                         raftIndex: 'Raft Index',
                         raftTerm: 'Raft Term',
                         version: 'Version',
+                        loading: 'Loading...',
                     },
                     actions: {
                         close: 'Close',
@@ -363,6 +377,8 @@ export default {
                 value: 'Value',
             },
             actions: {
+                treeView: 'Tree',
+                flatView: 'Flat',
                 touchAll: {
                     label: 'Touch',
                     tooltip: 'Touch selected keys',
@@ -370,6 +386,9 @@ export default {
                 edit: 'Edit key',
                 remove: 'Remove key',
                 touch: 'Touch key',
+            },
+            treeview: {
+                separator: 'Separator',
             },
         },
         keyEditor: {

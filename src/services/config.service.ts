@@ -62,6 +62,7 @@ export class ConfigService {
         store.commit('users', config.users);
         store.commit('etcdConfig', config.etcd);
         store.commit('watcherConfig', config.watchers);
+        store.commit('separator', config.separator || '.');
         store.dispatch('locale', config.config.language);
         if (config.etcdAuth) {
             store.commit('etcdAuthConfig', config.etcdAuth);

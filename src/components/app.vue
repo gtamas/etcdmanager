@@ -96,7 +96,6 @@ export default class App extends Vue {
 }
 </script>
 
-
 <template>
     <v-app id="inspire" dark>
         <v-snackbar
@@ -109,16 +108,27 @@ export default class App extends Vue {
             :timeout="message.timeout"
         >
             {{ message.text }}
-            <v-btn data-test="app.message-close.button" dark flat @click="hide()">Close</v-btn>
+            <v-btn
+                data-test="app.message-close.button"
+                dark
+                flat
+                @click="hide()"
+                >{{$t('cluster.dialogs.info.actions.close')}}</v-btn
+            >
         </v-snackbar>
 
         <v-dialog v-model="loading" persistent max-width="290" id="loading">
             <v-card dark>
                 <v-toolbar dark flat>
-                    <v-toolbar-title data-test="app.loading.toolbar-title">Loading..</v-toolbar-title>
+                    <v-toolbar-title data-test="app.loading.toolbar-title"
+                        >{{$t('cluster.dialogs.info.labels.loading')}}</v-toolbar-title
+                    >
                 </v-toolbar>
                 <v-card-text>
-                    <v-progress-linear data-test="app.progress-bar.progress-linear" :indeterminate="true"></v-progress-linear>
+                    <v-progress-linear
+                        data-test="app.progress-bar.progress-linear"
+                        :indeterminate="true"
+                    ></v-progress-linear>
                 </v-card-text>
             </v-card>
         </v-dialog>
@@ -128,9 +138,16 @@ export default class App extends Vue {
             <v-toolbar-side-icon @click.stop="drawer = !drawer">
                 <v-icon data-test="app.menu.icon">menu</v-icon>
             </v-toolbar-side-icon>
-            <v-toolbar-title data-test="app.version.toolbar-title">ETCD Manager v{{ version }}</v-toolbar-title>
+            <v-toolbar-title data-test="app.version.toolbar-title"
+                >ETCD Manager v{{ version }}</v-toolbar-title
+            >
             <v-spacer></v-spacer>
-            <img data-test="app.logo.img" src="/assets/etcd-glyph-color.png" alt="ETCD" class="logo" />
+            <img
+                data-test="app.logo.img"
+                src="/assets/etcd-glyph-color.png"
+                alt="ETCD"
+                class="logo"
+            />
         </v-toolbar>
         <v-content>
             <v-container
@@ -154,7 +171,9 @@ export default class App extends Vue {
                 <v-bottom-sheet inset>
                     <template v-slot:activator>
                         <v-btn icon dark>
-                            <v-icon data-test="app.open-console.icon">desktop_mac</v-icon>
+                            <v-icon data-test="app.open-console.icon"
+                                >desktop_mac</v-icon
+                            >
                         </v-btn>
                     </template>
                     <v-card raised dark>
@@ -178,7 +197,6 @@ export default class App extends Vue {
         </v-footer>
     </v-app>
 </template>
-
 
 <style lang="scss">
 #app {

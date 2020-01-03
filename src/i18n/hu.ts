@@ -98,9 +98,22 @@ export default {
             actions: {
                 add: 'Hozzáad',
                 save: 'Mentés',
+                separator: {
+                    tooltip: 'Kulcs szeparátor',
+                },
                 purgeAll: {
                     label: 'Tisztít',
                     tooltip: 'Mindet tisztít',
+                },
+                openAll: {
+                    label: {
+                        open: 'Kinyit',
+                        close: 'Becsuk',
+                    },
+                    tooltip:'Mindent kinyit/becsuk',
+                },
+                changeView: {
+                    tooltip:'A nézet típusának megváltoztatása',
                 },
                 create: {
                     label: 'Hozzáad',
@@ -341,6 +354,7 @@ export default {
                         raftIndex: 'Raft index',
                         raftTerm: 'Raft terminus',
                         version: 'Verzió',
+                        loading: 'Betöltés...',
                     },
                     actions: {
                         close: 'Bezárás',
@@ -368,6 +382,8 @@ export default {
                 value: 'Érték',
             },
             actions: {
+                treeView: 'Fa',
+                flatView: 'Táblázat',
                 touchAll: {
                     label: 'Hozzáad',
                     tooltip: 'Kiválasztott kulcsok hozzáadása',
@@ -375,6 +391,9 @@ export default {
                 edit: 'Kulcs szerkesztése',
                 remove: 'Kulcs eltávolítása',
                 touch: 'Kulcs hozzáadása',
+            },
+            treeview: {
+                separator: 'Separátor',
             },
         },
         keyEditor: {

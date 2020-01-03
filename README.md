@@ -4,6 +4,7 @@
 
 - [ETCD Manager](#etcd-manager)
   * [Features](#features)
+    + [Coming soon: v1.1](#coming-soon)
     + [Available now](#available-now)
     + [Planned](#planned)
   * [Installation](#installation)
@@ -31,11 +32,22 @@ Please note that this app currenlty **does not** support the ETCD V2 API! At the
 
 ## Features
 
+### Coming soon
+
+The following will be released in **January 2020**
+
+- Key Manager: Browse keys in tree view or list view. Search by keyword.
+- Key Manager: copy value of any key to the clipboard with a single click. 
+- Key editor: browse all revisions of any key and revert to any previous value.
+- Settings: multiple config profiles. Manage multiple ETCD clusters with dedicated settings.
+- Better Linux support. More distros will be supported, including old ones.
+- Several bug fixes.
+
 ### Available now
 
 Currently, the following features are implemented:
 
-- Manage (create, edit, delete) keys
+- Manage (browser, create, edit, delete) keys
 - Manage users
 - Manage roles
 - Manage watchers. Supported event responders: app or desktop notification, app console logger.
