@@ -206,7 +206,7 @@ export class CrudBase extends Vue implements List {
         if (store.state.loading) {
             setTimeout(() => {
                 store.commit('loading');
-            }, 500);
+            },         500);
         } else {
             store.commit('loading');
         }
