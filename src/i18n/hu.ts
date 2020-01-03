@@ -98,9 +98,22 @@ export default {
             actions: {
                 add: 'Hozzáad',
                 save: 'Mentés',
+                separator: {
+                    tooltip: 'Kulcs szeparátor',
+                },
                 purgeAll: {
                     label: 'Tisztít',
                     tooltip: 'Mindet tisztít',
+                },
+                openAll: {
+                    label: {
+                        open: 'Kinyit',
+                        close: 'Becsuk',
+                    },
+                    tooltip:'Mindent kinyit/becsuk',
+                },
+                changeView: {
+                    tooltip:'A nézet típusának megváltoztatása',
                 },
                 create: {
                     label: 'Hozzáad',
@@ -284,7 +297,8 @@ export default {
             messages: {
                 success: 'A beállítások sikeresen elmentve.',
                 ipOrUrl: 'Az IP-cím, vagy URL érvénytelen.',
-                error: 'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
+                error:
+                    'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
                 connectSuccess: 'A kapcsolat létrejött',
             },
         },
@@ -320,6 +334,7 @@ export default {
                         raftIndex: 'Raft index',
                         raftTerm: 'Raft terminus',
                         version: 'Verzió',
+                        loading: 'Betöltés...',
                     },
                     actions: {
                         close: 'Bezárás',
@@ -347,6 +362,8 @@ export default {
                 value: 'Érték',
             },
             actions: {
+                treeView: 'Fa',
+                flatView: 'Táblázat',
                 touchAll: {
                     label: 'Hozzáad',
                     tooltip: 'Kiválasztott kulcsok hozzáadása',
@@ -354,6 +371,9 @@ export default {
                 edit: 'Kulcs szerkesztése',
                 remove: 'Kulcs eltávolítása',
                 touch: 'Kulcs hozzáadása',
+            },
+            treeview: {
+                separator: 'Separátor',
             },
         },
         keyEditor: {

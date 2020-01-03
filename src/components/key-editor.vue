@@ -366,6 +366,7 @@ class KeyError extends Error {
     }
 }
 
+// @ts-ignore
 @Component({
     // @ts-ignore
     name: 'key-editor',
