@@ -147,6 +147,9 @@ export default {
         settings: {
             title: 'Beállítások',
             help: {
+                profile: `* Itt konfigurálhatod a config profilokat.
+                * Beállíthatod a the **a profil nevét** here. Minden beállítás ezalatt a név alatt lesz mentve.
+                * Betölthetsz **egy mentett profilt** név alapján.`,
                 etcd: `* Itt konfigurálhatja az ETCD kapcsolatot es néhány opcionális beállítást.
                 * A legfontosabb a **host** és a **port** beállítása, mivel ezek szükségesek a kapcsolódáshoz.
                 * A **host** értéke egy **IPv4 cím** vagy **URL** lehet.
@@ -178,6 +181,21 @@ export default {
                     rightArrowLabel: 'jobb nyil',
                     leftArrow: 'Előző fül',
                     rightArrow: 'Következő Fül',
+                },
+            },
+            profile: {
+                title: 'Profil',
+                fields: {
+                    name: {
+                        label: 'Profil',
+                        placeholder: 'Gépelje be a profile nevét..',
+                        tooltip: 'A profil neve. Alapértelmezésben "default".',
+                    },
+                    profiles: {
+                        label: 'Profilok',
+                        tooltip:
+                            'A mentett profilok. A kiválasztottat betölti.',
+                    },
                 },
             },
             etcd: {
@@ -291,14 +309,16 @@ export default {
             },
             actions: {
                 submit: 'Elküld',
+                load: 'Betölt',
                 next: 'Következő',
                 testConnection: 'Kapcsolat teszt',
             },
             messages: {
+                noDefaultRemove: 'A profil nem távolítható el!',
                 success: 'A beállítások sikeresen elmentve.',
                 ipOrUrl: 'Az IP-cím, vagy URL érvénytelen.',
-                error:
-                    'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
+                profileLoaded: 'Profil betöltve',
+                error: 'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
                 connectSuccess: 'A kapcsolat létrejött',
             },
         },
@@ -432,6 +452,12 @@ export default {
         noSelectionDialog: {
             title: 'Figyelem!',
             content: 'Először válasszon ki elemeket!',
+            actions: {
+                ok: 'Rendben',
+            },
+        },
+        messageDialog: {
+            title: 'Figyelem!',
             actions: {
                 ok: 'Rendben',
             },

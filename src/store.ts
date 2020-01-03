@@ -12,11 +12,13 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        profiles: [],
         separator: '.',
         config: {
             language: 'en',
             animateBg: false,
             background: true,
+            name: 'default',
         },
         users: {
             pattern: null,
@@ -78,6 +80,12 @@ export default new Vuex.Store({
         },
         etcdAuthConfig(state, payload) {
             state.etcdAuth = { ...state.etcdAuth, ...payload };
+        },
+        profileUpdate(state, payload) {
+            (state.profiles[payload.index] as any) = payload.data;
+        },
+        profileInsert(state, payload) {
+            state.profiles.push(payload as never);
         },
         watcherConfig(state, payload) {
             state.watchers = { ...state.watchers, ...payload };

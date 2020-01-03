@@ -143,6 +143,9 @@ export default {
         settings: {
             title: 'Settings',
             help: {
+                profile: `* Manage config profiles here.
+                * You may set the **name of the current profile** here. All settings will be saved under this name.
+                * You may also **load a different profile**.`,
                 etcd: `* This where you configure your ETCD connection and some of the related (optional) settings.
                 * The most important is to define **host** and the **port**, since these are required to connect to ETCD.
                 * The value of **host** should be the valid **IPv4 address** or **URL** of the ETCD server.
@@ -173,6 +176,21 @@ export default {
                     rightArrowLabel: 'right arrow',
                     leftArrow: 'Previous Tab',
                     rightArrow: 'Next Tab',
+                },
+            },
+            profile: {
+                title: 'Profile',
+                fields: {
+                    name: {
+                        label: 'Profile',
+                        placeholder: 'Type in the name of the profile..',
+                        tooltip: 'The name of this profile. Defaults to "default".',
+                    },
+                    profiles: {
+                        label: 'Profiles',
+                        tooltip:
+                            'The available profiles. Select one to load.',
+                    },
                 },
             },
             etcd: {
@@ -285,13 +303,16 @@ export default {
                 },
             },
             actions: {
-                submit: 'Submit',
+                submit: 'Save',
+                load: 'Load',
                 next: 'Next',
                 testConnection: 'Test Connection',
             },
             messages: {
+                noDefaultRemove: 'You may not remove the default profile!',
                 error: 'The input data is invalid or mandatory info is missing!',
                 connectSuccess: 'Your connection is fine',
+                profileLoaded: 'Profile has been loaded',
                 success: 'Configuration has been saved successfully',
                 ipOrUrl: 'The IP address or URL appears to be invalid',
             },
@@ -427,6 +448,12 @@ export default {
         noSelectionDialog: {
             title: 'Attention!',
             content: 'Please select some items first!',
+            actions: {
+                ok: 'OK',
+            },
+        },
+        messageDialog: {
+            title: 'Attention!',
             actions: {
                 ok: 'OK',
             },
