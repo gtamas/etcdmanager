@@ -123,7 +123,7 @@ export default class App extends Vue {
                 dark
                 flat
                 @click="hide()"
-                >Close</v-btn
+                >{{$t('cluster.dialogs.info.actions.close')}}</v-btn
             >
         </v-snackbar>
 
@@ -131,7 +131,7 @@ export default class App extends Vue {
             <v-card dark>
                 <v-toolbar dark flat>
                     <v-toolbar-title data-test="app.loading.toolbar-title"
-                        >Loading..</v-toolbar-title
+                        >{{$t('cluster.dialogs.info.labels.loading')}}</v-toolbar-title
                     >
                 </v-toolbar>
                 <v-card-text>

@@ -539,7 +539,9 @@
                         <td
                             data-test="key-manager.props-item-key.td"
                             class="text-xs-left"
-                            @dblclick="clipboardService.copyToClipboard(props.item.key)"
+                            @dblclick="
+                                clipboardService.copyToClipboard(props.item.key)
+                            "
                         >
                             {{ props.item.key }}
                         </td>
@@ -652,33 +654,18 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
 import Component from 'vue-class-component';
 import Messages from '@/lib/messages';
-import { GenericObject, EtcdItem, EtcdKey } from '../../types';
+import { GenericObject, EtcdItem, EtcdKey, TreeNodeType } from '../../types';
 import KeyEditor from './key-editor.vue';
 import KeyService from '../services/key.service';
 import { CrudBase, List } from '../lib/crud.class';
 import { set as _set, get as _get } from 'lodash-es';
 import * as Tree from 'list-to-tree';
-import {
-    required,
-    requiredIf,
-    alphaNum,
-    integer,
-    ipAddress,
-    or,
-    url,
-} from 'vuelidate/lib/validators';
+import  required  from 'vuelidate/lib/validators';
 
-interface TreeNodeType {
-    id?: string | number;
-    isLeaf?: boolean;
-    parent?: string | number;
-    name?: string;
-    children?: TreeNodeType[];
-    original?: GenericObject;
-}
+
+
 
 @Component({
     name: 'key-manager',
@@ -846,7 +833,7 @@ export default class KeyManager extends CrudBase implements List {
     }
 
     public setOpenAll() {
-        Vue.set(this, 'isOpenAll', !this.isOpenAll);
+        this.isOpenAll = !this.isOpenAll;
         (this.$refs.tree as any).updateAll(this.isOpenAll);
     }
 

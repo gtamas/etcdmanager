@@ -1,19 +1,17 @@
-import { DataService, RevisionListType, GenericObject } from './../../types/index';
 import {
-    MultiRangeBuilder,
-    Range,
-    Etcd3,
-} from 'etcd3';
+    DataService,
+    RevisionListType,
+    GenericObject,
+} from './../../types/index';
+import { MultiRangeBuilder, Etcd3 } from 'etcd3';
 import EtcdService from './etcd.service';
 
 export default class KeyService extends EtcdService implements DataService {
-
     constructor(client?: Etcd3) {
         super(client);
     }
 
     public async getRevisions(key: string): Promise<RevisionListType> {
-
         const result: RevisionListType = {
             revisions: [],
             watcher: null as any,
@@ -37,7 +35,6 @@ export default class KeyService extends EtcdService implements DataService {
         });
 
         return result;
-
     }
 
     public loadKey(key: string): Promise<any> {
@@ -54,9 +51,14 @@ export default class KeyService extends EtcdService implements DataService {
         return query.strings();
     }
 
-    public insert(key: string, value: string, isCreate: boolean = true): Promise<any> {
+    public insert(
+        key: string,
+        value: string,
+        isCreate: boolean = true
+    ): Promise<any> {
         if (isCreate) {
-            return this.client.if(key, 'Create', '==', 0)
+            return this.client
+                .if(key, 'Create', '==', 0)
                 .then(this.client.put(key).value(value))
                 .else(this.client.get(key))
                 .commit();
@@ -70,39 +72,38 @@ export default class KeyService extends EtcdService implements DataService {
 
     public touch(keys: GenericObject[] | string[]): Promise<any> {
         const promises: Promise<any>[] = [];
-        let keySet = new Set<string>();   
-        if(typeof keys[0] !== 'string'){
-            (keys as GenericObject[]).forEach((key:GenericObject) =>{
+        let keySet = new Set<string>();
+        if (typeof keys[0] !== 'string') {
+            (keys as GenericObject[]).forEach((key: GenericObject) => {
                 keySet.add(key.original.key);
             });
-        }else{
+        } else {
             keySet = new Set(keys as string[]);
         }
         keySet.forEach((key) => {
-            promises.push(this.client
-                .put(key)
-                .touch(key));
+            promises.push(this.client.put(key).touch(key));
         });
 
         return Promise.all(promises);
     }
 
     public remove(keys: GenericObject[] | string[]): Promise<any> {
-
         const promises: Promise<any>[] = [];
-        let keySet = new Set<string>();   
-        if(typeof keys[0] !== 'string'){
-            (keys as GenericObject[]).forEach((key:GenericObject) =>{
+        let keySet = new Set<string>();
+        if (typeof keys[0] !== 'string') {
+            (keys as GenericObject[]).forEach((key: GenericObject) => {
                 keySet.add(key.original.key);
             });
-        }else{
+        } else {
             keySet = new Set(keys as string[]);
         }
         keySet.forEach((key: string) => {
-            promises.push(this.client
-                .delete()
-                .key(key)
-                .exec());
+            promises.push(
+                this.client
+                    .delete()
+                    .key(key)
+                    .exec()
+            );
         });
 
         return Promise.all(promises);
@@ -111,5 +112,4 @@ export default class KeyService extends EtcdService implements DataService {
     public stats() {
         return this.client.cluster.memberList();
     }
-
 }

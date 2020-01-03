@@ -33,6 +33,15 @@ export interface EtcdItem extends GenericObject {
     value: any;
 }
 
+export interface TreeNodeType {
+    id?: string | number;
+    isLeaf?: boolean;
+    parent?: string | number;
+    name?: string;
+    children?: TreeNodeType[];
+    original?: GenericObject;
+}
+
 export interface WatcherAction {
     id?: string;
     action: {
@@ -82,3 +91,5 @@ export class EtcdUser {
         public name: string = '') {
     }
 }
+
+

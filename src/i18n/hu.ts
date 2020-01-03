@@ -334,6 +334,7 @@ export default {
                         raftIndex: 'Raft index',
                         raftTerm: 'Raft terminus',
                         version: 'Verzió',
+                        loading: 'Betöltés...',
                     },
                     actions: {
                         close: 'Bezárás',

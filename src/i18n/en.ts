@@ -328,6 +328,7 @@ export default {
                         raftIndex: 'Raft Index',
                         raftTerm: 'Raft Term',
                         version: 'Version',
+                        loading: 'Loading...',
                     },
                     actions: {
                         close: 'Close',

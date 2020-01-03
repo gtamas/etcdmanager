@@ -7,14 +7,12 @@ import Component from 'vue-class-component';
 import store from '@/store';
 import Mousetrap from 'mousetrap';
 
-
 export interface List {
     load(): Promise<CrudBase>;
     load(prefix?: string): Promise<CrudBase>;
 }
 
-@Component({
-})
+@Component({})
 export class CrudBase extends Vue implements List {
     public loading: boolean = true;
     public deleteDialog: boolean = false;
@@ -157,7 +155,9 @@ export class CrudBase extends Vue implements List {
 
     public async confirmDelete(keyName: string): Promise<CrudBase | Error> {
         const item = this.itemToDelete as GenericObject;
-        const toBeRemoved = this.hasSelection() ? this.getSelectedKeys(keyName) : [item[keyName]];
+        const toBeRemoved = this.hasSelection()
+            ? this.getSelectedKeys(keyName)
+            : [item[keyName]];
 
         try {
             this.toggleLoading();
@@ -188,8 +188,10 @@ export class CrudBase extends Vue implements List {
         this.deleteDialog = false;
     }
 
-    protected getSelectedKeys(uniqueKey: string = 'key'): GenericObject[] | string[] {
-        if(this.selected[0].original){
+    protected getSelectedKeys(
+        uniqueKey: string = 'key'
+    ): GenericObject[] | string[] {
+        if (this.selected[0].original) {
             return this.selected;
         }
         return this.selected.map(item => item[uniqueKey]);
@@ -202,10 +204,11 @@ export class CrudBase extends Vue implements List {
 
     public toggleLoading() {
         if (store.state.loading) {
-            setTimeout(() => { store.commit('loading'); }, 500);
+            setTimeout(() => {
+                store.commit('loading');
+            }, 500);
         } else {
             store.commit('loading');
         }
-
     }
 }
