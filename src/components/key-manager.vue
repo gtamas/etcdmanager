@@ -762,6 +762,7 @@ export default class KeyManager extends CrudBase implements List {
 
     public setViewType() {
         this.view = this.view === 'tree' ? 'flat' : 'tree';
+        this.selected = [];
     }
 
     public getViewType() {
