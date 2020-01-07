@@ -797,7 +797,7 @@ export default class KeyManager extends CrudBase implements List {
                 object.name = keys[i];
                 object.original = {
                     key: item.key,
-                    value: item.value,
+                    value: this.shortenTextAndAddTooltip(item.value, i === keys.length - 1),
                 };
 
                 _set(keyMap, keys.slice(0, i + 1), {
@@ -827,11 +827,11 @@ export default class KeyManager extends CrudBase implements List {
             }
             const object: TreeNodeType = {};
             object.id = counter += 1;
-            object.name = item.value;
+            object.name = this.shortenTextAndAddTooltip(item.value, true);
             object.parent = tmp[tmp.length - 1].id;
             object.original = {
                 key: item.key,
-                value: item.value,
+                value: this.shortenTextAndAddTooltip(item.value, true),
             };
             tmp.push(object);
         }
@@ -842,6 +842,13 @@ export default class KeyManager extends CrudBase implements List {
             key_child: 'children',
             empty_children: false,
         }).GetTree();
+    }
+
+    public shortenTextAndAddTooltip(text: string, shallShorten: boolean) {
+        if (shallShorten && text.length > 50) {
+            return text.slice(0, 50).concat('...');
+        }
+        return text;
     }
 }
 </script>
