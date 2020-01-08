@@ -1,14 +1,21 @@
+import { AuthService } from './auth.service';
+import store from '@/store';
 import {
     DataService,
     RevisionListType,
     GenericObject,
 } from './../../types/index';
-import { MultiRangeBuilder, Etcd3 } from 'etcd3';
+import { MultiRangeBuilder, Etcd3, DeleteBuilder } from 'etcd3';
 import EtcdService from './etcd.service';
 
 export default class KeyService extends EtcdService implements DataService {
+
+    private authService: AuthService;
+
     constructor(client?: Etcd3) {
         super(client);
+        this.authService = new AuthService(this.client);
+
     }
 
     public async getRevisions(key: string): Promise<RevisionListType> {
@@ -41,14 +48,61 @@ export default class KeyService extends EtcdService implements DataService {
         return this.client.get(key).string();
     }
 
-    public loadAllKeys(prefix?: string): Promise<any> {
-        let query: MultiRangeBuilder = this.client.getAll();
-
-        if (prefix) {
-            query = query.prefix(prefix);
+    private async mkAuthQueries(isPut: boolean = true): Promise<Promise<{ [key: string]: string; }>[]> {
+        const auth = store.state.etcdAuth.username;
+        const user = await this.client.user(auth).roles();
+        const queries: Promise<{ [key: string]: string; }>[] = [];
+        for (const role of user) {
+            const permissions = await role.permissions();
+            for (const permission of permissions) {
+                let query: MultiRangeBuilder | DeleteBuilder;
+                if (isPut) {
+                    query = this.client.getAll();
+                    if (permission.permission.includes('Read')) {
+                        query.inRange(permission.range);
+                        queries.push((query as MultiRangeBuilder).strings());
+                    }
+                } else {
+                    query = this.client.delete();
+                    if (permission.permission.includes('write')) {
+                        query.inRange(permission.range);
+                        // @ts-ignore
+                        queries.push(query);
+                    }
+                }
+            }
         }
 
-        return query.strings();
+
+        return Promise.resolve(queries);
+    }
+
+    public async loadAllKeys(prefix?: string): Promise<any> {
+
+        let queries: Promise<{ [key: string]: string; }>[] = [];
+        let query: MultiRangeBuilder = this.client.getAll();
+
+        if (!this.authService.isAuthenticated() || await this.authService.isRoot()) {
+
+            if (prefix) {
+                query = query.prefix(prefix);
+            }
+
+            queries.push(query.strings());
+
+        } else {
+            queries = await this.mkAuthQueries();
+        }
+
+        let res: GenericObject = {};
+
+        const results = await Promise.all(queries);
+
+        results.forEach((result: any) => {
+            res = { ...res, ...result };
+        });
+
+        return Promise.resolve(res);
     }
 
     public insert(
@@ -66,8 +120,19 @@ export default class KeyService extends EtcdService implements DataService {
         return this.client.put(key).value(value);
     }
 
-    public purge(): Promise<any> {
-        return this.client.delete().all();
+    public async purge(): Promise<any> {
+
+        const builder = this.client.delete();
+        let queries: Promise<{ [key: string]: string; }>[] = [];
+
+        if (!this.authService.isAuthenticated() || this.authService.isRoot()) {
+            queries.push(builder.all());
+        } else {
+            queries = await this.mkAuthQueries(false);
+        }
+
+        return Promise.all(queries);
+
     }
 
     private mkKeySet(keys: GenericObject[] | string[]): Set<string> {
