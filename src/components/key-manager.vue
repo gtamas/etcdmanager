@@ -447,6 +447,17 @@
                         <v-icon v-if="!item.children" @click="deleteSingle(item.original)">delete</v-icon>
                         <v-icon v-if="!item.children" @click="touch(item.original)">touch_app</v-icon>
                     </template>
+                    <template v-slot:label="{ item }">
+                        <v-tooltip
+                            data-test="key-manager.tree-view.tooltip"
+                            bottom
+                        >
+                            <template v-slot:activator="{ on }">
+                                <span v-on="on">{{ item.name }}</span>
+                            </template>
+                            {{ item.original.tooltip }}
+                        </v-tooltip>
+                    </template>
                 </v-treeview>
                 <v-data-table
                     v-if="!isTreeView()"
@@ -484,7 +495,17 @@
                         <td
                             data-test="key-manager.props-item-value.td"
                             class="text-xs-left"
-                        >{{ props.item.value }}</td>
+                        >
+                            <v-tooltip
+                                data-test="key-manager.table-view.tooltip"
+                                bottom
+                            >
+                                <template v-slot:activator="{ on }">
+                                    <span v-on="on">{{ props.item.value }}</span>
+                                </template>
+                                {{ props.item.tooltip }}
+                            </v-tooltip>
+                        </td>
                         <td
                             data-test="key-manager.actions-edit.td"
                             class="justify-center layout px-0"
@@ -730,7 +751,7 @@ export default class KeyManager extends CrudBase implements List {
         try {
             const data = await this.etcd.loadAllKeys(prefix);
             this.data = Object.entries(data).map((entry) => {
-                return { key: entry[0], value: entry[1] };
+                return { key: entry[0], value: this.shortenText(entry[1] as string, true), tooltip: entry[1] };
             });
             this.loading = false;
         } catch (error) {
@@ -797,7 +818,8 @@ export default class KeyManager extends CrudBase implements List {
                 object.name = keys[i];
                 object.original = {
                     key: item.key,
-                    value: item.value,
+                    value: this.shortenText(item.value, i === keys.length - 1),
+                    tooltip: keys[i],
                 };
 
                 _set(keyMap, keys.slice(0, i + 1), {
@@ -827,11 +849,12 @@ export default class KeyManager extends CrudBase implements List {
             }
             const object: TreeNodeType = {};
             object.id = counter += 1;
-            object.name = item.value;
+            object.name = this.shortenText(item.value, true);
             object.parent = tmp[tmp.length - 1].id;
             object.original = {
                 key: item.key,
-                value: item.value,
+                value: this.shortenText(item.value, true),
+                tooltip: item.tooltip,
             };
             tmp.push(object);
         }
@@ -842,6 +865,13 @@ export default class KeyManager extends CrudBase implements List {
             key_child: 'children',
             empty_children: false,
         }).GetTree();
+    }
+
+    public shortenText(text: string, shallShorten: boolean) {
+        if (shallShorten && text.length > 50) {
+            return text.slice(0, 50).concat('...');
+        }
+        return text;
     }
 }
 </script>
