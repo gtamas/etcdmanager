@@ -14,7 +14,7 @@ export default class KeyService extends EtcdService implements DataService {
 
     constructor(client?: Etcd3) {
         super(client);
-        this.authService = new AuthService(this.client);
+        this.authService = new AuthService();
 
     }
 

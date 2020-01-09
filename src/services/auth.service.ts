@@ -3,7 +3,14 @@ import store from '@/store';
 
 export class AuthService {
 
-    constructor(private client: Etcd3) {
+    client: Etcd3;
+
+    constructor(client?: Etcd3) {
+        this.client = client || this.updateClient();
+    }
+
+    public updateClient() {
+        return store.state.connection.getClient();
     }
 
     public getUser() {
@@ -19,6 +26,9 @@ export class AuthService {
     }
 
     public async hasRole(roleName: string) {
+        if (!this.client) {
+            this.client = this.updateClient();
+        }
         const user = await this.client.user(this.getUser()).roles();
         for (const role of user) {
             if (role.name === roleName) {

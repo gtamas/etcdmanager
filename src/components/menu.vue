@@ -11,7 +11,7 @@
                     >{{ $t('menu.settings') }}</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile ripple to="/cluster">
+            <v-list-tile ripple to="/cluster" :disabled="!isLimited">
                 <v-list-tile-action>
                     <v-icon data-test="menu.cluster.icon">cloud_circle</v-icon>
                 </v-list-tile-action>
@@ -41,7 +41,7 @@
                     >{{ $t('menu.manageWatchers') }}</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile ripple to="/users">
+            <v-list-tile ripple to="/users" :disabled="!isLimited">
                 <v-list-tile-action>
                     <v-icon data-test="menu.users.icon">person</v-icon>
                 </v-list-tile-action>
@@ -51,7 +51,7 @@
                     >{{ $t('menu.manageUsers') }}</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile ripple to="/roles">
+            <v-list-tile ripple to="/roles" :disabled="!isLimited">
                 <v-list-tile-action>
                     <v-icon data-test="menu.roles.icon">supervised_user_circle</v-icon>
                 </v-list-tile-action>
@@ -87,6 +87,12 @@ import { Component } from 'vue-property-decorator';
     },
 })
 export default class Menu extends Vue {
+
+
+    get isLimited() {
+        return this.$store.state.isLimited;
+    }
+
     public isActive(menuItem: string) {
         return this.$route.name === menuItem;
     }
