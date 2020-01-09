@@ -48,7 +48,6 @@ export default {
             beta: 'Beta',
             reportBug: 'Report a bug',
             help: 'Help',
-            gotoWiki: 'Go to Wiki',
             about: 'About',
         },
         menu: {

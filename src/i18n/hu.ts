@@ -52,7 +52,6 @@ export default {
             beta: 'Béta',
             reportBug: 'Hiba jelentése',
             help: 'Súgó',
-            gotoWiki: 'Ugrás a Wiki-re',
             about: 'About',
         },
         menu: {
