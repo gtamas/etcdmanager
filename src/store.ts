@@ -6,7 +6,10 @@ import EtcdService from './services/etcd.service';
 import { i18n, loadedLang } from './main';
 import { join } from 'path';
 import VueI18n from 'vue-i18n';
-const { ipcRenderer, remote: { app } } = require('electron');
+const {
+    ipcRenderer,
+    remote: { app },
+} = require('electron');
 
 Vue.use(Vuex);
 
@@ -107,11 +110,22 @@ export default new Vuex.Store({
             state.version = payload;
         },
         package(state) {
-            state.package = JSON.parse(readFileSync(join(process.platform !== 'win32' ? '/' : '', app.getAppPath(), 'package.json')).toString());
+            state.package = JSON.parse(
+                readFileSync(
+                    join(
+                        process.platform !== 'win32' ? '/' : '',
+                        app.getAppPath(),
+                        'package.json'
+                    )
+                ).toString()
+            );
         },
         watcher(state, payload) {
             if (payload.op === 'set') {
-                state.listeners = state.listeners.set(payload.key, payload.listener);
+                state.listeners = state.listeners.set(
+                    payload.key,
+                    payload.listener
+                );
             } else if (payload.op === 'del') {
                 state.listeners.delete(payload.key);
                 state.listeners = new Map(state.listeners);
@@ -123,7 +137,10 @@ export default new Vuex.Store({
     },
     actions: {
         async locale(context, payload) {
-            function setLanguage(lang: string, translations: VueI18n.LocaleMessageObject) {
+            function setLanguage(
+                lang: string,
+                translations: VueI18n.LocaleMessageObject
+            ) {
                 i18n.locale = lang;
                 document.querySelector('html')!.setAttribute('lang', lang);
                 ipcRenderer.send('update-menu', translations);
@@ -138,7 +155,9 @@ export default new Vuex.Store({
                     loadedLang.push(lang);
                     context.commit('config', { language: lang });
                 }
-                return Promise.resolve(setLanguage(lang, i18n.getLocaleMessage(lang)));
+                return Promise.resolve(
+                    setLanguage(lang, i18n.getLocaleMessage(lang))
+                );
             }
             return Promise.resolve(lang);
         },

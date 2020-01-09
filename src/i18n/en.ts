@@ -590,6 +590,9 @@ export default {
                     placeholder: 'Type in a value..',
                     tooltip: 'The name of the role.',
                 },
+                allKeys: {
+                    label: 'All Keys',
+                },
             },
             actions: {
                 edit: 'Edit permission',
@@ -618,6 +621,15 @@ export default {
                     label: 'This is a prefix',
                     tooltip:
                         'If checked, the role will apply to all keys with this prefix.',
+                },
+                all: {
+                    label: 'This is for all keys',
+                    tooltip: 'If checked, the role will apply to all keys',
+                },
+                normal:{
+                    label: 'This is for a single key',
+                    tooltip:'If checked, the role will apply to one key',
+
                 },
             },
             actions: {

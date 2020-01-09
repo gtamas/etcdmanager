@@ -1,11 +1,14 @@
 import { GenericObject, DataService } from './../../types/index';
 import {
-    Etcd3, Role, IPermissionResult, IPermissionRequest, Range,
+    Etcd3,
+    Role,
+    IPermissionResult,
+    IPermissionRequest,
+    Range,
 } from 'etcd3';
 import EtcdService from './etcd.service';
 
 export default class RoleService extends EtcdService implements DataService {
-
     constructor(client?: Etcd3) {
         super(client);
     }
@@ -44,26 +47,36 @@ export default class RoleService extends EtcdService implements DataService {
                 promises.push(this.remove([role.name]));
             });
             return Promise.all(promises);
+        } catch (e) {
+            return Promise.reject(e);
         }
-        catch (e) { return Promise.reject(e); }
     }
 
     public rolePermissions(name: string): Promise<IPermissionResult[]> {
         return this.getRole(name).permissions();
     }
 
-    public async setPermissions(options: GenericObject, isCreate: boolean = true): Promise<Role | Boolean> {
+    public async setPermissions(
+        options: GenericObject,
+        isCreate: boolean = true
+    ): Promise<Role | Boolean> {
         let permissionReq: IPermissionRequest = {
             permission: options.permission,
             key: options.key,
         };
-        if (options.isRange) {
+        if (options.isPrefix) {
             permissionReq = {
                 permission: options.permission,
                 range: Range.prefix(options.key),
             };
         }
 
+        if (options.isAll) {
+            permissionReq = {
+                permission: options.permission,
+                range: Range.prefix(''),
+            };
+        }
         const role = this.getRole(options.name);
 
         if (options.grant) {
@@ -76,9 +89,10 @@ export default class RoleService extends EtcdService implements DataService {
                     }
                 }
             }
+
             return role.grant(permissionReq);
         }
+
         return role.revoke(permissionReq);
     }
-
 }

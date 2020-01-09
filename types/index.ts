@@ -17,11 +17,11 @@ export interface RevisionListType {
 }
 
 export type PermissionObject = {
-    key: string,
-    prefix: boolean,
-    permission: EtcdPermissionType,
+    key: string;
+    prefix: boolean;
+    isAll:boolean;
+    permission: EtcdPermissionType;
 };
-
 
 export interface DataService {
     purge(): Promise<CrudBase>;
@@ -45,14 +45,14 @@ export interface TreeNodeType {
 export interface WatcherAction {
     id?: string;
     action: {
-        name: string,
-        type: number,
-        value: number,
+        name: string;
+        type: number;
+        value: number;
     };
     event: {
-        name: string,
-        type: number,
-        value: number,
+        name: string;
+        type: number;
+        value: number;
     };
     arg?: string;
 }
@@ -63,8 +63,8 @@ export class WatcherEntry {
         public key: string = '',
         public prefix: boolean = false,
         public activated: boolean = false,
-        public actions: WatcherAction[] = []) {
-    }
+        public actions: WatcherAction[] = []
+    ) {}
 }
 
 export interface NamedWatcher {
@@ -72,24 +72,14 @@ export interface NamedWatcher {
     watcher: Watcher;
 }
 
-
 export class EtcdKey {
-    constructor(
-        public key: string = '',
-        public value: string = '') {
-    }
+    constructor(public key: string = '', public value: string = '') {}
 }
 
 export class EtcdRole {
-    constructor(
-        public name: string = '') {
-    }
+    constructor(public name: string = '') {}
 }
 
 export class EtcdUser {
-    constructor(
-        public name: string = '') {
-    }
+    constructor(public name: string = '') {}
 }
-
-

@@ -163,6 +163,7 @@
                     v-model="selected"
                     :loading="loading"
                 >
+                
                     <v-progress-linear data-test="role-manager.progress.progress-linear" v-slot:progress color="blue" indeterminate></v-progress-linear>
                     <template v-slot:items="props">
                         <td>

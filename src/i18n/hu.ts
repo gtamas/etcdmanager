@@ -594,6 +594,9 @@ export default {
                     placeholder: 'Érték adható meg',
                     tooltip: 'A szerep neve.',
                 },
+                allKeys: {
+                    label: 'Összes Kulcs',
+                },
             },
             actions: {
                 edit: 'Jog szerkesztése',
@@ -623,6 +626,15 @@ export default {
                     label: 'Ez egy előtag',
                     tooltip:
                         'Ha be van pipálva, akkor a szerep az összes ezzel az előtaggal ellátott kulcsot alkalmazza.',
+                },
+                all: {
+                    label: 'Összes',
+                    tooltip: 'Ha be van pipálva, akkor a szerep benne összes kulcs',
+                },
+                normal:{
+                    label: 'Egy kulcs',
+                    tooltip:'Ha be van pipálva, akkor a szerep benne egy kulcs',
+
                 },
             },
             actions: {

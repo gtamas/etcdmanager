@@ -1060,7 +1060,7 @@ import Messages from '../lib/messages';
 import KeyService from '../services/key.service';
 import { GenericObject } from '../../types';
 import { ConfigService } from '../services/config.service';
-import { Etcd3 } from 'etcd3';
+import { Etcd3,IOptions } from 'etcd3';
 import { AuthService } from '../services/auth.service';
 const { ipcRenderer } = require('electron');
 
@@ -1127,7 +1127,7 @@ export default class Configuration extends Vue {
 
     private localStorageService: LocalStorageService;
     private configService: ConfigService;
-    private authService: AuthService;
+    private authService: AuthService | null = null;
     private tabsLength: number = 5;
     private active = 0;
     private help: number | null = null;
@@ -1441,7 +1441,15 @@ export default class Configuration extends Vue {
     }
 
     public async testConnection() {
-        const client = new Etcd3({ hosts: `${this.endpoint}:${this.port}` });
+        const config: IOptions = { hosts: `${this.endpoint}:${this.port}` };
+
+        if (this.username && this.password) {
+            config.auth = {
+                username: this.username,
+                password: this.password,
+            };
+        }
+        const client = new Etcd3(config);
         this.etcd = new KeyService(client);
         this.testing = true;
         try {
