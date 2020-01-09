@@ -2,7 +2,6 @@ import { Etcd3 } from 'etcd3';
 import store from '@/store';
 
 export class AuthService {
-
     client: Etcd3;
 
     constructor(client?: Etcd3) {
@@ -22,10 +21,16 @@ export class AuthService {
     }
 
     public async isRoot() {
-        return store.state.etcdAuth.username === 'root' || await this.hasRole('root');
+        return (
+            store.state.etcdAuth.username === 'root' ||
+            (await this.hasRole('root'))
+        );
     }
 
     public async hasRole(roleName: string) {
+        if (!this.isAuthenticated()) {
+            return false;
+        }
         if (!this.client) {
             this.client = this.updateClient();
         }
@@ -38,5 +43,4 @@ export class AuthService {
 
         return false;
     }
-
 }
