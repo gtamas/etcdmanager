@@ -1,3 +1,4 @@
+import { GenericObject } from './../types/index';
 'use strict';
 
 import {
@@ -45,7 +46,8 @@ protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
-function createAppMenu(translations: any = defaultTranslations.default.en) {
+
+function createAppMenu(translations: any = defaultTranslations.default.en, disabledMap: GenericObject = {}) {
     const menuRouter = (where: string) => {
         // tslint:disable-next-line: variable-name
         return (_menuItem: any, win: BrowserWindow) => {
@@ -174,6 +176,7 @@ function createAppMenu(translations: any = defaultTranslations.default.en) {
         },
         {
             label: get(translations, ['appMenu', 'manage'], 'Manage'),
+            enabled: disabledMap.manage,
             submenu: [
                 {
                     label: get(
@@ -410,8 +413,8 @@ app.on('ready', async () => {
     setAboutPanel();
     createWindow();
     // tslint:disable-next-line: variable-name
-    ipcMain.on('update-menu', (_event: any, translations: any) => {
-        createAppMenu(translations);
+    ipcMain.on('update-menu', (_event: any, translations: any, disabledMap: GenericObject) => {
+        createAppMenu(translations, disabledMap);
         setAboutPanel(translations);
     });
 });

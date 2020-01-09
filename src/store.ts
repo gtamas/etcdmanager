@@ -12,6 +12,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        isLimited: false,
         profiles: [],
         separator: '.',
         config: {
@@ -63,6 +64,9 @@ export default new Vuex.Store({
         },
     },
     mutations: {
+        limited(state, payload) {
+            state.isLimited = payload;
+        },
         separator(state, payload) {
             state.separator = payload;
         },

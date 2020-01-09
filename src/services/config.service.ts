@@ -1,7 +1,9 @@
+import { AuthService } from './auth.service';
 import { LocalStorageService } from './local-storage.service';
 import store from '@/store';
 import { GenericObject } from './../../types/index';
 import { omit } from 'lodash-es';
+import { ipcRenderer } from 'electron';
 
 export class ConfigService {
 
@@ -19,7 +21,7 @@ export class ConfigService {
 
     public getProfile(name: string): string[] {
         const cnf = this.getConfig();
-        return cnf.profiles.find((c:any) => c.config.name === name);
+        return cnf.profiles.find((c: any) => c.config.name === name);
     }
 
     public getProfiles() {
@@ -47,7 +49,7 @@ export class ConfigService {
 
         if (cfg && cfg.profiles) {
             cfg.profiles = cfg.profiles.filter(
-                (cfg:any) => cfg.config.name !== profile
+                (cfg: any) => cfg.config.name !== profile
             );
         }
 
@@ -57,7 +59,7 @@ export class ConfigService {
         return this;
     }
 
-    public replaceConfigState(config: GenericObject): void {
+    public async replaceConfigState(config: GenericObject) {
         store.commit('config', config.config);
         store.commit('users', config.users);
         store.commit('etcdConfig', config.etcd);
@@ -75,6 +77,10 @@ export class ConfigService {
                 ...{ hosts: `${config.etcd.hosts}:${config.etcd.port}` },
             });
         }
+        const isRoot = await new AuthService().isRoot();
+        store.commit('limited', isRoot);
+        ipcRenderer.send('update-menu', undefined, { manage: isRoot });
+
     }
 
 }
