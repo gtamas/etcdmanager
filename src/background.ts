@@ -225,17 +225,6 @@ function createAppMenu(translations: any = defaultTranslations.default.en, disab
                 {
                     label: get(
                         translations,
-                        ['appMenu', 'gotoWiki'],
-                        'Go to Wiki'
-                    ),
-                    accelerator: 'CommandOrControl+Alt+L',
-                    click: () => {
-                        shell.openExternal(`${pkg.homepage}/wiki`);
-                    },
-                },
-                {
-                    label: get(
-                        translations,
                         ['appMenu', 'reportBug'],
                         'Report a bug'
                     ),
