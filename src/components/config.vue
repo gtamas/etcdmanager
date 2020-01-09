@@ -975,7 +975,8 @@ export default class Configuration extends Vue {
 
     private localStorageService: LocalStorageService;
     private configService: ConfigService;
-    private authService: AuthService | null = null;
+    // @ts-ignore
+    private authService: AuthService;
     private tabsLength: number = 5;
     private active = 0;
     private help: number | null = null;
