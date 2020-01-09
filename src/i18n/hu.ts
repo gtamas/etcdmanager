@@ -629,11 +629,11 @@ export default {
                 },
                 all: {
                     label: 'Összes',
-                    tooltip: 'Ha be van pipálva, akkor a szerep benne összes kulcs',
+                    tooltip: 'Ha be van pipálva, akkor a szerep benne összes kulcsot alkalmazza',
                 },
                 normal:{
                     label: 'Egy kulcs',
-                    tooltip:'Ha be van pipálva, akkor a szerep benne egy kulcs',
+                    tooltip:'Ha be van pipálva, akkor a szerep benne egy kulcsot alkalmaz',
 
                 },
             },
