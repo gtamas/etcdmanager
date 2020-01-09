@@ -10,6 +10,7 @@
                 <v-flex xs12 align-end flexbox>
                     <v-form ref="permissionForm" v-model="valid" lazy-validation>
                         <v-text-field
+                            v-if="radios !== 'all'"
                             data-test="permission-editor.fields-key.text-field"
                             dark
                             v-model="key"
@@ -22,25 +23,63 @@
                             @input="$v.key.$touch()"
                             @blur="$v.key.$touch()"
                         >
-                            <v-tooltip data-test="permission-editor.fields-key.tooltip" slot="prepend" bottom max-width="200">
-                                <v-icon data-test="permission-editor.fields-key.icon" slot="activator" color="primary" dark>info</v-icon>
-                                <span data-test="permission-editor.fields-key.span">{{ $t('permissionEditor.fields.key.tooltip') }}</span>
+                            <v-tooltip
+                                data-test="permission-editor.fields-key.tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="permission-editor.fields-key.icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                >info</v-icon>
+                                <span
+                                    data-test="permission-editor.fields-key.span"
+                                >{{ $t('permissionEditor.fields.key.tooltip') }}</span>
                             </v-tooltip>
                         </v-text-field>
-
-                        <v-checkbox
-                            data-test="permission-editor.fields-prefix.checkbox"
-                            dark
-                            v-model="prefix"
-                            :label="$t('permissionEditor.fields.prefix.label')"
-                            required
-                        >
-                            <v-tooltip data-test="permission-editor.fields-prefix.tooltip" slot="prepend" bottom max-width="200">
-                                <v-icon data-test="permission-editor.fields-prefix.icon" slot="activator" color="primary" dark>info</v-icon>
-                                <span data-test="permission-editor.fields-prefix.span">{{ $t('permissionEditor.fields.prefix.tooltip') }}</span>
+                        <v-radio-group v-model="radios" :mandatory="false" row>
+                            <v-tooltip slot="prepend" bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-icon v-on="on" color="primary" dark>info</v-icon>
+                                    <v-radio
+                                        value="prefix"
+                                        :label="$t('permissionEditor.fields.prefix.label')"
+                                    ></v-radio>
+                                </template>
+                                <span
+                                    data-test="permission-editor.fields-prefix.span"
+                                >{{ $t('permissionEditor.fields.prefix.tooltip') }}</span>
                             </v-tooltip>
-                        </v-checkbox>
-
+                        </v-radio-group>
+                        <v-radio-group v-model="radios" :mandatory="false" row>
+                            <v-tooltip slot="prepend" bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-icon v-on="on" color="primary" dark>info</v-icon>
+                                    <v-radio
+                                        value="normal"
+                                        :label="$t('permissionEditor.fields.normal.label')"
+                                    ></v-radio>
+                                </template>
+                                <span
+                                    data-test="permission-editor.fields-prefix.span"
+                                >{{ $t('permissionEditor.fields.normal.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-radio-group>
+                        <v-radio-group v-model="radios" :mandatory="false" row>
+                            <v-tooltip slot="prepend" bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-icon v-on="on" color="primary" dark>info</v-icon>
+                                    <v-radio
+                                        value="all"
+                                        :label="$t('permissionEditor.fields.all.label')"
+                                    ></v-radio>
+                                </template>
+                                <span>{{ $t('permissionEditor.fields.all.tooltip') }}</span>
+                            </v-tooltip>
+                        </v-radio-group>
                         <v-select
                             data-test="permission-editor.fields-permission.select"
                             dark
@@ -52,19 +91,46 @@
                             return-object
                             required
                         >
-                            <v-tooltip data-test="permission-editor.fields-permission.tooltip" slot="prepend" bottom max-width="200">
-                                <v-icon data-test="permission-editor.fields-permission.icon" slot="activator" color="primary" dark>info</v-icon>
-                                <span data-test="permission-editor.fields-permission.span">{{ $t('permissionEditor.fields.permission.tooltip') }}</span>
+                            <v-tooltip
+                                data-test="permission-editor.fields-permission.tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="permission-editor.fields-permission.icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                >info</v-icon>
+                                <span
+                                    data-test="permission-editor.fields-permission.span"
+                                >{{ $t('permissionEditor.fields.permission.tooltip') }}</span>
                             </v-tooltip>
                         </v-select>
 
-                        <v-btn data-test="permission-editor.actions-grant.button" :disabled="!valid" round color="primary" @click="submit">
+                        <v-btn
+                            data-test="permission-editor.actions-grant.button"
+                            :disabled="!valid"
+                            round
+                            color="primary"
+                            @click="submit"
+                        >
                             <v-icon data-test="permission-editor.actions-grant.icon">add</v-icon>
-                            <span data-test="permission-editor.actions-grant.span">{{ $t('permissionEditor.actions.grant.label')}}</span>
+                            <span
+                                data-test="permission-editor.actions-grant.span"
+                            >{{ $t('permissionEditor.actions.grant.label')}}</span>
                         </v-btn>
-                        <v-btn data-test="permission-editor.actions-close.button" color="warning" round @click="cancel">
+                        <v-btn
+                            data-test="permission-editor.actions-close.button"
+                            color="warning"
+                            round
+                            @click="cancel"
+                        >
                             <v-icon data-test="permission-editor.actions-close.icon">close</v-icon>
-                            <span data-test="permission-editor.actions-close.span">{{ $t('common.actions.close.label') }}</span>
+                            <span
+                                data-test="permission-editor.actions-close.span"
+                            >{{ $t('common.actions.close.label') }}</span>
                         </v-btn>
                         <v-spacer></v-spacer>
                     </v-form>
@@ -77,7 +143,7 @@
 <script lang='ts'>
 import Component from 'vue-class-component';
 import { GenericObject, PermissionObject } from '../../types';
-import { required, alphaNum } from 'vuelidate/lib/validators';
+import { requiredIf, alphaNum } from 'vuelidate/lib/validators';
 import Messages from '@/lib/messages';
 import { BaseEditor } from '../lib/editor.class';
 import RoleService from '../services/role.service';
@@ -96,8 +162,10 @@ class PermissionEditorError extends Error {
     name: 'permission-editor',
     validations: {
         key: {
-            required,
             alphaNum,
+            required: requiredIf((model) => {
+                return model.radios !== 'all';
+            }),
         },
     },
 })
@@ -105,8 +173,8 @@ export default class PermissionEditor extends BaseEditor {
     // @ts-ignore
     @Prop() data: {
         key: string;
-        prefix: boolean;
         permission: PermissionObject;
+        radios: string;
     };
     // @ts-ignore
     @Prop() mode: string;
@@ -117,7 +185,7 @@ export default class PermissionEditor extends BaseEditor {
     public itemType: string = 'permission';
     public actionDialog: boolean = false;
     public key: string = this.data.key || '';
-    public prefix: boolean = this.data.prefix || false;
+    public radios: string = '';
     public permission: GenericObject = this.data.permission || {
         name: 'Read',
         value: 'Read',
@@ -149,6 +217,7 @@ export default class PermissionEditor extends BaseEditor {
         this.bindDefaultEvents('permissionForm');
         // @ts-ignore
         this.$nextTick(this.$refs.key.focus);
+        this.radios = 'normal';
     }
 
     get keyErrors() {
@@ -183,7 +252,8 @@ export default class PermissionEditor extends BaseEditor {
                     name: this.name,
                     key: this.key,
                     permission: this.permission.value,
-                    isRange: this.prefix,
+                    isPrefix: this.radios === 'prefix',
+                    isAll: this.radios === 'all',
                     grant: true,
                 },
                 this.createMode

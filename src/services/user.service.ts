@@ -1,11 +1,8 @@
 import { DataService } from './../../types/index';
-import {
-    Etcd3, User, Role,
-} from 'etcd3';
+import { Etcd3, User, Role } from 'etcd3';
 import EtcdService from './etcd.service';
 
 export default class UserService extends EtcdService implements DataService {
-
     constructor(client?: Etcd3) {
         super(client);
     }
@@ -40,7 +37,7 @@ export default class UserService extends EtcdService implements DataService {
         return this.getUser(userName).removeRole(role.name);
     }
 
-    public async purge(): Promise<any>  {
+    public async purge(): Promise<any> {
         try {
             const userObjs = await this.getUsers();
             const userNames = userObjs.map((user: User) => {
