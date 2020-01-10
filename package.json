@@ -1,6 +1,6 @@
 {
   "name": "etcd-manager",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Multi-platform ETCD v3 client and GUI",
   "author": "Tamas Geschitz <tamas.geschitz@icellmobilsoft.hu>",
   "scripts": {
