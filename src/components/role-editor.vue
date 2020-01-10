@@ -367,7 +367,7 @@ export default class RoleEditor extends BaseEditor {
 
     mounted() {
         this.bindDefaultEvents('roleForm');
-        this.keyboardEvents.bind('meta+n', () => {
+        this.keyboardEvents.bind(['ctrl+n', 'meta+n'], () => {
             this.addPermission();
         });
         this.focus('name');

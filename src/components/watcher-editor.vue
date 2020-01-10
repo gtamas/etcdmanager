@@ -379,7 +379,7 @@ export default class WatcherEditor extends BaseEditor {
 
     mounted() {
         this.bindDefaultEvents('watcherForm');
-        this.keyboardEvents.bind('meta+x', () => {
+        this.keyboardEvents.bind(['ctrl+x', 'meta+x'], () => {
             this.addAction();
         });
         this.focus('name');
