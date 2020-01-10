@@ -310,7 +310,7 @@ export default class WatcherManager extends CrudBase implements List {
     }
 
     mounted() {
-        this.keyboardEvents.bind('meta+o', () => {
+        this.keyboardEvents.bind(['ctrl+o', 'meta+o'], () => {
             this.toggleMany();
         });
     }

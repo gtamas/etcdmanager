@@ -348,7 +348,7 @@ export default class HealthCheck extends Vue {
 
     created() {
         const keyboardEvents = new Mousetrap();
-        keyboardEvents.bind('meta+h', (e: ExtendedKeyboardEvent) => {
+        keyboardEvents.bind(['ctrl+h', 'meta+h'], (e: ExtendedKeyboardEvent) => {
             e.preventDefault();
             this.help = this.help === null ? 0 : null;
         });

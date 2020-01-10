@@ -660,7 +660,7 @@ export default class KeyManager extends CrudBase implements List {
     }
 
     public mounted() {
-        this.keyboardEvents.bind('meta+t', () => {
+        this.keyboardEvents.bind(['ctrl+t', 'meta+t'], () => {
             this.touch(null, true);
         });
         this.separator = this.$store.state.separator;

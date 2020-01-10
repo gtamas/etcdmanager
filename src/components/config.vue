@@ -995,7 +995,7 @@ export default class Configuration extends Vue {
 
     created() {
         const keyboardEvents = new Mousetrap();
-        keyboardEvents.bind('meta+s', () => {
+        keyboardEvents.bind(['ctrl+s', 'meta+s'], () => {
             this.persist();
         });
         keyboardEvents.bind('right', () => {
@@ -1004,7 +1004,7 @@ export default class Configuration extends Vue {
         keyboardEvents.bind('left', () => {
             this.prev();
         });
-        keyboardEvents.bind('meta+h', (e: ExtendedKeyboardEvent) => {
+        keyboardEvents.bind(['ctrl+h', 'meta+h'], (e: ExtendedKeyboardEvent) => {
             e.preventDefault();
             this.help = this.help === null ? 0 : null;
         });
