@@ -177,6 +177,8 @@ function createAppMenu(translations: any = defaultTranslations.default.en, disab
         {
             label: get(translations, ['appMenu', 'manage'], 'Manage'),
             enabled: disabledMap.manage,
+            visible: disabledMap.manage,
+            acceleratorWorksWhenHidden: false,
             submenu: [
                 {
                     label: get(
