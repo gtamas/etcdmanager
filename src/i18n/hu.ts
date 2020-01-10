@@ -189,6 +189,7 @@ export default {
                         label: 'Profil',
                         placeholder: 'Gépelje be a profile nevét..',
                         tooltip: 'A profil neve. Alapértelmezésben "default".',
+                        hint: 'A profil átnevezése és mentése egy új profilt hoz létre.',
                     },
                     profiles: {
                         label: 'Profilok',

@@ -8,7 +8,6 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { ConfigService } from '../services/config.service';
 const app = require('electron').remote.app;
 
-
 @Component({
     name: 'App',
     components: {
@@ -23,7 +22,7 @@ export default class App extends Vue {
 
     constructor() {
         super();
-          // @ts-ignore
+        // @ts-ignore
         this.localStorageService = new LocalStorageService(this.$ls);
         this.configService = new ConfigService(this.localStorageService);
     }
@@ -113,16 +112,16 @@ export default class App extends Vue {
                 dark
                 flat
                 @click="hide()"
-                >{{$t('cluster.dialogs.info.actions.close')}}</v-btn
+                >{{ $t('cluster.dialogs.info.actions.close') }}</v-btn
             >
         </v-snackbar>
 
         <v-dialog v-model="loading" persistent max-width="290" id="loading">
             <v-card dark>
                 <v-toolbar dark flat>
-                    <v-toolbar-title data-test="app.loading.toolbar-title"
-                        >{{$t('cluster.dialogs.info.labels.loading')}}</v-toolbar-title
-                    >
+                    <v-toolbar-title data-test="app.loading.toolbar-title">{{
+                        $t('cluster.dialogs.info.labels.loading')
+                    }}</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text>
                     <v-progress-linear

@@ -10,6 +10,10 @@ export class ConfigService {
     constructor(private localStorageService: LocalStorageService) {
     }
 
+    public hasConfig() {
+        return this.getConfig() !== null;
+    }
+
     public getConfig() {
         return this.localStorageService.get('config');
     }
@@ -60,6 +64,10 @@ export class ConfigService {
     }
 
     public async replaceConfigState(config: GenericObject) {
+        if (!config) {
+            return true;
+        }
+
         store.commit('config', config.config);
         store.commit('users', config.users);
         store.commit('etcdConfig', config.etcd);
@@ -77,9 +85,15 @@ export class ConfigService {
                 ...{ hosts: `${config.etcd.hosts}:${config.etcd.port}` },
             });
         }
-        const isRoot = await new AuthService().isRoot();
+        const authService = new AuthService();
+        let isRoot = true;
+        if (authService.isAuthenticated()) {
+            isRoot = await new AuthService().isRoot();
+        }
         store.commit('limited', isRoot);
         ipcRenderer.send('update-menu', undefined, { manage: isRoot });
+
+        return true;
 
     }
 

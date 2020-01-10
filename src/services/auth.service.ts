@@ -29,7 +29,7 @@ export class AuthService {
 
     public async hasRole(roleName: string) {
         if (!this.isAuthenticated()) {
-            return false;
+            return true;
         }
         if (!this.client) {
             this.client = this.updateClient();

@@ -184,6 +184,7 @@ export default {
                         label: 'Profile',
                         placeholder: 'Type in the name of the profile..',
                         tooltip: 'The name of this profile. Defaults to "default".',
+                        hint: 'Renaming and saving the profile creates a new profile.',
                     },
                     profiles: {
                         label: 'Profiles',
@@ -308,7 +309,7 @@ export default {
                 testConnection: 'Test Connection',
             },
             messages: {
-                noDefaultRemove: 'You may not remove the default profile!',
+                noDefaultRemove: 'You may not remove the last profile!',
                 error: 'The input data is invalid or mandatory info is missing!',
                 connectSuccess: 'Your connection is fine',
                 profileLoaded: 'Profile has been loaded',
