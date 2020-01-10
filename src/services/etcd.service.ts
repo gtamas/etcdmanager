@@ -16,6 +16,10 @@ export default class EtcdService {
         return this.client;
     }
 
+    public isConnectionAvailable() {
+        return this.client.pool.getConnection('KV');
+    }
+
     public init(options?: IOptions): EtcdService | string {
         if (this.client) {
             this.client.close();

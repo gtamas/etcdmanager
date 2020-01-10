@@ -1463,7 +1463,7 @@ export default class Configuration extends Vue {
         this.etcd = new KeyService(client);
         this.testing = true;
         try {
-            await this.etcd.loadKey('none');
+            await this.etcd.isConnectionAvailable();
             this.testColor = 'info';
             this.testing = false;
             this.$store.commit(
