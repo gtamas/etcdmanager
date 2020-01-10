@@ -1139,7 +1139,7 @@ export default class Configuration extends Vue {
     private tabsLength: number = 5;
     private active = 0;
     private help: number | null = null;
-    private configExists: boolean = false;
+    public configExists: boolean = false;
 
     public platformService: PlatformService;
     public helpbar: any = 0;

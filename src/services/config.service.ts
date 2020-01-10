@@ -85,7 +85,11 @@ export class ConfigService {
                 ...{ hosts: `${config.etcd.hosts}:${config.etcd.port}` },
             });
         }
-        const isRoot = await new AuthService().isRoot();
+        const authService = new AuthService();
+        let isRoot = true;
+        if (authService.isAuthenticated()) {
+            isRoot = await new AuthService().isRoot();
+        }
         store.commit('limited', isRoot);
         ipcRenderer.send('update-menu', undefined, { manage: isRoot });
 
