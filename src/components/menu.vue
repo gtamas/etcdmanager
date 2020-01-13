@@ -76,6 +76,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     name: 'main-menu',
@@ -86,6 +87,12 @@ import { Component } from 'vue-property-decorator';
 })
 export default class Menu extends Vue {
 
+    public authService: AuthService;
+
+    constructor() {
+        super();
+        this.authService = new AuthService();
+    }
 
     get isLimited() {
         return this.$store.state.isLimited;

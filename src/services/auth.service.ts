@@ -1,4 +1,4 @@
-import { Etcd3 } from 'etcd3';
+import { Etcd3, Role } from 'etcd3';
 import store from '@/store';
 
 export class AuthService {
@@ -34,8 +34,17 @@ export class AuthService {
         if (!this.client) {
             this.client = this.updateClient();
         }
-        const user = await this.client.user(this.getUser()).roles();
-        for (const role of user) {
+
+        let roles: Role[] = [];
+
+        try {
+            roles = await this.client.user(this.getUser()).roles();
+        } catch (e) {
+            return false;
+            // TODO: throw here, fix error handling.
+        }
+
+        for (const role of roles) {
             if (role.name === roleName) {
                 return true;
             }

@@ -220,9 +220,11 @@
                                         dark
                                         ref="name"
                                         tab="0"
-                                        :hint="$t(
+                                        :hint="
+                                            $t(
                                                 'settings.profile.fields.name.hint'
-                                            )"
+                                            )
+                                        "
                                         :persistent-hint="true"
                                         v-model="name"
                                         :error-messages="nameErrors"
@@ -1164,10 +1166,13 @@ export default class Configuration extends Vue {
         keyboardEvents.bind('left', () => {
             this.prev();
         });
-        keyboardEvents.bind(['ctrl+h', 'meta+h'], (e: ExtendedKeyboardEvent) => {
-            e.preventDefault();
-            this.help = this.help === null ? 0 : null;
-        });
+        keyboardEvents.bind(
+            ['ctrl+h', 'meta+h'],
+            (e: ExtendedKeyboardEvent) => {
+                e.preventDefault();
+                this.help = this.help === null ? 0 : null;
+            }
+        );
 
         this.profiles = this.configService.getProfiles();
         this.authService = new AuthService();
@@ -1493,7 +1498,7 @@ export default class Configuration extends Vue {
     public removeProfile() {
         if (!this.profiles.length) {
             this.noSelection = true;
-        } else if (this.profiles.length === 1) {
+        } else if (this.profiles.length === 1 || this.profile === this.name) {
             this.alert = true;
         } else {
             this.deleteDialog = true;
@@ -1576,32 +1581,47 @@ export default class Configuration extends Vue {
             });
         }
 
-        // @ts-ignore
-        this.configService.setConfig({
-            profiles: [...oldConfig.profiles],
-            ...newConfig,
-        });
-        this.profiles = this.configService.getProfiles();
-        this.profile = newConfig.config.name;
-        const auth = newConfig.etcdAuth ? { auth: newConfig.etcdAuth } : {};
-        this.$store.commit('etcdConnect', {
-            ...omit(newConfig.etcd, 'port'),
-            ...auth,
-            ...{ hosts: `${newConfig.etcd.hosts}:${newConfig.etcd.port}` },
-        });
-        if (this.authService.isAuthenticated()) {
+        try {
             const isRoot = await this.authService.isRoot();
-            this.$store.commit('limited', isRoot);
-            ipcRenderer.send('update-menu', undefined, { manage: isRoot });
-        }
-        if (notify) {
-            this.$store.dispatch('locale', this.language).then(() => {
-                this.$store.commit('message', {
-                    text: this.$t('settings.messages.success'),
-                    color: 'success',
-                    show: true,
-                });
+
+            // @ts-ignore
+            this.configService.setConfig({
+                profiles: [...oldConfig.profiles],
+                ...newConfig,
             });
+            this.profiles = this.configService.getProfiles();
+            this.profile = newConfig.config.name;
+            const auth = newConfig.etcdAuth ? { auth: newConfig.etcdAuth } : {};
+            this.$store.commit('etcdConnect', {
+                ...omit(newConfig.etcd, 'port'),
+                ...auth,
+                ...{ hosts: `${newConfig.etcd.hosts}:${newConfig.etcd.port}` },
+            });
+
+            this.$store.commit(
+                'limited',
+                this.authService.isAuthenticated() ? isRoot : true
+            );
+            ipcRenderer.send('update-menu', undefined, {
+                manage: this.authService.isAuthenticated() ? isRoot : true,
+            });
+
+            if (this.authService.isAuthenticated()) {
+            } else {
+                this.$store.commit('limited', true);
+                ipcRenderer.send('update-menu', undefined, { manage: true });
+            }
+            if (notify) {
+                this.$store.dispatch('locale', this.language).then(() => {
+                    this.$store.commit('message', {
+                        text: this.$t('settings.messages.success'),
+                        color: 'success',
+                        show: true,
+                    });
+                });
+            }
+        } catch (e) {
+            this.$store.commit('message', Messages.error(e));
         }
 
         return true;
