@@ -309,7 +309,7 @@ export default {
                 testConnection: 'Test Connection',
             },
             messages: {
-                noDefaultRemove: 'You may not remove the last profile!',
+                noDefaultRemove: 'You may not remove the current or the last profile!',
                 error: 'The input data is invalid or mandatory info is missing!',
                 connectSuccess: 'Your connection is fine',
                 profileLoaded: 'Profile has been loaded',

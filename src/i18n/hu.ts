@@ -314,7 +314,7 @@ export default {
                 testConnection: 'Kapcsolat teszt',
             },
             messages: {
-                noDefaultRemove: 'A profil nem távolítható el!',
+                noDefaultRemove: 'Az aktiv vagy az utolsó profil nem távolítható el!',
                 success: 'A beállítások sikeresen elmentve.',
                 ipOrUrl: 'Az IP-cím, vagy URL érvénytelen.',
                 profileLoaded: 'Profil betöltve',

@@ -1498,7 +1498,7 @@ export default class Configuration extends Vue {
     public removeProfile() {
         if (!this.profiles.length) {
             this.noSelection = true;
-        } else if (this.profiles.length === 1) {
+        } else if (this.profiles.length === 1 || this.profile === this.name) {
             this.alert = true;
         } else {
             this.deleteDialog = true;
