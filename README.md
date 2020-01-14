@@ -92,9 +92,9 @@ If you are using a more or less recent major Linux distro (Ubuntu, Redhat, Suse 
 
 Grab one now:
 
-- [Windows](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-win64.exe)
-- [MacOS](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-osx.dmg)
-- [Linux](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.0.0/etcd-manager-1.0.0-linux.AppImage)
+- [Windows](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.1.0/etcd-manager-1.1.0-win64.exe)
+- [MacOS](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.1.0/etcd-manager-1.1.0-osx.dmg)
+- [Linux](https://github.com/icellmobilsoft/etcdmanager/releases/download/v1.1.0/etcd-manager-1.1.0-linux.AppImage)
 
 Other packages are available for download as well, please see the [releases](https://github.com/icellmobilsoft/etcdmanager/releases) page.
 
