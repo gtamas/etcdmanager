@@ -163,14 +163,14 @@ function createAppMenu(translations: any = defaultTranslations.default.en, disab
                     ),
                 },
                 { type: 'separator' },
-                {
+                ...(isDevelopment ? [{
                     role: 'toggledevtools',
                     label: get(
                         translations,
                         ['appMenu', 'toggledevtools'],
                         'Toggle DevTools'
                     ),
-                },
+                }] : []),
                 ,
             ],
         },
