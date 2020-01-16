@@ -4,8 +4,8 @@
 
 - [ETCD Manager](#etcd-manager)
   * [Features](#features)
-    + [Coming soon: v1.15](#coming-soon)
-    + [Available now](#available-now)
+    + [Coming soon: v1.15](#coming-soon-v115)
+    + [Available now](#available-now-v11)
     + [Planned](#planned)
   * [Installation](#installation)
     + [End users..](#end-users)
