@@ -4,7 +4,7 @@
 
 - [ETCD Manager](#etcd-manager)
   * [Features](#features)
-    + [Coming soon: v1.1](#coming-soon)
+    + [Coming soon: v1.15](#coming-soon)
     + [Available now](#available-now)
     + [Planned](#planned)
   * [Installation](#installation)
@@ -47,7 +47,7 @@ Currently, the following features are implemented:
 - Use multiple config profiles. Manage any number of ETCD clusters with dedicated settings.
 - ETCD Authentication is supported (but it's optional).
 
-### Coming soon (v1.11)
+### Coming soon (v1.15)
 
 This next release is mainly for contributors. There will be no new features in this one, instead we gonna focus solely on making it easier to understand how the code works and how to get started with contributing. In order to achieve this, we'll refactor many parts of the code and we'll also try to provide better documentation for contributors and a project dashboard. 
 
