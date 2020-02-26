@@ -16,6 +16,13 @@ export interface RevisionListType {
     watcher: Watcher;
 }
 
+
+export interface CurrentProfileType {
+    name: string;
+    host: string;
+    port: number;
+}
+
 export type PermissionObject = {
     key: string;
     prefix: boolean;

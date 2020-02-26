@@ -59,6 +59,9 @@ export default {
             manageRoles: 'Manage roles',
             about: 'About',
         },
+        app: {
+            connected: 'Profile',
+        },
         common: {
             items: {
                 watcher: 'watcher | watchers',

@@ -1488,6 +1488,7 @@ export default class Configuration extends Vue {
             return;
         }
         this.configService.loadProfile(this.profile);
+        this.$store.commit('updateCurrentProfile', this.configService.getProfile(this.profile));
         this.$store.commit('message', {
             text: this.$t('settings.messages.profileLoaded'),
             color: 'success',

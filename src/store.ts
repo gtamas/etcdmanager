@@ -6,6 +6,7 @@ import EtcdService from './services/etcd.service';
 import { i18n, loadedLang } from './main';
 import { join } from 'path';
 import VueI18n from 'vue-i18n';
+import { CurrentProfileType } from '../types';
 const {
     ipcRenderer,
     remote: { app },
@@ -16,6 +17,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isLimited: false,
+        profile: {} as CurrentProfileType,
         profiles: [],
         separator: '.',
         config: {
@@ -65,6 +67,14 @@ export default new Vuex.Store({
         language(state) {
             return state.config.language;
         },
+        currentProfile(state) {
+            if (state.profile.name) {
+                return `${state.profile.name} - ${state.profile.host}:${state.profile.port}`;
+            }
+
+            return '';
+
+        },
     },
     mutations: {
         limited(state, payload) {
@@ -88,11 +98,22 @@ export default new Vuex.Store({
         etcdAuthConfig(state, payload) {
             state.etcdAuth = { ...state.etcdAuth, ...payload };
         },
+        updateCurrentProfile(state, payload) {
+            state.profile = {
+                name: payload.config.name,
+                host: payload.etcd.hosts,
+                port: payload.etcd.port,
+            };
+        },
         profileUpdate(state, payload) {
             (state.profiles[payload.index] as any) = payload.data;
+            // @ts-ignore
+            this.commit('updateCurrentProfile', payload.data);
         },
         profileInsert(state, payload) {
             state.profiles.push(payload as never);
+            // @ts-ignore
+            this.commit('updateCurrentProfile', payload);
         },
         watcherConfig(state, payload) {
             state.watchers = { ...state.watchers, ...payload };
