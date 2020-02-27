@@ -63,6 +63,9 @@ export default {
             manageRoles: 'Szerepek menedzselése',
             about: 'Az alkalmazásról',
         },
+        app: {
+            connected: 'Profil',
+        },
         common: {
             help: {
                 tooltip: 'Mutassa a segtítség panelt',
