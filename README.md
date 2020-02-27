@@ -4,7 +4,7 @@
 
 - [ETCD Manager](#etcd-manager)
   * [Features](#features)
-    + [Coming soon: v1.15](#coming-soon-v115)
+    + [Coming soon: v1.2](#coming-soon-v12)
     + [Available now](#available-now-v11)
     + [Planned](#planned)
   * [Installation](#installation)
@@ -47,9 +47,20 @@ Currently, the following features are implemented:
 - Use multiple config profiles. Manage any number of ETCD clusters with dedicated settings.
 - ETCD Authentication is supported (but it's optional).
 
-### Coming soon (v1.15)
+### Coming soon (v1.2)
 
-This next release is mainly for contributors. There will be no new features in this one, instead we gonna focus solely on making it easier to understand how the code works and how to get started with contributing. In order to achieve this, we'll refactor many parts of the code and we'll also try to provide better documentation for contributors and a project dashboard. 
+This is gonna be a smaller release. We're adding some cool features and will try to fix most known bugs.
+
+- Create keys with TTL
+- Key list live updates: refresh list when value of any key changes. 
+- Display connection details in the app header, so active profile is visible at all times.
+- Support TLS / SSL, so you can work with ETCD using a secure connection.
+- Support offline mode: the app must be usable without internet connection.
+
+
+### Code refact release (near future)
+
+This release is mainly for contributors. There will be no new features in this one, instead we gonna focus solely on making it easier to understand how the code works and how to get started with contributing. In order to achieve this, we'll refactor many parts of the code and we'll also try to provide better documentation for contributors and a project dashboard. 
 
 As for refactoring, some of the things we gonna change are:
 
