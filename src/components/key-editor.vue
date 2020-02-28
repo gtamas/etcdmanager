@@ -434,7 +434,7 @@ export default class KeyEditor extends BaseEditor {
 
     public key: string = this.data.key || '';
     public value: string = this.data.value || '';
-    public ttl: number = 0;
+    public ttl: string = '0';
     public showRevs: number | null = null;
 
     public headers = [
@@ -562,7 +562,7 @@ export default class KeyEditor extends BaseEditor {
                 if (this.createMode) {
                     this.key = '';
                     this.value = '';
-                    this.ttl = 0;
+                    this.ttl = '0';
                 }
             } else {
                 this.$store.commit(

@@ -419,7 +419,7 @@ export default {
                     tooltip: 'A kulcshoz társított érték',
                 },
                 ttl: {
-                    label: 'Élettartam',
+                    label: 'Élettartam (TTL)',
                     placeholder: 'Gépeljen be egy számot..',
                     tooltip: 'A másodpercek száma amíg ez a kulcs létezik. A nulla azt jelent, nincs limit.',
                 },

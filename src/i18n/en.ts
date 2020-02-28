@@ -415,9 +415,9 @@ export default {
                     tooltip: 'The value associated with this key',
                 },
                 ttl: {
-                    label: 'Time to live',
+                    label: 'Time to live (TTL)',
                     placeholder: 'Type in a number..',
-                    tooltip: 'The number of seconds this key should exists. Zeros means forever.',
+                    tooltip: 'The number of seconds this key should exists. Zero means forever.',
                 },
             },
             buttons: {
