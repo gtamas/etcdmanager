@@ -1,18 +1,129 @@
 {
     "defaultSeverity": "warning",
-    "extends": ["tslint-config-airbnb"],
+    "extends": ["tslint-config-airbnb", "tslint-consistent-codestyle", "tslint-config-prettier"],
     "linterOptions": {
         "exclude": ["node_modules/**", "src/**/*.d.ts"]
     },
     "rules": {
-        "quotemark": [true, "single"],
+        "align": false,
         "ter-indent": false,
+        "ter-arrow-parens": false,
+        "arrow-return-shorthand": true,
+        "callable-types": true,
+        "class-name": true,
+        "comment-format": [true, "check-space"],
+        "curly": true,
+        "eofline": true,
+        "forin": true,
+        "import-blacklist": [true],
+        "import-spacing": true,
+        "indent": [true, "spaces"],
+        "interface-over-type-literal": true,
+        "label-position": true,
+        "max-line-length": [true, 140],
+        "member-access": false,
+        "member-ordering": [
+          {
+            "name": "static field",
+            "kinds": [
+              "public-static-field",
+              "protected-static-field",
+              "private-static-field"
+            ]
+          },
+          {
+            "name": "instance field",
+            "kinds": [
+              "public-instance-field",
+              "protected-instance-field",
+              "private-instance-field"
+            ]
+          },
+          {
+            "name": "static method",
+            "kinds": [
+              "public-static-method",
+              "private-static-method",
+              "protected-static-method",
+              "public-static-accessor",
+              "protected-static-accessor",
+              "private-static-accessor"
+            ]
+          },
+          {
+            "name": "instance method",
+            "kinds": [
+              "public-constructor",
+              "protected-constructor",
+              "private-constructor",
+              "public-instance-method",
+              "protected-instance-method",
+              "private-instance-method",
+              "public-instance-accessor",
+              "protected-instance-accessor",
+              "private-instance-accessor"
+            ]
+          }
+        ],
+        "no-arg": true,
+        "no-bitwise": true,
+        "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
+        "no-construct": true,
+        "no-debugger": true,
+        "no-duplicate-super": true,
+        "no-empty": false,
+        "no-empty-interface": true,
+        "no-eval": true,
+        "no-inferrable-types": [false, "ignore-params"],
+        "no-misused-new": true,
+        "no-non-null-assertion": true,
+        "no-shadowed-variable": true,
+        "no-string-literal": false,
+        "no-string-throw": true,
+        "no-switch-case-fall-through": true,
+        "no-trailing-whitespace": true,
+        "no-unnecessary-initializer": true,
+        "no-unused-expression": true,
+        "no-var-keyword": true,
+        "object-literal-sort-keys": false,
+        "one-line": [
+            true,
+            "check-open-brace",
+            "check-catch",
+            "check-else",
+            "check-whitespace"
+        ],
+        "prefer-const": true,
+        "quotemark": [true, "single"],
+        "radix": true,
+        "semicolon": ["always"],
+        "triple-equals": [true, "allow-null-check"],
+        "typedef-whitespace": [
+            true,
+            {
+                "call-signature": "nospace",
+                "index-signature": "nospace",
+                "parameter": "nospace",
+                "property-declaration": "nospace",
+                "variable-declaration": "nospace"
+            }
+        ],
+        "no-boolean-literal-compare": false,
+        "strict-boolean-expressions": false,
+        "unified-signatures": true,
+        "variable-name": false,
+        "whitespace": [
+            true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-separator",
+            "check-type"
+        ],
         "import-name": false,
         "interface-name": false,
         "ordered-imports": false,
-        "object-literal-sort-keys": false,
         "no-consecutive-blank-lines": false,
-        "max-line-length": false,
         "trailing-comma": [
             true,
             {

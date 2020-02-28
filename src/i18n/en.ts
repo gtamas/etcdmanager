@@ -108,10 +108,10 @@ export default {
                         open: 'Open',
                         close: 'Close',
                     },
-                    tooltip:'Open/close every node',
+                    tooltip: 'Open/close every node',
                 },
                 changeView: {
-                    tooltip:'Change the type of the view',
+                    tooltip: 'Change the type of the view',
                 },
                 create: {
                     label: 'Add',
@@ -414,6 +414,11 @@ export default {
                     placeholder: 'Type in a value..',
                     tooltip: 'The value associated with this key',
                 },
+                ttl: {
+                    label: 'Time to live (TTL)',
+                    placeholder: 'Type in a number..',
+                    tooltip: 'The number of seconds this key should exists. Zero means forever.',
+                },
             },
             buttons: {
                 revisions: 'Show revisions',
@@ -629,9 +634,9 @@ export default {
                     label: 'This is for all keys',
                     tooltip: 'If checked, the role will apply to all keys',
                 },
-                normal:{
+                normal: {
                     label: 'This is for a single key',
-                    tooltip:'If checked, the role will apply to one key',
+                    tooltip: 'If checked, the role will apply to one key',
 
                 },
             },
