@@ -91,10 +91,23 @@ export default class App extends Vue {
         // @ts-ignore
         const config = this.configService.getConfig();
 
-        if (config) {
+        const replaceConfig = (config: any) => {
             this.configService.replaceConfigState(config);
             this.loadOrDisabledWatchers(config);
+        };
+
+        if (config) {
+            replaceConfig(config);
+            ipcRenderer.send(
+                'appconfig',
+                JSON.stringify(this.configService.getConfig())
+            );
         }
+
+        ipcRenderer.on('config-data', (event: any, data: any) => {
+            const profiles = JSON.parse(data);
+            replaceConfig(profiles.profiles[0]);
+        });
     }
 }
 </script>

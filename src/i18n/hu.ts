@@ -19,6 +19,9 @@ export default {
             },
         },
         appMenu: {
+            config: 'Konfig',
+            export: 'Beállítások exportálása',
+            import: 'Beállítások importálása',
             file: 'Fájl',
             services: 'Szolgáltatások',
             hide: 'Elrejt',
