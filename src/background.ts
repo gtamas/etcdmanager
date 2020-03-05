@@ -1,5 +1,5 @@
-import { GenericObject } from './../types/index';
 'use strict';
+import { GenericObject } from './../types/index';
 
 import {
     app,
@@ -9,6 +9,7 @@ import {
     MenuItemConstructorOptions,
     Tray,
     shell,
+    dialog,
     ipcMain,
 } from 'electron';
 import {
@@ -17,7 +18,7 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib';
 import * as Splashscreen from '@trodi/electron-splashscreen';
 import { join } from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { get } from 'lodash-es';
 import * as defaultTranslations from './i18n/en';
 import { autoUpdater } from 'electron-updater';
@@ -34,6 +35,7 @@ const pkg = JSON.parse(
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
 let menu: Menu | null = null;
+let appConfig: any;
 
 declare const __static: any;
 
@@ -46,8 +48,7 @@ protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
-
-function createAppMenu(translations: any = defaultTranslations.default.en, disabledMap: GenericObject = {}) {
+function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
     const menuRouter = (where: string) => {
         // tslint:disable-next-line: variable-name
         return (_menuItem: any, win: BrowserWindow) => {
@@ -55,7 +56,52 @@ function createAppMenu(translations: any = defaultTranslations.default.en, disab
         };
     };
 
+    // tslint:disable-next-line: no-parameter-reassignment
+    translations = translations || defaultTranslations.default.en;
+
     const template: MenuItemConstructorOptions[] = [
+        {
+            label: get(translations, ['appMenu', 'config'], 'Config'),
+            submenu: [
+                {
+                    accelerator: 'CommandOrControl+Alt+S',
+                    label: get(translations, ['appMenu', 'settings'], 'Settings'),
+                    click: menuRouter('configure'),
+                },
+                {
+                    accelerator: 'CommandOrControl+Alt+E',
+                    label: get(translations, ['appMenu', 'export'], 'Export'),
+                    click: () => {
+                        const saveTo = dialog.showSaveDialogSync({
+                            defaultPath: `etcd-manager-settings.json`,
+                            properties: ['dontAddToRecent', 'createDirectory'],
+                        });
+                        if (saveTo) {
+                            try {
+                                writeFileSync(saveTo, JSON.stringify(appConfig), { encoding: 'utf8' });
+                            } catch (e) {
+                                throw e;
+                            }
+                        }
+                    },
+                },
+                {
+                    accelerator: 'CommandOrControl+Alt+I',
+                    label: get(translations, ['appMenu', 'import'], 'Import'),
+                    click: () => {
+                        const saveTo = dialog.showOpenDialogSync({ properties: ['openFile'] });
+                        if (saveTo) {
+                            try {
+                                const data = readFileSync(saveTo[0]).toString();
+                                win.webContents.send('config-data', data);
+                            } catch (e) {
+                                throw e;
+                            }
+                        }
+                    },
+                },
+            ]
+        },
         {
             label: get(translations, ['appMenu', 'edit'], 'Edit'),
             // @ts-ignore
@@ -83,15 +129,15 @@ function createAppMenu(translations: any = defaultTranslations.default.en, disab
                 },
                 ...(isMac
                     ? [
-                          {
-                              role: 'pasteAndMatchStyle',
-                              label: get(
-                                  translations,
-                                  ['appMenu', 'pasteAndMatchStyle'],
-                                  'Paste and match style'
-                              ),
-                          },
-                      ]
+                        {
+                            role: 'pasteAndMatchStyle',
+                            label: get(
+                                translations,
+                                ['appMenu', 'pasteAndMatchStyle'],
+                                'Paste and match style'
+                            ),
+                        },
+                    ]
                     : []),
                 {
                     role: 'delete',
@@ -114,23 +160,23 @@ function createAppMenu(translations: any = defaultTranslations.default.en, disab
             submenu: [
                 ...(isDevelopment
                     ? [
-                          {
-                              role: 'reload',
-                              label: get(
-                                  translations,
-                                  ['appMenu', 'reload'],
-                                  'Reload'
-                              ),
-                          },
-                          {
-                              role: 'forcereload',
-                              label: get(
-                                  translations,
-                                  ['appMenu', 'forcereload'],
-                                  'Force reload'
-                              ),
-                          },
-                      ]
+                        {
+                            role: 'reload',
+                            label: get(
+                                translations,
+                                ['appMenu', 'reload'],
+                                'Reload'
+                            ),
+                        },
+                        {
+                            role: 'forcereload',
+                            label: get(
+                                translations,
+                                ['appMenu', 'forcereload'],
+                                'Force reload'
+                            ),
+                        },
+                    ]
                     : []),
                 { type: 'separator' },
                 {
@@ -243,63 +289,63 @@ function createAppMenu(translations: any = defaultTranslations.default.en, disab
         // @ts-ignore
         isMac
             ? {
-                  label: app.getName(),
+                label: app.getName(),
 
-                  submenu: [
-                      {
-                          role: 'about',
-                          label: get(
-                              translations,
-                              ['appMenu', 'about'],
-                              'About'
-                          ),
-                      },
-                      { type: 'separator' },
-                      {
-                          role: 'services',
-                          label: get(
-                              translations,
-                              ['appMenu', 'services'],
-                              'Services'
-                          ),
-                      },
-                      { type: 'separator' },
-                      {
-                          role: 'hide',
-                          label: get(translations, ['appMenu', 'hide'], 'Hide'),
-                      },
-                      {
-                          role: 'hideothers',
-                          label: get(
-                              translations,
-                              ['appMenu', 'hideothers'],
-                              'Hide others'
-                          ),
-                      },
-                      {
-                          role: 'unhide',
-                          label: get(
-                              translations,
-                              ['appMenu', 'unhide'],
-                              'Unhide'
-                          ),
-                      },
-                      { type: 'separator' },
-                      {
-                          role: 'quit',
-                          label: get(translations, ['appMenu', 'quit'], 'Quit'),
-                      },
-                  ],
-              }
+                submenu: [
+                    {
+                        role: 'about',
+                        label: get(
+                            translations,
+                            ['appMenu', 'about'],
+                            'About'
+                        ),
+                    },
+                    { type: 'separator' },
+                    {
+                        role: 'services',
+                        label: get(
+                            translations,
+                            ['appMenu', 'services'],
+                            'Services'
+                        ),
+                    },
+                    { type: 'separator' },
+                    {
+                        role: 'hide',
+                        label: get(translations, ['appMenu', 'hide'], 'Hide'),
+                    },
+                    {
+                        role: 'hideothers',
+                        label: get(
+                            translations,
+                            ['appMenu', 'hideothers'],
+                            'Hide others'
+                        ),
+                    },
+                    {
+                        role: 'unhide',
+                        label: get(
+                            translations,
+                            ['appMenu', 'unhide'],
+                            'Unhide'
+                        ),
+                    },
+                    { type: 'separator' },
+                    {
+                        role: 'quit',
+                        label: get(translations, ['appMenu', 'quit'], 'Quit'),
+                    },
+                ],
+            }
             : {
-                  label: get(translations, ['appMenu', 'file'], 'File'),
-                  submenu: [
-                      {
-                          role: 'quit',
-                          label: get(translations, ['appMenu', 'quit'], 'Quit'),
-                      },
-                  ],
-              }
+                label: get(translations, ['appMenu', 'file'], 'File'),
+                submenu: [
+                    {
+                        role: 'quit',
+                        label: get(translations, ['appMenu', 'quit'], 'Quit'),
+                    },
+                ],
+            }
     );
 
     menu = Menu.buildFromTemplate(template);
@@ -399,8 +445,7 @@ app.on('ready', async () => {
             console.error('Vue Devtools failed to install:', e.toString());
         }
     }
-    new Tray(join(__static, '/icons/24x24.png'));
-    createAppMenu();
+    createAppMenu(defaultTranslations.default.en);
     setAboutPanel();
     createWindow();
     // tslint:disable-next-line: variable-name
@@ -408,6 +453,12 @@ app.on('ready', async () => {
         createAppMenu(translations, disabledMap);
         setAboutPanel(translations);
     });
+
+    ipcMain.on('appconfig', (_event: any, data: any) => {
+        appConfig = JSON.parse(data);
+    });
+
+    return new Tray(join(__static, '/icons/24x24.png'));
 });
 
 // Exit cleanly on request from parent process in development mode.

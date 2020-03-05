@@ -59,7 +59,7 @@
     "electron": "^6",
     "electron-builder": "^21",
     "electron-icon-builder": "^1.0.1",
-    "husky": "^3.0.0",
+    "husky": "^4",
     "mocha": "^6.2.0",
     "node-sass": "^4.9.0",
     "sass-loader": "^8",

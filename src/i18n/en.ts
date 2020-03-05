@@ -15,6 +15,9 @@ export default {
             noDataText: 'No data available',
         },
         appMenu: {
+            config: 'Config',
+            export: 'Export settings',
+            import: 'Import settings',
             file: 'File',
             services: 'Services',
             hide: 'Hide',

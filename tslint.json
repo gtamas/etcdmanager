@@ -5,6 +5,7 @@
         "exclude": ["node_modules/**", "src/**/*.d.ts"]
     },
     "rules": {
+        "no-non-null-assertion": false,
         "align": false,
         "ter-indent": false,
         "ter-arrow-parens": false,
@@ -76,7 +77,6 @@
         "no-eval": true,
         "no-inferrable-types": [false, "ignore-params"],
         "no-misused-new": true,
-        "no-non-null-assertion": true,
         "no-shadowed-variable": true,
         "no-string-literal": false,
         "no-string-throw": true,
