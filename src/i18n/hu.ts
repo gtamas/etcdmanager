@@ -19,6 +19,9 @@ export default {
             },
         },
         appMenu: {
+            config: 'Konfig',
+            export: 'Beállítások exportálása',
+            import: 'Beállítások importálása',
             file: 'Fájl',
             services: 'Szolgáltatások',
             hide: 'Elrejt',
@@ -62,6 +65,9 @@ export default {
             manageUsers: 'Felhasználók menedzselése',
             manageRoles: 'Szerepek menedzselése',
             about: 'Az alkalmazásról',
+        },
+        app: {
+            connected: 'Profil',
         },
         common: {
             help: {
@@ -109,10 +115,10 @@ export default {
                         open: 'Kinyit',
                         close: 'Becsuk',
                     },
-                    tooltip:'Mindent kinyit/becsuk',
+                    tooltip: 'Mindent kinyit/becsuk',
                 },
                 changeView: {
-                    tooltip:'A nézet típusának megváltoztatása',
+                    tooltip: 'A nézet típusának megváltoztatása',
                 },
                 create: {
                     label: 'Hozzáad',
@@ -415,6 +421,11 @@ export default {
                     placeholder: 'Írja be az értéket.',
                     tooltip: 'A kulcshoz társított érték',
                 },
+                ttl: {
+                    label: 'Élettartam (TTL)',
+                    placeholder: 'Gépeljen be egy számot..',
+                    tooltip: 'A másodpercek száma amíg ez a kulcs létezik. A nulla azt jelent, nincs limit.',
+                },
             },
             buttons: {
                 revisions: 'Revíziók',
@@ -631,9 +642,9 @@ export default {
                     label: 'Összes',
                     tooltip: 'Ha be van pipálva, akkor a szerep a hozzá tartozó összes kulcsot alkalmazza',
                 },
-                normal:{
+                normal: {
                     label: 'Egy kulcs',
-                    tooltip:'Ha be van pipálva, akkor a szerep egy hozzá tartozó kulcsot alkalmaz',
+                    tooltip: 'Ha be van pipálva, akkor a szerep egy hozzá tartozó kulcsot alkalmaz',
 
                 },
             },

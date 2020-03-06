@@ -91,6 +91,7 @@ export class ConfigService {
             isRoot = await new AuthService().isRoot();
         }
         store.commit('limited', isRoot);
+        store.commit('updateCurrentProfile', config);
         ipcRenderer.send('update-menu', undefined, { manage: isRoot });
 
         return true;

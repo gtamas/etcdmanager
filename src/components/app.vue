@@ -37,6 +37,10 @@ export default class App extends Vue {
         this.$store.commit('package');
     }
 
+    get currentProfile() {
+        return this.$store.getters.currentProfile;
+    }
+
     get version() {
         return this.$store.state.version;
     }
@@ -87,10 +91,23 @@ export default class App extends Vue {
         // @ts-ignore
         const config = this.configService.getConfig();
 
-        if (config) {
+        const replaceConfig = (config: any) => {
             this.configService.replaceConfigState(config);
             this.loadOrDisabledWatchers(config);
+        };
+
+        if (config) {
+            replaceConfig(config);
+            ipcRenderer.send(
+                'appconfig',
+                JSON.stringify(this.configService.getConfig())
+            );
         }
+
+        ipcRenderer.on('config-data', (event: any, data: any) => {
+            const profiles = JSON.parse(data);
+            replaceConfig(profiles.profiles[0]);
+        });
     }
 }
 </script>
@@ -139,6 +156,15 @@ export default class App extends Vue {
             </v-toolbar-side-icon>
             <v-toolbar-title data-test="app.version.toolbar-title"
                 >ETCD Manager v{{ version }}</v-toolbar-title
+            >
+            <v-spacer></v-spacer>
+            <v-system-bar
+                v-if="currentProfile"
+                dark
+                window
+                class="gerisbox"
+                data-test="app.version.toolbar-host"
+                >{{ $t('app.connected') }}: {{ currentProfile }}</v-system-bar
             >
             <v-spacer></v-spacer>
             <img
@@ -310,5 +336,44 @@ export default class App extends Vue {
 
 .paddedTop25 {
     margin: 25px auto auto auto;
+}
+
+.gerisbox {
+    font-size: 18px !important;
+    border: inset 1px #fff;
+    color: #fff !important;
+    position: relative;
+    display: inline-block;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.gerisbox::after {
+    content: '';
+    border-radius: 5px;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 5px 5px rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.gerisbox:hover {
+    -webkit-transform: scale(1.25, 1.25);
+    transform: scale(1.25, 1.25);
+}
+
+.gerisbox:hover::after {
+    opacity: 1;
 }
 </style>
