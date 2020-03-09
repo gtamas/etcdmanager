@@ -52,10 +52,14 @@ Currently, the following features are implemented:
 This is gonna be a smaller release. We're adding some cool features and will try to fix most known bugs.
 
 - Create keys with TTL
+- Lease Management: list and revoke leases, view detailed lease info.
+- Import / export settings: save settings to or load from file.
 - Key list live updates: refresh list when value of any key changes. 
 - Display connection details in the app header, so active profile is visible at all times.
 - Support TLS / SSL, so you can work with ETCD using a secure connection.
 - Support offline mode: the app must be usable without internet connection.
+- Security update
+- .. and more!
 
 
 ### Code refact release (near future)
