@@ -60,6 +60,7 @@ export default {
             manageWatchers: 'Manage watchers',
             manageUsers: 'Manage users',
             manageRoles: 'Manage roles',
+            manageLeases: 'Manage leases',
             about: 'About',
         },
         app: {
@@ -563,6 +564,47 @@ export default {
                     label: 'Event',
                     tooltip: 'Event type',
                 },
+            },
+        },
+        leaseManager: {
+            title: 'Leases',
+            help: {
+                text: `This is the list of **all leases**. Here you may:
+
+                * Order the list by ID (click the **column title**).
+                * Filter the list by any column (use the **search box**).
+                * Revoke selected lease (click **remove**).
+                * Revoke all leases (click **purge**).
+                * You may also view or revoke individual leases using the appropriate **action icon**.`,
+            },
+            columns: {
+                id: 'ID',
+            },
+            actions: {
+                view: 'View details',
+                remove: 'Remove lease',
+            },
+        },
+        leaseEditor: {
+            title: 'View',
+            subtitle: 'Keys attached to this lease',
+            help: {
+                text: `You can **view** details of a leases here.
+
+                * The countdown displays the neumber of hours, minutes and seconds left until expiry.`,
+            },
+            fields: {
+                grant: {
+                    label: 'TTL',
+                    tooltip: 'The total lifespan of the lease (seconds).',
+                },
+                remainingDate: {
+                    label: 'Time left (as hours / minutes / seconds)',
+                    tooltip: 'Countdown until the the lease expires.',
+                },
+            },
+            columns: {
+                key: 'Key',
             },
         },
         roleManager: {

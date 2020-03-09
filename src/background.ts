@@ -264,6 +264,11 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                     accelerator: 'CommandOrControl+Alt+U',
                     click: menuRouter('users'),
                 },
+                {
+                    label: get(translations, ['appMenu', 'leases'], 'Leases'),
+                    accelerator: 'CommandOrControl+Alt+L',
+                    click: menuRouter('leases'),
+                },
             ],
         },
         {
@@ -290,53 +295,52 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
         isMac
             ? {
                 label: app.getName(),
-
-                submenu: [
-                    {
-                        role: 'about',
-                        label: get(
-                            translations,
-                            ['appMenu', 'about'],
-                            'About'
-                        ),
-                    },
-                    { type: 'separator' },
-                    {
-                        role: 'services',
-                        label: get(
-                            translations,
-                            ['appMenu', 'services'],
-                            'Services'
-                        ),
-                    },
-                    { type: 'separator' },
-                    {
-                        role: 'hide',
-                        label: get(translations, ['appMenu', 'hide'], 'Hide'),
-                    },
-                    {
-                        role: 'hideothers',
-                        label: get(
-                            translations,
-                            ['appMenu', 'hideothers'],
-                            'Hide others'
-                        ),
-                    },
-                    {
-                        role: 'unhide',
-                        label: get(
-                            translations,
-                            ['appMenu', 'unhide'],
-                            'Unhide'
-                        ),
-                    },
-                    { type: 'separator' },
-                    {
-                        role: 'quit',
-                        label: get(translations, ['appMenu', 'quit'], 'Quit'),
-                    },
-                ],
-            }
+                  submenu: [
+                      {
+                          role: 'about',
+                          label: get(
+                              translations,
+                              ['appMenu', 'about'],
+                              'About'
+                          ),
+                      },
+                      { type: 'separator' },
+                      {
+                          role: 'services',
+                          label: get(
+                              translations,
+                              ['appMenu', 'services'],
+                              'Services'
+                          ),
+                      },
+                      { type: 'separator' },
+                      {
+                          role: 'hide',
+                          label: get(translations, ['appMenu', 'hide'], 'Hide'),
+                      },
+                      {
+                          role: 'hideothers',
+                          label: get(
+                              translations,
+                              ['appMenu', 'hideothers'],
+                              'Hide others'
+                          ),
+                      },
+                      {
+                          role: 'unhide',
+                          label: get(
+                              translations,
+                              ['appMenu', 'unhide'],
+                              'Unhide'
+                          ),
+                      },
+                      { type: 'separator' },
+                      {
+                          role: 'quit',
+                          label: get(translations, ['appMenu', 'quit'], 'Quit'),
+                      }
+                  ],
+              }
             : {
                 label: get(translations, ['appMenu', 'file'], 'File'),
                 submenu: [
