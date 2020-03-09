@@ -898,7 +898,7 @@ export default class KeyManager extends CrudBase implements List {
     }
 
     public getViewIcon() {
-        return this.isTreeView() ? 'list' : 'account_tree';
+        return this.isTreeView() ? 'list' : 'zoom_in';
     }
 
     public loadTree() {
