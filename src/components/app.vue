@@ -105,6 +105,7 @@ export default class App extends Vue {
         }
 
         ipcRenderer.on('config-data', (event: any, data: any) => {
+            event;
             const profiles = JSON.parse(data);
             replaceConfig(profiles.profiles[0]);
         });

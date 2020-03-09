@@ -63,7 +63,7 @@
             </v-list-tile>
             <v-list-tile ripple to="/roles" :disabled="!isLimited">
                 <v-list-tile-action>
-                    <v-icon data-test="menu.roles.icon">supervised_user_circle</v-icon>
+                    <v-icon data-test="menu.roles.icon">verified_user</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-content>
                     <v-list-tile-title

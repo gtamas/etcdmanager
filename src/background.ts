@@ -41,7 +41,7 @@ declare const __static: any;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win: BrowserWindow | null = null;
+let win: BrowserWindow;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -75,7 +75,7 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                         const saveTo = dialog.showSaveDialogSync({
                             defaultPath: `etcd-manager-settings.json`,
                             properties: ['dontAddToRecent', 'createDirectory'],
-                        });
+                        } as any);
                         if (saveTo) {
                             try {
                                 writeFileSync(saveTo, JSON.stringify(appConfig), { encoding: 'utf8' });
@@ -416,7 +416,6 @@ function createWindow() {
     win.maximize();
 
     win.on('closed', () => {
-        win = null;
     });
 }
 
