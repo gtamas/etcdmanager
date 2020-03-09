@@ -569,6 +569,46 @@ export default {
                 },
             },
         },
+        leaseManager: {
+            title: 'Lease-ek',
+            help: {
+                text: `Ez a **lease-ek** list. Here you may:
+
+                * Rendezheti a listát ID alapján (az **oszlop fejllécére** kattintva).
+                * Kereshet bármely kulcszsó szerint (használja a **kereső mezőt**).
+                * Törölheti a kiválasztott lease-t (kattintson az **Eltávolít**) gombra.
+                * Törölhet minden lease-t (kattintson **Tisztít** gombra).
+                * Megtekintheti vagy törölheti az egyes lease-eket a megfelelő **akció ikon** használatával..`,
+            },
+            columns: {
+                id: 'ID',
+            },
+            actions: {
+                view: 'Részletek megtekintése',
+                remove: 'Lease törlése',
+            },
+        },
+        leaseEditor: {
+            subtitle: 'Kulcsok melyek ehhez a lease-hez tartoznak',
+            help: {
+                text: `Itt **megtekintheti** egy lease részleteit.
+
+                * A visszaszámlálás órában, percben és máasodpercben történik.`,
+            },
+            fields: {
+                grant: {
+                    label: 'TTL',
+                    tooltip: 'A lease teljes élettartama (mp).',
+                },
+                remainingDate: {
+                    label: 'Hátralévő idő (órák / percek / mp)',
+                    tooltip: 'Visszaszámlálás amíg a lease lejár.',
+                },
+            },
+            columns: {
+                key: 'Kulcs',
+            },
+        },
         roleManager: {
             help: {
                 text: `Ez az ETCD **szerepkörök** listája.

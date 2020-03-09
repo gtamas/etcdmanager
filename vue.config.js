@@ -48,10 +48,11 @@ module.exports = {
         externals: ['@grpc/proto-loader'],
         electronBuilder: {
             builderOptions: {
+                // afterSign: "build_files/notarize.js",
                 directories: {
                     buildResources: './build_files',
                 },
-                appId: 'io.etcdmanager.app',
+                appId: 'hu.icell.etcd',
                 copyright: `ICell Ltd and contributors ${new Date().getFullYear()}`,
                 publish: ['github'],
                 npmRebuild: false,
@@ -111,6 +112,7 @@ module.exports = {
                 dmg: {
                     background: './build_files/icon_gray.png',
                     title: '${productName} v${version}',
+                    sign: false,
                     contents: [
                         {
                             x: 150,
@@ -139,7 +141,14 @@ module.exports = {
                     conclusion: './build_files/conclusion.html',
                     isVersionChecked: false,
                 },
+                mas: {
+                    entitlements: "build_files/entitlements.mac.plist",
+                    entitlementsInherit: "build_files/entitlements.mac.plist",
+                    provisioningProfile: "build_files/etcd_manager.provisionprofile"
+                },
                 mac: {
+                    hardenedRuntime: true,
+                    gatekeeperAssess: true,
                     category: 'public.app-category.developer-tools',
                     icon: './public/icons/icon.icns',
                     artifactName: '${productName}-${version}-osx.${ext}',
