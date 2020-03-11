@@ -15,6 +15,9 @@ export default {
             noDataText: 'No data available',
         },
         appMenu: {
+            config: 'Config',
+            export: 'Export settings',
+            import: 'Import settings',
             file: 'File',
             services: 'Services',
             hide: 'Hide',
@@ -57,7 +60,11 @@ export default {
             manageWatchers: 'Manage watchers',
             manageUsers: 'Manage users',
             manageRoles: 'Manage roles',
+            manageLeases: 'Manage leases',
             about: 'About',
+        },
+        app: {
+            connected: 'Profile',
         },
         common: {
             items: {
@@ -105,10 +112,10 @@ export default {
                         open: 'Open',
                         close: 'Close',
                     },
-                    tooltip:'Open/close every node',
+                    tooltip: 'Open/close every node',
                 },
                 changeView: {
-                    tooltip:'Change the type of the view',
+                    tooltip: 'Change the type of the view',
                 },
                 create: {
                     label: 'Add',
@@ -411,6 +418,11 @@ export default {
                     placeholder: 'Type in a value..',
                     tooltip: 'The value associated with this key',
                 },
+                ttl: {
+                    label: 'Time to live (TTL)',
+                    placeholder: 'Type in a number..',
+                    tooltip: 'The number of seconds this key should exists. Zero means forever.',
+                },
             },
             buttons: {
                 revisions: 'Show revisions',
@@ -554,6 +566,47 @@ export default {
                 },
             },
         },
+        leaseManager: {
+            title: 'Leases',
+            help: {
+                text: `This is the list of **all leases**. Here you may:
+
+                * Order the list by ID (click the **column title**).
+                * Filter the list by any column (use the **search box**).
+                * Revoke selected lease (click **remove**).
+                * Revoke all leases (click **purge**).
+                * You may also view or revoke individual leases using the appropriate **action icon**.`,
+            },
+            columns: {
+                id: 'ID',
+            },
+            actions: {
+                view: 'View details',
+                remove: 'Remove lease',
+            },
+        },
+        leaseEditor: {
+            title: 'View',
+            subtitle: 'Keys attached to this lease',
+            help: {
+                text: `You can **view** details of a leases here.
+
+                * The countdown displays the neumber of hours, minutes and seconds left until expiry.`,
+            },
+            fields: {
+                grant: {
+                    label: 'TTL',
+                    tooltip: 'The total lifespan of the lease (seconds).',
+                },
+                remainingDate: {
+                    label: 'Time left (as hours / minutes / seconds)',
+                    tooltip: 'Countdown until the the lease expires.',
+                },
+            },
+            columns: {
+                key: 'Key',
+            },
+        },
         roleManager: {
             title: 'Roles',
             help: {
@@ -626,9 +679,9 @@ export default {
                     label: 'This is for all keys',
                     tooltip: 'If checked, the role will apply to all keys',
                 },
-                normal:{
+                normal: {
                     label: 'This is for a single key',
-                    tooltip:'If checked, the role will apply to one key',
+                    tooltip: 'If checked, the role will apply to one key',
 
                 },
             },
