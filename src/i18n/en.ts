@@ -448,6 +448,13 @@ export default {
                 cancel: 'Cancel',
             },
         },
+        whatsNewDialog: {
+            title: 'What\'s new in {version}?',
+            dontshow: 'Do not show this dialog on next startup',
+            actions: {
+                cancel: 'Close',
+            },
+        },
         deleteDialog: {
             title: 'Attention!',
             content:
