@@ -6,17 +6,20 @@ import WatcherService from '../services/watcher.service';
 import { GenericObject } from '../../types';
 import { LocalStorageService } from '../services/local-storage.service';
 import { ConfigService } from '../services/config.service';
+import WhatsNewDialog from './whatsnew.dialog.vue';
 const app = require('electron').remote.app;
 
 @Component({
     name: 'App',
     components: {
         'main-menu': Menu,
+        'whatsnew-dialog': WhatsNewDialog,
     },
 })
 export default class App extends Vue {
     public drawer: boolean = true;
     public year = new Date().getFullYear();
+    public whatsNew: boolean = true;
     private localStorageService: LocalStorageService;
     private configService: ConfigService;
 
@@ -27,6 +30,10 @@ export default class App extends Vue {
         this.configService = new ConfigService(this.localStorageService);
     }
 
+    hideNews() {
+        this.whatsNew = false;
+    }
+
     created() {
         // @ts-ignore
         ipcRenderer.on('navigate', (event: any, message: any) => {
@@ -35,6 +42,8 @@ export default class App extends Vue {
 
         this.$store.commit('version', app.getVersion());
         this.$store.commit('package');
+
+        this.whatsNew = !this.localStorageService.getRaw('news');
     }
 
     get currentProfile() {
@@ -149,6 +158,11 @@ export default class App extends Vue {
                 </v-card-text>
             </v-card>
         </v-dialog>
+
+         <whatsnew-dialog
+            :open="whatsNew"
+            v-on:cancel="hideNews()"
+        ></whatsnew-dialog>
 
         <main-menu v-bind:drawer="drawer"></main-menu>
         <v-toolbar app fixed clipped-left>

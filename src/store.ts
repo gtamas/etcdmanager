@@ -159,13 +159,13 @@ export default new Vuex.Store({
     actions: {
         async locale(context, payload) {
             function setLanguage(
-                lang: string,
+                language: string,
                 translations: VueI18n.LocaleMessageObject
             ) {
-                i18n.locale = lang;
-                document.querySelector('html')!.setAttribute('lang', lang);
+                i18n.locale = language;
+                document.querySelector('html')!.setAttribute('lang', language);
                 ipcRenderer.send('update-menu', translations);
-                return lang;
+                return language;
             }
 
             const lang = payload;
