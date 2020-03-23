@@ -215,57 +215,6 @@
                         <v-container fluid>
                             <v-layout>
                                 <v-flex xs12 align-end flexbox>
-                                    <!-- <v-text-field
-                                        data-test="config.profile-fields-name.text-field"
-                                        dark
-                                        ref="name"
-                                        tab="0"
-                                        :hint="
-                                            $t(
-                                                'settings.profile.fields.name.hint'
-                                            )
-                                        "
-                                        :persistent-hint="true"
-                                        v-model="name"
-                                        :error-messages="nameErrors"
-                                        :label="
-                                            $t(
-                                                'settings.profile.fields.name.label'
-                                            )
-                                        "
-                                        :placeholder="
-                                            $t(
-                                                'settings.profile.fields.name.placeholder'
-                                            )
-                                        "
-                                        required
-                                        @input="$v.name.$touch()"
-                                        @blur="$v.name.$touch()"
-                                    >
-                                        <v-tooltip
-                                            slot="prepend"
-                                            bottom
-                                            max-width="200"
-                                        >
-                                            <v-icon
-                                                data-test="config.profile-fields-name.icon"
-                                                slot="activator"
-                                                color="primary"
-                                                dark
-                                                >info</v-icon
-                                            >
-                                            <span
-                                                data-test="config.profile-fields-name.span"
-                                            >
-                                                {{
-                                                    $t(
-                                                        'settings.profile.fields.name.tooltip'
-                                                    )
-                                                }}
-                                            </span>
-                                        </v-tooltip>
-                                    </v-text-field> -->
-
                                     <v-select
                                         data-test="config.profile-fields-profile.select-field"
                                         :items="profiles"
@@ -1522,8 +1471,10 @@ export default class Configuration extends Vue {
         this.saveAsDialog = true;
     }
 
-    public setNewProfile() {
-        console.log('asd');
+    public setNewProfile(newProfile: string) {
+        this.name = newProfile;
+        this.persist();
+        this.saveAsDialog = false;
     }
 
     public removeProfile() {

@@ -7,39 +7,23 @@
                     >{{ $t('saveAsDialog.title') }}</v-toolbar-title
                 >
             </v-toolbar>
-            <!-- <v-card-text
-                data-test="delete-dialog.content.card-text"
-            >{{ $t("deleteDialog.content", {type: itemName}) }}</v-card-text> -->
             <v-text-field
                 data-test="save-as-dialog.profile.text-field"
                 dark
                 type="text"
                 ref="profile"
                 tab=""
-                v-model="itemName"
+                v-model="profile"
                 :placeholder="$t('saveAsDialog.profile.placeholder')"
                 :label="$t('saveAsDialog.profile.label')"
             >
-                <v-tooltip slot="prepend" bottom max-width="200">
-                    <!-- <v-icon
-                        data-test="save-as-dialog.fields-username.icon"
-                        slot="activator"
-                        color="primary"
-                        dark
-                        >info</v-icon
-                    > -->
-                    <span data-test="save-as-dialog.profile.span">
-                        {{ $t('save-as-dialog.profile.tooltip') }}.
-                    </span>
-                </v-tooltip>
             </v-text-field>
             <v-card-actions>
-                <!-- <v-spacer></v-spacer> -->
                 <v-btn
                     data-test="save-as-dialog.actions-remove.button"
                     color="primary"
                     round
-                    @click="this.$emit('action', this.action)"
+                    @click="submit"
                     >{{ $t('saveAsDialog.actions.saveAs') }}</v-btn
                 >
                 <v-btn
@@ -68,8 +52,10 @@ export default class SaveAsDialog extends Dialog {
     // @ts-ignore
     @Prop() itemName: string;
 
+    public profile: string = this.itemName;
+
     public submit(): SaveAsDialog {
-        this.$emit('saveAs', this.itemName);
+        this.$emit('saveAs', this.profile);
         return this;
     }
 }
