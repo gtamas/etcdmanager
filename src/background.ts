@@ -22,6 +22,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import { get } from 'lodash-es';
 import * as defaultTranslations from './i18n/en';
 import { autoUpdater } from 'electron-updater';
+import marked from 'marked';
 
 const pkg = JSON.parse(
     readFileSync(
@@ -48,11 +49,16 @@ protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
+function loadWhatsNew() {
+    const news = readFileSync('./WHATSNEW.md').toString();
+    win.webContents.send('whatsnew-data', marked(news));
+}
+
 function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
     const menuRouter = (where: string) => {
         // tslint:disable-next-line: variable-name
-        return (_menuItem: any, win: BrowserWindow) => {
-            win.webContents.send('navigate', where);
+        return (_menuItem: any, window: BrowserWindow) => {
+            window.webContents.send('navigate', where);
         };
     };
 
@@ -100,7 +106,7 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                         }
                     },
                 },
-            ]
+            ],
         },
         {
             label: get(translations, ['appMenu', 'edit'], 'Edit'),
@@ -295,52 +301,52 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
         isMac
             ? {
                 label: app.getName(),
-                  submenu: [
-                      {
-                          role: 'about',
-                          label: get(
-                              translations,
-                              ['appMenu', 'about'],
-                              'About'
-                          ),
-                      },
-                      { type: 'separator' },
-                      {
-                          role: 'services',
-                          label: get(
-                              translations,
-                              ['appMenu', 'services'],
-                              'Services'
-                          ),
-                      },
-                      { type: 'separator' },
-                      {
-                          role: 'hide',
-                          label: get(translations, ['appMenu', 'hide'], 'Hide'),
-                      },
-                      {
-                          role: 'hideothers',
-                          label: get(
-                              translations,
-                              ['appMenu', 'hideothers'],
-                              'Hide others'
-                          ),
-                      },
-                      {
-                          role: 'unhide',
-                          label: get(
-                              translations,
-                              ['appMenu', 'unhide'],
-                              'Unhide'
-                          ),
-                      },
-                      { type: 'separator' },
-                      {
-                          role: 'quit',
-                          label: get(translations, ['appMenu', 'quit'], 'Quit'),
-                      }
-                  ],
-              }
+                submenu: [
+                    {
+                        role: 'about',
+                        label: get(
+                            translations,
+                            ['appMenu', 'about'],
+                            'About'
+                        ),
+                    },
+                    { type: 'separator' },
+                    {
+                        role: 'services',
+                        label: get(
+                            translations,
+                            ['appMenu', 'services'],
+                            'Services'
+                        ),
+                    },
+                    { type: 'separator' },
+                    {
+                        role: 'hide',
+                        label: get(translations, ['appMenu', 'hide'], 'Hide'),
+                    },
+                    {
+                        role: 'hideothers',
+                        label: get(
+                            translations,
+                            ['appMenu', 'hideothers'],
+                            'Hide others'
+                        ),
+                    },
+                    {
+                        role: 'unhide',
+                        label: get(
+                            translations,
+                            ['appMenu', 'unhide'],
+                            'Unhide'
+                        ),
+                    },
+                    { type: 'separator' },
+                    {
+                        role: 'quit',
+                        label: get(translations, ['appMenu', 'quit'], 'Quit'),
+                    },
+                ],
+            }
             : {
                 label: get(translations, ['appMenu', 'file'], 'File'),
                 submenu: [
@@ -459,6 +465,10 @@ app.on('ready', async () => {
 
     ipcMain.on('appconfig', (_event: any, data: any) => {
         appConfig = JSON.parse(data);
+    });
+
+    ipcMain.on('whatsnew-load', () => {
+        loadWhatsNew();
     });
 
     return new Tray(join(__static, '/icons/24x24.png'));

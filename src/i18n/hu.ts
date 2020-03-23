@@ -452,6 +452,13 @@ export default {
                 cancel: 'Vissza',
             },
         },
+        whatsNewDialog: {
+            title: 'Űjdonságok a {version} verzióban',
+            dontshow: 'A következő indításnál ne mutassa ezt a képernyőt',
+            actions: {
+                cancel: 'Bezár',
+            },
+        },
         deleteDialog: {
             title: 'Figyelem!',
             content:
@@ -683,7 +690,8 @@ export default {
                 permission: {
                     label: 'Jogok',
                     tooltip:
-                        'A jog, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné, akkor állítsa be az írást és az olvasást is.',
+                        `A jog, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné,
+                        akkor állítsa be az írást és az olvasást is.`,
                 },
                 prefix: {
                     label: 'Ez egy előtag',
