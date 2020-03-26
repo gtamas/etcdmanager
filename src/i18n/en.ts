@@ -311,6 +311,7 @@ export default {
             },
             actions: {
                 submit: 'Save',
+                saveAs: 'Save As',
                 load: 'Load',
                 next: 'Next',
                 testConnection: 'Test Connection',
@@ -463,6 +464,17 @@ export default {
                 remove: 'Remove',
                 cancel: 'Cancel',
             },
+        },
+        saveAsDialog: {
+            title: 'Save As',
+            actions: {
+                saveAs: 'Profile Save As',
+                cancel: 'Cancel',
+            },
+            profile: {
+                placeholder: 'Profile',
+                label: 'Type in the name of the profile...'
+            }
         },
         noSelectionDialog: {
             title: 'Attention!',

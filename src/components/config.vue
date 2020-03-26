@@ -215,57 +215,6 @@
                         <v-container fluid>
                             <v-layout>
                                 <v-flex xs12 align-end flexbox>
-                                    <v-text-field
-                                        data-test="config.profile-fields-name.text-field"
-                                        dark
-                                        ref="name"
-                                        tab="0"
-                                        :hint="
-                                            $t(
-                                                'settings.profile.fields.name.hint'
-                                            )
-                                        "
-                                        :persistent-hint="true"
-                                        v-model="name"
-                                        :error-messages="nameErrors"
-                                        :label="
-                                            $t(
-                                                'settings.profile.fields.name.label'
-                                            )
-                                        "
-                                        :placeholder="
-                                            $t(
-                                                'settings.profile.fields.name.placeholder'
-                                            )
-                                        "
-                                        required
-                                        @input="$v.name.$touch()"
-                                        @blur="$v.name.$touch()"
-                                    >
-                                        <v-tooltip
-                                            slot="prepend"
-                                            bottom
-                                            max-width="200"
-                                        >
-                                            <v-icon
-                                                data-test="config.profile-fields-name.icon"
-                                                slot="activator"
-                                                color="primary"
-                                                dark
-                                                >info</v-icon
-                                            >
-                                            <span
-                                                data-test="config.profile-fields-name.span"
-                                            >
-                                                {{
-                                                    $t(
-                                                        'settings.profile.fields.name.tooltip'
-                                                    )
-                                                }}
-                                            </span>
-                                        </v-tooltip>
-                                    </v-text-field>
-
                                     <v-select
                                         data-test="config.profile-fields-profile.select-field"
                                         :items="profiles"
@@ -1016,6 +965,18 @@
                         }}</span>
                     </v-btn>
                     <v-btn
+                        data-test="config.save-as.button"
+                        :disabled="!valid"
+                        round
+                        color="primary"
+                        @click="saveAsProfile"
+                    >
+                        <v-icon data-test="config.save-as.icon">save</v-icon>
+                        <span data-test="config.save-as.label.span">{{
+                            $t('settings.actions.saveAs')
+                        }}</span>
+                    </v-btn>
+                    <v-btn
                         data-test="config.next.button"
                         round
                         color="warning"
@@ -1037,6 +998,12 @@
             v-on:confirm="confirmDeleteProfile"
             v-on:cancel="cancelDeleteProfile"
         ></delete-dialog>
+        <save-as-dialog
+            :open="saveAsDialog"
+            :itemName="'profile'"
+            v-on:saveAs="setNewProfile"
+            v-on:cancel="cancelSaveAsDialog"
+        ></save-as-dialog>
         <no-selection-dialog
             :open="noSelection"
             v-on:close="closeNoSelection"
@@ -1118,6 +1085,7 @@ const { ipcRenderer } = require('electron');
 export default class Configuration extends Vue {
     public valid = false;
     public deleteDialog = false;
+    public saveAsDialog = false;
     public noSelection = false;
     public alert = false;
     public success = false;
@@ -1488,12 +1456,25 @@ export default class Configuration extends Vue {
             return;
         }
         this.configService.loadProfile(this.profile);
-        this.$store.commit('updateCurrentProfile', this.configService.getProfile(this.profile));
+        this.$store.commit(
+            'updateCurrentProfile',
+            this.configService.getProfile(this.profile)
+        );
         this.$store.commit('message', {
             text: this.$t('settings.messages.profileLoaded'),
             color: 'success',
             show: true,
         });
+    }
+
+    public saveAsProfile() {
+        this.saveAsDialog = true;
+    }
+
+    public setNewProfile(newProfile: string) {
+        this.name = newProfile;
+        this.persist();
+        this.saveAsDialog = false;
     }
 
     public removeProfile() {
@@ -1516,6 +1497,10 @@ export default class Configuration extends Vue {
 
     public cancelDeleteProfile() {
         this.deleteDialog = false;
+    }
+
+    public cancelSaveAsDialog() {
+        this.saveAsDialog = false;
     }
 
     public closeNoSelection() {

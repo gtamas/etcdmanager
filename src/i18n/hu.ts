@@ -315,6 +315,7 @@ export default {
             },
             actions: {
                 submit: 'Elküld',
+                saveAs: 'Mentés másként',
                 load: 'Betölt',
                 next: 'Következő',
                 testConnection: 'Kapcsolat teszt',
@@ -466,6 +467,17 @@ export default {
                 remove: 'Eltávolítása',
                 cancel: 'Vissza',
             },
+        },
+        saveAsDialog: {
+            title: 'Mentés másként',
+            actions: {
+                saveAs: 'Profil mentése másként',
+                cancel: 'Mégsem',
+            },
+            profile: {
+                placeholder: 'Profil',
+                label: 'Gépelje be a profile nevét...'
+            }
         },
         noSelectionDialog: {
             title: 'Figyelem!',
