@@ -473,8 +473,8 @@ export default {
             },
             profile: {
                 placeholder: 'Profile',
-                label: 'Type in the name of the profile...'
-            }
+                label: 'Type in the name of the profile...',
+            },
         },
         noSelectionDialog: {
             title: 'Attention!',

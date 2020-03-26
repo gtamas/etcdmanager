@@ -100,9 +100,9 @@ export default class App extends Vue {
         // @ts-ignore
         const config = this.configService.getConfig();
 
-        const replaceConfig = (config: any) => {
-            this.configService.replaceConfigState(config);
-            this.loadOrDisabledWatchers(config);
+        const replaceConfig = (cfg: any) => {
+            this.configService.replaceConfigState(cfg);
+            this.loadOrDisabledWatchers(cfg);
         };
 
         if (config) {
@@ -113,9 +113,8 @@ export default class App extends Vue {
             );
         }
 
-        ipcRenderer.on('config-data', (event: any, data: any) => {
-            event;
-            const profiles = JSON.parse(data);
+        ipcRenderer.on('config-data', (...args: any[]) => {
+            const profiles = JSON.parse(args[1]);
             replaceConfig(profiles.profiles[0]);
         });
     }

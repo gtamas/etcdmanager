@@ -8,7 +8,6 @@ import store from '@/store';
 import Mousetrap from 'mousetrap';
 
 export interface List {
-    load(): Promise<CrudBase>;
     load(prefix?: string): Promise<CrudBase>;
 }
 
