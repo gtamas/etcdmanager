@@ -33,7 +33,7 @@ export class ConfigService {
 
         if (cfg && cfg.profiles) {
             return cfg.profiles.map(
-                (cfg: any) => cfg.config.name
+                (conf: any) => conf.config.name
             );
         }
 
@@ -53,7 +53,7 @@ export class ConfigService {
 
         if (cfg && cfg.profiles) {
             cfg.profiles = cfg.profiles.filter(
-                (cfg: any) => cfg.config.name !== profile
+                (conf: any) => conf.config.name !== profile
             );
         }
 
@@ -88,7 +88,7 @@ export class ConfigService {
         const authService = new AuthService();
         let isRoot = true;
         if (authService.isAuthenticated()) {
-            isRoot = await new AuthService().isRoot();
+            isRoot = await authService.isRoot();
         }
         store.commit('limited', isRoot);
         store.commit('updateCurrentProfile', config);

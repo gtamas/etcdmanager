@@ -1281,8 +1281,10 @@ export default class Configuration extends Vue {
         }
 
         // @ts-ignore
-        !this.$v.name.required &&
+        if (!this.$v.name.required) {
             errors.push(this.$t('common.validation.required'));
+        }
+
         return errors;
     }
 
@@ -1299,9 +1301,10 @@ export default class Configuration extends Vue {
         }
 
         // @ts-ignore
-        !this.$v.endpoint.required &&
+        if (!this.$v.endpoint.required) {
             errors.push(this.$t('common.validation.required'));
-        // !this.$v.endpoint.url && errors.push('URL appears to be invalid');
+        }
+
         return errors;
     }
 
@@ -1312,10 +1315,14 @@ export default class Configuration extends Vue {
             return errors;
         }
         // @ts-ignore
-        !this.$v.port.required &&
+        if (!this.$v.port.required) {
             errors.push(this.$t('common.validation.required'));
+        }
         // @ts-ignore
-        !this.$v.port.integer && errors.push(this.$t('common.validation.int'));
+        if (!this.$v.port.integer) {
+            errors.push(this.$t('common.validation.int'));
+        }
+
         return errors;
     }
 
@@ -1326,11 +1333,14 @@ export default class Configuration extends Vue {
             return errors;
         }
         // @ts-ignore
-        !this.$v.timeout.required &&
+        if (!this.$v.timeout.required) {
             errors.push(this.$t('common.validation.required'));
+        }
         // @ts-ignore
-        !this.$v.timeout.integer &&
+        if (!this.$v.timeout.integer) {
             errors.push(this.$t('common.validation.int'));
+        }
+
         return errors;
     }
 
@@ -1341,11 +1351,14 @@ export default class Configuration extends Vue {
             return errors;
         }
         // @ts-ignore
-        !this.$v.username.required &&
+        if (!this.$v.username.required) {
             errors.push(this.$t('common.validation.required'));
+        }
         // @ts-ignore
-        !this.$v.username.alphaNum &&
+        if (!this.$v.username.alphaNum) {
             errors.push(this.$t('common.validation.alphanumeric'));
+        }
+
         return errors;
     }
 
@@ -1356,8 +1369,10 @@ export default class Configuration extends Vue {
             return errors;
         }
         // @ts-ignore
-        !this.$v.password.required &&
+        if (!this.$v.password.required) {
             errors.push(this.$t('common.validation.required'));
+        }
+
         return errors;
     }
 
@@ -1368,8 +1383,10 @@ export default class Configuration extends Vue {
             return errors;
         }
         // @ts-ignore
-        !this.$v.pwpattern.invalid &&
+        if (!this.$v.pwpattern.invalid) {
             errors.push(this.$t('common.validation.pattern'));
+        }
+
         return errors;
     }
 

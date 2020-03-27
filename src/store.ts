@@ -68,8 +68,9 @@ export default new Vuex.Store({
             return state.config.language;
         },
         currentProfile(state) {
+            const at = state.etcdAuth.username ? '@' : '';
             if (state.profile.name) {
-                return `${state.profile.name} - ${state.profile.host}:${state.profile.port}`;
+                return `${state.profile.name} - ${state.etcdAuth.username || ''}${at}${state.profile.host}:${state.profile.port}`;
             }
 
             return '';

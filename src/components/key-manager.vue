@@ -730,8 +730,10 @@ export default class KeyManager extends CrudBase implements List {
         }
 
         // @ts-ignore
-        !this.$v.separator.required &&
+        if (!this.$v.separator.required) {
             errors.push(this.$t('common.validation.required'));
+        }
+
         return errors;
     }
 

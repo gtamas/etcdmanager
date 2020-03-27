@@ -229,7 +229,7 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
         {
             label: get(translations, ['appMenu', 'manage'], 'Manage'),
             enabled: disabledMap.manage,
-            visible: disabledMap.manage,
+            visible: process.platform === 'darwin' ? true : disabledMap.manage,
             acceleratorWorksWhenHidden: false,
             submenu: [
                 {

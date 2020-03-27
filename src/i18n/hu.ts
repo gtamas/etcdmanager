@@ -476,8 +476,8 @@ export default {
             },
             profile: {
                 placeholder: 'Profil',
-                label: 'Gépelje be a profile nevét...'
-            }
+                label: 'Gépelje be a profile nevét...',
+            },
         },
         noSelectionDialog: {
             title: 'Figyelem!',
