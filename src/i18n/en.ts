@@ -190,13 +190,14 @@ export default {
                     name: {
                         label: 'Profile',
                         placeholder: 'Type in the name of the profile..',
-                        tooltip: 'The name of this profile. Defaults to "default".',
-                        hint: 'Renaming and saving the profile creates a new profile.',
+                        tooltip:
+                            'The name of this profile. Defaults to "default".',
+                        hint:
+                            'Renaming and saving the profile creates a new profile.',
                     },
                     profiles: {
                         label: 'Profiles',
-                        tooltip:
-                            'The available profiles. Select one to load.',
+                        tooltip: 'The available profiles. Select one to load.',
                     },
                 },
             },
@@ -225,6 +226,24 @@ export default {
                         placeholder: 'Type in a number..',
                         tooltip:
                             'Duration in milliseconds to wait while connecting before timing out. Defaults to 30 seconds.',
+                    },
+                    certificate: {
+                        label: 'Certificate',
+                        tooltip: 'The root certificate data',
+                    },
+                    certKey: {
+                        label: 'Certificate Secret Key',
+                        tooltip:
+                            'The client certificate private key, if applicable',
+                    },
+                    certChain: {
+                        label: 'Certificate Chain',
+                        tooltip:
+                            'The client certificate cert chain, if applicable',
+                    },
+                    ssl: {
+                        label: 'Certification',
+                        tooltip: 'Cerification enabled',
                     },
                     apiVersion: {
                         label: 'API version',
@@ -315,10 +334,13 @@ export default {
                 load: 'Load',
                 next: 'Next',
                 testConnection: 'Test Connection',
+                browse: 'Browse',
             },
             messages: {
-                noDefaultRemove: 'You may not remove the current or the last profile!',
-                error: 'The input data is invalid or mandatory info is missing!',
+                noDefaultRemove:
+                    'You may not remove the current or the last profile!',
+                error:
+                    'The input data is invalid or mandatory info is missing!',
                 connectSuccess: 'Your connection is fine',
                 profileLoaded: 'Profile has been loaded',
                 success: 'Configuration has been saved successfully',
@@ -422,7 +444,8 @@ export default {
                 ttl: {
                     label: 'Time to live (TTL)',
                     placeholder: 'Type in a number..',
-                    tooltip: 'The number of seconds this key should exists. Zero means forever.',
+                    tooltip:
+                        'The number of seconds this key should exists. Zero means forever.',
                 },
             },
             buttons: {
@@ -450,7 +473,7 @@ export default {
             },
         },
         whatsNewDialog: {
-            title: 'What\'s new in {version}?',
+            title: "What's new in {version}?",
             dontshow: 'Do not show this dialog on next startup',
             actions: {
                 cancel: 'Close',
@@ -473,8 +496,8 @@ export default {
             },
             profile: {
                 placeholder: 'Profile',
-                label: 'Type in the name of the profile...'
-            }
+                label: 'Type in the name of the profile...',
+            },
         },
         noSelectionDialog: {
             title: 'Attention!',
@@ -701,7 +724,6 @@ export default {
                 normal: {
                     label: 'This is for a single key',
                     tooltip: 'If checked, the role will apply to one key',
-
                 },
             },
             actions: {

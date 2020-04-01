@@ -195,7 +195,8 @@ export default {
                         label: 'Profil',
                         placeholder: 'Gépelje be a profile nevét..',
                         tooltip: 'A profil neve. Alapértelmezésben "default".',
-                        hint: 'A profil átnevezése és mentése egy új profilt hoz létre.',
+                        hint:
+                            'A profil átnevezése és mentése egy új profilt hoz létre.',
                     },
                     profiles: {
                         label: 'Profilok',
@@ -228,6 +229,23 @@ export default {
                         placeholder: 'Számmal adható meg',
                         tooltip:
                             'Az időtúllépés előtti várakozás időtartama ezredmásodpercben. Alapesetben 30 másodperc.',
+                    },
+                    certificate: {
+                        label: 'Tanusítvány',
+                        tooltip: ' A gyökér tanusítvány adatai',
+                    },
+                    certKey: {
+                        label: 'Tanusítvány Titkos Kulcs',
+                        tooltip: 'Az ügyféltanúsítvány titkos kulcsa, ha van',
+                    },
+                    certChain: {
+                        label: 'Tanusítvány Lánc',
+                        tooltip:
+                            ' Az ügyféltanúsítvány tanúsítási lánc, ha van',
+                    },
+                    ssl: {
+                        label: 'Tanúsítványok',
+                        tooltip: 'Tanusítványok bekapcsolása',
                     },
                     apiVersion: {
                         label: 'API verzió',
@@ -319,13 +337,16 @@ export default {
                 load: 'Betölt',
                 next: 'Következő',
                 testConnection: 'Kapcsolat teszt',
+                browse: 'Tallózás',
             },
             messages: {
-                noDefaultRemove: 'Az aktiv vagy az utolsó profil nem távolítható el!',
+                noDefaultRemove:
+                    'Az aktiv vagy az utolsó profil nem távolítható el!',
                 success: 'A beállítások sikeresen elmentve.',
                 ipOrUrl: 'Az IP-cím, vagy URL érvénytelen.',
                 profileLoaded: 'Profil betöltve',
-                error: 'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
+                error:
+                    'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
                 connectSuccess: 'A kapcsolat létrejött',
             },
         },
@@ -425,7 +446,8 @@ export default {
                 ttl: {
                     label: 'Élettartam (TTL)',
                     placeholder: 'Gépeljen be egy számot..',
-                    tooltip: 'A másodpercek száma amíg ez a kulcs létezik. A nulla azt jelent, nincs limit.',
+                    tooltip:
+                        'A másodpercek száma amíg ez a kulcs létezik. A nulla azt jelent, nincs limit.',
                 },
             },
             buttons: {
@@ -476,8 +498,8 @@ export default {
             },
             profile: {
                 placeholder: 'Profil',
-                label: 'Gépelje be a profile nevét...'
-            }
+                label: 'Gépelje be a profile nevét...',
+            },
         },
         noSelectionDialog: {
             title: 'Figyelem!',
@@ -689,8 +711,7 @@ export default {
                 },
                 permission: {
                     label: 'Jogok',
-                    tooltip:
-                        `A jog, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné,
+                    tooltip: `A jog, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné,
                         akkor állítsa be az írást és az olvasást is.`,
                 },
                 prefix: {
@@ -700,12 +721,13 @@ export default {
                 },
                 all: {
                     label: 'Összes',
-                    tooltip: 'Ha be van pipálva, akkor a szerep a hozzá tartozó összes kulcsot alkalmazza',
+                    tooltip:
+                        'Ha be van pipálva, akkor a szerep a hozzá tartozó összes kulcsot alkalmazza',
                 },
                 normal: {
                     label: 'Egy kulcs',
-                    tooltip: 'Ha be van pipálva, akkor a szerep egy hozzá tartozó kulcsot alkalmaz',
-
+                    tooltip:
+                        'Ha be van pipálva, akkor a szerep egy hozzá tartozó kulcsot alkalmaz',
                 },
             },
             actions: {
