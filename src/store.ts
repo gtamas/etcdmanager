@@ -34,6 +34,12 @@ export default new Vuex.Store({
             dialTimeout: 30000,
             retry: false,
             port: 2379,
+            ssl: {
+                enabled: false,
+                certificate: '',
+                certKey: '',
+                certChain: '',
+            },
         },
         etcdAuth: {
             username: '',
@@ -74,7 +80,6 @@ export default new Vuex.Store({
             }
 
             return '';
-
         },
     },
     mutations: {
@@ -95,6 +100,9 @@ export default new Vuex.Store({
         },
         etcdConfig(state, payload) {
             state.etcd = { ...state.etcd, ...payload };
+        },
+        ssl(state, payload) {
+            state.etcd.ssl = { ...state.etcd.ssl, ...payload };
         },
         etcdAuthConfig(state, payload) {
             state.etcdAuth = { ...state.etcdAuth, ...payload };

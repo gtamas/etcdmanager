@@ -71,7 +71,11 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
             submenu: [
                 {
                     accelerator: 'CommandOrControl+Alt+S',
-                    label: get(translations, ['appMenu', 'settings'], 'Settings'),
+                    label: get(
+                        translations,
+                        ['appMenu', 'settings'],
+                        'Settings'
+                    ),
                     click: menuRouter('configure'),
                 },
                 {
@@ -84,7 +88,11 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                         } as any);
                         if (saveTo) {
                             try {
-                                writeFileSync(saveTo, JSON.stringify(appConfig), { encoding: 'utf8' });
+                                writeFileSync(
+                                    saveTo,
+                                    JSON.stringify(appConfig),
+                                    { encoding: 'utf8' }
+                                );
                             } catch (e) {
                                 throw e;
                             }
@@ -95,7 +103,9 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                     accelerator: 'CommandOrControl+Alt+I',
                     label: get(translations, ['appMenu', 'import'], 'Import'),
                     click: () => {
-                        const saveTo = dialog.showOpenDialogSync({ properties: ['openFile'] });
+                        const saveTo = dialog.showOpenDialogSync({
+                            properties: ['openFile'],
+                        });
                         if (saveTo) {
                             try {
                                 const data = readFileSync(saveTo[0]).toString();
@@ -135,15 +145,15 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                 },
                 ...(isMac
                     ? [
-                        {
-                            role: 'pasteAndMatchStyle',
-                            label: get(
-                                translations,
-                                ['appMenu', 'pasteAndMatchStyle'],
-                                'Paste and match style'
-                            ),
-                        },
-                    ]
+                          {
+                              role: 'pasteAndMatchStyle',
+                              label: get(
+                                  translations,
+                                  ['appMenu', 'pasteAndMatchStyle'],
+                                  'Paste and match style'
+                              ),
+                          },
+                      ]
                     : []),
                 {
                     role: 'delete',
@@ -166,23 +176,23 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
             submenu: [
                 ...(isDevelopment
                     ? [
-                        {
-                            role: 'reload',
-                            label: get(
-                                translations,
-                                ['appMenu', 'reload'],
-                                'Reload'
-                            ),
-                        },
-                        {
-                            role: 'forcereload',
-                            label: get(
-                                translations,
-                                ['appMenu', 'forcereload'],
-                                'Force reload'
-                            ),
-                        },
-                    ]
+                          {
+                              role: 'reload',
+                              label: get(
+                                  translations,
+                                  ['appMenu', 'reload'],
+                                  'Reload'
+                              ),
+                          },
+                          {
+                              role: 'forcereload',
+                              label: get(
+                                  translations,
+                                  ['appMenu', 'forcereload'],
+                                  'Force reload'
+                              ),
+                          },
+                      ]
                     : []),
                 { type: 'separator' },
                 {
@@ -215,14 +225,18 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                     ),
                 },
                 { type: 'separator' },
-                ...(isDevelopment ? [{
-                    role: 'toggledevtools',
-                    label: get(
-                        translations,
-                        ['appMenu', 'toggledevtools'],
-                        'Toggle DevTools'
-                    ),
-                }] : []),
+                ...(isDevelopment
+                    ? [
+                          {
+                              role: 'toggledevtools',
+                              label: get(
+                                  translations,
+                                  ['appMenu', 'toggledevtools'],
+                                  'Toggle DevTools'
+                              ),
+                          },
+                      ]
+                    : []),
                 ,
             ],
         },
@@ -300,62 +314,62 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
         // @ts-ignore
         isMac
             ? {
-                label: app.getName(),
-                submenu: [
-                    {
-                        role: 'about',
-                        label: get(
-                            translations,
-                            ['appMenu', 'about'],
-                            'About'
-                        ),
-                    },
-                    { type: 'separator' },
-                    {
-                        role: 'services',
-                        label: get(
-                            translations,
-                            ['appMenu', 'services'],
-                            'Services'
-                        ),
-                    },
-                    { type: 'separator' },
-                    {
-                        role: 'hide',
-                        label: get(translations, ['appMenu', 'hide'], 'Hide'),
-                    },
-                    {
-                        role: 'hideothers',
-                        label: get(
-                            translations,
-                            ['appMenu', 'hideothers'],
-                            'Hide others'
-                        ),
-                    },
-                    {
-                        role: 'unhide',
-                        label: get(
-                            translations,
-                            ['appMenu', 'unhide'],
-                            'Unhide'
-                        ),
-                    },
-                    { type: 'separator' },
-                    {
-                        role: 'quit',
-                        label: get(translations, ['appMenu', 'quit'], 'Quit'),
-                    },
-                ],
-            }
+                  label: app.getName(),
+                  submenu: [
+                      {
+                          role: 'about',
+                          label: get(
+                              translations,
+                              ['appMenu', 'about'],
+                              'About'
+                          ),
+                      },
+                      { type: 'separator' },
+                      {
+                          role: 'services',
+                          label: get(
+                              translations,
+                              ['appMenu', 'services'],
+                              'Services'
+                          ),
+                      },
+                      { type: 'separator' },
+                      {
+                          role: 'hide',
+                          label: get(translations, ['appMenu', 'hide'], 'Hide'),
+                      },
+                      {
+                          role: 'hideothers',
+                          label: get(
+                              translations,
+                              ['appMenu', 'hideothers'],
+                              'Hide others'
+                          ),
+                      },
+                      {
+                          role: 'unhide',
+                          label: get(
+                              translations,
+                              ['appMenu', 'unhide'],
+                              'Unhide'
+                          ),
+                      },
+                      { type: 'separator' },
+                      {
+                          role: 'quit',
+                          label: get(translations, ['appMenu', 'quit'], 'Quit'),
+                      },
+                  ],
+              }
             : {
-                label: get(translations, ['appMenu', 'file'], 'File'),
-                submenu: [
-                    {
-                        role: 'quit',
-                        label: get(translations, ['appMenu', 'quit'], 'Quit'),
-                    },
-                ],
-            }
+                  label: get(translations, ['appMenu', 'file'], 'File'),
+                  submenu: [
+                      {
+                          role: 'quit',
+                          label: get(translations, ['appMenu', 'quit'], 'Quit'),
+                      },
+                  ],
+              }
     );
 
     menu = Menu.buildFromTemplate(template);
@@ -416,14 +430,30 @@ function createWindow() {
         // Load the index.html when not in development
         win.loadURL('app://./index.html');
         autoUpdater.checkForUpdatesAndNotify();
-
     }
 
     win.maximize();
 
-    win.on('closed', () => {
-    });
+    win.on('closed', () => {});
 }
+
+ipcMain.on('ssl_dialog_open', (_event: any, id: string) => {
+    const saveTo = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+    });
+    if (saveTo) {
+        try {
+            const data = readFileSync(saveTo[0]);
+            win.webContents.send('ssl_data', {
+                id,
+                fileName: saveTo[0],
+                data,
+            });
+        } catch (e) {
+            throw e;
+        }
+    }
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -458,10 +488,13 @@ app.on('ready', async () => {
     setAboutPanel();
     createWindow();
     // tslint:disable-next-line: variable-name
-    ipcMain.on('update-menu', (_event: any, translations: any, disabledMap: GenericObject) => {
-        createAppMenu(translations, disabledMap);
-        setAboutPanel(translations);
-    });
+    ipcMain.on(
+        'update-menu',
+        (_event: any, translations: any, disabledMap: GenericObject) => {
+            createAppMenu(translations, disabledMap);
+            setAboutPanel(translations);
+        }
+    );
 
     ipcMain.on('appconfig', (_event: any, data: any) => {
         appConfig = JSON.parse(data);
