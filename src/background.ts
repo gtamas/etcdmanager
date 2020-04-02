@@ -438,10 +438,9 @@ function createWindow() {
 }
 
 ipcMain.on('ssl_dialog_open', (_event: any, id: string) => {
-    const saveTo = dialog.showOpenDialogSync(
-        new BrowserWindow({ show: false, alwaysOnTop: true }),
-        { properties: ['openFile'] }
-    );
+    const saveTo = dialog.showOpenDialogSync({
+        properties: ['openFile'],
+    });
     if (saveTo) {
         try {
             const data = readFileSync(saveTo[0]);

@@ -526,7 +526,7 @@
                                                 </v-tooltip>
                                             </v-text-field>
                                             <v-btn
-                                                data-test="config.browse.button"
+                                                data-test="config.browse.cert.button"
                                                 round
                                                 color="primary"
                                                 @click="browse('cert')"
@@ -576,7 +576,7 @@
                                                 </v-tooltip>
                                             </v-text-field>
                                             <v-btn
-                                                data-test="config.browse.button"
+                                                data-test="config.browse.certKey.button"
                                                 :disabled="!certificate"
                                                 round
                                                 color="primary"
@@ -627,7 +627,7 @@
                                                 </v-tooltip>
                                             </v-text-field>
                                             <v-btn
-                                                data-test="config.browse.button"
+                                                data-test="config.browse.certChain.button"
                                                 :disabled="!certificate"
                                                 round
                                                 color="primary"
@@ -1411,9 +1411,9 @@ export default class Configuration extends Vue {
     get certChainErrors() {
         const errors: any = [];
 
-        // @ts-ignore
-        this.$v.certChain.required &&
+        if (this.$v.certChain && this.$v.certChain.required) {
             errors.push(this.$t('common.validation.required'));
+        }
 
         return errors;
     }
