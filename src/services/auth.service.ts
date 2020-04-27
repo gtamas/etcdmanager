@@ -21,10 +21,10 @@ export class AuthService {
     }
 
     public async isRoot() {
-        return (
+        return Promise.resolve((
             store.state.etcdAuth.username === 'root' ||
             (await this.hasRole('root'))
-        );
+        ));
     }
 
     public async hasRole(roleName: string) {

@@ -16,10 +16,17 @@ export interface RevisionListType {
     watcher: Watcher;
 }
 
-export type PermissionObject = {
+
+export interface CurrentProfileType {
+    name: string;
+    host: string;
+    port: number;
+}
+
+export interface PermissionObject {
     key: string;
     prefix: boolean;
-    isAll:boolean;
+    isAll: boolean;
     permission: EtcdPermissionType;
 };
 
@@ -64,7 +71,7 @@ export class WatcherEntry {
         public prefix: boolean = false,
         public activated: boolean = false,
         public actions: WatcherAction[] = []
-    ) {}
+    ) { }
 }
 
 export interface NamedWatcher {
@@ -73,13 +80,13 @@ export interface NamedWatcher {
 }
 
 export class EtcdKey {
-    constructor(public key: string = '', public value: string = '') {}
+    constructor(public key: string = '', public value: string = '') { }
 }
 
 export class EtcdRole {
-    constructor(public name: string = '') {}
+    constructor(public name: string = '') { }
 }
 
 export class EtcdUser {
-    constructor(public name: string = '') {}
+    constructor(public name: string = '') { }
 }
