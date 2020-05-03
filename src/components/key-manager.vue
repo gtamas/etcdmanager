@@ -705,7 +705,6 @@ import { required } from 'vuelidate/lib/validators';
 export default class KeyManager extends CrudBase implements List {
     public treeData = [];
     public separator: string = '';
-    private watcher: any;
 
     public headers = [
         {
@@ -756,26 +755,22 @@ export default class KeyManager extends CrudBase implements List {
             'keyManager.columns.value'
         );
 
-        const client = this.etcd.getClient();
-        if (client) {
-            this.watcher = await client
-                .watch()
-                .prefix('')
-                .create();
+        const loader = (data: any) => {
+            this.load();
+            for (const event of data.events) {
+                if (event.type === 'Delete') {
+                    this.editor = false;
+                    break;
+                }
+            }
+        };
 
-            const loader = () => {
-                this.load();
-            };
-
-            this.watcher.on('data', loader);
-        }
+        this.addReloader(loader);
         this.load();
     }
 
     public destroyed() {
-        if (this.watcher) {
-            this.watcher.cancel();
-        }
+        super.destroyed();
     }
 
     public async editItem(item: GenericObject): Promise<KeyManager> {
