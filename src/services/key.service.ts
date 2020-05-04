@@ -105,7 +105,7 @@ export default class KeyService extends EtcdService implements DataService {
         return Promise.resolve(res);
     }
 
-    public async insert(
+    public async upsert(
         key: string,
         value: string,
         ttl: string,
@@ -119,7 +119,7 @@ export default class KeyService extends EtcdService implements DataService {
                 const  tid = setTimeout(() => {
                     clientOrLease.revoke();
                     clearTimeout(tid);
-                }, ttlNum * 1000)
+                }, ttlNum * 1000);
             }
 
             return this.client
@@ -128,7 +128,9 @@ export default class KeyService extends EtcdService implements DataService {
                 .else(this.client.get(key))
                 .commit();
         }
-        return this.client.put(key).value(value);
+        return this.client.put(key)
+        .ignoreLease()
+        .value(value);
     }
 
     public async purge(): Promise<any> {

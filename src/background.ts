@@ -50,7 +50,7 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 function loadWhatsNew() {
-    const news = readFileSync('./WHATSNEW.md').toString();
+    const news = readFileSync(`${__static}/WHATSNEW.md`).toString();
     win.webContents.send('whatsnew-data', marked(news));
 }
 

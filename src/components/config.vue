@@ -1222,7 +1222,7 @@ export default class Configuration extends Vue {
                 this.help = this.help === null ? 0 : null;
             }
         );
-        ipcRenderer.on('ssl_data', (event: any, arg: any) => {
+        ipcRenderer.on('ssl_data', (_event: any, arg: any) => {
             if (arg.id === 'cert') {
                 this.certification = arg.data;
                 this.certificate = arg.fileName;
@@ -1235,6 +1235,10 @@ export default class Configuration extends Vue {
                 this.certificationChain = arg.data;
                 this.certChain = arg.fileName;
             }
+        });
+
+        ipcRenderer.on('config-data', () => {
+            this.profiles = this.configService.getProfiles();
         });
 
         this.profiles = this.configService.getProfiles();

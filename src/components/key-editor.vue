@@ -548,7 +548,7 @@ export default class KeyEditor extends BaseEditor {
 
         try {
             this.toggleLoading();
-            const res = await etcd.insert(
+            const res = await etcd.upsert(
                 this.key,
                 this.value,
                 this.ttl,
