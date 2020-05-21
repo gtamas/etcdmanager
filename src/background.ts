@@ -436,7 +436,18 @@ function createWindow() {
 
     win.on('closed', () => {});
 }
-
+ipcMain.on('ssl_file_check', (_event: any, cert: string, id: string) => {
+    try {
+        const data = readFileSync(cert);
+        win.webContents.send('ssl_data', {
+            id,
+            fileName: cert,
+            data,
+        });
+    } catch (e) {
+        throw e;
+    }
+});
 ipcMain.on('ssl_dialog_open', (_event: any, id: string) => {
     const saveTo = dialog.showOpenDialogSync({
         properties: ['openFile'],
