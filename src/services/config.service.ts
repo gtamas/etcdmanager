@@ -72,7 +72,8 @@ export class ConfigService {
         if (config.etcdAuth) {
             store.commit('etcdAuthConfig', config.etcdAuth);
         }
-        if (config.credentials.rootCertificate) {
+
+        if (config.credentials && config.credentials.rootCertificate) {
             config.credentials.rootCertificate = new Buffer(
                 config.credentials.rootCertificate
             );
