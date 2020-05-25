@@ -6,9 +6,7 @@ import { omit } from 'lodash-es';
 import { ipcRenderer } from 'electron';
 
 export class ConfigService {
-
-    constructor(private localStorageService: LocalStorageService) {
-    }
+    constructor(private localStorageService: LocalStorageService) {}
 
     public hasConfig() {
         return this.getConfig() !== null;
@@ -32,9 +30,7 @@ export class ConfigService {
         const cfg = this.getConfig();
 
         if (cfg && cfg.profiles) {
-            return cfg.profiles.map(
-                (conf: any) => conf.config.name
-            );
+            return cfg.profiles.map((conf: any) => conf.config.name);
         }
 
         return [];
@@ -56,7 +52,6 @@ export class ConfigService {
 
         return this;
     }
-
 
     public removeProfile(profile: string): ConfigService {
         const cfg = this.getConfig();
@@ -87,12 +82,27 @@ export class ConfigService {
         if (config.etcdAuth) {
             store.commit('etcdAuthConfig', config.etcdAuth);
         }
+
+        if (config.credentials && config.credentials.rootCertificate) {
+            config.credentials.rootCertificate = new Buffer(
+                config.credentials.rootCertificate
+            );
+            if (config.credentials.privateKey && config.credentials.certChain) {
+                config.credentials.privateKey = new Buffer(
+                    config.credentials.privateKey
+                );
+                config.credentials.certChain = new Buffer(
+                    config.credentials.certChain
+                );
+            }
+        }
         if (config.etcd.hosts) {
             const auth = config.etcdAuth ? { auth: config.etcdAuth } : {};
             store.commit('etcdConnect', {
                 ...omit(config.etcd, 'port'),
                 ...auth,
                 ...{ hosts: `${config.etcd.hosts}:${config.etcd.port}` },
+                ...{ credentials: config.credentials },
             });
         }
         const authService = new AuthService();
@@ -105,7 +115,5 @@ export class ConfigService {
         ipcRenderer.send('update-menu', undefined, { manage: isRoot });
 
         return true;
-
     }
-
 }

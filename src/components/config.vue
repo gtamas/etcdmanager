@@ -1257,6 +1257,7 @@ import { Etcd3, IOptions } from 'etcd3';
 import { AuthService } from '../services/auth.service';
 import StatsService from '../services/stats.service';
 import { writeFileSync } from 'fs';
+
 const { ipcRenderer } = require('electron');
 
 // @ts-ignore
@@ -1337,6 +1338,7 @@ export default class Configuration extends Vue {
     private certification: Buffer;
     private privateKey: Buffer;
     private certificationChain: Buffer;
+
     public configExists: boolean = false;
 
     public platformService: PlatformService;
@@ -1879,13 +1881,29 @@ export default class Configuration extends Vue {
             this.findError();
             return false;
         }
-
+        let credentials = this.configService.getConfig().credentials;
+        if (new Buffer(credentials.rootCertificate).length > 0) {
+            this.certification = new Buffer(credentials.rootCertificate);
+            if (
+                new Buffer(credentials.privateKey).length > 0 &&
+                new Buffer(credentials.certChain).length > 0
+            ) {
+                this.privateKey = new Buffer(credentials.privateKey);
+                this.certificationChain = new Buffer(credentials.certChain);
+            }
+        }
         const newConfig: { [key: string]: any } = {
             etcd: {
                 hosts: this.endpoint,
                 dialTimeout: this.timeout,
                 retry: this.retry,
                 port: this.port,
+                ssl: {
+                    enabled: this.ssl_enabled,
+                    certificate: '',
+                    certKey: '',
+                    certChain: '',
+                },
             },
             config: {
                 language: this.language,
@@ -1907,22 +1925,26 @@ export default class Configuration extends Vue {
                 password: this.password,
             };
         }
-
         if (this.certificate && this.ssl_enabled) {
+            newConfig.etcd.ssl.certificate = this.certificate;
+            newConfig.etcd.ssl.enabled = this.ssl_enabled;
             newConfig.credentials = {
                 rootCertificate: this.certification,
             };
             if (this.certKey && this.certChain) {
+                newConfig.etcd.ssl.certKey = this.certKey;
+                newConfig.etcd.ssl.certChain = this.certChain;
+
                 newConfig.credentials.privateKey = this.privateKey;
                 newConfig.credentials.certChain = this.certificationChain;
             }
         }
-
         if (this.pwpattern) {
             newConfig.users = {
                 pattern: this.pwpattern,
             };
         }
+
         const oldConfig = this.configService.getConfig() || {};
         oldConfig.profiles = oldConfig.profiles || [];
         const profileIndex = oldConfig.profiles.findIndex(
@@ -1954,6 +1976,7 @@ export default class Configuration extends Vue {
                 ...omit(newConfig.etcd, 'port'),
                 ...auth,
                 ...{ hosts: `${newConfig.etcd.hosts}:${newConfig.etcd.port}` },
+                ...{ credentials: newConfig.credentials },
             });
 
             await this.updateCurrentEtcdVersion();
