@@ -43,7 +43,7 @@ export default class App extends Vue {
         this.$store.commit('version', app.getVersion());
         this.$store.commit('package');
 
-        this.whatsNew = !this.localStorageService.getRaw('news');
+        this.whatsNew = !this.localStorageService.getRaw(`news${app.getVersion()}`);
     }
 
     get currentProfile() {
@@ -114,8 +114,9 @@ export default class App extends Vue {
         }
 
         ipcRenderer.on('config-data', (...args: any[]) => {
-            const profiles = JSON.parse(args[1]);
+            const profiles = JSON.parse(args[1])
             replaceConfig(profiles.profiles[0]);
+            this.configService.setConfig(profiles);
         });
     }
 }

@@ -1,7 +1,13 @@
 <template>
     <v-layout align-start justify-center row>
         <v-flex pa-1 grow fill-height>
-            <v-expansion-panel focusable dark class="help" v-model="help" :readonly="true">
+            <v-expansion-panel
+                focusable
+                dark
+                class="help"
+                v-model="help"
+                :readonly="true"
+            >
                 <v-expansion-panel-content dark class="darker">
                     <template v-slot:actions>
                         <v-tooltip
@@ -17,22 +23,28 @@
                                 color="primary"
                                 light
                                 medium
-                            >help</v-icon>
-                            <span data-test="lease-manager.help.span">{{ $t('common.help.tooltip') }}</span>
+                                >help</v-icon
+                            >
+                            <span data-test="lease-manager.help.span">{{
+                                $t('common.help.tooltip')
+                            }}</span>
                         </v-tooltip>
                     </template>
                     <template v-slot:header>
                         <v-toolbar raised dark>
                             <v-toolbar-title
                                 data-test="lease-manager.LeaseManager-title.toolbar-title"
-                            >{{ $t('leaseManager.title') }}</v-toolbar-title>
+                                >{{ $t('leaseManager.title') }}</v-toolbar-title
+                            >
                             <v-divider
                                 data-test="lease-manager.divider.divider"
                                 class="mx-2"
                                 inset
                                 vertical
                             ></v-divider>
-                            <v-spacer data-test="lease-manager.spacer.spacer"></v-spacer>
+                            <v-spacer
+                                data-test="lease-manager.spacer.spacer"
+                            ></v-spacer>
                             <v-text-field
                                 data-test="lease-manager.filter.text-field"
                                 dark
@@ -56,15 +68,26 @@
                                         @click="purge"
                                         v-on="on"
                                     >
-                                        <v-icon data-test="lease-manager.purgeAll.icon">remove_circle</v-icon>
+                                        <v-icon
+                                            data-test="lease-manager.purgeAll.icon"
+                                            >remove_circle</v-icon
+                                        >
                                         <span
                                             data-test="lease-manager.purgeAll-label.span"
-                                        >{{ $t('common.actions.purgeAll.label') }}</span>
+                                            >{{
+                                                $t(
+                                                    'common.actions.purgeAll.label'
+                                                )
+                                            }}</span
+                                        >
                                     </v-btn>
                                 </template>
                                 <span
                                     data-test="lease-manager.purgeAll-tooltip.span"
-                                >{{ $t('common.actions.purgeAll.tooltip') }}</span>
+                                    >{{
+                                        $t('common.actions.purgeAll.tooltip')
+                                    }}</span
+                                >
                             </v-tooltip>
                             <v-tooltip
                                 data-test="lease-manager.removeAll.tooltip"
@@ -80,43 +103,70 @@
                                         dark
                                         v-on="on"
                                     >
-                                        <v-icon data-test="lease-manager.removeAll.icon">delete</v-icon>
+                                        <v-icon
+                                            data-test="lease-manager.removeAll.icon"
+                                            >delete</v-icon
+                                        >
                                         <span
                                             data-test="lease-manager.removeAll-label.span"
-                                        >{{ $t('common.actions.removeAll.label') }}</span>
+                                            >{{
+                                                $t(
+                                                    'common.actions.removeAll.label'
+                                                )
+                                            }}</span
+                                        >
                                     </v-btn>
                                 </template>
                                 <span
                                     data-test="lease-manager.removeAll-tooltip.span"
-                                >{{ $t('common.actions.removeAll.tooltip') }}</span>
+                                    >{{
+                                        $t('common.actions.removeAll.tooltip')
+                                    }}</span
+                                >
                             </v-tooltip>
                         </v-toolbar>
                     </template>
-                    <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
-                        <v-tab
-                            data-test="lease-manager.info.tab"
-                            ripple
-                        >{{ $t('common.help.tabs.info') }}</v-tab>
+                    <v-tabs
+                        v-model="helpbar"
+                        dark
+                        color="black"
+                        slider-color="primary"
+                        grow
+                    >
+                        <v-tab data-test="lease-manager.info.tab" ripple>{{
+                            $t('common.help.tabs.info')
+                        }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text>
                                     <h2
                                         data-test="lease-manager.infoTitle.h2"
                                         class="title"
-                                    >{{ $t("common.help.infoTitle") }}</h2>
-                                    <p data-test="lease-manager.spacer-1.p" class="spacer"></p>
+                                    >
+                                        {{ $t('common.help.infoTitle') }}
+                                    </h2>
+                                    <p
+                                        data-test="lease-manager.spacer-1.p"
+                                        class="spacer"
+                                    ></p>
                                     <p
                                         data-test="lease-manager.text.p"
-                                        v-html="platformService.getHelp($t('leaseManager.help.text'))"
+                                        v-html="
+                                            platformService.getHelp(
+                                                $t('leaseManager.help.text')
+                                            )
+                                        "
                                     ></p>
-                                    <p data-test="lease-manager.spacer-2.p" class="spacer"></p>
+                                    <p
+                                        data-test="lease-manager.spacer-2.p"
+                                        class="spacer"
+                                    ></p>
                                 </v-card-text>
                             </v-card>
                         </v-tab-item>
-                        <v-tab
-                            data-test="lease-manager.shortcuts.tab"
-                            ripple
-                        >{{ $t('common.help.tabs.shortcuts') }}</v-tab>
+                        <v-tab data-test="lease-manager.shortcuts.tab" ripple>{{
+                            $t('common.help.tabs.shortcuts')
+                        }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text>
@@ -125,13 +175,23 @@
                                             <p
                                                 data-test="lease-manager.shortcuts-openEditor-rounded.p"
                                                 class="rounded"
-                                            >{{ `${platformService.getMeta()} + a` }}</p>
+                                            >
+                                                {{
+                                                    `${platformService.getMeta()} + a`
+                                                }}
+                                            </p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
                                                 data-test="lease-manager.shortcuts-openEditor-label.p"
                                                 class="label"
-                                            >{{ $t("common.help.shortcuts.openEditor") }}</p>
+                                            >
+                                                {{
+                                                    $t(
+                                                        'common.help.shortcuts.openEditor'
+                                                    )
+                                                }}
+                                            </p>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout align-center justify-start row>
@@ -139,13 +199,21 @@
                                             <p
                                                 data-test="lease-manager.shortcuts-closeEditor-rounded.p"
                                                 class="rounded"
-                                            >{{ `esc` }}</p>
+                                            >
+                                                {{ `esc` }}
+                                            </p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
                                                 data-test="lease-manager.shortcuts-closeEditor-label.p"
                                                 class="label"
-                                            >{{ $t("common.help.shortcuts.closeEditor") }}</p>
+                                            >
+                                                {{
+                                                    $t(
+                                                        'common.help.shortcuts.closeEditor'
+                                                    )
+                                                }}
+                                            </p>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout align-center justify-start row>
@@ -153,13 +221,23 @@
                                             <p
                                                 data-test="lease-manager.shortcuts-purge-rounded.p"
                                                 class="rounded"
-                                            >{{ `${platformService.getMeta()} + p` }}</p>
+                                            >
+                                                {{
+                                                    `${platformService.getMeta()} + p`
+                                                }}
+                                            </p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
                                                 data-test="lease-manager.shortcuts-purge-label.p"
                                                 class="label"
-                                            >{{ $t("common.help.shortcuts.purge") }}</p>
+                                            >
+                                                {{
+                                                    $t(
+                                                        'common.help.shortcuts.purge'
+                                                    )
+                                                }}
+                                            </p>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout align-center justify-start row>
@@ -167,13 +245,23 @@
                                             <p
                                                 data-test="lease-manager.shortcuts-remove-rounded.p"
                                                 class="rounded"
-                                            >{{ `${platformService.getMeta()} + r` }}</p>
+                                            >
+                                                {{
+                                                    `${platformService.getMeta()} + r`
+                                                }}
+                                            </p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
                                                 data-test="lease-manager.shortcuts-remove-label.p"
                                                 class="label"
-                                            >{{ $t("common.help.shortcuts.remove") }}</p>
+                                            >
+                                                {{
+                                                    $t(
+                                                        'common.help.shortcuts.remove'
+                                                    )
+                                                }}
+                                            </p>
                                         </v-flex>
                                     </v-layout>
                                     <v-layout align-center justify-start row>
@@ -181,20 +269,33 @@
                                             <p
                                                 data-test="lease-manager.shortcuts-help-rounded.p"
                                                 class="rounded"
-                                            >{{ `${platformService.getMeta()} + h` }}</p>
+                                            >
+                                                {{
+                                                    `${platformService.getMeta()} + h`
+                                                }}
+                                            </p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
                                                 data-test="lease-manager.shortcuts-help-label.p"
                                                 class="label"
-                                            >{{ $t("common.help.shortcuts.help") }}</p>
+                                            >
+                                                {{
+                                                    $t(
+                                                        'common.help.shortcuts.help'
+                                                    )
+                                                }}
+                                            </p>
                                         </v-flex>
                                     </v-layout>
                                 </v-card-text>
                             </v-card>
                         </v-tab-item>
                     </v-tabs>
-                    <hr data-test="lease-manager.blackline.hr" class="blackLine" />
+                    <hr
+                        data-test="lease-manager.blackline.hr"
+                        class="blackLine"
+                    />
                 </v-expansion-panel-content>
             </v-expansion-panel>
             <v-card raised dark>
@@ -223,7 +324,10 @@
                             ></v-checkbox>
                         </td>
                         <td>{{ props.item.ID }}</td>
-                        <td data-test="lease-manager.actions.td" class="justify-center layout px-0">
+                        <td
+                            data-test="lease-manager.actions.td"
+                            class="justify-center layout px-0"
+                        >
                             <v-tooltip
                                 data-test="lease-manager.actions-view.tooltip"
                                 bottom
@@ -235,11 +339,13 @@
                                         small
                                         @click="editItem(props.item)"
                                         v-on="on"
-                                    >details</v-icon>
+                                        >details</v-icon
+                                    >
                                 </template>
                                 <span
                                     data-test="lease-manager.actions-view.span"
-                                >{{ $t('leaseManager.actions.view') }}</span>
+                                    >{{ $t('leaseManager.actions.view') }}</span
+                                >
                             </v-tooltip>
                             <v-tooltip
                                 data-test="lease-manager.actions-remove.tooltip"
@@ -253,11 +359,15 @@
                                         slot="activator"
                                         @click="deleteSingle(props.item)"
                                         v-on="on"
-                                    >delete</v-icon>
+                                        >delete</v-icon
+                                    >
                                 </template>
                                 <span
                                     data-test="lease-manager.actions-remove.span"
-                                >{{ $t('leaseManager.actions.remove') }}</span>
+                                    >{{
+                                        $t('leaseManager.actions.remove')
+                                    }}</span
+                                >
                             </v-tooltip>
                         </td>
                     </template>
@@ -291,11 +401,14 @@
             v-on:confirm="confirmPurge"
             v-on:cancel="cancelPurge"
         ></purge-dialog>
-        <no-selection-dialog :open="noSelection" v-on:close="closeNoSelection"></no-selection-dialog>
+        <no-selection-dialog
+            :open="noSelection"
+            v-on:close="closeNoSelection"
+        ></no-selection-dialog>
     </v-layout>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import Component from 'vue-class-component';
 import Messages from '@/lib/messages';
 import { GenericObject, EtcdRole } from '../../types';
@@ -327,10 +440,21 @@ export default class LeaseManager extends CrudBase implements List {
         this.etcd = new LeaseService(this.$store.state.connection.getClient());
     }
 
-    public created() {
+    public async created() {
         this.defaultItem = new EtcdRole();
-        this.load();
         this.translateHeaders('leaseManager.columns.id');
+
+        const loader = () => {
+            this.load();
+            this.editor = false;
+        };
+
+        this.addReloader(loader);
+        this.load();
+    }
+
+    public destroyed() {
+       super.destroyed();
     }
 
     public async editItem(item: GenericObject) {
@@ -390,5 +514,4 @@ export default class LeaseManager extends CrudBase implements List {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

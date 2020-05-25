@@ -419,8 +419,7 @@ import uuidv1 from 'uuid/v1';
             alphaNum,
         },
         key: {
-            required,
-            alphaNum,
+            required
         },
     },
     components: {
@@ -516,10 +515,6 @@ export default class WatcherEditor extends BaseEditor {
         // @ts-ignore
         if (!this.$v.key.required) {
             errors.push('Item is required');
-        }
-        // @ts-ignore
-        if (!this.$v.key.alphaNum) {
-            errors.push('Alphanumeric value expected');
         }
 
         return errors;

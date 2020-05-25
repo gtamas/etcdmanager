@@ -1,5 +1,5 @@
 <template>
-    <v-dialog ref="dialog" v-model="open" fullscreen persistent>
+    <v-dialog ref="dialog" v-model="open" dark scrollable full-width persistent>
         <v-card dark>
             <v-toolbar dark flat>
                 <v-toolbar-title
@@ -60,7 +60,7 @@ export default class WhatsNewDialog extends Dialog {
     }
 
     hideNews() {
-        this.localStorageService.set('news', true);
+        this.localStorageService.set(`news${this.version}`, true);
     }
 
     created() {
