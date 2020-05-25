@@ -474,7 +474,7 @@ export default {
             },
         },
         whatsNewDialog: {
-            title: "What's new in {version}?",
+            title: 'What is new in {version}?',
             dontshow: 'Do not show this dialog on next startup',
             actions: {
                 cancel: 'Close',

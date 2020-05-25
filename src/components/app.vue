@@ -24,6 +24,7 @@ export default class App extends Vue {
     public whatsNew: boolean = true;
     private localStorageService: LocalStorageService;
     private configService: ConfigService;
+    // @ts-ignore
     private statsService: StatsService;
 
     constructor() {

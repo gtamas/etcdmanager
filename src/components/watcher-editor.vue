@@ -419,7 +419,7 @@ import uuidv1 from 'uuid/v1';
             alphaNum,
         },
         key: {
-            required
+            required,
         },
     },
     components: {

@@ -18,7 +18,7 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib';
 import * as Splashscreen from '@trodi/electron-splashscreen';
 import { join } from 'path';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { get } from 'lodash-es';
 import * as defaultTranslations from './i18n/en';
 import { autoUpdater } from 'electron-updater';
@@ -36,7 +36,6 @@ const pkg = JSON.parse(
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
 let menu: Menu | null = null;
-let appConfig: any;
 
 declare const __static: any;
 
@@ -97,10 +96,10 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                     click: () => {
                         const saveTo = dialog.showOpenDialogSync({
                             properties: ['openFile'],
-                            filters:[{
+                            filters: [{
                                 extensions: ['json', 'JSON'],
                                 name: 'foo',
-                            }]
+                            }],
                         });
                         if (saveTo) {
                             try {
@@ -444,8 +443,8 @@ ipcMain.on('ssl_dialog_open', (_event: any, id: string) => {
             const data = readFileSync(saveTo[0]);
             win.webContents.send('ssl_data', {
                 id,
-                fileName: saveTo[0],
                 data,
+                fileName: saveTo[0],
             });
         } catch (e) {
             throw e;
@@ -494,10 +493,6 @@ app.on('ready', async () => {
             setAboutPanel(translations);
         }
     );
-
-    ipcMain.on('appconfig', (_event: any, data: any) => {
-        appConfig = JSON.parse(data);
-    });
 
     ipcMain.on('whatsnew-load', () => {
         loadWhatsNew();
