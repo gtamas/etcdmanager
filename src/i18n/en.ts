@@ -144,6 +144,7 @@ export default {
                 error: 'Could not perform operation',
                 copyClipboardSuccess: 'Copied to clipboard successfully.',
                 copyClipboardSuccessError: 'Could not copy to clipboard.',
+                invalidFileError: 'Invalid input file, JSON input is expected.',
             },
         },
         settings: {
@@ -473,7 +474,7 @@ export default {
             },
         },
         whatsNewDialog: {
-            title: "What's new in {version}?",
+            title: 'What is new in {version}?',
             dontshow: 'Do not show this dialog on next startup',
             actions: {
                 cancel: 'Close',

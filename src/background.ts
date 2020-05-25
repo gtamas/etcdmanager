@@ -18,7 +18,7 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib';
 import * as Splashscreen from '@trodi/electron-splashscreen';
 import { join } from 'path';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { get } from 'lodash-es';
 import * as defaultTranslations from './i18n/en';
 import { autoUpdater } from 'electron-updater';
@@ -36,7 +36,6 @@ const pkg = JSON.parse(
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
 let menu: Menu | null = null;
-let appConfig: any;
 
 declare const __static: any;
 
@@ -87,15 +86,7 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                             properties: ['dontAddToRecent', 'createDirectory'],
                         } as any);
                         if (saveTo) {
-                            try {
-                                writeFileSync(
-                                    saveTo,
-                                    JSON.stringify(appConfig),
-                                    { encoding: 'utf8' }
-                                );
-                            } catch (e) {
-                                throw e;
-                            }
+                            win.webContents.send('app-config-data', saveTo);
                         }
                     },
                 },
@@ -105,13 +96,17 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                     click: () => {
                         const saveTo = dialog.showOpenDialogSync({
                             properties: ['openFile'],
+                            filters: [{
+                                extensions: ['json', 'JSON'],
+                                name: 'foo',
+                            }],
                         });
                         if (saveTo) {
                             try {
-                                const data = readFileSync(saveTo[0]).toString();
+                                const data = JSON.parse(readFileSync(saveTo[0]).toString());
                                 win.webContents.send('config-data', data);
                             } catch (e) {
-                                throw e;
+                                win.webContents.send('error-notification', 'common.messages.invalidFileError');
                             }
                         }
                     },
@@ -286,6 +281,8 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                 },
                 {
                     label: get(translations, ['appMenu', 'leases'], 'Leases'),
+                    enabled: disabledMap.lease,
+                    visible: process.platform === 'darwin' ? true : disabledMap.lease,
                     accelerator: 'CommandOrControl+Alt+L',
                     click: menuRouter('leases'),
                 },
@@ -385,7 +382,7 @@ function setAboutPanel(_translations: any = defaultTranslations.default.en) {
             applicationVersion: app.getVersion(),
             copyright: `Copyright ${year} by Contributors. All rights reserved.`,
             credits: 'Contributors',
-            website: 'http://www.etcdmanager.com',
+            website: 'http://www.etcdmanager.io',
             iconPath: join(__static, '/icons/64x64.png'),
         });
     }
@@ -441,8 +438,8 @@ ipcMain.on('ssl_file_check', (_event: any, cert: string, id: string) => {
         const data = readFileSync(cert);
         win.webContents.send('ssl_data', {
             id,
-            fileName: cert,
             data,
+            fileName: cert,
         });
     } catch (e) {
         throw e;
@@ -457,14 +454,15 @@ ipcMain.on('ssl_dialog_open', (_event: any, id: string) => {
             const data = readFileSync(saveTo[0]);
             win.webContents.send('ssl_data', {
                 id,
-                fileName: saveTo[0],
                 data,
+                fileName: saveTo[0],
             });
         } catch (e) {
             throw e;
         }
     }
 });
+
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -506,10 +504,6 @@ app.on('ready', async () => {
             setAboutPanel(translations);
         }
     );
-
-    ipcMain.on('appconfig', (_event: any, data: any) => {
-        appConfig = JSON.parse(data);
-    });
 
     ipcMain.on('whatsnew-load', () => {
         loadWhatsNew();

@@ -758,7 +758,7 @@ export default class KeyManager extends CrudBase implements List {
         const loader = (data: any) => {
             this.load();
             for (const event of data.events) {
-                if (event.type === 'Delete') {
+                if (event.type === 'Delete' && event.kv.key.toString() === this.currentItem.key) {
                     this.editor = false;
                     break;
                 }
