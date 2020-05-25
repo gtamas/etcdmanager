@@ -438,8 +438,8 @@ ipcMain.on('ssl_file_check', (_event: any, cert: string, id: string) => {
         const data = readFileSync(cert);
         win.webContents.send('ssl_data', {
             id,
-            fileName: cert,
             data,
+            fileName: cert,
         });
     } catch (e) {
         throw e;
