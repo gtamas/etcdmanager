@@ -50,24 +50,28 @@
                                 color="primary"
                                 light
                                 medium
-                            >help</v-icon>
+                                >help</v-icon
+                            >
                             <span data-test="config.help.span">
-                                {{
-                                $t('common.help.tooltip')
-                                }}
+                                {{ $t('common.help.tooltip') }}
                             </span>
                         </v-tooltip>
                     </template>
                     <template v-slot:header>
                         <v-toolbar-title
                             data-test="config.settings-title.toolbar-title"
-                        >{{ $t('settings.title') }}</v-toolbar-title>
+                            >{{ $t('settings.title') }}</v-toolbar-title
+                        >
                     </template>
-                    <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
+                    <v-tabs
+                        v-model="helpbar"
+                        dark
+                        color="black"
+                        slider-color="primary"
+                        grow
+                    >
                         <v-tab data-test="config.help-title.tab" ripple>
-                            {{
-                            $t('common.help.tabs.info')
-                            }}
+                            {{ $t('common.help.tabs.info') }}
                         </v-tab>
                         <v-tab-item>
                             <v-card dark>
@@ -75,7 +79,9 @@
                                     <h2
                                         data-test="config.help-info-title.h2"
                                         class="title"
-                                    >{{ $t('common.help.infoTitle') }}</h2>
+                                    >
+                                        {{ $t('common.help.infoTitle') }}
+                                    </h2>
                                     <p class="spacer"></p>
                                     <p v-html="getHelp()"></p>
                                     <p class="spacer"></p>
@@ -83,9 +89,7 @@
                             </v-card>
                         </v-tab-item>
                         <v-tab data-test="config.help-shortcuts.tab" ripple>
-                            {{
-                            $t('common.help.tabs.shortcuts')
-                            }}
+                            {{ $t('common.help.tabs.shortcuts') }}
                         </v-tab>
                         <v-tab-item>
                             <v-card dark>
@@ -97,9 +101,9 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                `${platformService.getMeta()} + ${$t(
-                                                'settings.help.shortcuts.leftArrowLabel'
-                                                )}`
+                                                    `${platformService.getMeta()} + ${$t(
+                                                        'settings.help.shortcuts.leftArrowLabel'
+                                                    )}`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -109,9 +113,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                $t(
-                                                'settings.help.shortcuts.leftArrow'
-                                                )
+                                                    $t(
+                                                        'settings.help.shortcuts.leftArrow'
+                                                    )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -123,9 +127,9 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                `${platformService.getMeta()} + ${$t(
-                                                'settings.help.shortcuts.rightArrowLabel'
-                                                )}`
+                                                    `${platformService.getMeta()} + ${$t(
+                                                        'settings.help.shortcuts.rightArrowLabel'
+                                                    )}`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -135,9 +139,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                $t(
-                                                'settings.help.shortcuts.rightArrow'
-                                                )
+                                                    $t(
+                                                        'settings.help.shortcuts.rightArrow'
+                                                    )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -149,7 +153,7 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                `${platformService.getMeta()} + s`
+                                                    `${platformService.getMeta()} + s`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -159,9 +163,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                $t(
-                                                'common.help.shortcuts.save'
-                                                )
+                                                    $t(
+                                                        'common.help.shortcuts.save'
+                                                    )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -173,7 +177,7 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                `${platformService.getMeta()} + h`
+                                                    `${platformService.getMeta()} + h`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -183,9 +187,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                $t(
-                                                'common.help.shortcuts.help'
-                                                )
+                                                    $t(
+                                                        'common.help.shortcuts.help'
+                                                    )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -196,11 +200,15 @@
                     </v-tabs>
                 </v-expansion-panel-content>
             </v-expansion-panel>
-            <v-tabs v-model="active" dark color="black" slider-color="warning" grow>
+            <v-tabs
+                v-model="active"
+                dark
+                color="black"
+                slider-color="warning"
+                grow
+            >
                 <v-tab data-test="config.profile-title.tab" ripple>
-                    {{
-                    $t('settings.profile.title')
-                    }}
+                    {{ $t('settings.profile.title') }}
                 </v-tab>
                 <v-tab-item>
                     <v-card raised>
@@ -229,12 +237,17 @@
                                                 :disabled="!configExists"
                                                 @click="loadProfile"
                                             >
-                                                <v-icon data-test="config.loadProfile.icon">input</v-icon>
-                                                <span data-test="config.loadProfile.label.span">
+                                                <v-icon
+                                                    data-test="config.loadProfile.icon"
+                                                    >input</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.loadProfile.label.span"
+                                                >
                                                     {{
-                                                    $t(
-                                                    'settings.actions.load'
-                                                    )
+                                                        $t(
+                                                            'settings.actions.load'
+                                                        )
                                                     }}
                                                 </span>
                                             </v-btn>
@@ -247,28 +260,38 @@
                                             >
                                                 <v-icon
                                                     data-test="config.removeProfile.icon"
-                                                >remove_circle</v-icon>
-                                                <span data-test="config.removeProfile.label.span">
+                                                    >remove_circle</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.removeProfile.label.span"
+                                                >
                                                     {{
-                                                    $t(
-                                                    'common.actions.removeAll.label'
-                                                    )
+                                                        $t(
+                                                            'common.actions.removeAll.label'
+                                                        )
                                                     }}
                                                 </span>
                                             </v-btn>
                                         </template>
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.profile-fields-name.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.profile-fields-profiles.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.profile-fields-profiles.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.profile.fields.profiles.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.profile.fields.profiles.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -279,9 +302,7 @@
                     </v-card>
                 </v-tab-item>
                 <v-tab data-test="config.etcd-title.tab" ripple>
-                    {{
-                    $t('settings.etcd.title')
-                    }}
+                    {{ $t('settings.etcd.title') }}
                 </v-tab>
                 <v-tab-item>
                     <v-card raised>
@@ -308,18 +329,25 @@
                                             "
                                             required
                                         >
-                                            <v-tooltip slot="prepend" bottom max-width="200">
+                                            <v-tooltip
+                                                slot="prepend"
+                                                bottom
+                                                max-width="200"
+                                            >
                                                 <v-icon
                                                     data-test="config.etcd-fields-endpoint.icon"
                                                     slot="activator"
                                                     color="primary"
                                                     dark
-                                                >info</v-icon>
-                                                <span data-test="config.etcd-fields-endpoint.span">
+                                                    >info</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.etcd-fields-endpoint.span"
+                                                >
                                                     {{
-                                                    $t(
-                                                    'settings.etcd.fields.endpoint.tooltip'
-                                                    )
+                                                        $t(
+                                                            'settings.etcd.fields.endpoint.tooltip'
+                                                        )
                                                     }}
                                                 </span>
                                             </v-tooltip>
@@ -339,12 +367,15 @@
                                         >
                                             <v-icon
                                                 data-test="config.test-connection.icon"
-                                            >cast_connected</v-icon>
-                                            <span data-test="config.test-connection.label.span">
+                                                >cast_connected</v-icon
+                                            >
+                                            <span
+                                                data-test="config.test-connection.label.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.actions.testConnection'
-                                                )
+                                                    $t(
+                                                        'settings.actions.testConnection'
+                                                    )
                                                 }}
                                             </span>
                                             <template v-slot:loader>
@@ -352,7 +383,8 @@
                                                     <v-icon
                                                         data-test="config.test-connection.icon"
                                                         light
-                                                    >cached</v-icon>
+                                                        >cached</v-icon
+                                                    >
                                                 </span>
                                             </template>
                                         </v-btn>
@@ -380,18 +412,25 @@
                                         @input="$v.timeout.$touch()"
                                         @blur="$v.timeout.$touch()"
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.etcd-fields-port.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.etcd-fields-port.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.etcd-fields-port.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.etcd.fields.port.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.etcd.fields.port.tooltip'
+                                                    )
                                                 }}.
                                             </span>
                                         </v-tooltip>
@@ -407,18 +446,25 @@
                                             )
                                         "
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.etcd-fields-retries.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.etcd-fields-retries.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.etcd-fields-retries.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.etcd.fields.retries.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.etcd.fields.retries.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -446,18 +492,25 @@
                                         @input="$v.timeout.$touch()"
                                         @blur="$v.timeout.$touch()"
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.etcd-fields-timeout.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.etcd-fields-timeout.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.etcd-fields-timeout.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.etcd.fields.timeout.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.etcd.fields.timeout.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -468,23 +521,28 @@
                                         dark
                                         v-model="ssl_enabled"
                                         :label="
-                                            $t(
-                                                'settings.etcd.fields.ssl.label'
-                                            )
+                                            $t('settings.etcd.fields.ssl.label')
                                         "
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.etcd-fields-ssl.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.etcd-fields-ssl.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.etcd-fields-ssl.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.etcd.fields.ssl.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.etcd.fields.ssl.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -499,28 +557,33 @@
                                                 tab="1"
                                                 v-model="certificate"
                                                 :label="
-                                            $t(
-                                                'settings.etcd.fields.certificate.label'
-                                            )
-                                        "
+                                                    $t(
+                                                        'settings.etcd.fields.certificate.label'
+                                                    )
+                                                "
                                                 required
                                                 @input="$v.timeout.$touch()"
                                                 @blur="$v.timeout.$touch()"
                                             >
-                                                <v-tooltip slot="prepend" bottom max-width="200">
+                                                <v-tooltip
+                                                    slot="prepend"
+                                                    bottom
+                                                    max-width="200"
+                                                >
                                                     <v-icon
                                                         data-test="config.etcd-fields-certificate.icon"
                                                         slot="activator"
                                                         color="primary"
                                                         dark
-                                                    >info</v-icon>
+                                                        >info</v-icon
+                                                    >
                                                     <span
                                                         data-test="config.etcd-fields-certificate.span"
                                                     >
                                                         {{
-                                                        $t(
-                                                        'settings.etcd.fields.certificate.tooltip'
-                                                        )
+                                                            $t(
+                                                                'settings.etcd.fields.certificate.tooltip'
+                                                            )
                                                         }}
                                                     </span>
                                                 </v-tooltip>
@@ -533,10 +596,15 @@
                                             >
                                                 <v-icon
                                                     data-test="config.browse.icon"
-                                                >open_in_browser</v-icon>
-                                                <span data-test="config.browse.label.span">
+                                                    >open_in_browser</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.browse.label.span"
+                                                >
                                                     {{
-                                                    $t('settings.actions.browse')
+                                                        $t(
+                                                            'settings.actions.browse'
+                                                        )
                                                     }}
                                                 </span>
                                             </v-btn>
@@ -550,27 +618,32 @@
                                                 tab="1"
                                                 v-model="certKey"
                                                 :label="
-                                            $t(
-                                                'settings.etcd.fields.certKey.label'
-                                            )
-                                        "
+                                                    $t(
+                                                        'settings.etcd.fields.certKey.label'
+                                                    )
+                                                "
                                                 @input="$v.timeout.$touch()"
                                                 @blur="$v.timeout.$touch()"
                                             >
-                                                <v-tooltip slot="prepend" bottom max-width="200">
+                                                <v-tooltip
+                                                    slot="prepend"
+                                                    bottom
+                                                    max-width="200"
+                                                >
                                                     <v-icon
                                                         data-test="config.etcd-fields-certKey.icon"
                                                         slot="activator"
                                                         color="primary"
                                                         dark
-                                                    >info</v-icon>
+                                                        >info</v-icon
+                                                    >
                                                     <span
                                                         data-test="config.etcd-fields-certKey.span"
                                                     >
                                                         {{
-                                                        $t(
-                                                        'settings.etcd.fields.certKey.tooltip'
-                                                        )
+                                                            $t(
+                                                                'settings.etcd.fields.certKey.tooltip'
+                                                            )
                                                         }}
                                                     </span>
                                                 </v-tooltip>
@@ -584,10 +657,15 @@
                                             >
                                                 <v-icon
                                                     data-test="config.browse.icon"
-                                                >open_in_browser</v-icon>
-                                                <span data-test="config.browse.label.span">
+                                                    >open_in_browser</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.browse.label.span"
+                                                >
                                                     {{
-                                                    $t('settings.actions.browse')
+                                                        $t(
+                                                            'settings.actions.browse'
+                                                        )
                                                     }}
                                                 </span>
                                             </v-btn>
@@ -601,27 +679,32 @@
                                                 tab="1"
                                                 v-model="certChain"
                                                 :label="
-                                            $t(
-                                                'settings.etcd.fields.certChain.label'
-                                            )
-                                        "
+                                                    $t(
+                                                        'settings.etcd.fields.certChain.label'
+                                                    )
+                                                "
                                                 @input="$v.timeout.$touch()"
                                                 @blur="$v.timeout.$touch()"
                                             >
-                                                <v-tooltip slot="prepend" bottom max-width="200">
+                                                <v-tooltip
+                                                    slot="prepend"
+                                                    bottom
+                                                    max-width="200"
+                                                >
                                                     <v-icon
                                                         data-test="config.etcd-fields-certChain.icon"
                                                         slot="activator"
                                                         color="primary"
                                                         dark
-                                                    >info</v-icon>
+                                                        >info</v-icon
+                                                    >
                                                     <span
                                                         data-test="config.etcd-fields-certChain.span"
                                                     >
                                                         {{
-                                                        $t(
-                                                        'settings.etcd.fields.certChain.tooltip'
-                                                        )
+                                                            $t(
+                                                                'settings.etcd.fields.certChain.tooltip'
+                                                            )
                                                         }}
                                                     </span>
                                                 </v-tooltip>
@@ -635,10 +718,15 @@
                                             >
                                                 <v-icon
                                                     data-test="config.browse.icon"
-                                                >open_in_browser</v-icon>
-                                                <span data-test="config.browse.label.span">
+                                                    >open_in_browser</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.browse.label.span"
+                                                >
                                                     {{
-                                                    $t('settings.actions.browse')
+                                                        $t(
+                                                            'settings.actions.browse'
+                                                        )
                                                     }}
                                                 </span>
                                             </v-btn>
@@ -650,9 +738,7 @@
                     </v-card>
                 </v-tab-item>
                 <v-tab data-test="config.auth-title.tab" ripple>
-                    {{
-                    $t('settings.auth.title')
-                    }}
+                    {{ $t('settings.auth.title') }}
                 </v-tab>
                 <v-tab-item>
                     <v-card raised>
@@ -680,18 +766,25 @@
                                         @input="$v.username.$touch()"
                                         @blur="$v.username.$touch()"
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.fields-username.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.fields-username.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.fields-username.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.auth.fields.username.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.auth.fields.username.tooltip'
+                                                    )
                                                 }}.
                                             </span>
                                         </v-tooltip>
@@ -731,18 +824,25 @@
                                         @input="$v.password.$touch()"
                                         @blur="$v.password.$touch()"
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.fields-password.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.fields-password.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.fields-password.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.auth.fields.password.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.auth.fields.password.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -753,9 +853,7 @@
                     </v-card>
                 </v-tab-item>
                 <v-tab data-test="config.watchers-title.tab" ripple>
-                    {{
-                    $t('settings.watchers.title')
-                    }}
+                    {{ $t('settings.watchers.title') }}
                 </v-tab>
                 <v-tab-item>
                     <v-card raised>
@@ -772,18 +870,25 @@
                                             )
                                         "
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.watcher-fields-load.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.watcher-fields-load.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.watcher-fields-load.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.watchers.fields.loadWatchers.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.watchers.fields.loadWatchers.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -798,20 +903,25 @@
                                             )
                                         "
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.watcher-fields-error-listener.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
+                                                >info</v-icon
+                                            >
                                             <span
                                                 data-test="config.watcher-fields-error-listener.span"
                                             >
                                                 {{
-                                                $t(
-                                                'settings.watchers.fields.errorListener.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.watchers.fields.errorListener.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -826,20 +936,25 @@
                                             )
                                         "
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.watcher-fields-disconnect-listener.v-icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
+                                                >info</v-icon
+                                            >
                                             <span
                                                 data-test="config.watcher-fields-disconnect-listener.span"
                                             >
                                                 {{
-                                                $t(
-                                                'settings.watchers.fields.disconnectListener.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.watchers.fields.disconnectListener.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -854,20 +969,25 @@
                                             )
                                         "
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.watcher-fields-reconnect-listener.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
+                                                >info</v-icon
+                                            >
                                             <span
                                                 data-test="config.watcher-fields-reconnect-listener.span"
                                             >
                                                 {{
-                                                $t(
-                                                'settings.watchers.fields.reconnectListener.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.watchers.fields.reconnectListener.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -878,9 +998,7 @@
                     </v-card>
                 </v-tab-item>
                 <v-tab data-test="config.users-title.tab" ripple>
-                    {{
-                    $t('settings.users.title')
-                    }}
+                    {{ $t('settings.users.title') }}
                 </v-tab>
                 <v-tab-item>
                     <v-card raised>
@@ -908,18 +1026,25 @@
                                         @input="$v.pwpattern.$touch()"
                                         @blur="$v.pwpattern.$touch()"
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.users-fields-pwpattern.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.users-fields-pwpattern.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.users-fields-pwpattern.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.users.fields.pwpattern.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.users.fields.pwpattern.tooltip'
+                                                    )
                                                 }}.
                                             </span>
                                         </v-tooltip>
@@ -930,9 +1055,7 @@
                     </v-card>
                 </v-tab-item>
                 <v-tab data-test="config.misc-title.tab" ripple>
-                    {{
-                    $t('settings.misc.title')
-                    }}
+                    {{ $t('settings.misc.title') }}
                 </v-tab>
                 <v-tab-item>
                     <v-card raised>
@@ -953,18 +1076,25 @@
                                         item-value="value"
                                         required
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.misc-fields-language.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.misc-fields-language.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.misc-fields-language.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.misc.fields.language.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.misc.fields.language.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -978,18 +1108,25 @@
                                             )
                                         "
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.misc-fields-animatebg.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.misc-fields-animatebg.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.misc-fields-animatebg.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.misc.fields.animateBg.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.misc.fields.animateBg.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -1001,18 +1138,25 @@
                                             $t('settings.misc.fields.bg.label')
                                         "
                                     >
-                                        <v-tooltip slot="prepend" bottom max-width="200">
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
                                             <v-icon
                                                 data-test="config.misc-fields-bg.icon"
                                                 slot="activator"
                                                 color="primary"
                                                 dark
-                                            >info</v-icon>
-                                            <span data-test="config.misc-fields-bg.span">
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.misc-fields-bg.span"
+                                            >
                                                 {{
-                                                $t(
-                                                'settings.misc.fields.bg.tooltip'
-                                                )
+                                                    $t(
+                                                        'settings.misc.fields.bg.tooltip'
+                                                    )
                                                 }}
                                             </span>
                                         </v-tooltip>
@@ -1034,9 +1178,7 @@
                     >
                         <v-icon data-test="config.submit.icon">save</v-icon>
                         <span data-test="config.submit.label.span">
-                            {{
-                            $t('settings.actions.submit')
-                            }}
+                            {{ $t('settings.actions.submit') }}
                         </span>
                     </v-btn>
                     <v-btn
@@ -1048,17 +1190,20 @@
                     >
                         <v-icon data-test="config.save-as.icon">save</v-icon>
                         <span data-test="config.save-as.label.span">
-                            {{
-                            $t('settings.actions.saveAs')
-                            }}
+                            {{ $t('settings.actions.saveAs') }}
                         </span>
                     </v-btn>
-                    <v-btn data-test="config.next.button" round color="warning" @click="next">
-                        <v-icon data-test="config.next.icon">navigate_next</v-icon>
+                    <v-btn
+                        data-test="config.next.button"
+                        round
+                        color="warning"
+                        @click="next"
+                    >
+                        <v-icon data-test="config.next.icon"
+                            >navigate_next</v-icon
+                        >
                         <span data-test="config.next.label.span">
-                            {{
-                            $t('settings.actions.next')
-                            }}
+                            {{ $t('settings.actions.next') }}
                         </span>
                     </v-btn>
                 </v-layout>
@@ -1076,7 +1221,10 @@
             v-on:saveAs="setNewProfile"
             v-on:cancel="cancelSaveAsDialog"
         ></save-as-dialog>
-        <no-selection-dialog :open="noSelection" v-on:close="closeNoSelection"></no-selection-dialog>
+        <no-selection-dialog
+            :open="noSelection"
+            v-on:close="closeNoSelection"
+        ></no-selection-dialog>
         <message-dialog
             :open="alert"
             text="settings.messages.noDefaultRemove"
@@ -1107,6 +1255,8 @@ import { GenericObject } from '../../types';
 import { ConfigService } from '../services/config.service';
 import { Etcd3, IOptions } from 'etcd3';
 import { AuthService } from '../services/auth.service';
+import StatsService from '../services/stats.service';
+import { writeFileSync } from 'fs';
 const { ipcRenderer } = require('electron');
 
 // @ts-ignore
@@ -1237,11 +1387,23 @@ export default class Configuration extends Vue {
             }
         });
 
-        ipcRenderer.on('config-data', () => {
-            this.profiles = this.configService.getProfiles();
+        ipcRenderer.on('app-config-data', (_event: any, saveTo: string) => {
+            try {
+                writeFileSync(
+                    saveTo,
+                    JSON.stringify(this.configService.getConfig()),
+                    { encoding: 'utf8' }
+                );
+            } catch (e) {
+                throw e;
+            }
         });
 
-        this.profiles = this.configService.getProfiles();
+        ipcRenderer.on('config-data', () => {
+            this.profiles = this.configService.getProfileNames();
+        });
+
+        this.profiles = this.configService.getProfileNames();
         this.authService = new AuthService();
     }
 
@@ -1626,7 +1788,7 @@ export default class Configuration extends Vue {
         }
     }
 
-    public loadProfile() {
+    public async loadProfile() {
         if (!this.profile || !this.profiles.length) {
             this.noSelection = true;
             return;
@@ -1636,6 +1798,9 @@ export default class Configuration extends Vue {
             'updateCurrentProfile',
             this.configService.getProfile(this.profile)
         );
+
+        await this.updateCurrentEtcdVersion();
+
         this.$store.commit('message', {
             text: this.$t('settings.messages.profileLoaded'),
             color: 'success',
@@ -1667,7 +1832,7 @@ export default class Configuration extends Vue {
         this.configService.removeProfile(this.profile);
         this.persist(false);
         this.profile = 'default';
-        this.profiles = this.configService.getProfiles();
+        this.profiles = this.configService.getProfileNames();
         this.deleteDialog = false;
     }
 
@@ -1691,12 +1856,30 @@ export default class Configuration extends Vue {
         ipcRenderer.send('ssl_dialog_open', id);
     }
 
+    private async updateCurrentEtcdVersion() {
+        const statsService = new StatsService(
+            this.$store.state.connection.getClient()
+        );
+        const stats = await statsService.getStats();
+        const currentVersion = parseFloat(stats.version);
+
+        this.$store.commit('etcdConfig', { version: currentVersion });
+
+        ipcRenderer.send('update-menu', undefined, {
+            lease: currentVersion > 3.2,
+            manage: this.authService.isAuthenticated()
+                ? this.authService.isRoot()
+                : true,
+        });
+    }
+
     public async persist(notify: boolean = true) {
         this.$v.$touch();
         if (this.$v.$invalid) {
             this.findError();
             return false;
         }
+
         const newConfig: { [key: string]: any } = {
             etcd: {
                 hosts: this.endpoint,
@@ -1764,7 +1947,7 @@ export default class Configuration extends Vue {
                 profiles: [...oldConfig.profiles],
                 ...newConfig,
             });
-            this.profiles = this.configService.getProfiles();
+            this.profiles = this.configService.getProfileNames();
             this.profile = newConfig.config.name;
             const auth = newConfig.etcdAuth ? { auth: newConfig.etcdAuth } : {};
             this.$store.commit('etcdConnect', {
@@ -1773,19 +1956,17 @@ export default class Configuration extends Vue {
                 ...{ hosts: `${newConfig.etcd.hosts}:${newConfig.etcd.port}` },
             });
 
+            await this.updateCurrentEtcdVersion();
+
             this.$store.commit(
                 'limited',
                 this.authService.isAuthenticated() ? isRoot : true
             );
-            ipcRenderer.send('update-menu', undefined, {
-                manage: this.authService.isAuthenticated() ? isRoot : true,
-            });
 
-            if (this.authService.isAuthenticated()) {
-            } else {
+            if (!this.authService.isAuthenticated()) {
                 this.$store.commit('limited', true);
-                ipcRenderer.send('update-menu', undefined, { manage: true });
             }
+
             if (notify) {
                 this.$store.dispatch('locale', this.language).then(() => {
                     this.$store.commit('message', {

@@ -147,6 +147,7 @@ export default {
                 error: 'A művelet nem végrehajtható',
                 copyClipboardSuccess: 'Sikeresen vágólapra másolva.',
                 copyClipboardError: 'A vágólapra másolás nem sikerült.',
+                invalidFileError: 'Érvénytelen bemeneti fájl, JSON bemenet az elvárt.',
             },
         },
         settings: {

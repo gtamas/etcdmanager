@@ -1,13 +1,15 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Menu from './menu.vue';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, IpcRendererEvent } from 'electron';
 import WatcherService from '../services/watcher.service';
 import { GenericObject } from '../../types';
 import { LocalStorageService } from '../services/local-storage.service';
 import { ConfigService } from '../services/config.service';
 import WhatsNewDialog from './whatsnew.dialog.vue';
-const app = require('electron').remote.app;
+import Messages from '../lib/messages';
+import StatsService from '../services/stats.service';
+const app = require('electron').remote.app
 
 @Component({
     name: 'App',
@@ -22,6 +24,7 @@ export default class App extends Vue {
     public whatsNew: boolean = true;
     private localStorageService: LocalStorageService;
     private configService: ConfigService;
+    private statsService: StatsService;
 
     constructor() {
         super();
@@ -43,7 +46,11 @@ export default class App extends Vue {
         this.$store.commit('version', app.getVersion());
         this.$store.commit('package');
 
-        this.whatsNew = !this.localStorageService.getRaw(`news${app.getVersion()}`);
+        this.whatsNew = !this.localStorageService.getRaw(
+            `news${app.getVersion()}`
+        );
+
+
     }
 
     get currentProfile() {
@@ -96,7 +103,7 @@ export default class App extends Vue {
         this.$ls.set('watchers', JSON.stringify(watchers));
     }
 
-    public mounted() {
+    public async mounted() {
         // @ts-ignore
         const config = this.configService.getConfig();
 
@@ -114,10 +121,28 @@ export default class App extends Vue {
         }
 
         ipcRenderer.on('config-data', (...args: any[]) => {
-            const profiles = JSON.parse(args[1])
+            const profiles = args[1];
             replaceConfig(profiles.profiles[0]);
             this.configService.setConfig(profiles);
+            this.$store.commit('message', Messages.success());
         });
+
+        ipcRenderer.on(
+            'error-notification',
+            (_event: IpcRendererEvent, message: string) => {
+                this.$store.commit(
+                    'message',
+                    Messages.error(this.$t(message).toString())
+                );
+            }
+        );
+
+        this.statsService = new StatsService(this.$store.state.connection.getClient());
+        const stats = await this.statsService.getStats();
+
+        this.$store.commit('etcdConfig', {version: parseFloat(stats.version) });
+        ipcRenderer.send('update-menu', undefined, { lease: this.$store.state.etcd.version > 3.2});
+
     }
 }
 </script>
@@ -159,7 +184,7 @@ export default class App extends Vue {
             </v-card>
         </v-dialog>
 
-         <whatsnew-dialog
+        <whatsnew-dialog
             :open="whatsNew"
             v-on:cancel="hideNews()"
         ></whatsnew-dialog>

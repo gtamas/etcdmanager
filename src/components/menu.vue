@@ -51,7 +51,7 @@
                     >{{ $t('menu.manageUsers') }}</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
-               <v-list-tile ripple to="/leases" :disabled="!isLimited">
+               <v-list-tile ripple to="/leases" :disabled="!isLimited || isOlder(3.3)">
                 <v-list-tile-action>
                     <v-icon data-test="menu.leases.icon">av_timer</v-icon>
                 </v-list-tile-action>
@@ -106,6 +106,10 @@ export default class Menu extends Vue {
 
     get isLimited() {
         return this.$store.state.isLimited;
+    }
+
+    isOlder(version: number) {
+        return this.$store.state.etcd.version < version;
     }
 
     public isActive(menuItem: string) {
