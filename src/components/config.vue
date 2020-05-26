@@ -1403,6 +1403,7 @@ export default class Configuration extends Vue {
 
         ipcRenderer.on('config-data', () => {
             this.profiles = this.configService.getProfileNames();
+            this.profile = this.$store.getters.currentProfileName;
         });
 
         this.profiles = this.configService.getProfileNames();
@@ -1882,14 +1883,16 @@ export default class Configuration extends Vue {
             return false;
         }
         let credentials = this.configService.getConfig().credentials;
-        if (new Buffer(credentials.rootCertificate).length > 0) {
-            this.certification = new Buffer(credentials.rootCertificate);
-            if (
-                new Buffer(credentials.privateKey).length > 0 &&
-                new Buffer(credentials.certChain).length > 0
-            ) {
-                this.privateKey = new Buffer(credentials.privateKey);
-                this.certificationChain = new Buffer(credentials.certChain);
+        if (credentials && credentials.rootCertificate) {
+            if (new Buffer(credentials.rootCertificate).length > 0) {
+                this.certification = new Buffer(credentials.rootCertificate);
+                if (
+                    new Buffer(credentials.privateKey).length > 0 &&
+                    new Buffer(credentials.certChain).length > 0
+                ) {
+                    this.privateKey = new Buffer(credentials.privateKey);
+                    this.certificationChain = new Buffer(credentials.certChain);
+                }
             }
         }
         const newConfig: { [key: string]: any } = {
