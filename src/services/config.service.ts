@@ -26,11 +26,21 @@ export class ConfigService {
         return cnf.profiles.find((c: any) => c.config.name === name);
     }
 
-    public getProfiles() {
+    public getProfileNames() {
         const cfg = this.getConfig();
 
         if (cfg && cfg.profiles) {
             return cfg.profiles.map((conf: any) => conf.config.name);
+        }
+
+        return [];
+    }
+
+    public getProfiles() {
+        const cfg = this.getConfig();
+
+        if (cfg && cfg.profiles) {
+            return cfg.profiles;
         }
 
         return [];

@@ -34,6 +34,7 @@ export default new Vuex.Store({
             dialTimeout: 30000,
             retry: false,
             port: 2379,
+            version: 0,
             ssl: {
                 enabled: false,
                 certificate: '',
