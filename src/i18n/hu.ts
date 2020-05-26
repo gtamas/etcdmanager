@@ -339,6 +339,7 @@ export default {
                 next: 'Következő',
                 testConnection: 'Kapcsolat teszt',
                 browse: 'Tallózás',
+                clear: 'Törlés'
             },
             messages: {
                 noDefaultRemove:
