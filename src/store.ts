@@ -6,6 +6,7 @@ import EtcdService from './services/etcd.service';
 import { i18n, loadedLang } from './main';
 import { join } from 'path';
 import VueI18n from 'vue-i18n';
+import { CurrentProfileType } from '../types';
 const {
     ipcRenderer,
     remote: { app },
@@ -16,6 +17,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         isLimited: false,
+        profile: {} as CurrentProfileType,
         profiles: [],
         separator: '.',
         config: {
@@ -32,6 +34,12 @@ export default new Vuex.Store({
             dialTimeout: 30000,
             retry: false,
             port: 2379,
+            ssl: {
+                enabled: false,
+                certificate: '',
+                certKey: '',
+                certChain: '',
+            },
         },
         etcdAuth: {
             username: '',
@@ -65,6 +73,17 @@ export default new Vuex.Store({
         language(state) {
             return state.config.language;
         },
+        currentProfile(state) {
+            const at = state.etcdAuth.username ? '@' : '';
+            if (state.profile.name) {
+                return `${state.profile.name} - ${state.etcdAuth.username || ''}${at}${state.profile.host}:${state.profile.port}`;
+            }
+
+            return '';
+        },
+        currentProfileName(state) {
+            return state.profile.name;
+        }
     },
     mutations: {
         limited(state, payload) {
@@ -85,14 +104,28 @@ export default new Vuex.Store({
         etcdConfig(state, payload) {
             state.etcd = { ...state.etcd, ...payload };
         },
+        ssl(state, payload) {
+            state.etcd.ssl = { ...state.etcd.ssl, ...payload };
+        },
         etcdAuthConfig(state, payload) {
             state.etcdAuth = { ...state.etcdAuth, ...payload };
         },
+        updateCurrentProfile(state, payload) {
+            state.profile = {
+                name: payload.config.name,
+                host: payload.etcd.hosts,
+                port: payload.etcd.port,
+            };
+        },
         profileUpdate(state, payload) {
             (state.profiles[payload.index] as any) = payload.data;
+            // @ts-ignore
+            this.commit('updateCurrentProfile', payload.data);
         },
         profileInsert(state, payload) {
             state.profiles.push(payload as never);
+            // @ts-ignore
+            this.commit('updateCurrentProfile', payload);
         },
         watcherConfig(state, payload) {
             state.watchers = { ...state.watchers, ...payload };
@@ -138,13 +171,13 @@ export default new Vuex.Store({
     actions: {
         async locale(context, payload) {
             function setLanguage(
-                lang: string,
+                language: string,
                 translations: VueI18n.LocaleMessageObject
             ) {
-                i18n.locale = lang;
-                document.querySelector('html')!.setAttribute('lang', lang);
+                i18n.locale = language;
+                document.querySelector('html')!.setAttribute('lang', language);
                 ipcRenderer.send('update-menu', translations);
-                return lang;
+                return language;
             }
 
             const lang = payload;

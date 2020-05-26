@@ -36,11 +36,11 @@ export default class WatcherService extends EtcdService implements DataService {
 
     private generateOutput(message: string, outputType: number) {
         if (outputType === 0) {
-            store.commit('console', message);
+            return store.commit('console', message);
         } if (outputType === 1) {
-            store.commit('message', Messages.message(message as string));
+            return store.commit('message', Messages.message(message as string));
         } if (outputType === 2) {
-            new Notification('Attention!', {
+            return new Notification('Attention!', {
                 lang: 'en',
                 timestamp: Date.now(),
                 body: message,

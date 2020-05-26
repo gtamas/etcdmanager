@@ -244,6 +244,41 @@
                             </v-tooltip>
                         </v-text-field>
 
+
+                         <v-text-field
+                            v-if="!editMode"
+                            data-test="key-editor.ttl.text-field"
+                            dark
+                            type="number"
+                            v-model="ttl"
+                            :label="$t('keyEditor.fields.ttl.label')"
+                            :placeholder="
+                                $t('keyEditor.fields.ttl.placeholder')
+                            "
+                            required
+                        >
+                            <v-tooltip
+                                data-test="key-editor.ttl.tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="key-editor.ttl.icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                    >info</v-icon
+                                >
+                                <span data-test="key-editor.ttl.span"
+                                    >{{
+                                        $t('keyEditor.fields.ttl.tooltip')
+                                    }}.</span
+                                >
+                            </v-tooltip>
+                        </v-text-field>
+
+
                         <v-btn
                             data-test="key-editor.submit.button"
                             :disabled="!valid"
@@ -399,6 +434,7 @@ export default class KeyEditor extends BaseEditor {
 
     public key: string = this.data.key || '';
     public value: string = this.data.value || '';
+    public ttl: string = '0';
     public showRevs: number | null = null;
 
     public headers = [
@@ -512,9 +548,10 @@ export default class KeyEditor extends BaseEditor {
 
         try {
             this.toggleLoading();
-            const res = await etcd.insert(
+            const res = await etcd.upsert(
                 this.key,
                 this.value,
+                this.ttl,
                 this.createMode
             );
             this.toggleLoading();
@@ -525,6 +562,7 @@ export default class KeyEditor extends BaseEditor {
                 if (this.createMode) {
                     this.key = '';
                     this.value = '';
+                    this.ttl = '0';
                 }
             } else {
                 this.$store.commit(
