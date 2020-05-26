@@ -514,6 +514,20 @@
                                                 </v-tooltip>
                                             </v-text-field>
                                             <v-btn
+                                                data-test="config.clear.cert.button"
+                                                round
+                                                color="primary"
+                                                @click="clearCert()"
+                                            >
+                                                <span data-test="config.clear.label.span">
+                                                    {{
+                                                    $t(
+                                                    'settings.actions.clear'
+                                                    )
+                                                    }}
+                                                </span>
+                                            </v-btn>
+                                            <v-btn
                                                 data-test="config.browse.cert.button"
                                                 round
                                                 color="primary"
@@ -533,8 +547,8 @@
                                         </v-layout>
                                         <v-layout align-end row>
                                             <v-text-field
-                                                data-test="config.etcd-fields-certKey.text-field"
                                                 readonly
+                                                data-test="config.etcd-fields-certKey.text-field"
                                                 dark
                                                 ref="certKey"
                                                 tab="1"
@@ -566,6 +580,20 @@
                                                 </v-tooltip>
                                             </v-text-field>
                                             <v-btn
+                                                data-test="config.clear.certKey.button"
+                                                round
+                                                color="primary"
+                                                @click="clearCertKey()"
+                                            >
+                                                <span data-test="config.clear.label.span">
+                                                    {{
+                                                    $t(
+                                                    'settings.actions.clear'
+                                                    )
+                                                    }}
+                                                </span>
+                                            </v-btn>
+                                            <v-btn
                                                 data-test="config.browse.certKey.button"
                                                 :disabled="!certificate"
                                                 round
@@ -586,8 +614,8 @@
                                         </v-layout>
                                         <v-layout align-end row>
                                             <v-text-field
-                                                data-test="config.etcd-fields-certChain.text-field"
                                                 readonly
+                                                data-test="config.etcd-fields-certChain.text-field"
                                                 dark
                                                 ref="certChain"
                                                 tab="1"
@@ -618,6 +646,20 @@
                                                     </span>
                                                 </v-tooltip>
                                             </v-text-field>
+                                            <v-btn
+                                                data-test="config.clear.certChain.button"
+                                                round
+                                                color="primary"
+                                                @click="clearCertChain()"
+                                            >
+                                                <span data-test="config.clear.label.span">
+                                                    {{
+                                                    $t(
+                                                    'settings.actions.clear'
+                                                    )
+                                                    }}
+                                                </span>
+                                            </v-btn>
                                             <v-btn
                                                 data-test="config.browse.certChain.button"
                                                 :disabled="!certificate"
@@ -1231,6 +1273,7 @@ export default class Configuration extends Vue {
 
         ipcRenderer.on('config-data', () => {
             this.profiles = this.configService.getProfileNames();
+            this.profile = this.$store.getters.currentProfileName;
         });
 
         this.profiles = this.configService.getProfileNames();
@@ -1694,6 +1737,18 @@ export default class Configuration extends Vue {
 
     public browse(id: string) {
         ipcRenderer.send('ssl_dialog_open', id);
+    }
+
+    public clearCert() {
+        this.certificate = '';
+    }
+
+    public clearCertKey() {
+        this.certKey = '';
+    }
+
+    public clearCertChain() {
+        this.certChain = '';
     }
 
     private async updateCurrentEtcdVersion() {

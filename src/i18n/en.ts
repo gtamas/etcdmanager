@@ -336,6 +336,7 @@ export default {
                 next: 'Next',
                 testConnection: 'Test Connection',
                 browse: 'Browse',
+                clear: 'Clear'
             },
             messages: {
                 noDefaultRemove:
