@@ -10,7 +10,6 @@ import Vuelidate from 'vuelidate';
 import NoSelectionDialog from './components/no-selection.dialog.vue';
 import PurgeDialog from './components/purge.dialog.vue';
 import DeleteDialog from './components/delete.dialog.vue';
-import SaveAsDialog from './components/save-as.dialog.vue';
 import MessageDialog from './components/message.dialog.vue';
 import lang from '@/i18n/en';
 import VueI18n from 'vue-i18n';
@@ -43,7 +42,6 @@ Vue.use(Vuelidate);
 Vue.component('no-selection-dialog', NoSelectionDialog);
 Vue.component('purge-dialog', PurgeDialog);
 Vue.component('delete-dialog', DeleteDialog);
-Vue.component('save-as-dialog', SaveAsDialog);
 Vue.component('message-dialog', MessageDialog);
 
 // @ts-ignore

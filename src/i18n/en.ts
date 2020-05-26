@@ -15,9 +15,6 @@ export default {
             noDataText: 'No data available',
         },
         appMenu: {
-            config: 'Config',
-            export: 'Export settings',
-            import: 'Import settings',
             file: 'File',
             services: 'Services',
             hide: 'Hide',
@@ -60,11 +57,7 @@ export default {
             manageWatchers: 'Manage watchers',
             manageUsers: 'Manage users',
             manageRoles: 'Manage roles',
-            manageLeases: 'Manage leases',
             about: 'About',
-        },
-        app: {
-            connected: 'Profile',
         },
         common: {
             items: {
@@ -112,10 +105,10 @@ export default {
                         open: 'Open',
                         close: 'Close',
                     },
-                    tooltip: 'Open/close every node',
+                    tooltip:'Open/close every node',
                 },
                 changeView: {
-                    tooltip: 'Change the type of the view',
+                    tooltip:'Change the type of the view',
                 },
                 create: {
                     label: 'Add',
@@ -190,14 +183,13 @@ export default {
                     name: {
                         label: 'Profile',
                         placeholder: 'Type in the name of the profile..',
-                        tooltip:
-                            'The name of this profile. Defaults to "default".',
-                        hint:
-                            'Renaming and saving the profile creates a new profile.',
+                        tooltip: 'The name of this profile. Defaults to "default".',
+                        hint: 'Renaming and saving the profile creates a new profile.',
                     },
                     profiles: {
                         label: 'Profiles',
-                        tooltip: 'The available profiles. Select one to load.',
+                        tooltip:
+                            'The available profiles. Select one to load.',
                     },
                 },
             },
@@ -226,24 +218,6 @@ export default {
                         placeholder: 'Type in a number..',
                         tooltip:
                             'Duration in milliseconds to wait while connecting before timing out. Defaults to 30 seconds.',
-                    },
-                    certificate: {
-                        label: 'Certificate',
-                        tooltip: 'The root certificate data',
-                    },
-                    certKey: {
-                        label: 'Certificate Secret Key',
-                        tooltip:
-                            'The client certificate private key, if applicable',
-                    },
-                    certChain: {
-                        label: 'Certificate Chain',
-                        tooltip:
-                            'The client certificate cert chain, if applicable',
-                    },
-                    ssl: {
-                        label: 'Certification',
-                        tooltip: 'Cerification enabled',
                     },
                     apiVersion: {
                         label: 'API version',
@@ -330,17 +304,13 @@ export default {
             },
             actions: {
                 submit: 'Save',
-                saveAs: 'Save As',
                 load: 'Load',
                 next: 'Next',
                 testConnection: 'Test Connection',
-                browse: 'Browse',
             },
             messages: {
-                noDefaultRemove:
-                    'You may not remove the current or the last profile!',
-                error:
-                    'The input data is invalid or mandatory info is missing!',
+                noDefaultRemove: 'You may not remove the current or the last profile!',
+                error: 'The input data is invalid or mandatory info is missing!',
                 connectSuccess: 'Your connection is fine',
                 profileLoaded: 'Profile has been loaded',
                 success: 'Configuration has been saved successfully',
@@ -441,12 +411,6 @@ export default {
                     placeholder: 'Type in a value..',
                     tooltip: 'The value associated with this key',
                 },
-                ttl: {
-                    label: 'Time to live (TTL)',
-                    placeholder: 'Type in a number..',
-                    tooltip:
-                        'The number of seconds this key should exists. Zero means forever.',
-                },
             },
             buttons: {
                 revisions: 'Show revisions',
@@ -472,13 +436,6 @@ export default {
                 cancel: 'Cancel',
             },
         },
-        whatsNewDialog: {
-            title: "What's new in {version}?",
-            dontshow: 'Do not show this dialog on next startup',
-            actions: {
-                cancel: 'Close',
-            },
-        },
         deleteDialog: {
             title: 'Attention!',
             content:
@@ -486,17 +443,6 @@ export default {
             actions: {
                 remove: 'Remove',
                 cancel: 'Cancel',
-            },
-        },
-        saveAsDialog: {
-            title: 'Save As',
-            actions: {
-                saveAs: 'Profile Save As',
-                cancel: 'Cancel',
-            },
-            profile: {
-                placeholder: 'Profile',
-                label: 'Type in the name of the profile...',
             },
         },
         noSelectionDialog: {
@@ -608,47 +554,6 @@ export default {
                 },
             },
         },
-        leaseManager: {
-            title: 'Leases',
-            help: {
-                text: `This is the list of **all leases**. Here you may:
-
-                * Order the list by ID (click the **column title**).
-                * Filter the list by any column (use the **search box**).
-                * Revoke selected lease (click **remove**).
-                * Revoke all leases (click **purge**).
-                * You may also view or revoke individual leases using the appropriate **action icon**.`,
-            },
-            columns: {
-                id: 'ID',
-            },
-            actions: {
-                view: 'View details',
-                remove: 'Remove lease',
-            },
-        },
-        leaseEditor: {
-            title: 'View',
-            subtitle: 'Keys attached to this lease',
-            help: {
-                text: `You can **view** details of a leases here.
-
-                * The countdown displays the neumber of hours, minutes and seconds left until expiry.`,
-            },
-            fields: {
-                grant: {
-                    label: 'TTL',
-                    tooltip: 'The total lifespan of the lease (seconds).',
-                },
-                remainingDate: {
-                    label: 'Time left (as hours / minutes / seconds)',
-                    tooltip: 'Countdown until the the lease expires.',
-                },
-            },
-            columns: {
-                key: 'Key',
-            },
-        },
         roleManager: {
             title: 'Roles',
             help: {
@@ -721,9 +626,10 @@ export default {
                     label: 'This is for all keys',
                     tooltip: 'If checked, the role will apply to all keys',
                 },
-                normal: {
+                normal:{
                     label: 'This is for a single key',
-                    tooltip: 'If checked, the role will apply to one key',
+                    tooltip:'If checked, the role will apply to one key',
+
                 },
             },
             actions: {

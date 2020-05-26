@@ -19,9 +19,6 @@ export default {
             },
         },
         appMenu: {
-            config: 'Konfig',
-            export: 'Beállítások exportálása',
-            import: 'Beállítások importálása',
             file: 'Fájl',
             services: 'Szolgáltatások',
             hide: 'Elrejt',
@@ -65,9 +62,6 @@ export default {
             manageUsers: 'Felhasználók menedzselése',
             manageRoles: 'Szerepek menedzselése',
             about: 'Az alkalmazásról',
-        },
-        app: {
-            connected: 'Profil',
         },
         common: {
             help: {
@@ -115,10 +109,10 @@ export default {
                         open: 'Kinyit',
                         close: 'Becsuk',
                     },
-                    tooltip: 'Mindent kinyit/becsuk',
+                    tooltip:'Mindent kinyit/becsuk',
                 },
                 changeView: {
-                    tooltip: 'A nézet típusának megváltoztatása',
+                    tooltip:'A nézet típusának megváltoztatása',
                 },
                 create: {
                     label: 'Hozzáad',
@@ -195,8 +189,7 @@ export default {
                         label: 'Profil',
                         placeholder: 'Gépelje be a profile nevét..',
                         tooltip: 'A profil neve. Alapértelmezésben "default".',
-                        hint:
-                            'A profil átnevezése és mentése egy új profilt hoz létre.',
+                        hint: 'A profil átnevezése és mentése egy új profilt hoz létre.',
                     },
                     profiles: {
                         label: 'Profilok',
@@ -229,23 +222,6 @@ export default {
                         placeholder: 'Számmal adható meg',
                         tooltip:
                             'Az időtúllépés előtti várakozás időtartama ezredmásodpercben. Alapesetben 30 másodperc.',
-                    },
-                    certificate: {
-                        label: 'Tanusítvány',
-                        tooltip: ' A gyökér tanusítvány adatai',
-                    },
-                    certKey: {
-                        label: 'Tanusítvány Titkos Kulcs',
-                        tooltip: 'Az ügyféltanúsítvány titkos kulcsa, ha van',
-                    },
-                    certChain: {
-                        label: 'Tanusítvány Lánc',
-                        tooltip:
-                            ' Az ügyféltanúsítvány tanúsítási lánc, ha van',
-                    },
-                    ssl: {
-                        label: 'Tanúsítványok',
-                        tooltip: 'Tanusítványok bekapcsolása',
                     },
                     apiVersion: {
                         label: 'API verzió',
@@ -333,20 +309,16 @@ export default {
             },
             actions: {
                 submit: 'Elküld',
-                saveAs: 'Mentés másként',
                 load: 'Betölt',
                 next: 'Következő',
                 testConnection: 'Kapcsolat teszt',
-                browse: 'Tallózás',
             },
             messages: {
-                noDefaultRemove:
-                    'Az aktiv vagy az utolsó profil nem távolítható el!',
+                noDefaultRemove: 'Az aktiv vagy az utolsó profil nem távolítható el!',
                 success: 'A beállítások sikeresen elmentve.',
                 ipOrUrl: 'Az IP-cím, vagy URL érvénytelen.',
                 profileLoaded: 'Profil betöltve',
-                error:
-                    'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
+                error: 'A megadott adatok egyike érvénytelen vagy kötelező adat hiányzik!',
                 connectSuccess: 'A kapcsolat létrejött',
             },
         },
@@ -443,12 +415,6 @@ export default {
                     placeholder: 'Írja be az értéket.',
                     tooltip: 'A kulcshoz társított érték',
                 },
-                ttl: {
-                    label: 'Élettartam (TTL)',
-                    placeholder: 'Gépeljen be egy számot..',
-                    tooltip:
-                        'A másodpercek száma amíg ez a kulcs létezik. A nulla azt jelent, nincs limit.',
-                },
             },
             buttons: {
                 revisions: 'Revíziók',
@@ -474,13 +440,6 @@ export default {
                 cancel: 'Vissza',
             },
         },
-        whatsNewDialog: {
-            title: 'Űjdonságok a {version} verzióban',
-            dontshow: 'A következő indításnál ne mutassa ezt a képernyőt',
-            actions: {
-                cancel: 'Bezár',
-            },
-        },
         deleteDialog: {
             title: 'Figyelem!',
             content:
@@ -488,17 +447,6 @@ export default {
             actions: {
                 remove: 'Eltávolítása',
                 cancel: 'Vissza',
-            },
-        },
-        saveAsDialog: {
-            title: 'Mentés másként',
-            actions: {
-                saveAs: 'Profil mentése másként',
-                cancel: 'Mégsem',
-            },
-            profile: {
-                placeholder: 'Profil',
-                label: 'Gépelje be a profile nevét...',
             },
         },
         noSelectionDialog: {
@@ -610,46 +558,6 @@ export default {
                 },
             },
         },
-        leaseManager: {
-            title: 'Lease-ek',
-            help: {
-                text: `Ez a **lease-ek** list. Here you may:
-
-                * Rendezheti a listát ID alapján (az **oszlop fejllécére** kattintva).
-                * Kereshet bármely kulcszsó szerint (használja a **kereső mezőt**).
-                * Törölheti a kiválasztott lease-t (kattintson az **Eltávolít**) gombra.
-                * Törölhet minden lease-t (kattintson **Tisztít** gombra).
-                * Megtekintheti vagy törölheti az egyes lease-eket a megfelelő **akció ikon** használatával..`,
-            },
-            columns: {
-                id: 'ID',
-            },
-            actions: {
-                view: 'Részletek megtekintése',
-                remove: 'Lease törlése',
-            },
-        },
-        leaseEditor: {
-            subtitle: 'Kulcsok melyek ehhez a lease-hez tartoznak',
-            help: {
-                text: `Itt **megtekintheti** egy lease részleteit.
-
-                * A visszaszámlálás órában, percben és máasodpercben történik.`,
-            },
-            fields: {
-                grant: {
-                    label: 'TTL',
-                    tooltip: 'A lease teljes élettartama (mp).',
-                },
-                remainingDate: {
-                    label: 'Hátralévő idő (órák / percek / mp)',
-                    tooltip: 'Visszaszámlálás amíg a lease lejár.',
-                },
-            },
-            columns: {
-                key: 'Kulcs',
-            },
-        },
         roleManager: {
             help: {
                 text: `Ez az ETCD **szerepkörök** listája.
@@ -711,8 +619,8 @@ export default {
                 },
                 permission: {
                     label: 'Jogok',
-                    tooltip: `A jog, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné,
-                        akkor állítsa be az írást és az olvasást is.`,
+                    tooltip:
+                        'A jog, amihez a szerep hozzáférést biztosít. Ha mindegyiket szeretné, akkor állítsa be az írást és az olvasást is.',
                 },
                 prefix: {
                     label: 'Ez egy előtag',
@@ -721,13 +629,12 @@ export default {
                 },
                 all: {
                     label: 'Összes',
-                    tooltip:
-                        'Ha be van pipálva, akkor a szerep a hozzá tartozó összes kulcsot alkalmazza',
+                    tooltip: 'Ha be van pipálva, akkor a szerep a hozzá tartozó összes kulcsot alkalmazza',
                 },
-                normal: {
+                normal:{
                     label: 'Egy kulcs',
-                    tooltip:
-                        'Ha be van pipálva, akkor a szerep egy hozzá tartozó kulcsot alkalmaz',
+                    tooltip:'Ha be van pipálva, akkor a szerep egy hozzá tartozó kulcsot alkalmaz',
+
                 },
             },
             actions: {

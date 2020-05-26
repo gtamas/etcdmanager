@@ -1,13 +1,7 @@
 <template>
     <v-layout align-start justify-center row>
         <v-flex pa-1 grow fill-height>
-            <v-expansion-panel
-                focusable
-                dark
-                class="help"
-                v-model="help"
-                :readonly="true"
-            >
+            <v-expansion-panel focusable dark class="help" v-model="help" :readonly="true">
                 <v-expansion-panel-content dark class="darker">
                     <template v-slot:actions>
                         <v-tooltip
@@ -23,10 +17,11 @@
                                 color="primary"
                                 light
                                 medium
-                                >help</v-icon
-                            >
+                            >help</v-icon>
                             <span data-test="key-manager.help.span">
-                                {{ $t('common.help.tooltip') }}
+                                {{
+                                $t('common.help.tooltip')
+                                }}
                             </span>
                         </v-tooltip>
                     </template>
@@ -34,18 +29,14 @@
                         <v-toolbar raised dark>
                             <v-toolbar-title
                                 data-test="key-manager.help.toolbar-title"
-                                >{{ $t('keyManager.title') }}</v-toolbar-title
-                            >
+                            >{{ $t('keyManager.title') }}</v-toolbar-title>
                             <v-divider
                                 data-test="key-manager.help.divider"
                                 class="mx-2"
                                 inset
                                 vertical
                             ></v-divider>
-                            <v-tooltip
-                                data-test="key-manager.changeView.tooltip"
-                                bottom
-                            >
+                            <v-tooltip data-test="key-manager.changeView.tooltip" bottom>
                                 <template v-slot:activator="{ on }">
                                     <v-btn
                                         color="primary"
@@ -55,23 +46,20 @@
                                         dark
                                     >
                                         <i class="material-icons">
-                                            {{ getViewIcon() }}
+                                            {{
+                                            getViewIcon()
+                                            }}
                                         </i>
                                         {{ getViewType() }}
                                     </v-btn>
                                 </template>
-                                <span
-                                    data-test="key-manager.changeView-tooltip.span"
-                                >
+                                <span data-test="key-manager.changeView-tooltip.span">
                                     {{
-                                        $t('common.actions.changeView.tooltip')
+                                    $t('common.actions.changeView.tooltip')
                                     }}
                                 </span>
                             </v-tooltip>
-                            <v-tooltip
-                                data-test="key-manager.openAll.tooltip"
-                                bottom
-                            >
+                            <v-tooltip data-test="key-manager.openAll.tooltip" bottom>
                                 <template v-slot:activator="{ on }">
                                     <v-btn
                                         v-if="isTreeView()"
@@ -83,18 +71,16 @@
                                     >
                                         <v-icon
                                             data-test="key-manager.openAll.icon"
-                                            >{{ changeOpenAllIcon() }}</v-icon
-                                        >
+                                        >{{ changeOpenAllIcon() }}</v-icon>
                                         <span
                                             data-test="key-manager.openAll.span"
-                                            >{{ changeLabelText() }}</span
-                                        >
+                                        >{{ changeLabelText() }}</span>
                                     </v-btn>
                                 </template>
-                                <span
-                                    data-test="key-manager.openAll-tooltip.span"
-                                >
-                                    {{ $t('common.actions.openAll.tooltip') }}
+                                <span data-test="key-manager.openAll-tooltip.span">
+                                    {{
+                                    $t('common.actions.openAll.tooltip')
+                                    }}
                                 </span>
                             </v-tooltip>
                             <v-layout row>
@@ -116,16 +102,12 @@
                                     </template>
                                     <span>
                                         {{
-                                            $t(
-                                                'common.actions.separator.tooltip'
-                                            )
+                                        $t('common.actions.separator.tooltip')
                                         }}
                                     </span>
                                 </v-tooltip>
                             </v-layout>
-                            <v-spacer
-                                data-test="key-manager.help.spacer"
-                            ></v-spacer>
+                            <v-spacer data-test="key-manager.help.spacer"></v-spacer>
                             <v-text-field
                                 data-test="key-manager.help.text-field"
                                 dark
@@ -149,25 +131,20 @@
                                         @click="purge"
                                         v-on="on"
                                     >
-                                        <v-icon
-                                            data-test="key-manager.purgeAll.icon"
-                                            >remove_circle</v-icon
-                                        >
-                                        <span
-                                            data-test="key-manager.purgeAll-label.span"
-                                        >
+                                        <v-icon data-test="key-manager.purgeAll.icon">remove_circle</v-icon>
+                                        <span data-test="key-manager.purgeAll-label.span">
                                             {{
-                                                $t(
-                                                    'common.actions.purgeAll.label'
-                                                )
+                                            $t(
+                                            'common.actions.purgeAll.label'
+                                            )
                                             }}
                                         </span>
                                     </v-btn>
                                 </template>
-                                <span
-                                    data-test="key-manager.purgeAll-tooltip.span"
-                                >
-                                    {{ $t('common.actions.purgeAll.tooltip') }}
+                                <span data-test="key-manager.purgeAll-tooltip.span">
+                                    {{
+                                    $t('common.actions.purgeAll.tooltip')
+                                    }}
                                 </span>
                             </v-tooltip>
                             <v-tooltip
@@ -184,25 +161,20 @@
                                         @click="addItem"
                                         v-on="on"
                                     >
-                                        <v-icon
-                                            data-test="key-manager.create.icon"
-                                            >add</v-icon
-                                        >
-                                        <span
-                                            data-test="key-manager.create-label.span"
-                                        >
+                                        <v-icon data-test="key-manager.create.icon">add</v-icon>
+                                        <span data-test="key-manager.create-label.span">
                                             {{
-                                                $t(
-                                                    'common.actions.create.label'
-                                                )
+                                            $t(
+                                            'common.actions.create.label'
+                                            )
                                             }}
                                         </span>
                                     </v-btn>
                                 </template>
-                                <span
-                                    data-test="key-manager.create-tooltip.span"
-                                >
-                                    {{ $t('common.actions.create.tooltip') }}
+                                <span data-test="key-manager.create-tooltip.span">
+                                    {{
+                                    $t('common.actions.create.tooltip')
+                                    }}
                                 </span>
                             </v-tooltip>
 
@@ -220,25 +192,20 @@
                                         dark
                                         v-on="on"
                                     >
-                                        <v-icon
-                                            data-test="key-manager.removeAll.icon"
-                                            >delete</v-icon
-                                        >
-                                        <span
-                                            data-test="key-manager.removeAll-label.span"
-                                        >
+                                        <v-icon data-test="key-manager.removeAll.icon">delete</v-icon>
+                                        <span data-test="key-manager.removeAll-label.span">
                                             {{
-                                                $t(
-                                                    'common.actions.removeAll.label'
-                                                )
+                                            $t(
+                                            'common.actions.removeAll.label'
+                                            )
                                             }}
                                         </span>
                                     </v-btn>
                                 </template>
-                                <span
-                                    data-test="key-manager.removeAll-tooltip.span"
-                                >
-                                    {{ $t('common.actions.removeAll.tooltip') }}
+                                <span data-test="key-manager.removeAll-tooltip.span">
+                                    {{
+                                    $t('common.actions.removeAll.tooltip')
+                                    }}
                                 </span>
                             </v-tooltip>
 
@@ -252,45 +219,31 @@
                                         dark
                                         v-on="on"
                                     >
-                                        <v-icon
-                                            data-test="key-manager.touchAll.icon"
-                                            >touch_app</v-icon
-                                        >
-                                        <span
-                                            data-test="key-manager.touchAll-label.span"
-                                        >
+                                        <v-icon data-test="key-manager.touchAll.icon">touch_app</v-icon>
+                                        <span data-test="key-manager.touchAll-label.span">
                                             {{
-                                                $t(
-                                                    'keyManager.actions.touchAll.label'
-                                                )
+                                            $t(
+                                            'keyManager.actions.touchAll.label'
+                                            )
                                             }}
                                         </span>
                                     </v-btn>
                                 </template>
-                                <span
-                                    data-test="key-manager.touchAll-tooltip.span"
-                                >
+                                <span data-test="key-manager.touchAll-tooltip.span">
                                     {{
-                                        $t(
-                                            'keyManager.actions.touchAll.tooltip'
-                                        )
+                                    $t(
+                                    'keyManager.actions.touchAll.tooltip'
+                                    )
                                     }}
                                 </span>
                             </v-tooltip>
                         </v-toolbar>
                     </template>
-                    <v-tabs
-                        v-model="helpbar"
-                        dark
-                        color="black"
-                        slider-color="primary"
-                        grow
-                    >
+                    <v-tabs v-model="helpbar" dark color="black" slider-color="primary" grow>
                         <v-tab
                             data-test="key-manager.common-help-tabs-info.tab"
                             ripple
-                            >{{ $t('common.help.tabs.info') }}</v-tab
-                        >
+                        >{{ $t('common.help.tabs.info') }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text
@@ -299,9 +252,7 @@
                                     <h2
                                         data-test="key-manager.common-help-infoTitle.h2"
                                         class="title"
-                                    >
-                                        {{ $t('common.help.infoTitle') }}
-                                    </h2>
+                                    >{{ $t('common.help.infoTitle') }}</h2>
                                     <p
                                         data-test="key-manager.common-help-infoTitle-1.p"
                                         class="spacer"
@@ -324,8 +275,7 @@
                         <v-tab
                             data-test="key-manager.common-help-tabs-shortcuts.tab"
                             ripple
-                            >{{ $t('common.help.tabs.shortcuts') }}</v-tab
-                        >
+                        >{{ $t('common.help.tabs.shortcuts') }}</v-tab>
                         <v-tab-item>
                             <v-card dark>
                                 <v-card-text>
@@ -336,7 +286,7 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                    `${platformService.getMeta()} + a`
+                                                `${platformService.getMeta()} + a`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -346,9 +296,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                    $t(
-                                                        'common.help.shortcuts.openEditor'
-                                                    )
+                                                $t(
+                                                'common.help.shortcuts.openEditor'
+                                                )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -358,9 +308,7 @@
                                             <p
                                                 data-test="key-manager.common-help-tabs-shortcuts-2.p"
                                                 class="rounded"
-                                            >
-                                                {{ `esc` }}
-                                            </p>
+                                            >{{ `esc` }}</p>
                                         </v-flex>
                                         <v-flex xs10>
                                             <p
@@ -368,9 +316,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                    $t(
-                                                        'common.help.shortcuts.closeEditor'
-                                                    )
+                                                $t(
+                                                'common.help.shortcuts.closeEditor'
+                                                )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -382,7 +330,7 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                    `${platformService.getMeta()} + p`
+                                                `${platformService.getMeta()} + p`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -392,9 +340,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                    $t(
-                                                        'common.help.shortcuts.purge'
-                                                    )
+                                                $t(
+                                                'common.help.shortcuts.purge'
+                                                )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -406,7 +354,7 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                    `${platformService.getMeta()} + r`
+                                                `${platformService.getMeta()} + r`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -416,9 +364,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                    $t(
-                                                        'common.help.shortcuts.remove'
-                                                    )
+                                                $t(
+                                                'common.help.shortcuts.remove'
+                                                )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -430,7 +378,7 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                    `${platformService.getMeta()} + t`
+                                                `${platformService.getMeta()} + t`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -440,9 +388,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                    $t(
-                                                        'keyManager.help.shortcuts.touch'
-                                                    )
+                                                $t(
+                                                'keyManager.help.shortcuts.touch'
+                                                )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -454,7 +402,7 @@
                                                 class="rounded"
                                             >
                                                 {{
-                                                    `${platformService.getMeta()} + h`
+                                                `${platformService.getMeta()} + h`
                                                 }}
                                             </p>
                                         </v-flex>
@@ -464,9 +412,9 @@
                                                 class="label"
                                             >
                                                 {{
-                                                    $t(
-                                                        'common.help.shortcuts.help'
-                                                    )
+                                                $t(
+                                                'common.help.shortcuts.help'
+                                                )
                                                 }}
                                             </p>
                                         </v-flex>
@@ -475,10 +423,7 @@
                             </v-card>
                         </v-tab-item>
                     </v-tabs>
-                    <hr
-                        data-test="key-manager.blackline.hr"
-                        class="blackLine"
-                    />
+                    <hr data-test="key-manager.blackline.hr" class="blackLine" />
                 </v-expansion-panel-content>
             </v-expansion-panel>
             <v-card raised dark>
@@ -498,21 +443,9 @@
                     return-object
                 >
                     <template v-slot:append="{ item }">
-                        <v-icon
-                            v-if="!item.children"
-                            @click="editItem(item.original)"
-                            >edit</v-icon
-                        >
-                        <v-icon
-                            v-if="!item.children"
-                            @click="deleteSingle(item.original)"
-                            >delete</v-icon
-                        >
-                        <v-icon
-                            v-if="!item.children"
-                            @click="touch(item.original)"
-                            >touch_app</v-icon
-                        >
+                        <v-icon v-if="!item.children" @click="editItem(item.original)">edit</v-icon>
+                        <v-icon v-if="!item.children" @click="deleteSingle(item.original)">delete</v-icon>
+                        <v-icon v-if="!item.children" @click="touch(item.original)">touch_app</v-icon>
                     </template>
                     <template v-slot:label="{ item }">
                         <v-tooltip
@@ -558,9 +491,7 @@
                             @dblclick="
                                 clipboardService.copyToClipboard(props.item.key)
                             "
-                        >
-                            {{ props.item.key }}
-                        </td>
+                        >{{ props.item.key }}</td>
                         <td
                             data-test="key-manager.props-item-value.td"
                             class="text-xs-left"
@@ -570,9 +501,7 @@
                                 bottom
                             >
                                 <template v-slot:activator="{ on }">
-                                    <span v-on="on">{{
-                                        props.item.value
-                                    }}</span>
+                                    <span v-on="on">{{ props.item.value }}</span>
                                 </template>
                                 {{ props.item.tooltip }}
                             </v-tooltip>
@@ -592,13 +521,11 @@
                                         small
                                         @click="editItem(props.item)"
                                         v-on="on"
-                                        >edit</v-icon
-                                    >
+                                    >edit</v-icon>
                                 </template>
                                 <span
                                     data-test="key-manager.actions-edit.span"
-                                    >{{ $t('keyManager.actions.edit') }}</span
-                                >
+                                >{{ $t('keyManager.actions.edit') }}</span>
                             </v-tooltip>
                             <v-tooltip
                                 data-test="key-manager.actions-remove.tooltip"
@@ -612,13 +539,11 @@
                                         slot="activator"
                                         @click="deleteSingle(props.item)"
                                         v-on="on"
-                                        >delete</v-icon
-                                    >
+                                    >delete</v-icon>
                                 </template>
                                 <span
                                     data-test="key-manager.actions-remove.span"
-                                    >{{ $t('keyManager.actions.remove') }}</span
-                                >
+                                >{{ $t('keyManager.actions.remove') }}</span>
                             </v-tooltip>
                             <v-tooltip
                                 data-test="key-manager.actions-touch.tooltip"
@@ -632,13 +557,11 @@
                                         slot="activator"
                                         @click="touch(props.item)"
                                         v-on="on"
-                                        >touch_app</v-icon
-                                    >
+                                    >touch_app</v-icon>
                                 </template>
                                 <span
                                     data-test="key-manager.actions-touch.span"
-                                    >{{ $t('keyManager.actions.touch') }}</span
-                                >
+                                >{{ $t('keyManager.actions.touch') }}</span>
                             </v-tooltip>
                         </td>
                     </template>
@@ -672,10 +595,7 @@
             v-on:confirm="confirmPurge"
             v-on:cancel="cancelPurge"
         ></purge-dialog>
-        <no-selection-dialog
-            :open="noSelection"
-            v-on:close="closeNoSelection"
-        ></no-selection-dialog>
+        <no-selection-dialog :open="noSelection" v-on:close="closeNoSelection"></no-selection-dialog>
     </v-layout>
 </template>
 
@@ -729,10 +649,8 @@ export default class KeyManager extends CrudBase implements List {
         }
 
         // @ts-ignore
-        if (!this.$v.separator.required) {
+        !this.$v.separator.required &&
             errors.push(this.$t('common.validation.required'));
-        }
-
         return errors;
     }
 
@@ -748,29 +666,13 @@ export default class KeyManager extends CrudBase implements List {
         this.separator = this.$store.state.separator;
     }
 
-    public async created() {
+    public created() {
         this.defaultItem = new EtcdKey();
         this.translateHeaders(
             'keyManager.columns.key',
             'keyManager.columns.value'
         );
-
-        const loader = (data: any) => {
-            this.load();
-            for (const event of data.events) {
-                if (event.type === 'Delete') {
-                    this.editor = false;
-                    break;
-                }
-            }
-        };
-
-        this.addReloader(loader);
         this.load();
-    }
-
-    public destroyed() {
-        super.destroyed();
     }
 
     public async editItem(item: GenericObject): Promise<KeyManager> {
@@ -849,11 +751,7 @@ export default class KeyManager extends CrudBase implements List {
         try {
             const data = await this.etcd.loadAllKeys(prefix);
             this.data = Object.entries(data).map((entry) => {
-                return {
-                    key: entry[0],
-                    value: this.shortenText(entry[1] as string, true),
-                    tooltip: entry[1],
-                };
+                return { key: entry[0], value: this.shortenText(entry[1] as string, true), tooltip: entry[1] };
             });
             this.loading = false;
         } catch (error) {
@@ -895,7 +793,7 @@ export default class KeyManager extends CrudBase implements List {
     }
 
     public getViewIcon() {
-        return this.isTreeView() ? 'list' : 'zoom_in';
+        return this.isTreeView() ? 'list' : 'account_tree';
     }
 
     public loadTree() {

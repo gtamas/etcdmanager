@@ -10,11 +10,7 @@ export class LocalStorageService {
         return JSON.parse(this.ls.get(key));
     }
 
-    public getRaw(key: string): any {
-        return this.ls.get(key);
-    }
-
-    public set(key: string, data: any): LocalStorageService {
+    public set(key: string, data: JSON): LocalStorageService {
         this.ls.set(key, JSON.stringify(data));
         return this;
     }

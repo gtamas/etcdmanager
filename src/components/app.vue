@@ -6,20 +6,17 @@ import WatcherService from '../services/watcher.service';
 import { GenericObject } from '../../types';
 import { LocalStorageService } from '../services/local-storage.service';
 import { ConfigService } from '../services/config.service';
-import WhatsNewDialog from './whatsnew.dialog.vue';
 const app = require('electron').remote.app;
 
 @Component({
     name: 'App',
     components: {
         'main-menu': Menu,
-        'whatsnew-dialog': WhatsNewDialog,
     },
 })
 export default class App extends Vue {
     public drawer: boolean = true;
     public year = new Date().getFullYear();
-    public whatsNew: boolean = true;
     private localStorageService: LocalStorageService;
     private configService: ConfigService;
 
@@ -30,10 +27,6 @@ export default class App extends Vue {
         this.configService = new ConfigService(this.localStorageService);
     }
 
-    hideNews() {
-        this.whatsNew = false;
-    }
-
     created() {
         // @ts-ignore
         ipcRenderer.on('navigate', (event: any, message: any) => {
@@ -42,12 +35,6 @@ export default class App extends Vue {
 
         this.$store.commit('version', app.getVersion());
         this.$store.commit('package');
-
-        this.whatsNew = !this.localStorageService.getRaw(`news${app.getVersion()}`);
-    }
-
-    get currentProfile() {
-        return this.$store.getters.currentProfile;
     }
 
     get version() {
@@ -100,24 +87,10 @@ export default class App extends Vue {
         // @ts-ignore
         const config = this.configService.getConfig();
 
-        const replaceConfig = (cfg: any) => {
-            this.configService.replaceConfigState(cfg);
-            this.loadOrDisabledWatchers(cfg);
-        };
-
         if (config) {
-            replaceConfig(config);
-            ipcRenderer.send(
-                'appconfig',
-                JSON.stringify(this.configService.getConfig())
-            );
+            this.configService.replaceConfigState(config);
+            this.loadOrDisabledWatchers(config);
         }
-
-        ipcRenderer.on('config-data', (...args: any[]) => {
-            const profiles = JSON.parse(args[1])
-            replaceConfig(profiles.profiles[0]);
-            this.configService.setConfig(profiles);
-        });
     }
 }
 </script>
@@ -159,11 +132,6 @@ export default class App extends Vue {
             </v-card>
         </v-dialog>
 
-         <whatsnew-dialog
-            :open="whatsNew"
-            v-on:cancel="hideNews()"
-        ></whatsnew-dialog>
-
         <main-menu v-bind:drawer="drawer"></main-menu>
         <v-toolbar app fixed clipped-left>
             <v-toolbar-side-icon @click.stop="drawer = !drawer">
@@ -171,15 +139,6 @@ export default class App extends Vue {
             </v-toolbar-side-icon>
             <v-toolbar-title data-test="app.version.toolbar-title"
                 >ETCD Manager v{{ version }}</v-toolbar-title
-            >
-            <v-spacer></v-spacer>
-            <v-system-bar
-                v-if="currentProfile"
-                dark
-                window
-                class="gerisbox"
-                data-test="app.version.toolbar-host"
-                >{{ $t('app.connected') }}: {{ currentProfile }}</v-system-bar
             >
             <v-spacer></v-spacer>
             <img
@@ -351,44 +310,5 @@ export default class App extends Vue {
 
 .paddedTop25 {
     margin: 25px auto auto auto;
-}
-
-.gerisbox {
-    font-size: 18px !important;
-    border: inset 1px #fff;
-    color: #fff !important;
-    position: relative;
-    display: inline-block;
-    border-radius: 5px;
-    box-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    margin-left: 20px;
-    margin-right: 20px;
-}
-
-.gerisbox::after {
-    content: '';
-    border-radius: 5px;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 5px 5px rgba(255, 255, 255, 0.5);
-    opacity: 0;
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.gerisbox:hover {
-    -webkit-transform: scale(1.25, 1.25);
-    transform: scale(1.25, 1.25);
-}
-
-.gerisbox:hover::after {
-    opacity: 1;
 }
 </style>

@@ -1,10 +1,12 @@
-import { Etcd3, AlarmAction, AlarmType } from 'etcd3';
-import EtcdService from './etcd.service';
+import {
+    Etcd3, AlarmAction, AlarmType,
+} from 'etcd3';
+import EtcdService  from './etcd.service';
 
 export default class StatsService extends EtcdService {
 
     constructor(client?: Etcd3) {
-        super(client);
+      super(client);
     }
 
     public listMembers() {
@@ -15,7 +17,6 @@ export default class StatsService extends EtcdService {
         return this.client.maintenance.alarm({
             memberID,
             action: AlarmAction.Get,
-            // tslint:disable-next-line: no-bitwise
             alarm: AlarmType.Corrupt | AlarmType.Nospace,
         });
     }

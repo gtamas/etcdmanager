@@ -1,5 +1,5 @@
-'use strict';
 import { GenericObject } from './../types/index';
+'use strict';
 
 import {
     app,
@@ -9,7 +9,6 @@ import {
     MenuItemConstructorOptions,
     Tray,
     shell,
-    dialog,
     ipcMain,
 } from 'electron';
 import {
@@ -18,11 +17,10 @@ import {
 } from 'vue-cli-plugin-electron-builder/lib';
 import * as Splashscreen from '@trodi/electron-splashscreen';
 import { join } from 'path';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import { get } from 'lodash-es';
 import * as defaultTranslations from './i18n/en';
 import { autoUpdater } from 'electron-updater';
-import marked from 'marked';
 
 const pkg = JSON.parse(
     readFileSync(
@@ -36,88 +34,28 @@ const pkg = JSON.parse(
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const isMac = process.platform === 'darwin';
 let menu: Menu | null = null;
-let appConfig: any;
 
 declare const __static: any;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win: BrowserWindow;
+let win: BrowserWindow | null = null;
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
     { scheme: 'app', privileges: { secure: true, standard: true } },
 ]);
 
-function loadWhatsNew() {
-    const news = readFileSync(`${__static}/WHATSNEW.md`).toString();
-    win.webContents.send('whatsnew-data', marked(news));
-}
 
-function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
+function createAppMenu(translations: any = defaultTranslations.default.en, disabledMap: GenericObject = {}) {
     const menuRouter = (where: string) => {
         // tslint:disable-next-line: variable-name
-        return (_menuItem: any, window: BrowserWindow) => {
-            window.webContents.send('navigate', where);
+        return (_menuItem: any, win: BrowserWindow) => {
+            win.webContents.send('navigate', where);
         };
     };
 
-    // tslint:disable-next-line: no-parameter-reassignment
-    translations = translations || defaultTranslations.default.en;
-
     const template: MenuItemConstructorOptions[] = [
-        {
-            label: get(translations, ['appMenu', 'config'], 'Config'),
-            submenu: [
-                {
-                    accelerator: 'CommandOrControl+Alt+S',
-                    label: get(
-                        translations,
-                        ['appMenu', 'settings'],
-                        'Settings'
-                    ),
-                    click: menuRouter('configure'),
-                },
-                {
-                    accelerator: 'CommandOrControl+Alt+E',
-                    label: get(translations, ['appMenu', 'export'], 'Export'),
-                    click: () => {
-                        const saveTo = dialog.showSaveDialogSync({
-                            defaultPath: `etcd-manager-settings.json`,
-                            properties: ['dontAddToRecent', 'createDirectory'],
-                        } as any);
-                        if (saveTo) {
-                            try {
-                                writeFileSync(
-                                    saveTo,
-                                    JSON.stringify(appConfig),
-                                    { encoding: 'utf8' }
-                                );
-                            } catch (e) {
-                                throw e;
-                            }
-                        }
-                    },
-                },
-                {
-                    accelerator: 'CommandOrControl+Alt+I',
-                    label: get(translations, ['appMenu', 'import'], 'Import'),
-                    click: () => {
-                        const saveTo = dialog.showOpenDialogSync({
-                            properties: ['openFile'],
-                        });
-                        if (saveTo) {
-                            try {
-                                const data = readFileSync(saveTo[0]).toString();
-                                win.webContents.send('config-data', data);
-                            } catch (e) {
-                                throw e;
-                            }
-                        }
-                    },
-                },
-            ],
-        },
         {
             label: get(translations, ['appMenu', 'edit'], 'Edit'),
             // @ts-ignore
@@ -225,25 +163,21 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                     ),
                 },
                 { type: 'separator' },
-                ...(isDevelopment
-                    ? [
-                          {
-                              role: 'toggledevtools',
-                              label: get(
-                                  translations,
-                                  ['appMenu', 'toggledevtools'],
-                                  'Toggle DevTools'
-                              ),
-                          },
-                      ]
-                    : []),
+                ...(isDevelopment ? [{
+                    role: 'toggledevtools',
+                    label: get(
+                        translations,
+                        ['appMenu', 'toggledevtools'],
+                        'Toggle DevTools'
+                    ),
+                }] : []),
                 ,
             ],
         },
         {
             label: get(translations, ['appMenu', 'manage'], 'Manage'),
             enabled: disabledMap.manage,
-            visible: process.platform === 'darwin' ? true : disabledMap.manage,
+            visible: disabledMap.manage,
             acceleratorWorksWhenHidden: false,
             submenu: [
                 {
@@ -284,11 +218,6 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                     accelerator: 'CommandOrControl+Alt+U',
                     click: menuRouter('users'),
                 },
-                {
-                    label: get(translations, ['appMenu', 'leases'], 'Leases'),
-                    accelerator: 'CommandOrControl+Alt+L',
-                    click: menuRouter('leases'),
-                },
             ],
         },
         {
@@ -315,6 +244,7 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
         isMac
             ? {
                   label: app.getName(),
+
                   submenu: [
                       {
                           role: 'about',
@@ -430,41 +360,15 @@ function createWindow() {
         // Load the index.html when not in development
         win.loadURL('app://./index.html');
         autoUpdater.checkForUpdatesAndNotify();
+
     }
 
     win.maximize();
 
-    win.on('closed', () => {});
-}
-ipcMain.on('ssl_file_check', (_event: any, cert: string, id: string) => {
-    try {
-        const data = readFileSync(cert);
-        win.webContents.send('ssl_data', {
-            id,
-            fileName: cert,
-            data,
-        });
-    } catch (e) {
-        throw e;
-    }
-});
-ipcMain.on('ssl_dialog_open', (_event: any, id: string) => {
-    const saveTo = dialog.showOpenDialogSync({
-        properties: ['openFile'],
+    win.on('closed', () => {
+        win = null;
     });
-    if (saveTo) {
-        try {
-            const data = readFileSync(saveTo[0]);
-            win.webContents.send('ssl_data', {
-                id,
-                fileName: saveTo[0],
-                data,
-            });
-        } catch (e) {
-            throw e;
-        }
-    }
-});
+}
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -495,27 +399,15 @@ app.on('ready', async () => {
             console.error('Vue Devtools failed to install:', e.toString());
         }
     }
-    createAppMenu(defaultTranslations.default.en);
+    new Tray(join(__static, '/icons/24x24.png'));
+    createAppMenu();
     setAboutPanel();
     createWindow();
     // tslint:disable-next-line: variable-name
-    ipcMain.on(
-        'update-menu',
-        (_event: any, translations: any, disabledMap: GenericObject) => {
-            createAppMenu(translations, disabledMap);
-            setAboutPanel(translations);
-        }
-    );
-
-    ipcMain.on('appconfig', (_event: any, data: any) => {
-        appConfig = JSON.parse(data);
+    ipcMain.on('update-menu', (_event: any, translations: any, disabledMap: GenericObject) => {
+        createAppMenu(translations, disabledMap);
+        setAboutPanel(translations);
     });
-
-    ipcMain.on('whatsnew-load', () => {
-        loadWhatsNew();
-    });
-
-    return new Tray(join(__static, '/icons/24x24.png'));
 });
 
 // Exit cleanly on request from parent process in development mode.

@@ -8,6 +8,7 @@ import store from '@/store';
 import Mousetrap from 'mousetrap';
 
 export interface List {
+    load(): Promise<CrudBase>;
     load(prefix?: string): Promise<CrudBase>;
 }
 
@@ -30,7 +31,6 @@ export class CrudBase extends Vue implements List {
     protected defaultItem: GenericObject = { key: '', value: '' };
     protected etcd!: EtcdService;
     protected keyboardEvents: any;
-    protected reloader: any;
     public help: number | null = null;
     public clipboardService: ClipboardService;
     public platformService: PlatformService;
@@ -41,24 +41,6 @@ export class CrudBase extends Vue implements List {
         this.clipboardService = new ClipboardService();
         this.platformService = new PlatformService();
         this.bindDefaultEvents();
-    }
-
-    protected async addReloader(action: (data: any) => void) {
-        const client = this.etcd.getClient();
-        if (client) {
-            this.reloader = await client
-                .watch()
-                .prefix('')
-                .create();
-
-            this.reloader.on('data', action);
-        }
-    }
-
-    public destroyed() {
-        if (this.reloader) {
-            this.reloader.cancel();
-        }
     }
 
     protected bindDefaultEvents() {
