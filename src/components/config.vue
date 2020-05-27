@@ -1442,7 +1442,7 @@ export default class Configuration extends Vue {
         const errors: any = [];
 
         // @ts-ignore
-        this.$v.certificate.required &&
+        !this.$v.certificate.required &&
             errors.push(this.$t('common.validation.required'));
 
         return errors;
