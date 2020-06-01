@@ -233,20 +233,20 @@ export default {
                     },
                     certificate: {
                         label: 'Tanusítvány',
-                        tooltip: ' A gyökér tanusítvány adatai',
+                        tooltip: ' A tanusítvány amelyet az SSL / TLS kommunikációhoz használunk.',
                     },
                     certKey: {
-                        label: 'Tanusítvány Titkos Kulcs',
-                        tooltip: 'Az ügyféltanúsítvány titkos kulcsa, ha van',
+                        label: 'Tanusítvány kulcs',
+                        tooltip: 'Az ügyféltanúsítvány kulcsa, nem titkosított. Csak akkor kell, ha az ETCD-ben be van kapcsolta a client certificatre auth.',
                     },
                     certChain: {
-                        label: 'Tanusítvány Lánc',
+                        label: 'Tanusítvány hatóság',
                         tooltip:
-                            ' Az ügyféltanúsítvány tanúsítási lánc, ha van',
+                            'A megbízható hatóság certificate. Csak akkor kell, ha az ETCD-ben be van kapcsolta a client certificatre auth',
                     },
                     ssl: {
-                        label: 'Tanúsítványok',
-                        tooltip: 'Tanusítványok bekapcsolása',
+                        label: 'Biztonságos kommunkláció',
+                        tooltip: 'HTTPS kommunikáció engedélyezése vagy tiltása',
                     },
                     apiVersion: {
                         label: 'API verzió',
@@ -339,7 +339,7 @@ export default {
                 next: 'Következő',
                 testConnection: 'Kapcsolat teszt',
                 browse: 'Tallózás',
-                clear: 'Törlés'
+                clear: 'Törlés',
             },
             messages: {
                 noDefaultRemove:
