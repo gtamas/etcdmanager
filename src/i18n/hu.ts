@@ -245,7 +245,7 @@ export default {
                             'A megbízható hatóság certificate. Csak akkor kell, ha az ETCD-ben be van kapcsolta a client certificatre auth',
                     },
                     ssl: {
-                        label: 'Biztonságos kommunkláció',
+                        label: 'Biztonságos kommunikáció',
                         tooltip: 'HTTPS kommunikáció engedélyezése vagy tiltása',
                     },
                     apiVersion: {
