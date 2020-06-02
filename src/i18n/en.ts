@@ -230,21 +230,21 @@ export default {
                     },
                     certificate: {
                         label: 'Certificate',
-                        tooltip: 'The root certificate data',
+                        tooltip: 'Certificate used for SSL / TLS connections.',
                     },
                     certKey: {
-                        label: 'Certificate Secret Key',
+                        label: 'Certificate key',
                         tooltip:
-                            'The client certificate private key, if applicable',
+                            'Key for the certificate, must be unencrypted. Needed only when client-certificate-auth is enabled in ETCD.',
                     },
                     certChain: {
-                        label: 'Certificate Chain',
+                        label: 'Certificate Authority',
                         tooltip:
-                            'The client certificate cert chain, if applicable',
+                            'Trusted certificate authority. Needed only when client-certificate-auth is enabled in ETCD.',
                     },
                     ssl: {
-                        label: 'Certification',
-                        tooltip: 'Cerification enabled',
+                        label: 'Secure connection',
+                        tooltip: 'Enable or disable HTTPS communication',
                     },
                     apiVersion: {
                         label: 'API version',
@@ -336,7 +336,7 @@ export default {
                 next: 'Next',
                 testConnection: 'Test Connection',
                 browse: 'Browse',
-                clear: 'Clear'
+                clear: 'Clear',
             },
             messages: {
                 noDefaultRemove:

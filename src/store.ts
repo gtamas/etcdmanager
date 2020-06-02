@@ -84,7 +84,7 @@ export default new Vuex.Store({
         },
         currentProfileName(state) {
             return state.profile.name;
-        }
+        },
     },
     mutations: {
         limited(state, payload) {
