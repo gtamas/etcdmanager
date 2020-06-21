@@ -456,6 +456,9 @@ export default {
             },
             messages: {
                 duplicateKey: 'This key already exists!',
+                integerTtl: 'Must be an integer',
+                maxValue: 'The value is too large. Max: {max}',
+                minValue: 'The value is too small. Min: 1',
             },
             columns: {
                 key: 'Previous value',

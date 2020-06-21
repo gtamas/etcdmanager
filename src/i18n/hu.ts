@@ -458,6 +458,9 @@ export default {
             },
             messages: {
                 duplicateKey: 'Ez a kulcs már létezik!',
+                integerTtl: 'Pozitiv egész szám szükséges',
+                maxValue: 'Túl nagy szám. Max: {max}',
+                minValue: 'Túl kis szám. Min: 1',
             },
             columns: {
                 key: 'Előző érték',
