@@ -19,9 +19,9 @@ export default class WatcherService extends EtcdService implements DataService {
         const date = new Date().toISOString();
         switch (event) {
             case 'put':
-                return `${date}: The key "${args[0]}" has been changed. Previous value: "${args[2]}", New value: "${args[1]}"`;
+                return `${date}: The key "${args[0]}" has been changed. New value: "${args[1]}"`;
             case 'delete':
-                return `${date} The key "${args[0]}" has been deleted. Last value: "${args[1]}""`;
+                return `${date} The key "${args[0]}" has been deleted.`;
             case 'connected':
                 return `${date} The watcher ${args[0]} has been successfully reconnected!""`;
             case 'end':
@@ -36,11 +36,11 @@ export default class WatcherService extends EtcdService implements DataService {
 
     private generateOutput(message: string, outputType: number) {
         if (outputType === 0) {
-            store.commit('console', message);
+            return store.commit('console', message);
         } if (outputType === 1) {
-            store.commit('message', Messages.message(message as string));
+            return store.commit('message', Messages.message(message as string));
         } if (outputType === 2) {
-            new Notification('Attention!', {
+            return new Notification('Attention!', {
                 lang: 'en',
                 timestamp: Date.now(),
                 body: message,

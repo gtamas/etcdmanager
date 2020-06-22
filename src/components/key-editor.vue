@@ -218,7 +218,9 @@
                                 $t('keyEditor.fields.value.placeholder')
                             "
                             :append-icon="'file_copy'"
-                            @click:append="clipboardService.copyToClipboard(value)"
+                            @click:append="
+                                clipboardService.copyToClipboard(value)
+                            "
                             required
                             @input="$v.value.$touch()"
                             @blur="$v.value.$touch()"
@@ -239,6 +241,43 @@
                                 <span data-test="key-editor.value.span"
                                     >{{
                                         $t('keyEditor.fields.value.tooltip')
+                                    }}.</span
+                                >
+                            </v-tooltip>
+                        </v-text-field>
+
+                        <v-text-field
+                            v-if="!editMode"
+                            data-test="key-editor.ttl.text-field"
+                            dark
+                            type="number"
+                            :error-messages="ttlErrors"
+                            v-model="ttl"
+                            :label="$t('keyEditor.fields.ttl.label')"
+                            :placeholder="
+                                $t('keyEditor.fields.ttl.placeholder')
+                            "
+                            @keydown="numbersOnly($event)"
+                            @input="$v.ttl.$touch()"
+                            @blur="$v.ttl.$touch()"
+                            required
+                        >
+                            <v-tooltip
+                                data-test="key-editor.ttl.tooltip"
+                                slot="prepend"
+                                bottom
+                                max-width="200"
+                            >
+                                <v-icon
+                                    data-test="key-editor.ttl.icon"
+                                    slot="activator"
+                                    color="primary"
+                                    dark
+                                    >info</v-icon
+                                >
+                                <span data-test="key-editor.ttl.span"
+                                    >{{
+                                        $t('keyEditor.fields.ttl.tooltip')
                                     }}.</span
                                 >
                             </v-tooltip>
@@ -349,7 +388,12 @@
 <script lang="ts">
 import Component from 'vue-class-component';
 
-import { required } from 'vuelidate/lib/validators';
+import {
+    required,
+    integer,
+    maxValue,
+    minValue,
+} from 'vuelidate/lib/validators';
 import Messages from '@/lib/messages';
 import { RevisionListType } from '../../types';
 import KeyService from '../services/key.service';
@@ -370,13 +414,20 @@ class KeyError extends Error {
 @Component({
     // @ts-ignore
     name: 'key-editor',
-    validations: {
-        key: {
-            required,
-        },
-        value: {
-            required,
-        },
+    validations() {
+        return {
+            key: {
+                required,
+            },
+            value: {
+                required,
+            },
+            ttl: {
+                integer,
+                maxValue: maxValue(9000000000),
+                minValue: minValue(0),
+            },
+        };
     },
 })
 export default class KeyEditor extends BaseEditor {
@@ -399,6 +450,7 @@ export default class KeyEditor extends BaseEditor {
 
     public key: string = this.data.key || '';
     public value: string = this.data.value || '';
+    public ttl: string = '0';
     public showRevs: number | null = null;
 
     public headers = [
@@ -494,6 +546,39 @@ export default class KeyEditor extends BaseEditor {
         return errors;
     }
 
+    get ttlErrors() {
+        const errors: any = [];
+        // @ts-ignore
+        if (!this.$v.ttl.$dirty) {
+            return errors;
+        }
+        // @ts-ignore
+        if (!this.$v.ttl.integer) {
+            errors.push(this.$t('keyEditor.messages.integerTtl').toString());
+        } else if (!this.$v.ttl.maxValue) {
+            errors.push(
+                this.$t('keyEditor.messages.maxValue', { max: 9000000000 })
+            );
+        } else if (!this.$v.ttl.minValue) {
+            errors.push(this.$t('keyEditor.messages.minValue').toString());
+        }
+
+        return errors;
+    }
+
+    public numbersOnly(e: KeyboardEvent) {
+        if (
+            !'0123456789'.includes(e.key) &&
+            e.keyCode !== 8 &&
+            e.keyCode !== 46 &&
+            e.keyCode !== 37 &&
+            e.keyCode !== 39
+        ) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    }
+
     public toggleRevs() {
         this.showRevs = this.showRevs === 0 ? null : 0;
     }
@@ -512,9 +597,10 @@ export default class KeyEditor extends BaseEditor {
 
         try {
             this.toggleLoading();
-            const res = await etcd.insert(
+            const res = await etcd.upsert(
                 this.key,
                 this.value,
+                this.ttl,
                 this.createMode
             );
             this.toggleLoading();
@@ -525,6 +611,7 @@ export default class KeyEditor extends BaseEditor {
                 if (this.createMode) {
                     this.key = '';
                     this.value = '';
+                    this.ttl = '0';
                 }
             } else {
                 this.$store.commit(

@@ -215,57 +215,6 @@
                         <v-container fluid>
                             <v-layout>
                                 <v-flex xs12 align-end flexbox>
-                                    <v-text-field
-                                        data-test="config.profile-fields-name.text-field"
-                                        dark
-                                        ref="name"
-                                        tab="0"
-                                        :hint="
-                                            $t(
-                                                'settings.profile.fields.name.hint'
-                                            )
-                                        "
-                                        :persistent-hint="true"
-                                        v-model="name"
-                                        :error-messages="nameErrors"
-                                        :label="
-                                            $t(
-                                                'settings.profile.fields.name.label'
-                                            )
-                                        "
-                                        :placeholder="
-                                            $t(
-                                                'settings.profile.fields.name.placeholder'
-                                            )
-                                        "
-                                        required
-                                        @input="$v.name.$touch()"
-                                        @blur="$v.name.$touch()"
-                                    >
-                                        <v-tooltip
-                                            slot="prepend"
-                                            bottom
-                                            max-width="200"
-                                        >
-                                            <v-icon
-                                                data-test="config.profile-fields-name.icon"
-                                                slot="activator"
-                                                color="primary"
-                                                dark
-                                                >info</v-icon
-                                            >
-                                            <span
-                                                data-test="config.profile-fields-name.span"
-                                            >
-                                                {{
-                                                    $t(
-                                                        'settings.profile.fields.name.tooltip'
-                                                    )
-                                                }}
-                                            </span>
-                                        </v-tooltip>
-                                    </v-text-field>
-
                                     <v-select
                                         data-test="config.profile-fields-profile.select-field"
                                         :items="profiles"
@@ -566,6 +515,274 @@
                                             </span>
                                         </v-tooltip>
                                     </v-text-field>
+
+                                    <v-switch
+                                        data-test="config.etcd-fields-ssl.switch"
+                                        dark
+                                        v-model="ssl_enabled"
+                                        :label="
+                                            $t('settings.etcd.fields.ssl.label')
+                                        "
+                                    >
+                                        <v-tooltip
+                                            slot="prepend"
+                                            bottom
+                                            max-width="200"
+                                        >
+                                            <v-icon
+                                                data-test="config.etcd-fields-ssl.icon"
+                                                slot="activator"
+                                                color="primary"
+                                                dark
+                                                >info</v-icon
+                                            >
+                                            <span
+                                                data-test="config.etcd-fields-ssl.span"
+                                            >
+                                                {{
+                                                    $t(
+                                                        'settings.etcd.fields.ssl.tooltip'
+                                                    )
+                                                }}
+                                            </span>
+                                        </v-tooltip>
+                                    </v-switch>
+                                    <v-container v-if="ssl_enabled">
+                                        <v-layout align-end row>
+                                            <v-text-field
+                                                readonly
+                                                data-test="config.etcd-fields-certificate.text-field"
+                                                dark
+                                                ref="certificate"
+                                                tab="1"
+                                                v-model="certificate"
+                                                :error-messages="
+                                                    certificationErrors
+                                                "
+                                                :label="
+                                                    $t(
+                                                        'settings.etcd.fields.certificate.label'
+                                                    )
+                                                "
+                                                required
+                                                @input="$v.timeout.$touch()"
+                                                @blur="$v.timeout.$touch()"
+                                            >
+                                                <v-tooltip
+                                                    slot="prepend"
+                                                    bottom
+                                                    max-width="200"
+                                                >
+                                                    <v-icon
+                                                        data-test="config.etcd-fields-certificate.icon"
+                                                        slot="activator"
+                                                        color="primary"
+                                                        dark
+                                                        >info</v-icon
+                                                    >
+                                                    <span
+                                                        data-test="config.etcd-fields-certificate.span"
+                                                    >
+                                                        {{
+                                                            $t(
+                                                                'settings.etcd.fields.certificate.tooltip'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </v-tooltip>
+                                            </v-text-field>
+                                            <v-btn
+                                                data-test="config.clear.cert.button"
+                                                round
+                                                color="primary"
+                                                @click="clearCert()"
+                                            >
+                                                <span
+                                                    data-test="config.clear.label.span"
+                                                >
+                                                    {{
+                                                        $t(
+                                                            'settings.actions.clear'
+                                                        )
+                                                    }}
+                                                </span>
+                                            </v-btn>
+                                            <v-btn
+                                                data-test="config.browse.cert.button"
+                                                round
+                                                color="primary"
+                                                @click="browse('cert')"
+                                            >
+                                                <v-icon
+                                                    data-test="config.browse.icon"
+                                                    >open_in_browser</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.browse.label.span"
+                                                >
+                                                    {{
+                                                        $t(
+                                                            'settings.actions.browse'
+                                                        )
+                                                    }}
+                                                </span>
+                                            </v-btn>
+                                        </v-layout>
+                                        <v-layout align-end row>
+                                            <v-text-field
+                                                readonly
+                                                data-test="config.etcd-fields-certKey.text-field"
+                                                dark
+                                                ref="certKey"
+                                                tab="1"
+                                                v-model="certKey"
+                                                :label="
+                                                    $t(
+                                                        'settings.etcd.fields.certKey.label'
+                                                    )
+                                                "
+                                                @input="$v.timeout.$touch()"
+                                                @blur="$v.timeout.$touch()"
+                                            >
+                                                <v-tooltip
+                                                    slot="prepend"
+                                                    bottom
+                                                    max-width="200"
+                                                >
+                                                    <v-icon
+                                                        data-test="config.etcd-fields-certKey.icon"
+                                                        slot="activator"
+                                                        color="primary"
+                                                        dark
+                                                        >info</v-icon
+                                                    >
+                                                    <span
+                                                        data-test="config.etcd-fields-certKey.span"
+                                                    >
+                                                        {{
+                                                            $t(
+                                                                'settings.etcd.fields.certKey.tooltip'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </v-tooltip>
+                                            </v-text-field>
+                                            <v-btn
+                                                data-test="config.clear.certKey.button"
+                                                round
+                                                color="primary"
+                                                @click="clearCertKey()"
+                                            >
+                                                <span
+                                                    data-test="config.clear.label.span"
+                                                >
+                                                    {{
+                                                        $t(
+                                                            'settings.actions.clear'
+                                                        )
+                                                    }}
+                                                </span>
+                                            </v-btn>
+                                            <v-btn
+                                                data-test="config.browse.certKey.button"
+                                                :disabled="!certificate"
+                                                round
+                                                color="primary"
+                                                @click="browse('privateKey')"
+                                            >
+                                                <v-icon
+                                                    data-test="config.browse.icon"
+                                                    >open_in_browser</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.browse.label.span"
+                                                >
+                                                    {{
+                                                        $t(
+                                                            'settings.actions.browse'
+                                                        )
+                                                    }}
+                                                </span>
+                                            </v-btn>
+                                        </v-layout>
+                                        <v-layout align-end row>
+                                            <v-text-field
+                                                readonly
+                                                data-test="config.etcd-fields-certChain.text-field"
+                                                dark
+                                                ref="certChain"
+                                                tab="1"
+                                                v-model="certChain"
+                                                :label="
+                                                    $t(
+                                                        'settings.etcd.fields.certChain.label'
+                                                    )
+                                                "
+                                                @input="$v.timeout.$touch()"
+                                                @blur="$v.timeout.$touch()"
+                                            >
+                                                <v-tooltip
+                                                    slot="prepend"
+                                                    bottom
+                                                    max-width="200"
+                                                >
+                                                    <v-icon
+                                                        data-test="config.etcd-fields-certChain.icon"
+                                                        slot="activator"
+                                                        color="primary"
+                                                        dark
+                                                        >info</v-icon
+                                                    >
+                                                    <span
+                                                        data-test="config.etcd-fields-certChain.span"
+                                                    >
+                                                        {{
+                                                            $t(
+                                                                'settings.etcd.fields.certChain.tooltip'
+                                                            )
+                                                        }}
+                                                    </span>
+                                                </v-tooltip>
+                                            </v-text-field>
+                                            <v-btn
+                                                data-test="config.clear.certChain.button"
+                                                round
+                                                color="primary"
+                                                @click="clearCertChain()"
+                                            >
+                                                <span
+                                                    data-test="config.clear.label.span"
+                                                >
+                                                    {{
+                                                        $t(
+                                                            'settings.actions.clear'
+                                                        )
+                                                    }}
+                                                </span>
+                                            </v-btn>
+                                            <v-btn
+                                                data-test="config.browse.certChain.button"
+                                                :disabled="!certificate"
+                                                round
+                                                color="primary"
+                                                @click="browse('certChain')"
+                                            >
+                                                <v-icon
+                                                    data-test="config.browse.icon"
+                                                    >open_in_browser</v-icon
+                                                >
+                                                <span
+                                                    data-test="config.browse.label.span"
+                                                >
+                                                    {{
+                                                        $t(
+                                                            'settings.actions.browse'
+                                                        )
+                                                    }}
+                                                </span>
+                                            </v-btn>
+                                        </v-layout>
+                                    </v-container>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -1016,6 +1233,18 @@
                         }}</span>
                     </v-btn>
                     <v-btn
+                        data-test="config.save-as.button"
+                        :disabled="!valid"
+                        round
+                        color="primary"
+                        @click="saveAsProfile"
+                    >
+                        <v-icon data-test="config.save-as.icon">save</v-icon>
+                        <span data-test="config.save-as.label.span">{{
+                            $t('settings.actions.saveAs')
+                        }}</span>
+                    </v-btn>
+                    <v-btn
                         data-test="config.next.button"
                         round
                         color="warning"
@@ -1037,6 +1266,12 @@
             v-on:confirm="confirmDeleteProfile"
             v-on:cancel="cancelDeleteProfile"
         ></delete-dialog>
+        <save-as-dialog
+            :open="saveAsDialog"
+            :itemName="'profile'"
+            v-on:saveAs="setNewProfile"
+            v-on:cancel="cancelSaveAsDialog"
+        ></save-as-dialog>
         <no-selection-dialog
             :open="noSelection"
             v-on:close="closeNoSelection"
@@ -1055,7 +1290,6 @@ import Component from 'vue-class-component';
 import {
     required,
     requiredIf,
-    alphaNum,
     integer,
     ipAddress,
     or,
@@ -1071,6 +1305,9 @@ import { GenericObject } from '../../types';
 import { ConfigService } from '../services/config.service';
 import { Etcd3, IOptions } from 'etcd3';
 import { AuthService } from '../services/auth.service';
+import StatsService from '../services/stats.service';
+import { writeFileSync } from 'fs';
+
 const { ipcRenderer } = require('electron');
 
 // @ts-ignore
@@ -1096,8 +1333,16 @@ const { ipcRenderer } = require('electron');
             required,
             integer,
         },
+        certificate: {
+            required: requiredIf('ssl_enabled'),
+        },
+        certKey: {
+            required: requiredIf('cerChain'),
+        },
+        certChain: {
+            required: requiredIf('certKey'),
+        },
         username: {
-            alphaNum,
             required: requiredIf('password'),
         },
         password: {
@@ -1118,6 +1363,7 @@ const { ipcRenderer } = require('electron');
 export default class Configuration extends Vue {
     public valid = false;
     public deleteDialog = false;
+    public saveAsDialog = false;
     public noSelection = false;
     public alert = false;
     public success = false;
@@ -1141,6 +1387,10 @@ export default class Configuration extends Vue {
     private tabsLength: number = 5;
     private active = 0;
     private help: number | null = null;
+    private certification: Buffer;
+    private privateKey: Buffer;
+    private certificationChain: Buffer;
+
     public configExists: boolean = false;
 
     public platformService: PlatformService;
@@ -1148,6 +1398,9 @@ export default class Configuration extends Vue {
 
     constructor() {
         super();
+        this.certification = new Buffer('');
+        this.privateKey = new Buffer('');
+        this.certificationChain = new Buffer('');
         this.platformService = new PlatformService();
         this.inputActionService = new InputActionService();
         // @ts-ignore
@@ -1173,8 +1426,39 @@ export default class Configuration extends Vue {
                 this.help = this.help === null ? 0 : null;
             }
         );
+        ipcRenderer.on('ssl_data', (_event: any, arg: any) => {
+            if (arg.id === 'cert') {
+                this.certification = arg.data;
+                this.certificate = arg.fileName;
+            }
+            if (arg.id === 'privateKey') {
+                this.privateKey = arg.data;
+                this.certKey = arg.fileName;
+            }
+            if (arg.id === 'certChain') {
+                this.certificationChain = arg.data;
+                this.certChain = arg.fileName;
+            }
+        });
 
-        this.profiles = this.configService.getProfiles();
+        ipcRenderer.on('app-config-data', (_event: any, saveTo: string) => {
+            try {
+                writeFileSync(
+                    saveTo,
+                    JSON.stringify(this.configService.getConfig()),
+                    { encoding: 'utf8' }
+                );
+            } catch (e) {
+                throw e;
+            }
+        });
+
+        ipcRenderer.on('config-data', () => {
+            this.profiles = this.configService.getProfileNames();
+            this.profile = this.$store.getters.currentProfileName;
+        });
+
+        this.profiles = this.configService.getProfileNames();
         this.authService = new AuthService();
     }
 
@@ -1199,6 +1483,37 @@ export default class Configuration extends Vue {
 
     set endpoint(value: string) {
         this.$store.commit('etcdConfig', { hosts: value });
+    }
+    get ssl_enabled() {
+        return this.$store.state.etcd.ssl.enabled;
+    }
+
+    set ssl_enabled(value: boolean) {
+        this.$store.commit('ssl', { enabled: value });
+    }
+
+    get certificate() {
+        return this.$store.state.etcd.ssl.certificate;
+    }
+
+    set certificate(value: string) {
+        this.$store.commit('ssl', { certificate: value });
+    }
+
+    get certKey() {
+        return this.$store.state.etcd.ssl.certKey;
+    }
+
+    set certKey(value: string) {
+        this.$store.commit('ssl', { certKey: value });
+    }
+
+    get certChain() {
+        return this.$store.state.etcd.ssl.certChain;
+    }
+
+    set certChain(value: string) {
+        this.$store.commit('ssl', { certChain: value });
     }
 
     get timeout() {
@@ -1305,103 +1620,143 @@ export default class Configuration extends Vue {
         this.$store.commit('users', { pattern: value });
     }
 
+    get certificationErrors() {
+        const errors: any = [];
+
+        // @ts-ignore
+        if (!this.$v.certificate.required) {
+            errors.push(this.$t('common.validation.required'));
+        }
+
+        return errors;
+    }
+    get certKeyErrors() {
+        const errors: any = [];
+
+        // @ts-ignore
+        if (this.$v.certKey && this.$v.certKey.required) {
+            errors.push(this.$t('common.validation.required'));
+        }
+
+        return errors;
+    }
+
+    get certChainErrors() {
+        const errors: any = [];
+
+        if (this.$v.certChain && this.$v.certChain.required) {
+            errors.push(this.$t('common.validation.required'));
+        }
+
+        return errors;
+    }
+
     get nameErrors() {
         const errors: any = [];
-        // @ts-ignore
+
         if (!this.$v.name.$dirty) {
             return errors;
         }
 
-        // @ts-ignore
-        !this.$v.name.required &&
+        if (!this.$v.name.required) {
             errors.push(this.$t('common.validation.required'));
+        }
+
         return errors;
     }
-
     get endpointErrors() {
         const errors: any = [];
-        // @ts-ignore
+
         if (!this.$v.endpoint.$dirty) {
             return errors;
         }
 
-        // @ts-ignore
         if (!this.$v.endpoint.or) {
             errors.push(this.$t('settings.messages.ipOrUrl'));
         }
 
-        // @ts-ignore
-        !this.$v.endpoint.required &&
+        if (!this.$v.endpoint.required) {
             errors.push(this.$t('common.validation.required'));
-        // !this.$v.endpoint.url && errors.push('URL appears to be invalid');
+        }
+
         return errors;
     }
 
     get portErrors() {
         const errors: any = [];
-        // @ts-ignore
+
         if (!this.$v.port.$dirty) {
             return errors;
         }
-        // @ts-ignore
-        !this.$v.port.required &&
+
+        if (!this.$v.port.required) {
             errors.push(this.$t('common.validation.required'));
-        // @ts-ignore
-        !this.$v.port.integer && errors.push(this.$t('common.validation.int'));
+        }
+
+        if (!this.$v.port.integer) {
+            errors.push(this.$t('common.validation.int'));
+        }
+
         return errors;
     }
 
     get timeoutErrors() {
         const errors: any = [];
-        // @ts-ignore
+
         if (!this.$v.timeout.$dirty) {
             return errors;
         }
-        // @ts-ignore
-        !this.$v.timeout.required &&
+
+        if (!this.$v.timeout.required) {
             errors.push(this.$t('common.validation.required'));
-        // @ts-ignore
-        !this.$v.timeout.integer &&
+        }
+
+        if (!this.$v.timeout.integer) {
             errors.push(this.$t('common.validation.int'));
+        }
+
         return errors;
     }
 
     get usernameErrors() {
         const errors: any = [];
-        // @ts-ignore
+
         if (!this.$v.username.$dirty) {
             return errors;
         }
-        // @ts-ignore
-        !this.$v.username.required &&
+
+        if (!this.$v.username.required) {
             errors.push(this.$t('common.validation.required'));
-        // @ts-ignore
-        !this.$v.username.alphaNum &&
-            errors.push(this.$t('common.validation.alphanumeric'));
+        }
+
         return errors;
     }
 
     get passwordErrors() {
         const errors: any = [];
-        // @ts-ignore
+
         if (!this.$v.password.$dirty) {
             return errors;
         }
-        // @ts-ignore
-        !this.$v.password.required &&
+
+        if (!this.$v.password.required) {
             errors.push(this.$t('common.validation.required'));
+        }
+
         return errors;
     }
 
     get pwpatternErrors() {
         const errors: any = [];
-        // @ts-ignore
+
         if (!this.$v.pwpattern.$dirty) {
             return errors;
         }
-        // @ts-ignore
-        !this.$v.pwpattern.invalid &&
+
+        if (!this.$v.pwpattern.invalid) {
             errors.push(this.$t('common.validation.pattern'));
+        }
+
         return errors;
     }
 
@@ -1464,6 +1819,17 @@ export default class Configuration extends Vue {
                 password: this.password,
             };
         }
+
+        if (this.certificate && this.ssl_enabled) {
+            config.credentials = {
+                rootCertificate: this.certification,
+            };
+            if (this.certKey && this.certChain) {
+                config.credentials.privateKey = this.privateKey;
+                config.credentials.certChain = this.certificationChain;
+            }
+        }
+
         const client = new Etcd3(config);
         this.etcd = new KeyService(client);
         this.testing = true;
@@ -1482,17 +1848,34 @@ export default class Configuration extends Vue {
         }
     }
 
-    public loadProfile() {
+    public async loadProfile() {
         if (!this.profile || !this.profiles.length) {
             this.noSelection = true;
             return;
         }
         this.configService.loadProfile(this.profile);
+        this.$store.commit(
+            'updateCurrentProfile',
+            this.configService.getProfile(this.profile)
+        );
+
+        await this.updateCurrentEtcdVersion();
+
         this.$store.commit('message', {
             text: this.$t('settings.messages.profileLoaded'),
             color: 'success',
             show: true,
         });
+    }
+
+    public saveAsProfile() {
+        this.saveAsDialog = true;
+    }
+
+    public setNewProfile(newProfile: string) {
+        this.name = newProfile;
+        this.persist();
+        this.saveAsDialog = false;
     }
 
     public removeProfile() {
@@ -1509,12 +1892,16 @@ export default class Configuration extends Vue {
         this.configService.removeProfile(this.profile);
         this.persist(false);
         this.profile = 'default';
-        this.profiles = this.configService.getProfiles();
+        this.profiles = this.configService.getProfileNames();
         this.deleteDialog = false;
     }
 
     public cancelDeleteProfile() {
         this.deleteDialog = false;
+    }
+
+    public cancelSaveAsDialog() {
+        this.saveAsDialog = false;
     }
 
     public closeNoSelection() {
@@ -1525,11 +1912,60 @@ export default class Configuration extends Vue {
         this.alert = false;
     }
 
+    public browse(id: string) {
+        ipcRenderer.send('ssl_dialog_open', id);
+    }
+
+    public clearCert() {
+        this.certificate = '';
+    }
+
+    public clearCertKey() {
+        this.certKey = '';
+    }
+
+    public clearCertChain() {
+        this.certChain = '';
+    }
+
+    private async updateCurrentEtcdVersion() {
+        const statsService = new StatsService(
+            this.$store.state.connection.getClient()
+        );
+        const stats = await statsService.getStats();
+        const currentVersion = parseFloat(stats.version);
+
+        this.$store.commit('etcdConfig', { version: currentVersion });
+
+        ipcRenderer.send('update-menu', undefined, {
+            lease: currentVersion > 3.2,
+            manage: this.authService.isAuthenticated()
+                ? this.authService.isRoot()
+                : true,
+        });
+    }
+
     public async persist(notify: boolean = true) {
         this.$v.$touch();
         if (this.$v.$invalid) {
             this.findError();
             return false;
+        }
+        const config = this.configService.getConfig();
+        const credentials =
+            config && config.credentials ? config.credentials : undefined;
+        if (credentials && new Buffer(credentials.rootCertificate).length > 0) {
+            this.certification = new Buffer(credentials.rootCertificate);
+            if (
+                credentials &&
+                credentials.privateKey &&
+                credentials.certChain &&
+                new Buffer(credentials.privateKey).length > 0 &&
+                new Buffer(credentials.certChain).length > 0
+            ) {
+                this.privateKey = new Buffer(credentials.privateKey);
+                this.certificationChain = new Buffer(credentials.certChain);
+            }
         }
         const newConfig: { [key: string]: any } = {
             etcd: {
@@ -1537,6 +1973,12 @@ export default class Configuration extends Vue {
                 dialTimeout: this.timeout,
                 retry: this.retry,
                 port: this.port,
+                ssl: {
+                    enabled: this.ssl_enabled,
+                    certificate: '',
+                    certKey: '',
+                    certChain: '',
+                },
             },
             config: {
                 language: this.language,
@@ -1558,7 +2000,20 @@ export default class Configuration extends Vue {
                 password: this.password,
             };
         }
+        if (this.certificate && this.ssl_enabled) {
+            newConfig.etcd.ssl.certificate = this.certificate;
+            newConfig.etcd.ssl.enabled = this.ssl_enabled;
+            newConfig.credentials = {
+                rootCertificate: this.certification,
+            };
+            if (this.certKey && this.certChain) {
+                newConfig.etcd.ssl.certKey = this.certKey;
+                newConfig.etcd.ssl.certChain = this.certChain;
 
+                newConfig.credentials.privateKey = this.privateKey;
+                newConfig.credentials.certChain = this.certificationChain;
+            }
+        }
         if (this.pwpattern) {
             newConfig.users = {
                 pattern: this.pwpattern,
@@ -1589,28 +2044,27 @@ export default class Configuration extends Vue {
                 profiles: [...oldConfig.profiles],
                 ...newConfig,
             });
-            this.profiles = this.configService.getProfiles();
+            this.profiles = this.configService.getProfileNames();
             this.profile = newConfig.config.name;
             const auth = newConfig.etcdAuth ? { auth: newConfig.etcdAuth } : {};
             this.$store.commit('etcdConnect', {
                 ...omit(newConfig.etcd, 'port'),
                 ...auth,
                 ...{ hosts: `${newConfig.etcd.hosts}:${newConfig.etcd.port}` },
+                ...{ credentials: newConfig.credentials },
             });
+
+            await this.updateCurrentEtcdVersion();
 
             this.$store.commit(
                 'limited',
                 this.authService.isAuthenticated() ? isRoot : true
             );
-            ipcRenderer.send('update-menu', undefined, {
-                manage: this.authService.isAuthenticated() ? isRoot : true,
-            });
 
-            if (this.authService.isAuthenticated()) {
-            } else {
+            if (!this.authService.isAuthenticated()) {
                 this.$store.commit('limited', true);
-                ipcRenderer.send('update-menu', undefined, { manage: true });
             }
+
             if (notify) {
                 this.$store.dispatch('locale', this.language).then(() => {
                     this.$store.commit('message', {

@@ -105,19 +105,32 @@ export default class KeyService extends EtcdService implements DataService {
         return Promise.resolve(res);
     }
 
-    public insert(
+    public async upsert(
         key: string,
         value: string,
+        ttl: string,
         isCreate: boolean = true
     ): Promise<any> {
         if (isCreate) {
+            const  ttlNum = parseInt(ttl, 10);
+            const clientOrLease = ttlNum ? this.client.lease(ttlNum) : this.client;
+
+            if (ttlNum) {
+                const  tid = setTimeout(() => {
+                    clientOrLease.revoke();
+                    clearTimeout(tid);
+                }, ttlNum * 1000);
+            }
+
             return this.client
                 .if(key, 'Create', '==', 0)
-                .then(this.client.put(key).value(value))
+                .then(clientOrLease.put(key).value(value))
                 .else(this.client.get(key))
                 .commit();
         }
-        return this.client.put(key).value(value);
+        return this.client.put(key)
+        .ignoreLease()
+        .value(value);
     }
 
     public async purge(): Promise<any> {
