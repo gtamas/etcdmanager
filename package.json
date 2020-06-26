@@ -10,7 +10,7 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:build:linux": "vue-cli-service electron:build  --linux AppImage snap tar.gz --x64",
     "electron:build:mac": "vue-cli-service electron:build --macos dmg --x64",
-    "electron:build:win": "vue-cli-service electron:build  --windows nsis --x64 --ia32",
+    "electron:build:win": "vue-cli-service electron:build  --windows appx --x64 --ia32",
     "electron:generate-icons": "electron-icon-builder --input=./public/icon.png --output=public --flatten",
     "electron:publish:linux": "vue-cli-service electron:build  --linux AppImage snap tar.gz --x64 -p always",
     "electron:publish:mac": "vue-cli-service electron:build --macos dmg --x64 -p always",

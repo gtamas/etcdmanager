@@ -49,12 +49,12 @@ module.exports = {
         electronBuilder: {
             builderOptions: {
                 directories: {
-                    buildResources: './build_files',
+                    buildResources: './build_files'
                 },
                 appId: 'io.etcdmanager.app',
                 copyright: `ICell Ltd and contributors ${new Date().getFullYear()}`,
                 publish: ['github'],
-                npmRebuild: false,
+                npmRebuild: true,
                 nsis: {
                     oneClick: false,
                     perMachine: false,
@@ -71,12 +71,30 @@ module.exports = {
                 win: {
                     icon: './public/icons/icon.ico',
                     artifactName: '${productName}-${version}-win64.${ext}',
+                    publisherName: 'Icell',
                     target: [
                         {
                             target: 'nsis',
                             arch: ['x64', 'ia32'],
                         },
+                        {
+                            target: 'appx',
+                            arch: ['x64'],
+                        },
+
                     ],
+                },
+                appx: {
+                    identityName: 'etcd.manager',
+                    displayName: 'ETCD Manager',
+                    publisherDisplayName: 'I-Cell Mobilsoft Corp.',
+                    languages: [
+                        'en_US',
+                        'hu_HU'
+                    ],
+                    addAutoLaunchExtension: true,
+                    setBuildNumber: true,
+                    backgroundColor: 'lightGray'
                 },
                 appImage: {
                     license: 'LICENSE',

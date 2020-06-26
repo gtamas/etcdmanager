@@ -220,7 +220,7 @@ function createAppMenu(translations: any, disabledMap: GenericObject = {}) {
                     ),
                 },
                 { type: 'separator' },
-                ...(isDevelopment
+                ...(!isDevelopment
                     ? [
                           {
                               role: 'toggledevtools',
