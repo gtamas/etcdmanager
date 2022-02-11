@@ -64,7 +64,7 @@
     "electron-icon-builder": "^1.0.1",
     "husky": "^4.2.5",
     "mocha": "^6.2.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^8",
     "spectron": "^8",
     "tslint-config-airbnb": "^5.11.1",
